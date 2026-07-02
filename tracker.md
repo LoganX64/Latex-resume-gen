@@ -24,6 +24,7 @@
 ## Git History
 
 ```
+d9e6899 Phase 3: Resume editor UI with drag-and-drop, forms, and profile image upload
 af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 93b41c1 Phase 1: Project scaffolding
 ```
