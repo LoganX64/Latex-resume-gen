@@ -71,15 +71,15 @@
 
 ---
 
-## Phase 4: Live Preview
+## Phase 4: Live Preview ✅
 
-- [ ] Build A4 page simulation component (210x297mm)
-- [ ] Implement realistic margins and page shadow
-- [ ] Add zoom controls (50%, 75%, 100%, 125%, 150%, Fit Width)
-- [ ] Implement overflow detection
-- [ ] Add character counters for key sections
-- [ ] Add soft limits warning for Summary, Experience, Projects
-- [ ] Show "exceeds one page" warning
+- [x] Build A4 page simulation component (210x297mm)
+- [x] Implement realistic margins and page shadow
+- [x] Add zoom controls (50%, 75%, 100%, 125%, 150%, Fit Width)
+- [x] Implement overflow detection
+- [x] Add character counters for key sections
+- [x] Add soft limits warning for Summary, Experience, Projects
+- [x] Show "exceeds one page" warning
 
 ---
 

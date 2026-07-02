@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 3 Complete
+## Current Status: Phase 4 Complete
 
 ---
 
@@ -11,7 +11,7 @@
 | 1 | Project Scaffolding | ✅ Complete |
 | 2 | shadcn/ui + Dependencies + Types + Store | ✅ Complete |
 | 3 | Resume Editor UI | ✅ Complete |
-| 4 | Live Preview | ⬜ Pending |
+| 4 | Live Preview | ✅ Complete |
 | 5 | LaTeX Generation Engine | ⬜ Pending |
 | 6 | Backend API (Tectonic) | ⬜ Pending |
 | 7 | First 2 Templates | ⬜ Pending |
@@ -177,6 +177,35 @@ af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 - [x] Reset resume button
 - [x] Export LaTeX/PDF placeholder buttons in preview header
 - [x] All forms connected to Zustand store (autosave)
+- [x] TypeScript compilation passes
+- [x] Vite production build passes
+
+---
+
+## Phase 4 - Live Preview ✅
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/components/preview/ResumePreview.tsx` | A4 page simulation with zoom, content rendering |
+| `src/components/preview/OverflowIndicator.tsx` | Overflow warnings and character counters |
+
+### Features Implemented
+
+- [x] A4 page simulation (210x297mm at 96 DPI)
+- [x] Realistic margins (20mm top/bottom, 15mm sides)
+- [x] Page shadow effect
+- [x] Zoom controls: 50%, 75%, 100%, 125%, 150%, Fit Width
+- [x] Zoom selector dropdown + zoom in/out buttons
+- [x] Overflow detection (page content exceeding A4 height)
+- [x] Red ring indicator when content overflows
+- [x] "Exceeds one A4 page" warning banner
+- [x] Soft limit warnings: Summary (500 chars), Experience (5 entries, 6 bullets), Projects (4 entries, 5 bullets)
+- [x] Live character/entry counters in bottom bar
+- [x] Full resume content rendering (all section types)
+- [x] Section headers with proper formatting
+- [x] Bullet points, dates, locations, technologies
 - [x] TypeScript compilation passes
 - [x] Vite production build passes
 
