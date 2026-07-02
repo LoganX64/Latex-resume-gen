@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 6 Complete
+## Current Status: Phase 7 Complete
 
 ---
 
@@ -14,7 +14,7 @@
 | 4 | Live Preview | ✅ Complete |
 | 5 | LaTeX Generation Engine | ✅ Complete |
 | 6 | Backend API (Tectonic) | ✅ Complete |
-| 7 | First 2 Templates | ⬜ Pending |
+| 7 | First 2 Templates | ✅ Complete |
 | 8 | Remaining 8 Templates | ⬜ Pending |
 | 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | ⬜ Pending |
 | 10 | Docker + README | ✅ Complete |
@@ -275,9 +275,44 @@ af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 
 ---
 
+## Phase 7 - First 2 Templates ✅
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/templates/index.ts` | Template registry with dynamic import via import.meta.glob |
+| `src/templates/classic/config.ts` | Classic Professional template configuration |
+| `src/templates/classic/latex.ts` | Classic Professional LaTeX generator |
+| `src/templates/classic/index.tsx` | Classic Professional React preview component |
+| `src/templates/minimal/config.ts` | Minimal ATS template configuration |
+| `src/templates/minimal/latex.ts` | Minimal ATS LaTeX generator |
+| `src/templates/minimal/index.tsx` | Minimal ATS React preview component |
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/components/preview/ResumePreview.tsx` | Uses template-specific Preview via registry |
+| `src/layouts/MainLayout.tsx` | Template selector dropdown, template-aware LaTeX export |
+
+### Features Implemented
+
+- [x] Template registry with auto-discovery via `import.meta.glob`
+- [x] Classic Professional template (serif typography, centered header, ruled sections)
+- [x] Minimal ATS template (sans-serif, compact, max ATS compatibility)
+- [x] Each template has: config.ts, latex.ts, index.tsx (Preview)
+- [x] Template selector dropdown in preview header
+- [x] LaTeX export uses template-specific generator
+- [x] PDF export uses template-specific generator
+- [x] React preview renders template-specific component
+- [x] All accessibility guidelines applied (aria-labels, focus-visible, semantic HTML)
+- [x] Build passes
+
+---
+
 ## Next Actions
 
-1. Build first 2 templates (Classic Professional + Minimal ATS)
-2. Create template LaTeX files and React preview components
-3. Implement template selection and switching
-4. Build remaining 8 templates
+1. Build remaining 8 templates
+2. UI polish (dark mode, keyboard shortcuts, toasts)
+3. Docker + README finalization

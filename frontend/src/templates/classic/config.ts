@@ -1,0 +1,9 @@
+import type { TemplateConfig } from '@/types/resume'
+
+export const classicConfig: TemplateConfig = {
+  id: 'classic',
+  name: 'Classic Professional',
+  description: 'Traditional single-column layout with serif typography. Clean, timeless design trusted by recruiters.',
+  supportsPhoto: false,
+  category: 'classic',
+}

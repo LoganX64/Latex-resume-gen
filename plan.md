@@ -117,17 +117,17 @@
 
 ---
 
-## Phase 7: First 2 Templates
+## Phase 7: First 2 Templates ✅
 
 ### Classic Professional
-- [ ] Create Preview.tsx component
-- [ ] Create template.tex
-- [ ] Create config.ts
+- [x] Create Preview.tsx component
+- [x] Create template.tex (latex.ts)
+- [x] Create config.ts
 
 ### Minimal ATS
-- [ ] Create Preview.tsx component
-- [ ] Create template.tex
-- [ ] Create config.ts
+- [x] Create Preview.tsx component
+- [x] Create template.tex (latex.ts)
+- [x] Create config.ts
 
 ---
 
