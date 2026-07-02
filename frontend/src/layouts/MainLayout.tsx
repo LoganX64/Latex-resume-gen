@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Sidebar } from '@/components/editor/Sidebar'
@@ -6,6 +6,8 @@ import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
 import { useResumeStore } from '@/stores/resume-store'
+import { generateLatex } from '@/services/latex-generator'
+import { downloadFile } from '@/utils/download'
 import { Sun, Moon, Download, FileText, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/components/theme-provider'
@@ -13,7 +15,46 @@ import { useTheme } from '@/components/theme-provider'
 export function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
   const resetResume = useResumeStore((s) => s.resetResume)
+  const resume = useResumeStore((s) => s.resume)
+  const sectionOrder = useResumeStore((s) => s.sectionOrder)
+  const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const [isOverflowing, setIsOverflowing] = useState(false)
+
+  const handleExportLatex = useCallback(() => {
+    const latex = generateLatex(resume, sectionOrder, sectionVisibility)
+    const name = resume.personalInfo.fullName || 'resume'
+    const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
+    downloadFile(latex, filename, 'application/x-latex')
+  }, [resume, sectionOrder, sectionVisibility])
+
+  const handleExportPdf = useCallback(async () => {
+    const latex = generateLatex(resume, sectionOrder, sectionVisibility)
+    try {
+      const response = await fetch('/api/compile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ latex }),
+      })
+      if (!response.ok) {
+        const error = await response.json()
+        console.error('Compilation failed:', error)
+        return
+      }
+      const blob = await response.blob()
+      const name = resume.personalInfo.fullName || 'resume'
+      const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('PDF export failed:', err)
+    }
+  }, [resume, sectionOrder, sectionVisibility])
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -50,10 +91,20 @@ export function MainLayout() {
           <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
             <div className="flex items-center gap-1">
-              <Button variant="ghost" size="icon-xs" title="Export LaTeX">
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                onClick={handleExportLatex}
+                title="Export LaTeX"
+              >
                 <FileText className="h-3.5 w-3.5" />
               </Button>
-              <Button variant="ghost" size="icon-xs" title="Export PDF">
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                onClick={handleExportPdf}
+                title="Export PDF"
+              >
                 <Download className="h-3.5 w-3.5" />
               </Button>
             </div>
