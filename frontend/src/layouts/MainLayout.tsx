@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Sidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
@@ -90,9 +89,9 @@ export function MainLayout() {
               </Button>
             </div>
           </header>
-          <ScrollArea className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <EditorPanel />
-          </ScrollArea>
+          </div>
         </div>
         <div className="flex flex-col flex-1 min-w-0 bg-muted/30">
           <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
