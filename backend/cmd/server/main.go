@@ -2,9 +2,15 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+)
+
+const (
+	MaxRequestSize = 5 << 20 // 5 MB
+	ServerPort     = ":8080"
 )
 
 func main() {
@@ -15,7 +21,10 @@ func main() {
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
 	}))
+
+	r.MaxMultipartMemory = MaxRequestSize
 
 	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
@@ -23,5 +32,5 @@ func main() {
 
 	r.POST("/api/compile", compileHandler)
 
-	r.Run(":8080")
+	r.Run(ServerPort)
 }

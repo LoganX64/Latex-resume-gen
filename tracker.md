@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 5 Complete
+## Current Status: Phase 6 Complete
 
 ---
 
@@ -13,7 +13,7 @@
 | 3 | Resume Editor UI | ✅ Complete |
 | 4 | Live Preview | ✅ Complete |
 | 5 | LaTeX Generation Engine | ✅ Complete |
-| 6 | Backend API (Tectonic) | ⬜ Pending |
+| 6 | Backend API (Tectonic) | ✅ Complete |
 | 7 | First 2 Templates | ⬜ Pending |
 | 8 | Remaining 8 Templates | ⬜ Pending |
 | 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | ⬜ Pending |
@@ -242,9 +242,42 @@ af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 
 ---
 
+## Phase 6 - Backend API ✅
+
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `backend/internal/compiler/compiler.go` | Tectonic LaTeX compiler integration with temp dir management |
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `backend/cmd/server/handler.go` | Full compile handler with temp dir, file save, PDF return, cleanup |
+| `backend/cmd/server/main.go` | Request size limit (5MB), CORS max age, structured constants |
+
+### Features Implemented
+
+- [x] POST /api/compile endpoint (accepts JSON with `latex` field)
+- [x] Request validation (required latex field, non-empty check)
+- [x] 5MB max request size limit
+- [x] Temp directory creation per compilation request
+- [x] Save resume.tex to temp directory
+- [x] Tectonic LaTeX compiler integration (30s timeout)
+- [x] Return compiled PDF as binary response
+- [x] Cleanup temp files after compilation (defer)
+- [x] Error handling for failed compilation (returns compiler output)
+- [x] Proper HTTP status codes (400, 422, 500)
+- [x] CORS configured for all origins
+- [x] Go build passes
+- [x] Frontend build passes
+
+---
+
 ## Next Actions
 
-1. Build resume editor UI (split-screen layout)
-2. Create form sections for all resume data
-3. Implement drag-and-drop section reordering
-4. Build live preview component
+1. Build first 2 templates (Classic Professional + Minimal ATS)
+2. Create template LaTeX files and React preview components
+3. Implement template selection and switching
+4. Build remaining 8 templates
