@@ -22,14 +22,16 @@ export function CertificationsForm() {
               variant="ghost"
               size="icon-xs"
               onClick={() => removeCertification(cert.id)}
+              aria-label={`Remove certification ${index + 1}`}
             >
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">Name *</Label>
+              <Label htmlFor={`cert-name-${cert.id}`} className="text-[10px]">Name *</Label>
               <Input
+                id={`cert-name-${cert.id}`}
                 value={cert.name}
                 onChange={(e) => updateCertification(cert.id, 'name', e.target.value)}
                 placeholder="AWS Solutions Architect"
@@ -37,8 +39,9 @@ export function CertificationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label className="text-[10px]">Issuer *</Label>
+              <Label htmlFor={`cert-issuer-${cert.id}`} className="text-[10px]">Issuer *</Label>
               <Input
+                id={`cert-issuer-${cert.id}`}
                 value={cert.issuer}
                 onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
                 placeholder="Amazon Web Services"
@@ -48,8 +51,9 @@ export function CertificationsForm() {
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">Date *</Label>
+              <Label htmlFor={`cert-date-${cert.id}`} className="text-[10px]">Date *</Label>
               <Input
+                id={`cert-date-${cert.id}`}
                 type="month"
                 value={cert.date}
                 onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
@@ -57,11 +61,14 @@ export function CertificationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label className="text-[10px]">URL</Label>
+              <Label htmlFor={`cert-url-${cert.id}`} className="text-[10px]">URL</Label>
               <Input
+                id={`cert-url-${cert.id}`}
                 value={cert.url}
                 onChange={(e) => updateCertification(cert.id, 'url', e.target.value)}
-                placeholder="https://..."
+                placeholder="https://…"
+                type="url"
+                inputMode="url"
                 className="h-7 text-xs"
               />
             </div>
@@ -74,7 +81,7 @@ export function CertificationsForm() {
         className="h-7 text-xs w-full"
         onClick={addCertification}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Certification
       </Button>
     </div>

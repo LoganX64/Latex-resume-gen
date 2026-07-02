@@ -49,7 +49,8 @@ function SortableEducationEntry({
     >
       <div className="flex items-center gap-2">
         <button
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+          aria-label={`Drag to reorder education ${index + 1}`}
+          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           {...attributes}
           {...listeners}
         >
@@ -62,14 +63,16 @@ function SortableEducationEntry({
           variant="ghost"
           size="icon-xs"
           onClick={() => removeEducation(education.id)}
+          aria-label={`Remove education ${index + 1}`}
         >
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label className="text-[10px]">Institution *</Label>
+          <Label htmlFor={`edu-institution-${education.id}`} className="text-[10px]">Institution *</Label>
           <Input
+            id={`edu-institution-${education.id}`}
             value={education.institution}
             onChange={(e) => updateEducation(education.id, 'institution', e.target.value)}
             placeholder="MIT"
@@ -77,8 +80,9 @@ function SortableEducationEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">Degree *</Label>
+          <Label htmlFor={`edu-degree-${education.id}`} className="text-[10px]">Degree *</Label>
           <Input
+            id={`edu-degree-${education.id}`}
             value={education.degree}
             onChange={(e) => updateEducation(education.id, 'degree', e.target.value)}
             placeholder="B.S. Computer Science"
@@ -88,8 +92,9 @@ function SortableEducationEntry({
       </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label className="text-[10px]">Specialization</Label>
+          <Label htmlFor={`edu-spec-${education.id}`} className="text-[10px]">Specialization</Label>
           <Input
+            id={`edu-spec-${education.id}`}
             value={education.specialization}
             onChange={(e) => updateEducation(education.id, 'specialization', e.target.value)}
             placeholder="AI/ML"
@@ -97,8 +102,9 @@ function SortableEducationEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">CGPA</Label>
+          <Label htmlFor={`edu-cgpa-${education.id}`} className="text-[10px]">CGPA</Label>
           <Input
+            id={`edu-cgpa-${education.id}`}
             value={education.cgpa}
             onChange={(e) => updateEducation(education.id, 'cgpa', e.target.value)}
             placeholder="3.9/4.0"
@@ -112,12 +118,14 @@ function SortableEducationEntry({
               type="month"
               value={education.startDate}
               onChange={(e) => updateEducation(education.id, 'startDate', e.target.value)}
+              aria-label="Start date"
               className="h-7 text-xs"
             />
             <Input
               type="month"
               value={education.endDate}
               onChange={(e) => updateEducation(education.id, 'endDate', e.target.value)}
+              aria-label="End date"
               className="h-7 text-xs"
             />
           </div>
@@ -169,7 +177,7 @@ export function EducationForm() {
         className="h-7 text-xs w-full"
         onClick={addEducation}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Education
       </Button>
     </div>

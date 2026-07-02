@@ -83,13 +83,14 @@ export function ProfileImageUpload() {
             <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
             <button
               onClick={removeImage}
-              className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80"
+              aria-label="Remove profile photo"
+              className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <X className="h-3 w-3" />
             </button>
           </>
         ) : (
-          <User className="h-8 w-8 text-muted-foreground/50" />
+          <User className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
         )}
       </div>
       <input
@@ -98,6 +99,7 @@ export function ProfileImageUpload() {
         accept="image/*"
         onChange={handleFileChange}
         className="hidden"
+        aria-label="Upload profile photo"
       />
       <Button
         variant="outline"
@@ -105,7 +107,7 @@ export function ProfileImageUpload() {
         className="h-7 text-[10px]"
         onClick={() => fileInputRef.current?.click()}
       >
-        <Upload className="h-3 w-3 mr-1" />
+        <Upload className="h-3 w-3 mr-1" aria-hidden="true" />
         Upload Photo
       </Button>
 
@@ -128,8 +130,9 @@ export function ProfileImageUpload() {
             )}
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">Zoom</span>
+            <label htmlFor="crop-zoom" className="text-xs text-muted-foreground">Zoom</label>
             <input
+              id="crop-zoom"
               type="range"
               min={1}
               max={3}

@@ -23,13 +23,15 @@ export function PublicationsForm() {
               variant="ghost"
               size="icon-xs"
               onClick={() => removePublication(pub.id)}
+              aria-label={`Remove publication ${index + 1}`}
             >
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="space-y-1">
-            <Label className="text-[10px]">Title *</Label>
+            <Label htmlFor={`pub-title-${pub.id}`} className="text-[10px]">Title *</Label>
             <Input
+              id={`pub-title-${pub.id}`}
               value={pub.title}
               onChange={(e) => updatePublication(pub.id, 'title', e.target.value)}
               placeholder="Research paper or article title"
@@ -38,8 +40,9 @@ export function PublicationsForm() {
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">Publisher *</Label>
+              <Label htmlFor={`pub-publisher-${pub.id}`} className="text-[10px]">Publisher *</Label>
               <Input
+                id={`pub-publisher-${pub.id}`}
                 value={pub.publisher}
                 onChange={(e) => updatePublication(pub.id, 'publisher', e.target.value)}
                 placeholder="IEEE / ACM"
@@ -47,8 +50,9 @@ export function PublicationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label className="text-[10px]">Date *</Label>
+              <Label htmlFor={`pub-date-${pub.id}`} className="text-[10px]">Date *</Label>
               <Input
+                id={`pub-date-${pub.id}`}
                 type="month"
                 value={pub.date}
                 onChange={(e) => updatePublication(pub.id, 'date', e.target.value)}
@@ -58,20 +62,24 @@ export function PublicationsForm() {
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">URL</Label>
+              <Label htmlFor={`pub-url-${pub.id}`} className="text-[10px]">URL</Label>
               <Input
+                id={`pub-url-${pub.id}`}
                 value={pub.url}
                 onChange={(e) => updatePublication(pub.id, 'url', e.target.value)}
-                placeholder="https://..."
+                placeholder="https://…"
+                type="url"
+                inputMode="url"
                 className="h-7 text-xs"
               />
             </div>
             <div className="space-y-1">
-              <Label className="text-[10px]">Description</Label>
+              <Label htmlFor={`pub-desc-${pub.id}`} className="text-[10px]">Description</Label>
               <Textarea
+                id={`pub-desc-${pub.id}`}
                 value={pub.description}
                 onChange={(e) => updatePublication(pub.id, 'description', e.target.value)}
-                placeholder="Brief description..."
+                placeholder="Brief description…"
                 className="min-h-[40px] text-xs resize-y"
               />
             </div>
@@ -84,7 +92,7 @@ export function PublicationsForm() {
         className="h-7 text-xs w-full"
         onClick={addPublication}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Publication
       </Button>
     </div>

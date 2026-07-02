@@ -15,7 +15,7 @@ export function SummaryForm() {
         id="summary"
         value={summary}
         onChange={(e) => updateSummary(e.target.value)}
-        placeholder="Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud infrastructure..."
+        placeholder="Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud infrastructure…"
         className="min-h-[100px] text-xs resize-y"
       />
       <p className="text-[10px] text-muted-foreground">

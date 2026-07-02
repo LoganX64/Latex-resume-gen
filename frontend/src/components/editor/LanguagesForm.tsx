@@ -29,14 +29,16 @@ export function LanguagesForm() {
               variant="ghost"
               size="icon-xs"
               onClick={() => removeLanguage(lang.id)}
+              aria-label={`Remove language ${index + 1}`}
             >
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">Language *</Label>
+              <Label htmlFor={`lang-name-${lang.id}`} className="text-[10px]">Language *</Label>
               <Input
+                id={`lang-name-${lang.id}`}
                 value={lang.name}
                 onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
                 placeholder="English"
@@ -49,7 +51,7 @@ export function LanguagesForm() {
                 value={lang.proficiency}
                 onValueChange={(value) => { if (value) updateLanguage(lang.id, 'proficiency', value) }}
               >
-                <SelectTrigger className="h-7 text-xs">
+                <SelectTrigger className="h-7 text-xs" aria-label="Proficiency level">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -70,7 +72,7 @@ export function LanguagesForm() {
         className="h-7 text-xs w-full"
         onClick={addLanguage}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Language
       </Button>
     </div>

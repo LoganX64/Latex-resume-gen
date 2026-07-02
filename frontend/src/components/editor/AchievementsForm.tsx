@@ -23,14 +23,16 @@ export function AchievementsForm() {
               variant="ghost"
               size="icon-xs"
               onClick={() => removeAchievement(ach.id)}
+              aria-label={`Remove achievement ${index + 1}`}
             >
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label className="text-[10px]">Title *</Label>
+              <Label htmlFor={`ach-title-${ach.id}`} className="text-[10px]">Title *</Label>
               <Input
+                id={`ach-title-${ach.id}`}
                 value={ach.title}
                 onChange={(e) => updateAchievement(ach.id, 'title', e.target.value)}
                 placeholder="Best Innovation Award"
@@ -38,8 +40,9 @@ export function AchievementsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label className="text-[10px]">Date</Label>
+              <Label htmlFor={`ach-date-${ach.id}`} className="text-[10px]">Date</Label>
               <Input
+                id={`ach-date-${ach.id}`}
                 type="month"
                 value={ach.date}
                 onChange={(e) => updateAchievement(ach.id, 'date', e.target.value)}
@@ -48,11 +51,12 @@ export function AchievementsForm() {
             </div>
           </div>
           <div className="space-y-1">
-            <Label className="text-[10px]">Description</Label>
+            <Label htmlFor={`ach-desc-${ach.id}`} className="text-[10px]">Description</Label>
             <Textarea
+              id={`ach-desc-${ach.id}`}
               value={ach.description}
               onChange={(e) => updateAchievement(ach.id, 'description', e.target.value)}
-              placeholder="Brief description of the achievement..."
+              placeholder="Brief description of the achievement…"
               className="min-h-[60px] text-xs resize-y"
             />
           </div>
@@ -64,7 +68,7 @@ export function AchievementsForm() {
         className="h-7 text-xs w-full"
         onClick={addAchievement}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Achievement
       </Button>
     </div>

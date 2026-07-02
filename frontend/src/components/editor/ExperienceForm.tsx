@@ -51,7 +51,8 @@ function SortableExperienceEntry({
     >
       <div className="flex items-center gap-2">
         <button
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+          aria-label={`Drag to reorder experience ${index + 1}`}
+          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           {...attributes}
           {...listeners}
         >
@@ -64,14 +65,16 @@ function SortableExperienceEntry({
           variant="ghost"
           size="icon-xs"
           onClick={() => removeExperience(experience.id)}
+          aria-label={`Remove experience ${index + 1}`}
         >
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label className="text-[10px]">Company *</Label>
+          <Label htmlFor={`exp-company-${experience.id}`} className="text-[10px]">Company *</Label>
           <Input
+            id={`exp-company-${experience.id}`}
             value={experience.company}
             onChange={(e) => updateExperience(experience.id, 'company', e.target.value)}
             placeholder="Google"
@@ -79,8 +82,9 @@ function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">Position *</Label>
+          <Label htmlFor={`exp-position-${experience.id}`} className="text-[10px]">Position *</Label>
           <Input
+            id={`exp-position-${experience.id}`}
             value={experience.position}
             onChange={(e) => updateExperience(experience.id, 'position', e.target.value)}
             placeholder="Senior Software Engineer"
@@ -90,8 +94,9 @@ function SortableExperienceEntry({
       </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label className="text-[10px]">Location</Label>
+          <Label htmlFor={`exp-location-${experience.id}`} className="text-[10px]">Location</Label>
           <Input
+            id={`exp-location-${experience.id}`}
             value={experience.location}
             onChange={(e) => updateExperience(experience.id, 'location', e.target.value)}
             placeholder="Mountain View, CA"
@@ -99,8 +104,9 @@ function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">Start Date *</Label>
+          <Label htmlFor={`exp-start-${experience.id}`} className="text-[10px]">Start Date *</Label>
           <Input
+            id={`exp-start-${experience.id}`}
             type="month"
             value={experience.startDate}
             onChange={(e) => updateExperience(experience.id, 'startDate', e.target.value)}
@@ -108,8 +114,9 @@ function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">End Date</Label>
+          <Label htmlFor={`exp-end-${experience.id}`} className="text-[10px]">End Date</Label>
           <Input
+            id={`exp-end-${experience.id}`}
             type="month"
             value={experience.endDate}
             onChange={(e) => updateExperience(experience.id, 'endDate', e.target.value)}
@@ -143,7 +150,8 @@ function SortableExperienceEntry({
                 newBullets[bIndex] = e.target.value
                 updateExperienceBulletPoints(experience.id, newBullets)
               }}
-              placeholder="• Describe your achievement..."
+              placeholder="• Describe your achievement…"
+              aria-label={`Bullet point ${bIndex + 1}`}
               className="h-7 text-xs"
             />
             <Button
@@ -153,6 +161,7 @@ function SortableExperienceEntry({
                 const newBullets = experience.bulletPoints.filter((_, i) => i !== bIndex)
                 updateExperienceBulletPoints(experience.id, newBullets.length ? newBullets : [''])
               }}
+              aria-label={`Remove bullet point ${bIndex + 1}`}
             >
               <Trash2 className="h-3 w-3" />
             </Button>
@@ -166,7 +175,7 @@ function SortableExperienceEntry({
             updateExperienceBulletPoints(experience.id, [...experience.bulletPoints, ''])
           }
         >
-          <Plus className="h-3 w-3 mr-1" />
+          <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
           Add Bullet
         </Button>
       </div>
@@ -216,7 +225,7 @@ export function ExperienceForm() {
         className="h-7 text-xs w-full"
         onClick={addExperience}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Experience
       </Button>
     </div>

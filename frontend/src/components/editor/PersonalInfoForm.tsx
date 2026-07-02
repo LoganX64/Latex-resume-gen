@@ -54,6 +54,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="phone" className="text-xs">Phone *</Label>
                 <Input
                   id="phone"
+                  type="tel"
+                  inputMode="tel"
                   value={personalInfo.phone}
                   onChange={(e) => updatePersonalInfo('phone', e.target.value)}
                   placeholder="+1 234 567 890"
@@ -76,6 +78,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="linkedin" className="text-xs">LinkedIn</Label>
                 <Input
                   id="linkedin"
+                  type="url"
+                  inputMode="url"
                   value={personalInfo.linkedin}
                   onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
                   placeholder="linkedin.com/in/johndoe"
@@ -86,6 +90,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="github" className="text-xs">GitHub</Label>
                 <Input
                   id="github"
+                  type="url"
+                  inputMode="url"
                   value={personalInfo.github}
                   onChange={(e) => updatePersonalInfo('github', e.target.value)}
                   placeholder="github.com/johndoe"
@@ -96,6 +102,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="website" className="text-xs">Website</Label>
                 <Input
                   id="website"
+                  type="url"
+                  inputMode="url"
                   value={personalInfo.website}
                   onChange={(e) => updatePersonalInfo('website', e.target.value)}
                   placeholder="johndoe.dev"

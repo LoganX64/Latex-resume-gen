@@ -64,7 +64,8 @@ function SortableSkillCategory({
     >
       <div className="flex items-center gap-2">
         <button
-          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+          aria-label={`Drag to reorder ${category.name || 'skill category'}`}
+          className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
           {...attributes}
           {...listeners}
         >
@@ -74,12 +75,14 @@ function SortableSkillCategory({
           value={category.name}
           onChange={(e) => updateSkillCategory(category.id, e.target.value)}
           placeholder="Category name (e.g., Programming Languages)"
+          aria-label="Skill category name"
           className="h-7 text-xs flex-1"
         />
         <Button
           variant="ghost"
           size="icon-xs"
           onClick={() => removeSkillCategory(category.id)}
+          aria-label={`Remove ${category.name || 'skill category'}`}
         >
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
@@ -88,10 +91,14 @@ function SortableSkillCategory({
         {category.skills.map((skill, sIndex) => (
           <span
             key={sIndex}
-            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded px-2 py-0.5 text-[10px]"
+            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded px-2 py-0.5 text-[10px] max-w-[200px] truncate"
           >
             {skill}
-            <button onClick={() => removeSkill(sIndex)} className="hover:text-destructive">
+            <button
+              onClick={() => removeSkill(sIndex)}
+              aria-label={`Remove ${skill}`}
+              className="hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+            >
               <X className="h-2.5 w-2.5" />
             </button>
           </span>
@@ -108,6 +115,7 @@ function SortableSkillCategory({
             }
           }}
           placeholder="Type a skill and press Enter"
+          aria-label="New skill name"
           className="h-7 text-xs"
         />
         <Button variant="outline" size="sm" className="h-7 text-[10px] px-2" onClick={addSkill}>
@@ -160,7 +168,7 @@ export function SkillsForm() {
         className="h-7 text-xs w-full"
         onClick={addSkillCategory}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Skill Category
       </Button>
     </div>

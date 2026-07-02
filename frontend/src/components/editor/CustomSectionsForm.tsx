@@ -23,13 +23,15 @@ export function CustomSectionsForm() {
               variant="ghost"
               size="icon-xs"
               onClick={() => removeCustomSection(section.id)}
+              aria-label={`Remove custom section ${index + 1}`}
             >
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="space-y-1">
-            <Label className="text-[10px]">Section Title *</Label>
+            <Label htmlFor={`custom-title-${section.id}`} className="text-[10px]">Section Title *</Label>
             <Input
+              id={`custom-title-${section.id}`}
               value={section.title}
               onChange={(e) => updateCustomSection(section.id, 'title', e.target.value)}
               placeholder="e.g., Volunteer Experience"
@@ -37,11 +39,12 @@ export function CustomSectionsForm() {
             />
           </div>
           <div className="space-y-1">
-            <Label className="text-[10px]">Content *</Label>
+            <Label htmlFor={`custom-content-${section.id}`} className="text-[10px]">Content *</Label>
             <Textarea
+              id={`custom-content-${section.id}`}
               value={section.content}
               onChange={(e) => updateCustomSection(section.id, 'content', e.target.value)}
-              placeholder="Enter content for this section..."
+              placeholder="Enter content for this section…"
               className="min-h-[80px] text-xs resize-y"
             />
           </div>
@@ -53,7 +56,7 @@ export function CustomSectionsForm() {
         className="h-7 text-xs w-full"
         onClick={addCustomSection}
       >
-        <Plus className="h-3 w-3 mr-1" />
+        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Custom Section
       </Button>
     </div>

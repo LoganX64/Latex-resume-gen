@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import { Sidebar } from '@/components/editor/Sidebar'
@@ -69,7 +69,7 @@ export function MainLayout() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={resetResume}
-                title="Reset resume"
+                aria-label="Reset resume"
               >
                 <RotateCcw className="h-3.5 w-3.5" />
               </Button>
@@ -77,7 +77,7 @@ export function MainLayout() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={toggleDarkMode}
-                title="Toggle theme"
+                aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {darkMode ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
               </Button>
@@ -95,7 +95,7 @@ export function MainLayout() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={handleExportLatex}
-                title="Export LaTeX"
+                aria-label="Export LaTeX file"
               >
                 <FileText className="h-3.5 w-3.5" />
               </Button>
@@ -103,7 +103,7 @@ export function MainLayout() {
                 variant="ghost"
                 size="icon-xs"
                 onClick={handleExportPdf}
-                title="Export PDF"
+                aria-label="Export PDF file"
               >
                 <Download className="h-3.5 w-3.5" />
               </Button>

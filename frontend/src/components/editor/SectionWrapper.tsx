@@ -58,7 +58,8 @@ export function SectionWrapper({
         <CardHeader className="py-2 px-3">
           <div className="flex items-center gap-2">
             <button
-              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none"
+              aria-label={`Drag to reorder ${label}`}
+              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
               {...attributes}
               {...listeners}
             >
@@ -69,7 +70,7 @@ export function SectionWrapper({
               variant="ghost"
               size="icon-xs"
               onClick={() => toggleSectionVisibility(sectionType)}
-              title={isVisible ? 'Hide section' : 'Show section'}
+              aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
                 <Eye className="h-3.5 w-3.5" />
@@ -81,7 +82,7 @@ export function SectionWrapper({
               variant="ghost"
               size="icon-xs"
               onClick={onToggleCollapse}
-              title={collapsed ? 'Expand' : 'Collapse'}
+              aria-label={collapsed ? `Expand ${label}` : `Collapse ${label}`}
             >
               {collapsed ? (
                 <ChevronDown className="h-3.5 w-3.5" />
