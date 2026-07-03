@@ -29,6 +29,7 @@ interface ResumeStore {
   toggleDarkMode: () => void
 
   updatePersonalInfo: (field: string, value: string) => void
+  removeProfileImage: () => void
   updateSummary: (value: string) => void
 
   addExperience: () => void
@@ -299,6 +300,14 @@ export const useResumeStore = create<ResumeStore>()(
           },
         })),
 
+      removeProfileImage: () =>
+        set((state) => {
+          const { profileImage, ...rest } = state.resume.personalInfo
+          return {
+            resume: { ...state.resume, personalInfo: rest },
+          }
+        }),
+
       updateSummary: (value) =>
         set((state) => ({ resume: { ...state.resume, summary: value } })),
 
@@ -327,9 +336,15 @@ export const useResumeStore = create<ResumeStore>()(
         set((state) => ({
           resume: {
             ...state.resume,
-            experience: state.resume.experience.map((exp) =>
-              exp.id === id ? { ...exp, [field]: value } : exp
-            ),
+            experience: state.resume.experience.map((exp) => {
+              if (exp.id === id) {
+                return { ...exp, [field]: value }
+              }
+              if (field === 'current' && value === true) {
+                return { ...exp, current: false }
+              }
+              return exp
+            }),
           },
         })),
 

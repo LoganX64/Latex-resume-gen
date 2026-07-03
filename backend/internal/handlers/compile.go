@@ -1,9 +1,8 @@
-package main
+package handlers
 
 import (
 	"net/http"
 	"os"
-	"path/filepath"
 
 	"latex-resume-backend/internal/compiler"
 
@@ -11,7 +10,8 @@ import (
 )
 
 type CompileRequest struct {
-	LaTeX string `json:"latex" binding:"required"`
+	LaTeX        string `json:"latex" binding:"required"`
+	ProfileImage string `json:"profileImage,omitempty"`
 }
 
 type CompileErrorResponse struct {
@@ -20,7 +20,7 @@ type CompileErrorResponse struct {
 	Errors  []string `json:"errors"`
 }
 
-func compileHandler(c *gin.Context) {
+func CompileHandler(c *gin.Context) {
 	var req CompileRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, CompileErrorResponse{
@@ -38,7 +38,16 @@ func compileHandler(c *gin.Context) {
 		return
 	}
 
-	result, err := compiler.Compile(req.LaTeX)
+	result, err := compiler.Compile(req.LaTeX, req.ProfileImage)
+
+	// Set up deferred cleanup of the temporary directory (if it was created)
+	// to avoid resource leaks under all circumstances.
+	defer func() {
+		if result != nil && result.TempDir != "" {
+			compiler.Cleanup(result.TempDir)
+		}
+	}()
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, CompileErrorResponse{
 			Success: false,
@@ -56,13 +65,6 @@ func compileHandler(c *gin.Context) {
 		})
 		return
 	}
-
-	defer func() {
-		if result.PDFPath != "" {
-			tempDir := filepath.Dir(result.PDFPath)
-			compiler.Cleanup(tempDir)
-		}
-	}()
 
 	pdfData, err := os.ReadFile(result.PDFPath)
 	if err != nil {

@@ -3,7 +3,7 @@ import { useResumeStore } from '@/stores/resume-store'
 import type { ZoomLevel } from '@/types/resume'
 import { Button } from '@/components/ui/button'
 import { ZoomIn, ZoomOut, Maximize } from 'lucide-react'
-import { getTemplate } from '@/templates'
+import { getTemplate, getTemplateConfig } from '@/templates'
 
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
@@ -123,6 +123,7 @@ export function ResumePreview({ onOverflowChange }: ResumePreviewProps) {
               width: A4_WIDTH_PX,
             }}
           >
+            {/* Page 1 */}
             <div
               ref={pageRef}
               className={`bg-white text-black relative overflow-hidden ${
@@ -143,6 +144,34 @@ export function ResumePreview({ onOverflowChange }: ResumePreviewProps) {
                 </div>
               )}
             </div>
+
+            {/* Page divider + Page 2 for two-page templates */}
+            {(getTemplateConfig(templateId)?.pages ?? 1) >= 2 && (
+              <>
+                <div
+                  className="flex items-center gap-2 my-3"
+                  style={{ width: A4_WIDTH_PX }}
+                >
+                  <div className="flex-1 border-t-2 border-dashed border-muted-foreground/40" />
+                  <span className="text-[9px] text-muted-foreground/60 whitespace-nowrap select-none">
+                    Page 2
+                  </span>
+                  <div className="flex-1 border-t-2 border-dashed border-muted-foreground/40" />
+                </div>
+                <div
+                  className="bg-white text-black relative"
+                  style={{
+                    width: A4_WIDTH_PX,
+                    minHeight: A4_HEIGHT_PX,
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                  }}
+                >
+                  <div className="flex items-center justify-center h-24 text-gray-300 text-xs select-none">
+                    Content continues on page 2 in the exported PDF
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

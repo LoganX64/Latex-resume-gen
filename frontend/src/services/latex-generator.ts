@@ -24,7 +24,7 @@ function buildDocument(body: string): string {
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.75in, paperwidth=210mm, paperheight=297mm]{geometry}
+\\usepackage[margin=0.75in]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

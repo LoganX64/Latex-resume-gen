@@ -1,5 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
-import { escapeLatex, formatDate } from '@/lib/utils'
+import { escapeLatex } from '@/lib/utils'
+import { formatDateRange, generateBulletPoints, getContactParts } from '../shared'
 
 export function generateSidebarLatex(
   resume: ResumeData,
@@ -40,17 +41,15 @@ function buildSidebarDocument(
     ? `\\\\[2pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactItems: string[] = []
-  if (personalInfo.email) contactItems.push(`\\faIcon{envelope}\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactItems.push(`\\faIcon{phone}\\ \\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
-  if (personalInfo.location) contactItems.push(`\\faIcon{map-marker*}\\ ${escapeLatex(personalInfo.location)}`)
-  if (personalInfo.linkedin) contactItems.push(`\\faIcon{linkedin}\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactItems.push(`\\faIcon{github}\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactItems.push(`\\faIcon{globe}\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
-
+  const contactItems = getContactParts(personalInfo, true)
   const contactBlock = contactItems.length > 0
-    ? `\\section*{Contact}
+    ? `\\sidebarsection{Contact}
 ${contactItems.join('\\\\[3pt]\n')}`
+    : ''
+
+  // Image block
+  const photoBlock = personalInfo.profileImage
+    ? `\\IfFileExists{profile.png}{\\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{profile.png}\\\\[10pt]}{} `
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
@@ -58,7 +57,7 @@ ${contactItems.join('\\\\[3pt]\n')}`
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0]{geometry}
+\\usepackage[margin=0pt]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -82,8 +81,6 @@ ${contactItems.join('\\\\[3pt]\n')}`
   bottom=0.5in,
   left=0pt,
   right=0pt,
-  paperwidth=210mm,
-  paperheight=297mm,
 }
 
 \\titleformat{\\section}{\\large\\bfseries\\color{sidebar}}{}{0em}{}[\\color{sidebar}\\titlerule]
@@ -98,6 +95,7 @@ ${contactItems.join('\\\\[3pt]\n')}`
 }
 
 \\newcommand{\\sidebarsection}[1]{%
+  \\vspace{6pt}
   \\textbf{\\color{sidebartext}\\large #1}\\\\[-2pt]
   \\textcolor{sidebartext!50}{\\rule{\\linewidth}{0.5pt}}\\\\[4pt]
 }
@@ -114,6 +112,7 @@ ${contactItems.join('\\\\[3pt]\n')}`
 \\vspace{0.4in}
 
 \\begin{center}
+${photoBlock}
 {\\LARGE\\textbf{${name}}}
 ${title}
 \\end{center}
@@ -184,15 +183,12 @@ function generateExperience(experience: ResumeData['experience']): string {
   if (experience.length === 0) return ''
   const items = experience
     .map((exp) => {
-      const dateRange = `${formatDate(exp.startDate)} \\textendash{} ${exp.current ? 'Present' : formatDate(exp.endDate)}`
-      const bullets = exp.bulletPoints
-        .filter(Boolean)
-        .map((b) => `  \\item ${escapeLatex(b)}`)
-        .join('\n')
+      const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
+      const bullets = generateBulletPoints(exp.bulletPoints)
 
       return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
-${bullets ? `\n\\begin{itemize}\n${bullets}\n\\end{itemize}` : ''}`
+${bullets}`
     })
     .join('\n\n')
 
@@ -208,17 +204,14 @@ function generateProjects(projects: ResumeData['projects']): string {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
       const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
-      const bullets = (proj.bulletPoints || [])
-        .filter(Boolean)
-        .map((b) => `  \\item ${escapeLatex(b)}`)
-        .join('\n')
+      const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
           ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets ? `\n\\begin{itemize}\n${bullets}\n\\end{itemize}` : ''}${techLine}`
+${descLine}${bullets}${techLine}`
     })
     .join('\n\n')
 
@@ -234,7 +227,7 @@ function generateEducation(education: ResumeData['education']): string {
       const degreeLine = edu.specialization
         ? `${escapeLatex(edu.degree)} in ${escapeLatex(edu.specialization)}`
         : escapeLatex(edu.degree)
-      const dateRange = `${formatDate(edu.startDate)} \\textendash{} ${formatDate(edu.endDate)}`
+      const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
       return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
@@ -284,7 +277,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   if (achievements.length === 0) return ''
   const items = achievements
     .map((ach) => {
-      const dateStr = ach.date ? ` \\hfill ${formatDate(ach.date)}` : ''
+      const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
       const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
@@ -299,7 +292,7 @@ function generatePublications(publications: ResumeData['publications']): string 
   if (publications.length === 0) return ''
   const items = publications
     .map((pub) => {
-      const dateStr = pub.date ? ` \\hfill ${formatDate(pub.date)}` : ''
+      const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })

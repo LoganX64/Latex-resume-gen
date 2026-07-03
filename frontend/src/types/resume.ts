@@ -127,6 +127,7 @@ export interface TemplateConfig {
   description: string
   supportsPhoto: boolean
   category: 'classic' | 'modern' | 'minimal' | 'creative'
+  pages?: number
 }
 
 export type ZoomLevel = 50 | 75 | 100 | 125 | 150 | 'fit'

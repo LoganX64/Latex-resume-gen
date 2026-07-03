@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"time"
 
+	"latex-resume-backend/internal/handlers"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +32,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	r.POST("/api/compile", compileHandler)
+	r.POST("/api/compile", handlers.CompileHandler)
 
 	r.Run(ServerPort)
 }

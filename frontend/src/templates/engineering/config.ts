@@ -4,6 +4,6 @@ export const engineeringConfig: TemplateConfig = {
   id: 'engineering',
   name: 'Engineering Resume',
   description: 'Technical-focused layout with prominent skills section and project highlights. Ideal for software engineers.',
-  supportsPhoto: false,
+  supportsPhoto: true,
   category: 'modern',
 }

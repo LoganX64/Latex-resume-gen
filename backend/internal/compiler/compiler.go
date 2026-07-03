@@ -2,10 +2,12 @@ package compiler
 
 import (
 	"context"
+	"encoding/base64"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -19,13 +21,39 @@ const (
 type CompileResult struct {
 	Success bool
 	PDFPath string
+	TempDir string
 	Errors  []string
 }
 
-func Compile(latex string) (*CompileResult, error) {
+func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
 	tempDir, err := os.MkdirTemp("", TempDirPrefix)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create temp directory: %w", err)
+	}
+
+	// Write base64 profile image if provided
+	if len(profileImageBase64) > 0 {
+		base64Data := profileImageBase64
+		if strings.Contains(base64Data, ",") {
+			parts := strings.SplitN(base64Data, ",", 2)
+			base64Data = parts[1]
+		}
+		imgData, err := base64.StdEncoding.DecodeString(base64Data)
+		if err != nil {
+			return &CompileResult{
+				Success: false,
+				TempDir: tempDir,
+				Errors:  []string{fmt.Sprintf("failed to decode profile image base64: %v", err)},
+			}, nil
+		}
+		imgPath := filepath.Join(tempDir, "profile.png")
+		if err := os.WriteFile(imgPath, imgData, 0644); err != nil {
+			return &CompileResult{
+				Success: false,
+				TempDir: tempDir,
+				Errors:  []string{fmt.Sprintf("failed to write transient profile image file: %v", err)},
+			}, nil
+		}
 	}
 
 	texPath := filepath.Join(tempDir, TexFile)
@@ -49,6 +77,7 @@ func Compile(latex string) (*CompileResult, error) {
 		}
 		return &CompileResult{
 			Success: false,
+			TempDir: tempDir,
 			Errors:  []string{errMsg},
 		}, nil
 	}
@@ -57,6 +86,7 @@ func Compile(latex string) (*CompileResult, error) {
 	if _, err := os.Stat(pdfPath); os.IsNotExist(err) {
 		return &CompileResult{
 			Success: false,
+			TempDir: tempDir,
 			Errors:  []string{"PDF file was not generated"},
 		}, nil
 	}
@@ -64,6 +94,7 @@ func Compile(latex string) (*CompileResult, error) {
 	return &CompileResult{
 		Success: true,
 		PDFPath: pdfPath,
+		TempDir: tempDir,
 	}, nil
 }
 

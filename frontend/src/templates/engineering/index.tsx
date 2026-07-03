@@ -6,7 +6,7 @@ const config: TemplateConfig = {
   id: 'engineering',
   name: 'Engineering Resume',
   description: 'Technical-focused layout with prominent skills section and project highlights. Ideal for software engineers.',
-  supportsPhoto: false,
+  supportsPhoto: true,
   category: 'modern',
 }
 
@@ -23,21 +23,28 @@ function Preview({
     <div style={{ fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '10px', lineHeight: '1.4' }}>
       {/* Header */}
       {personalInfo.fullName && (
-        <header className="text-center pb-2 mb-2" style={{ borderBottom: '2px solid #1e3a5f' }}>
-          <h1 className="text-lg font-bold" style={{ color: '#1e3a5f' }}>
-            {personalInfo.fullName}
-          </h1>
-          {personalInfo.professionalTitle && (
-            <p className="text-xs italic mt-0.5" style={{ color: '#1e3a5f' }}>{personalInfo.professionalTitle}</p>
-          )}
-          <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 mt-1 text-[8px] text-gray-600">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>| {personalInfo.phone}</span>}
-            {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
-            {personalInfo.github && <span>{personalInfo.github}</span>}
-            {personalInfo.website && <span>{personalInfo.website}</span>}
+        <header className="flex justify-between items-center pb-2 mb-2" style={{ borderBottom: '2px solid #1e3a5f' }}>
+          <div className={personalInfo.profileImage ? 'text-left' : 'text-center w-full'}>
+            <h1 className="text-lg font-bold" style={{ color: '#1e3a5f' }}>
+              {personalInfo.fullName}
+            </h1>
+            {personalInfo.professionalTitle && (
+              <p className="text-xs italic mt-0.5" style={{ color: '#1e3a5f' }}>{personalInfo.professionalTitle}</p>
+            )}
+            <div className={`flex flex-wrap gap-x-2 gap-y-0.5 mt-1 text-[8px] text-gray-600 ${personalInfo.profileImage ? 'justify-start' : 'justify-center'}`}>
+              {personalInfo.email && <span>{personalInfo.email}</span>}
+              {personalInfo.phone && <span>| {personalInfo.phone}</span>}
+              {personalInfo.location && <span className="italic">| {personalInfo.location}</span>}
+              {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
+              {personalInfo.github && <span>| {personalInfo.github}</span>}
+              {personalInfo.website && <span>| {personalInfo.website}</span>}
+            </div>
           </div>
+          {personalInfo.profileImage && (
+            <div className="w-14 h-14 rounded overflow-hidden border border-gray-300 ml-4 shrink-0">
+              <img src={personalInfo.profileImage} alt="" className="w-full h-full object-cover" />
+            </div>
+          )}
         </header>
       )}
 

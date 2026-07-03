@@ -6,4 +6,5 @@ export const executiveConfig: TemplateConfig = {
   description: 'Sophisticated layout for senior engineers and tech leads. Emphasizes leadership and impact.',
   supportsPhoto: false,
   category: 'classic',
+  pages: 2,
 }

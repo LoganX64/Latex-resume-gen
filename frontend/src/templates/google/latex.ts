@@ -1,5 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
-import { escapeLatex, formatDate } from '@/lib/utils'
+import { escapeLatex } from '@/lib/utils'
+import { formatDateRange, generateBulletPoints, getContactParts } from '../shared'
 
 export function generateGoogleLatex(
   resume: ResumeData,
@@ -27,14 +28,7 @@ function buildGoogleDocument(
     ? `\\\\[1pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactParts: string[] = []
-  if (personalInfo.email) contactParts.push(`\\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactParts.push(`\\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
-  if (personalInfo.location) contactParts.push(`\\textit{${escapeLatex(personalInfo.location)}}`)
-  if (personalInfo.linkedin) contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
-
+  const contactParts = getContactParts(personalInfo, false)
   const contactLine = contactParts.length > 0
     ? `\\\\[2pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
@@ -44,7 +38,7 @@ function buildGoogleDocument(
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.6in, paperwidth=210mm, paperheight=297mm]{geometry}
+\\usepackage[margin=0.6in]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -74,6 +68,8 @@ function buildGoogleDocument(
 ${title}
 ${contactLine}
 \\end{center}
+
+\\vspace{4pt}
 
 ${body}
 
@@ -118,15 +114,12 @@ function generateExperience(experience: ResumeData['experience']): string {
   if (experience.length === 0) return ''
   const items = experience
     .map((exp) => {
-      const dateRange = `${formatDate(exp.startDate)} \\textendash{} ${exp.current ? 'Present' : formatDate(exp.endDate)}`
-      const bullets = exp.bulletPoints
-        .filter(Boolean)
-        .map((b) => `  \\item ${escapeLatex(b)}`)
-        .join('\n')
+      const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
+      const bullets = generateBulletPoints(exp.bulletPoints)
 
       return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
-${bullets ? `\n\\begin{itemize}\n${bullets}\n\\end{itemize}` : ''}`
+${bullets}`
     })
     .join('\n\n')
 
@@ -153,10 +146,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
       const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
-      const bullets = (proj.bulletPoints || [])
-        .filter(Boolean)
-        .map((b) => `  \\item ${escapeLatex(b)}`)
-        .join('\n')
+      const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
           ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
@@ -167,7 +157,7 @@ function generateProjects(projects: ResumeData['projects']): string {
         : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets ? `\n\\begin{itemize}\n${bullets}\n\\end{itemize}` : ''}${techLine}${linkLine}`
+${descLine}${bullets}${techLine}${linkLine}`
     })
     .join('\n\n')
 
@@ -183,7 +173,7 @@ function generateEducation(education: ResumeData['education']): string {
       const degreeLine = edu.specialization
         ? `${escapeLatex(edu.degree)} in ${escapeLatex(edu.specialization)}`
         : escapeLatex(edu.degree)
-      const dateRange = `${formatDate(edu.startDate)} \\textendash{} ${formatDate(edu.endDate)}`
+      const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
       return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
@@ -200,7 +190,7 @@ function generateCertifications(certifications: ResumeData['certifications']): s
   if (certifications.length === 0) return ''
   const items = certifications
     .map((cert) => {
-      const dateStr = cert.date ? ` \\hfill ${formatDate(cert.date)}` : ''
+      const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
       return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
     })
@@ -215,7 +205,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   if (achievements.length === 0) return ''
   const items = achievements
     .map((ach) => {
-      const dateStr = ach.date ? ` \\hfill ${formatDate(ach.date)}` : ''
+      const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
       const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
@@ -230,7 +220,7 @@ function generatePublications(publications: ResumeData['publications']): string 
   if (publications.length === 0) return ''
   const items = publications
     .map((pub) => {
-      const dateStr = pub.date ? ` \\hfill ${formatDate(pub.date)}` : ''
+      const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })

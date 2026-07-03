@@ -14,6 +14,7 @@ import {
 export function ProfileImageUpload() {
   const profileImage = useResumeStore((s) => s.resume.personalInfo.profileImage)
   const updatePersonalInfo = useResumeStore((s) => s.updatePersonalInfo)
+  const removeProfileImage = useResumeStore((s) => s.removeProfileImage)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [cropDialogOpen, setCropDialogOpen] = useState(false)
   const [imageSrc, setImageSrc] = useState<string | null>(null)
@@ -72,25 +73,27 @@ export function ProfileImageUpload() {
   }
 
   function removeImage() {
-    updatePersonalInfo('profileImage', '')
+    removeProfileImage()
   }
 
   return (
     <div className="flex flex-col items-center gap-2 shrink-0">
-      <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center overflow-hidden bg-muted">
-        {profileImage ? (
-          <>
+      <div className="relative w-20 h-20">
+        <div className="w-full h-full rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center overflow-hidden bg-muted">
+          {profileImage ? (
             <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
-            <button
-              onClick={removeImage}
-              aria-label="Remove profile photo"
-              className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          </>
-        ) : (
-          <User className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+          ) : (
+            <User className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+          )}
+        </div>
+        {profileImage && (
+          <button
+            onClick={removeImage}
+            aria-label="Remove profile photo"
+            className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <X className="h-3 w-3" />
+          </button>
         )}
       </div>
       <input

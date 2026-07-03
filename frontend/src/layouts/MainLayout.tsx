@@ -59,11 +59,12 @@ export function MainLayout() {
     if (!currentTemplate || isExportingPdf) return
     setIsExportingPdf(true)
     const latex = currentTemplate.generateLatex(resume, sectionOrder, sectionVisibility)
+    const profileImage = resume.personalInfo.profileImage || ''
     try {
       const response = await fetch('/api/compile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ latex }),
+        body: JSON.stringify({ latex, profileImage }),
       })
       if (!response.ok) {
         let message = 'Compilation failed'
