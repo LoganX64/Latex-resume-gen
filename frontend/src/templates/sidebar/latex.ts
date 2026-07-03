@@ -82,6 +82,8 @@ ${contactItems.join('\\\\[3pt]\n')}`
   bottom=0.5in,
   left=0pt,
   right=0pt,
+  paperwidth=210mm,
+  paperheight=297mm,
 }
 
 \\titleformat{\\section}{\\large\\bfseries\\color{sidebar}}{}{0em}{}[\\color{sidebar}\\titlerule]
@@ -126,7 +128,7 @@ ${sidebar}
 
 \\end{minipage}%
 \\hfill%
-\\begin{minipage}[t]{\\dimexpr\\paperwidth-6.5cm-2\\parindent}
+\\begin{minipage}[t]{\\dimexpr\\paperwidth-6.5cm}
 
 \\vspace{0.4in}
 

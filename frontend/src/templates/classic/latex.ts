@@ -24,7 +24,7 @@ function buildClassicDocument(
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
   const title = personalInfo.professionalTitle
-    ? `\\\\\\vspace{2pt}{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+    ? `\\\\[2pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
   const contactParts: string[] = []
@@ -36,7 +36,7 @@ function buildClassicDocument(
   if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactLine = contactParts.length > 0
-    ? `\\\\\\vspace{2pt}{\\small ${contactParts.join(' $\\cdot$ ')}}`
+    ? `\\\\[2pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
@@ -44,7 +44,7 @@ function buildClassicDocument(
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.65in]{geometry}
+\\usepackage[margin=0.65in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

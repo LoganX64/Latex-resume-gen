@@ -44,7 +44,7 @@ function buildFaangDocument(
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.65in]{geometry}
+\\usepackage[margin=0.65in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

@@ -24,17 +24,13 @@ function buildDocument(body: string): string {
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.75in]{geometry}
+\\usepackage[margin=0.75in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
-\\usepackage{fancyhdr}
 \\usepackage{xcolor}
 
-\\pagestyle{fancy}
-\\fancyhf{}
-\\renewcommand{\\headrulewidth}{0pt}
-\\renewcommand{\\footrulewidth}{0pt}
+\\pagestyle{empty}
 
 \\titleformat{\\section}{\\large\\bfseries\\MakeUppercase}{}{0em}{}[\\titlerule]
 \\titlespacing*{\\section}{0pt}{6pt}{4pt}

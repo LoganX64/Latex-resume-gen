@@ -43,8 +43,8 @@ function buildElegantDocument(
 
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{garamondx}
-\\usepackage[margin=0.65in]{geometry}
+\\usepackage{ebgaramond}
+\\usepackage[margin=0.65in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

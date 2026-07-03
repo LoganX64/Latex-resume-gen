@@ -10,6 +10,10 @@ const A4_HEIGHT_MM = 297
 const MM_TO_PX = 3.7795275591
 const A4_WIDTH_PX = Math.round(A4_WIDTH_MM * MM_TO_PX)
 const A4_HEIGHT_PX = Math.round(A4_HEIGHT_MM * MM_TO_PX)
+const PREVIEW_PADDING_TOP_MM = 15
+const PREVIEW_PADDING_BOTTOM_MM = 15
+const PREVIEW_PADDING_LEFT_MM = 12
+const PREVIEW_PADDING_RIGHT_MM = 12
 
 const zoomLevels: ZoomLevel[] = [50, 75, 100, 125, 150]
 
@@ -128,7 +132,7 @@ export function ResumePreview({ onOverflowChange }: ResumePreviewProps) {
                 width: A4_WIDTH_PX,
                 minHeight: A4_HEIGHT_PX,
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-                padding: `${20 * MM_TO_PX}px ${15 * MM_TO_PX}px`,
+                padding: `${PREVIEW_PADDING_TOP_MM * MM_TO_PX}px ${PREVIEW_PADDING_RIGHT_MM * MM_TO_PX}px ${PREVIEW_PADDING_BOTTOM_MM * MM_TO_PX}px ${PREVIEW_PADDING_LEFT_MM * MM_TO_PX}px`,
               }}
             >
               {TemplatePreview ? (

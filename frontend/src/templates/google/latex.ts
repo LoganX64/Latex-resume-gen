@@ -44,7 +44,7 @@ function buildGoogleDocument(
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{lmodern}
-\\usepackage[margin=0.6in]{geometry}
+\\usepackage[margin=0.6in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

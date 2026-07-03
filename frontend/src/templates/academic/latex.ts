@@ -44,8 +44,8 @@ function buildAcademicDocument(
 
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{palatino}
-\\usepackage[margin=0.7in]{geometry}
+\\usepackage{newpxtext,newpxmath}
+\\usepackage[margin=0.7in, paperwidth=210mm, paperheight=297mm]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
