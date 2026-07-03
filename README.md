@@ -59,6 +59,74 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 
 ---
 
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        User (Browser)                           │
+│                          :3000                                   │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │
+                      ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Frontend Container                            │
+│                  (nginx:alpine)                                  │
+│                                                                 │
+│   ┌─────────────────┐     ┌──────────────────────────────────┐  │
+│   │   React SPA     │     │        Nginx Proxy               │  │
+│   │   (static)      │     │                                  │  │
+│   │                 │     │  /api/* ──► http://backend:8080   │  │
+│   │  fetch('/api/   │     │                                  │  │
+│   │   compile')     │────►│  client_max_body_size 5M         │  │
+│   │                 │     │  proxy_read_timeout 30s          │  │
+│   └─────────────────┘     └──────────────┬───────────────────┘  │
+│                                          │                      │
+└──────────────────────────────────────────┼──────────────────────┘
+                                           │ Docker Network
+                                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Backend Container                             │
+│                (golang:1.23-alpine)                             │
+│                                                                 │
+│   ┌──────────────────────────────────────────────────────────┐  │
+│   │                  Gin HTTP Server (:8080)                 │  │
+│   │                                                          │  │
+│   │  POST /api/compile  ──►  compiler.Compile()             │  │
+│   │                                                          │  │
+│   │  ┌──────────────────────────────────────────────────┐    │  │
+│   │  │           Tectonic (LaTeX compiler)              │    │  │
+│   │  │                                                  │    │  │
+│   │  │  .tex ──► .pdf  (30s timeout)                    │    │  │
+│   │  └──────────────────────────────────────────────────┘    │  │
+│   │                                                          │  │
+│   │  Response: application/pdf (binary)                      │  │
+│   └──────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Request flow:**
+
+1. User clicks **PDF Download** in the browser
+2. React sends `POST /api/compile` with `{ "latex": "..." }`
+3. Nginx proxies to backend container (`http://backend:8080`)
+4. Go server writes `.tex` to temp directory
+5. Tectonic compiles LaTeX to PDF (max 30s)
+6. Go server returns PDF binary response
+7. Nginx forwards PDF back to browser
+8. Browser triggers file download
+
+**Key details:**
+
+| Component | Port | Note |
+|-----------|------|------|
+| Frontend (Nginx) | 3000 (host) → 80 (container) | Serves React SPA + proxies API |
+| Backend (Go) | 8080 (host) → 8080 (container) | Gin server + Tectonic compiler |
+| Tectonic | -- | Installed in backend image only |
+| Docker Network | -- | Containers communicate via service names |
+
+---
+
 ## Project Structure
 
 ```
@@ -128,12 +196,22 @@ latex-resume-gen/
 
 ### Prerequisites
 
-- **Node.js** 20+
-- **Go** 1.23+
-- **Tectonic** LaTeX engine (for PDF compilation)
-- **Docker** (optional, for containerized deployment)
+- **Docker** (recommended) — tectonic is included in the backend image
+- **Node.js** 20+ (only for local dev without Docker)
+- **Go** 1.23+ (only for local dev without Docker)
+- **Tectonic** (only for local dev without Docker)
 
-### Local Development
+### Docker Deployment (Recommended)
+
+```bash
+docker compose up --build
+```
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:8080`
+- PDF download works out of the box (tectonic is included in the backend image)
+
+### Local Development (requires tectonic installed on host)
 
 #### Frontend
 
@@ -155,14 +233,7 @@ go run ./cmd/server
 
 The API server runs at `http://localhost:8080`.
 
-### Docker Deployment
-
-```bash
-docker compose up --build
-```
-
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:8080`
+> **Note:** PDF export requires [Tectonic](https://tectonic-typesetting.github.io/book/latest/installation.html) installed and available in PATH.
 
 ---
 
@@ -238,23 +309,6 @@ The editor supports these sections (all drag-and-drop reorderable):
 | 10 | Elegant Professional | Modern with subtle styling |
 
 Each template includes a React preview component, LaTeX template, and configuration file.
-
----
-
-## Development Phases
-
-| Phase | Description | Status |
-|-------|-------------|--------|
-| 1 | Project Scaffolding | Done |
-| 2 | shadcn/ui + Dependencies + Types + Store | Done |
-| 3 | Resume Editor UI | Done |
-| 4 | Live Preview | Pending |
-| 5 | LaTeX Generation Engine | Pending |
-| 6 | Backend API (Tectonic) | Pending |
-| 7 | First 2 Templates | Pending |
-| 8 | Remaining 8 Templates | Pending |
-| 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | Pending |
-| 10 | Docker + README | Done |
 
 ---
 

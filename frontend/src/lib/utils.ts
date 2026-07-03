@@ -11,11 +11,16 @@ export function generateId(): string {
 
 export function escapeLatex(text: string): string {
   if (!text) return ''
-  return text
-    .replace(/\\/g, '\\textbackslash{}')
+  const placeholder = '\x00'
+  let result = text
+    .replace(/\\/g, `${placeholder}BACKSLASH${placeholder}`)
+    .replace(/~/g, `${placeholder}TILDE${placeholder}`)
+    .replace(/\^/g, `${placeholder}CIRCUM${placeholder}`)
     .replace(/[&%$#_{}]/g, (match) => `\\${match}`)
-    .replace(/~/g, '\\textasciitilde{}')
-    .replace(/\^/g, '\\textasciicircum{}')
+    .replace(new RegExp(`${placeholder}BACKSLASH${placeholder}`), '\\textbackslash{}')
+    .replace(new RegExp(`${placeholder}TILDE${placeholder}`), '\\textasciitilde{}')
+    .replace(new RegExp(`${placeholder}CIRCUM${placeholder}`), '\\textasciicircum{}')
+  return result
 }
 
 export function formatDate(date: string): string {

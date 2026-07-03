@@ -28,9 +28,9 @@ function buildMinimalDocument(
   if (personalInfo.email) contactParts.push(escapeLatex(personalInfo.email))
   if (personalInfo.phone) contactParts.push(escapeLatex(personalInfo.phone))
   if (personalInfo.location) contactParts.push(escapeLatex(personalInfo.location))
-  if (personalInfo.linkedin) contactParts.push(`\\href{https://${escapeLatex(personalInfo.linkedin)}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactParts.push(`\\href{https://${escapeLatex(personalInfo.github)}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactParts.push(`\\href{https://${escapeLatex(personalInfo.website)}}{${escapeLatex(personalInfo.website)}}`)
+  if (personalInfo.linkedin) contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  if (personalInfo.github) contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactLine = contactParts.length > 0
     ? `\\vspace{-4pt}\n\\begin{center}\n${contactParts.join(' $\\mid$ ')}\n\\end{center}`
@@ -44,6 +44,7 @@ function buildMinimalDocument(
 
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
 \\usepackage[margin=0.5in]{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
@@ -53,7 +54,7 @@ function buildMinimalDocument(
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\bfseries\\small\\uppercase}{}{0em}{}[\\titlerule]
+\\titleformat{\\section}{\\bfseries\\small\\MakeUppercase}{}{0em}{}[\\titlerule]
 \\titlespacing*{\\section}{0pt}{4pt}{2pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet}
@@ -61,7 +62,7 @@ function buildMinimalDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=black,
-    urlcolor=black,
+    urlcolor=black
 }
 
 \\begin{document}

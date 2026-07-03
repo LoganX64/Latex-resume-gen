@@ -28,12 +28,12 @@ function buildFaangDocument(
     : ''
 
   const contactParts: string[] = []
-  if (personalInfo.email) contactParts.push(`\\href{mailto:${escapeLatex(personalInfo.email)}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactParts.push(`\\href{tel:${escapeLatex(personalInfo.phone)}}{${escapeLatex(personalInfo.phone)}}`)
+  if (personalInfo.email) contactParts.push(`\\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+  if (personalInfo.phone) contactParts.push(`\\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
   if (personalInfo.location) contactParts.push(`\\textit{${escapeLatex(personalInfo.location)}}`)
-  if (personalInfo.linkedin) contactParts.push(`\\href{https://${escapeLatex(personalInfo.linkedin)}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactParts.push(`\\href{https://${escapeLatex(personalInfo.github)}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactParts.push(`\\href{https://${escapeLatex(personalInfo.website)}}{${escapeLatex(personalInfo.website)}}`)
+  if (personalInfo.linkedin) contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  if (personalInfo.github) contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactLine = contactParts.length > 0
     ? `\\\\[2pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
@@ -54,7 +54,7 @@ function buildFaangDocument(
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\large\\bfseries\\uppercase}{}{0em}{}[\\titlerule[0.5pt]]
+\\titleformat{\\section}{\\large\\bfseries\\MakeUppercase}{}{0em}{}[\\titlerule[0.5pt]]
 \\titlespacing*{\\section}{0pt}{6pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet}
@@ -62,7 +62,7 @@ function buildFaangDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=black,
-    urlcolor=blue!70!black,
+    urlcolor=blue!70!black
 }
 
 \\begin{document}
@@ -161,7 +161,7 @@ function generateProjects(projects: ResumeData['projects']): string {
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${escapeLatex(l)}}`).join(' \\quad ')}`
+        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
         : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\

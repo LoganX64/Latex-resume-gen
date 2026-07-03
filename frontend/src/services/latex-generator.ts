@@ -36,7 +36,7 @@ function buildDocument(body: string): string {
 \\renewcommand{\\headrulewidth}{0pt}
 \\renewcommand{\\footrulewidth}{0pt}
 
-\\titleformat{\\section}{\\large\\bfseries\\uppercase}{}{0em}{}[\\titlerule]
+\\titleformat{\\section}{\\large\\bfseries\\MakeUppercase}{}{0em}{}[\\titlerule]
 \\titlespacing*{\\section}{0pt}{6pt}{4pt}
 
 \\setlength{\\parindent}{0pt}
@@ -47,7 +47,7 @@ function buildDocument(body: string): string {
 \\hypersetup{
     colorlinks=true,
     linkcolor=black,
-    urlcolor=blue!70!black,
+    urlcolor=blue!70!black
 }
 
 \\begin{document}
@@ -142,7 +142,7 @@ function generateProjects(projects: ResumeData['projects']): string {
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${escapeLatex(l)}}`).join(' \\quad ')}`
+        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
         : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\

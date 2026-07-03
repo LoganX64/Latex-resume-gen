@@ -41,12 +41,12 @@ function buildSidebarDocument(
     : ''
 
   const contactItems: string[] = []
-  if (personalInfo.email) contactItems.push(`\\faIcon{envelope}\\ \\href{mailto:${escapeLatex(personalInfo.email)}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactItems.push(`\\faIcon{phone}\\ \\href{tel:${escapeLatex(personalInfo.phone)}}{${escapeLatex(personalInfo.phone)}}`)
+  if (personalInfo.email) contactItems.push(`\\faIcon{envelope}\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+  if (personalInfo.phone) contactItems.push(`\\faIcon{phone}\\ \\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
   if (personalInfo.location) contactItems.push(`\\faIcon{map-marker*}\\ ${escapeLatex(personalInfo.location)}`)
-  if (personalInfo.linkedin) contactItems.push(`\\faIcon{linkedin}\\ \\href{https://${escapeLatex(personalInfo.linkedin)}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactItems.push(`\\faIcon{github}\\ \\href{https://${escapeLatex(personalInfo.github)}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactItems.push(`\\faIcon{globe}\\ \\href{https://${escapeLatex(personalInfo.website)}}{${escapeLatex(personalInfo.website)}}`)
+  if (personalInfo.linkedin) contactItems.push(`\\faIcon{linkedin}\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  if (personalInfo.github) contactItems.push(`\\faIcon{github}\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  if (personalInfo.website) contactItems.push(`\\faIcon{globe}\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactBlock = contactItems.length > 0
     ? `\\section*{Contact}
@@ -92,7 +92,7 @@ ${contactItems.join('\\\\[3pt]\n')}`
 \\hypersetup{
     colorlinks=true,
     linkcolor=sidebar,
-    urlcolor=sidebar,
+    urlcolor=sidebar
 }
 
 \\newcommand{\\sidebarsection}[1]{%

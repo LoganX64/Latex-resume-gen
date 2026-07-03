@@ -28,12 +28,12 @@ function buildElegantDocument(
     : ''
 
   const contactParts: string[] = []
-  if (personalInfo.email) contactParts.push(`\\href{mailto:${escapeLatex(personalInfo.email)}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactParts.push(`\\href{tel:${escapeLatex(personalInfo.phone)}}{${escapeLatex(personalInfo.phone)}}`)
+  if (personalInfo.email) contactParts.push(`\\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+  if (personalInfo.phone) contactParts.push(`\\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
   if (personalInfo.location) contactParts.push(`\\textit{${escapeLatex(personalInfo.location)}}`)
-  if (personalInfo.linkedin) contactParts.push(`\\href{https://${escapeLatex(personalInfo.linkedin)}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactParts.push(`\\href{https://${escapeLatex(personalInfo.github)}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactParts.push(`\\href{https://${escapeLatex(personalInfo.website)}}{${escapeLatex(personalInfo.website)}}`)
+  if (personalInfo.linkedin) contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  if (personalInfo.github) contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactLine = contactParts.length > 0
     ? `\\\\[2pt]{\\small\\color{gray} ${contactParts.join(' $\\cdot$ ')}}`
@@ -65,7 +65,7 @@ function buildElegantDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=accent,
-    urlcolor=accent,
+    urlcolor=accent
 }
 
 \\begin{document}
@@ -164,7 +164,7 @@ function generateProjects(projects: ResumeData['projects']): string {
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${escapeLatex(l)}}`).join(' \\quad ')}`
+        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
         : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\

@@ -25,12 +25,12 @@ function buildAcademicDocument(
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
 
   const contactParts: string[] = []
-  if (personalInfo.email) contactParts.push(`\\href{mailto:${escapeLatex(personalInfo.email)}}{${escapeLatex(personalInfo.email)}}`)
-  if (personalInfo.phone) contactParts.push(`\\href{tel:${escapeLatex(personalInfo.phone)}}{${escapeLatex(personalInfo.phone)}}`)
+  if (personalInfo.email) contactParts.push(`\\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+  if (personalInfo.phone) contactParts.push(`\\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
   if (personalInfo.location) contactParts.push(`\\textit{${escapeLatex(personalInfo.location)}}`)
-  if (personalInfo.linkedin) contactParts.push(`\\href{https://${escapeLatex(personalInfo.linkedin)}}{${escapeLatex(personalInfo.linkedin)}}`)
-  if (personalInfo.github) contactParts.push(`\\href{https://${escapeLatex(personalInfo.github)}}{${escapeLatex(personalInfo.github)}}`)
-  if (personalInfo.website) contactParts.push(`\\href{https://${escapeLatex(personalInfo.website)}}{${escapeLatex(personalInfo.website)}}`)
+  if (personalInfo.linkedin) contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  if (personalInfo.github) contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  if (personalInfo.website) contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
 
   const contactLine = contactParts.length > 0
     ? `\\\\[2pt]{\\small ${contactParts.join(' $\\mid$ ')}}`
@@ -63,7 +63,7 @@ function buildAcademicDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=blue!70!black,
-    urlcolor=blue!70!black,
+    urlcolor=blue!70!black
 }
 
 \\begin{document}

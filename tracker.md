@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 8 Complete
+## Current Status: Phase 9 Complete
 
 ---
 
@@ -16,7 +16,7 @@
 | 6 | Backend API (Tectonic) | ✅ Complete |
 | 7 | First 2 Templates | ✅ Complete |
 | 8 | Remaining 8 Templates | ✅ Complete |
-| 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | ⬜ Pending |
+| 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | ✅ Complete |
 | 10 | Docker + README | ✅ Complete |
 
 ---
@@ -311,8 +311,41 @@ af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 
 ---
 
-## Next Actions
+## Phase 9 - UI Polish ✅
 
-1. Build remaining 8 templates
-2. UI polish (dark mode, keyboard shortcuts, toasts)
-3. Docker + README finalization
+### Files Created
+
+| File | Purpose |
+|------|---------|
+| `src/components/ui/sonner.tsx` | Toast notification component (shadcn/ui + sonner) |
+| `src/components/CommandPalette.tsx` | Command palette (⌘K) with shadcn/ui Command component |
+| `src/hooks/useKeyboardShortcuts.ts` | Custom hook for keyboard shortcuts |
+
+### Features Implemented
+
+- [x] Toast notifications for all export actions (success + error)
+- [x] Loading spinner on PDF export button during compilation
+- [x] Better error messages (shows actual backend error, not just console)
+- [x] Command palette (⌘K / Ctrl+K) with:
+  - Export PDF (⌘P)
+  - Export LaTeX (⌘L)
+  - Template switching
+  - Toggle dark/light mode (⌘D)
+  - Reset resume
+- [x] Keyboard shortcuts:
+  - ⌘P / Ctrl+P — Export PDF
+  - ⌘L / Ctrl+L — Export LaTeX
+  - ⌘D / Ctrl+D — Toggle dark mode
+- [x] Tooltips on all header buttons (Reset, Dark Mode, Command Palette, Export LaTeX, Export PDF)
+- [x] Smooth theme transition (CSS 0.2s ease)
+- [x] Fade-in and slide-up animation utilities
+- [x] Responsive design — editor takes full width on mobile, preview hidden
+- [x] Uses existing `downloadPdf` utility from `download.ts` instead of inline duplication
+- [x] TypeScript compilation passes
+- [x] Vite production build passes
+
+---
+
+## Project Complete
+
+All 10 phases are done. The application is production-ready.

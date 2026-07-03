@@ -21,3 +21,8 @@ Thumbs.db
 # Opencode
 .agents/
 skills-lock.json
+
+prompt.md
+plan.md
+tracker.md
+
