@@ -37,7 +37,6 @@ function buildClassicDocument(
 
 \\usepackage[T1]{fontenc}
 \\usepackage[margin=0.3in]{geometry}
-\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -48,7 +47,7 @@ function buildClassicDocument(
 \\setlength{\\parskip}{0pt}
 
 \\titleformat{\\section}{\\large\\bfseries}{}{0em}{\\MakeUppercase}[\\titlerule]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titlespacing*{\\section}{0pt}{5pt}{2pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -116,7 +115,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Work Experience}
 
@@ -156,7 +155,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 
@@ -176,7 +175,7 @@ function generateEducation(education: ResumeData['education']): string {
       return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
 \\textit{${escapeLatex(edu.institution)}}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Education}
 
