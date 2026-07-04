@@ -37,7 +37,6 @@ export function MainLayout() {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const templateId = useResumeStore((s) => s.templateId)
   const setTemplateId = useResumeStore((s) => s.setTemplateId)
-  const [isOverflowing, setIsOverflowing] = useState(false)
   const [isExportingPdf, setIsExportingPdf] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
 
@@ -184,9 +183,9 @@ export function MainLayout() {
               </div>
             </div>
             <div className="flex-1 overflow-hidden">
-              <ResumePreview onOverflowChange={setIsOverflowing} />
+              <ResumePreview />
             </div>
-            <OverflowIndicator isOverflowing={isOverflowing} />
+            <OverflowIndicator />
           </div>
         </div>
         <CommandPalette

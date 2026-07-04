@@ -14,7 +14,7 @@ export function generateClassicLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildClassicDocument(resume.personalInfo, body)
 }
@@ -35,10 +35,9 @@ function buildClassicDocument(
 
   return `\\documentclass[11pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[margin=0.65in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -48,10 +47,10 @@ function buildClassicDocument(
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\large\\bfseries\\MakeUppercase}{}{0em}{}[\\titlerule]
-\\titlespacing*{\\section}{0pt}{6pt}{4pt}
+\\titleformat{\\section}{\\large\\bfseries}{}{0em}{\\MakeUppercase}[\\titlerule]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -66,8 +65,6 @@ function buildClassicDocument(
 ${title}
 ${contactLine}
 \\end{center}
-
-\\vspace{4pt}
 
 ${body}
 

@@ -14,7 +14,7 @@ export function generateCompactLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildCompactDocument(resume.personalInfo, body)
 }
@@ -35,23 +35,23 @@ function buildCompactDocument(
 
   return `\\documentclass[9pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[margin=0.4in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
 \\usepackage{xcolor}
+\\usepackage{tabularx}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\normalsize\\bfseries\\MakeUppercase}{}{0em}{}[\\titlerule[0.5pt]]
-\\titlespacing*{\\section}{0pt}{4pt}{2pt}
+\\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\rule{\\textwidth}{0.5pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet, topsep=0pt}
+\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -126,12 +126,14 @@ ${items}`
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}} & ${escapeLatex(cat.skills.join(', '))}`)
     .join(' \\\\\n')
 
   return `\\section{Skills}
 
-${items}`
+\\begin{tabularx}{\\textwidth}{@{}lX@{}}
+${items}
+\\end{tabularx}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {

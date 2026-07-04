@@ -93,7 +93,7 @@ function SectionContent({
     case 'skills':
       return resume.skills.length > 0 ? (
         <Section title="Skills">
-          <div className="space-y-0">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-0">
             {resume.skills.map((cat) => (
               <div key={cat.id} className="text-[7px]">
                 <span className="font-bold">{cat.name || 'Category'}: </span>

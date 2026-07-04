@@ -21,12 +21,12 @@ export function generateSidebarLatex(
   const sidebar = sidebarSections
     .map((section) => generateSidebarSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   const main = mainSections
     .map((section) => generateMainSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildSidebarDocument(resume.personalInfo, sidebar, main)
 }
@@ -38,34 +38,30 @@ function buildSidebarDocument(
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
   const title = personalInfo.professionalTitle
-    ? `\\\\[2pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+    ? `\\\\[1pt]{\\small\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactItems = getContactParts(personalInfo, true)
+  const contactItems = getContactParts(personalInfo, false)
   const contactBlock = contactItems.length > 0
     ? `\\sidebarsection{Contact}
-${contactItems.join('\\\\[3pt]\n')}`
+${contactItems.join('\\\\[2pt]\n')}`
     : ''
 
-  // Image block
   const photoBlock = personalInfo.profileImage
-    ? `\\IfFileExists{profile.png}{\\includegraphics[width=3.5cm,height=3.5cm,keepaspectratio]{profile.png}\\\\[10pt]}{} `
+    ? `\\IfFileExists{profile.png}{\\includegraphics[width=3cm,height=3cm,keepaspectratio]{profile.png}\\\\[8pt]}{} `
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
 \\usepackage[margin=0pt]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
 \\usepackage{xcolor}
-\\usepackage{fontawesome5}
 \\usepackage{tikz}
 \\usepackage{graphicx}
-\\usepackage{wrapfig}
 \\usepackage{calc}
 
 \\pagestyle{empty}
@@ -74,19 +70,18 @@ ${contactItems.join('\\\\[3pt]\n')}`
 
 \\definecolor{sidebar}{HTML}{1a365d}
 \\definecolor{sidebartext}{HTML}{ffffff}
-\\definecolor{mainbg}{HTML}{f7fafc}
 
 \\geometry{
-  top=0.5in,
-  bottom=0.5in,
+  top=0.3in,
+  bottom=0.3in,
   left=0pt,
   right=0pt,
 }
 
-\\titleformat{\\section}{\\large\\bfseries\\color{sidebar}}{}{0em}{}[\\color{sidebar}\\titlerule]
-\\titlespacing*{\\section}{0pt}{8pt}{4pt}
+\\titleformat{\\section}{\\normalsize\\bfseries\\color{sidebar}}{}{0em}{}[\\color{sidebar}\\titlerule]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textcolor{sidebar}{\\textbullet}}
+\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textcolor{sidebar}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -95,33 +90,28 @@ ${contactItems.join('\\\\[3pt]\n')}`
 }
 
 \\newcommand{\\sidebarsection}[1]{%
-  \\vspace{6pt}
-  \\textbf{\\color{sidebartext}\\large #1}\\\\[-2pt]
-  \\textcolor{sidebartext!50}{\\rule{\\linewidth}{0.5pt}}\\\\[4pt]
+  \\textbf{\\color{sidebartext}\\normalsize #1}\\\\[-1pt]
+  \\textcolor{sidebartext!50}{\\rule{\\linewidth}{0.4pt}}\\\\[3pt]
 }
 
 \\begin{document}
 
 \\begin{tikzpicture}[remember picture, overlay]
   \\fill[sidebar] (current page.north west) rectangle ([xshift=6.5cm]current page.south west);
-\\end{tikzpicture}
+\\end{tikzpicture}%
 
 \\begin{minipage}[t]{6cm}
 \\color{sidebartext}
 
-\\vspace{0.4in}
+\\vspace{0.3in}
 
 \\begin{center}
 ${photoBlock}
-{\\LARGE\\textbf{${name}}}
+{\\Large\\textbf{${name}}}
 ${title}
 \\end{center}
 
-\\vspace{8pt}
-
 ${contactBlock}
-
-\\vspace{8pt}
 
 ${sidebar}
 
@@ -129,7 +119,7 @@ ${sidebar}
 \\hfill%
 \\begin{minipage}[t]{\\dimexpr\\paperwidth-6.5cm}
 
-\\vspace{0.4in}
+\\vspace{0.3in}
 
 ${main}
 
@@ -186,8 +176,8 @@ function generateExperience(experience: ResumeData['experience']): string {
       const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
       const bullets = generateBulletPoints(exp.bulletPoints)
 
-      return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
-\\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
+      return `\\textbf{${escapeLatex(exp.position)}} \\hfill \\small ${dateRange} \\\\[1pt]
+\\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill \\small ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
     .join('\n\n')
@@ -201,13 +191,13 @@ function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
+      const dateLine = proj.duration ? ` \\hfill \\small ${escapeLatex(proj.duration)}` : ''
       const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textit{Technologies:} \\small ${escapeLatex(proj.technologies.join(', '))}`
           : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
@@ -230,7 +220,7 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
+      return `\\textbf{${degreeLine}} \\hfill \\small ${dateRange}${cgpaLine} \\\\[1pt]
 \\textit{${escapeLatex(edu.institution)}}`
     })
     .join('\n\n')
@@ -243,7 +233,7 @@ ${items}`
 function generateSidebarSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `${escapeLatex(cat.name)}: ${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
     .join('\\\\[2pt]\n')
 
   return `\\sidebarsection{Skills}
@@ -277,8 +267,8 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   if (achievements.length === 0) return ''
   const items = achievements
     .map((ach) => {
-      const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
+      const dateStr = ach.date ? ` \\hfill \\small ${escapeLatex(ach.date)}` : ''
+      const descStr = ach.description ? `\n\\small ${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -292,8 +282,8 @@ function generatePublications(publications: ResumeData['publications']): string 
   if (publications.length === 0) return ''
   const items = publications
     .map((pub) => {
-      const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
+      const dateStr = pub.date ? ` \\hfill \\small ${escapeLatex(pub.date)}` : ''
+      const descStr = pub.description ? `\n\\small ${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')

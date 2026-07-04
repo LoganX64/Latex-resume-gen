@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	CompileTimeout = 30 * time.Second
+	CompileTimeout = 120 * time.Second
 	TempDirPrefix  = "latex-resume-"
 	TexFile        = "resume.tex"
 	PdfFile        = "resume.pdf"
@@ -26,6 +26,10 @@ type CompileResult struct {
 }
 
 func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
+	if _, err := exec.LookPath("tectonic"); err != nil {
+		return nil, fmt.Errorf("tectonic is not installed or not in PATH. Install it via: choco install tectonic")
+	}
+
 	tempDir, err := os.MkdirTemp("", TempDirPrefix)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create temp directory: %w", err)

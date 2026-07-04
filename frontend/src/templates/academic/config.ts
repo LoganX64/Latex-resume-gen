@@ -6,5 +6,4 @@ export const academicConfig: TemplateConfig = {
   description: 'Academic-style layout with emphasis on publications, research, and education. Ideal for research-focused roles.',
   supportsPhoto: false,
   category: 'classic',
-  pages: 2,
 }

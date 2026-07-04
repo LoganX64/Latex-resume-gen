@@ -14,7 +14,7 @@ export function generateAcademicLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildAcademicDocument(resume.personalInfo, body)
 }
@@ -36,10 +36,9 @@ function buildAcademicDocument(
 
   return `\\documentclass[11pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{newpxtext,newpxmath}
-\\usepackage[margin=0.75in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -48,10 +47,10 @@ function buildAcademicDocument(
 \\usepackage{graphicx}
 
 \\geometry{
-  top=0.8in,
-  bottom=0.8in,
-  left=0.75in,
-  right=0.75in
+  top=0.4in,
+  bottom=0.4in,
+  left=0.3in,
+  right=0.3in
 }
 
 \\pagestyle{fancy}
@@ -74,10 +73,10 @@ function buildAcademicDocument(
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\large\\bfseries\\scshape}{}{0em}{}[\\titlerule[0.8pt]]
-\\titlespacing*{\\section}{0pt}{12pt}{6pt}
+\\titleformat{\\section}{\\normalsize\\bfseries\\scshape}{}{0em}{}[\\rule{\\textwidth}{0.8pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -93,8 +92,6 @@ function buildAcademicDocument(
 ${titleLine}
 ${contactLine}
 \\end{center}
-
-\\vspace{10pt}
 
 ${body}
 

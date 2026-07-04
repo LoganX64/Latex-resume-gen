@@ -152,8 +152,8 @@ Each template needs:
 ## Phase 9: UI Polish ✅
 
 - [x] Dark mode toggle (already implemented, added tooltips)
-- [x] Keyboard shortcuts (⌘P, ⌘L, ⌘D)
-- [x] Command palette (⌘K)
+- [x] Keyboard shortcuts (Cmd+P, Cmd+L, Cmd+D)
+- [x] Command palette (Cmd+K)
 - [x] Toast notifications (sonner)
 - [x] Smooth animations (CSS transitions)
 - [x] Responsive design (mobile-friendly)
@@ -197,3 +197,222 @@ Each template needs:
 ### Backend
 - [x] gin-gonic/gin
 - [x] gin-contrib/cors
+
+---
+
+## Phase 11: Remove Redundant Templates + Differentiate Remaining ✅
+
+### Problem
+
+Two issues identified:
+1. **Multi-page PDFs**: LaTeX generators don't enforce single-page output - content overflows to page 2
+2. **Preview != PDF**: HTML preview (browser CSS) and PDF (LaTeX/Tectonic) use completely independent rendering engines with no visual parity
+
+Additionally, template redundancy analysis reveals:
+- **FAANG** is a character-for-character duplicate of **Classic** (only difference: section rule weight)
+- **Executive** is a structural duplicate of **Academic** (only difference: font choice and labels)
+
+### Root Cause
+
+The preview and PDF are fundamentally different rendering systems:
+- Preview: HTML/CSS with browser fonts, Tailwind spacing, CSS flexbox
+- PDF: LaTeX with TeX fonts, TeX spacing, TeX layout engine
+- Margins don't match (preview: 12-15mm vs LaTeX: 0.4in = 10.16mm)
+- Font sizes don't map (CSS 7-10px vs TeX 9-11pt)
+- Line heights differ (CSS 1.3-1.4 vs TeX ~1.2)
+
+---
+
+### Phase 11.1: Delete Redundant Templates ✅
+
+- [x] Delete `templates/faang/` directory (config.ts, index.tsx, latex.ts)
+- [x] Delete `templates/executive/` directory (config.ts, index.tsx, latex.ts)
+- [x] Update README.md template table (remove faang and executive)
+- [x] Verify no hardcoded references to faang/executive in stores or components
+
+---
+
+### Phase 11.2: Differentiate Minimal vs Compact ✅
+
+**Minimal** (10pt) - "Ultra-clean ATS":
+- [x] Remove `\titlerule` from section format (no underline, just bold text)
+- [x] Keep `$\mid$` separators for contact
+- [x] Use em-dash `--` instead of `\textbullet` for list items
+- [x] Even cleaner, more minimal aesthetic
+
+**Compact** (9pt) - "Dense one-pager":
+- [x] Add two-column `tabularx` layout for skills section
+- [x] Keep `$\cdot$` separators for contact
+- [x] Tighter bullet spacing with `topsep=0pt`
+- [x] Maximum content density
+
+Files to modify:
+- [x] `templates/minimal/latex.ts`
+- [x] `templates/minimal/index.tsx`
+- [x] `templates/compact/latex.ts`
+- [x] `templates/compact/index.tsx`
+
+---
+
+### Phase 11.3: Enforce Single-Page PDFs (LaTeX Compression) ✅
+
+Add `\usepackage{savetrees}` to all 8 remaining templates to auto-compress content:
+- [x] `templates/classic/latex.ts`
+- [x] `templates/google/latex.ts`
+- [x] `templates/engineering/latex.ts`
+- [x] `templates/minimal/latex.ts`
+- [x] `templates/compact/latex.ts`
+- [x] `templates/elegant/latex.ts`
+- [x] `templates/sidebar/latex.ts`
+- [x] `templates/academic/latex.ts`
+
+Changes per template:
+```latex
+% Add to preamble
+\usepackage{savetrees}
+
+% Tighten section spacing (if not already tight)
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+```
+
+---
+
+### Phase 11.4: iframe Preview System (Exact WYSIWYG) ✅
+
+Replace HTML preview with actual LaTeX-compiled PDF rendered in an iframe.
+
+#### 11.4.1: Backend - Add inline PDF support
+
+**File:** `backend/internal/handlers/compile.go`
+
+- [x] Add `Mode string` field to `CompileRequest` struct (default: "attachment")
+- [x] Add query parameter `?mode=inline` support
+- [x] When `mode=inline`: return `Content-Disposition: inline; filename=resume.pdf`
+- [x] When `mode=attachment` (default): return `Content-Disposition: attachment; filename=resume.pdf`
+
+#### 11.4.2: Frontend - New debounced compilation hook
+
+**New file:** `frontend/src/hooks/usePdfPreview.ts`
+
+- [x] Custom hook accepting `resume`, `sectionOrder`, `sectionVisibility`, `templateId`
+- [x] Debounce changes by 1.5 seconds
+- [x] On change, call `POST /api/compile?mode=inline` with generated LaTeX
+- [x] Return `{ pdfUrl: string | null, isCompiling: boolean, error: string | null }`
+- [x] Manage blob URL lifecycle (create/revoke) to prevent memory leaks
+- [x] Track latest request via useRef to avoid stale responses
+
+#### 11.4.3: Frontend - Replace HTML preview with iframe
+
+**File:** `frontend/src/components/preview/ResumePreview.tsx`
+
+- [x] Replace `<TemplatePreview>` with:
+  - Loading state: Loader2 spinner + "Compiling preview..." text
+  - Loaded state: `<iframe src={pdfUrl}>` filling the A4 container
+  - Error state: error message + fallback hint
+- [x] Keep A4-sized container, zoom controls, overflow detection
+
+#### 11.4.4: Frontend - Update MainLayout
+
+**File:** `frontend/src/layouts/MainLayout.tsx`
+
+- [x] Pass `isCompiling` state from `usePdfPreview` to `ResumePreview`
+- [x] Existing `handleExportPdf` flow remains unchanged (compiles on-demand for download)
+
+---
+
+### Phase 11.5: Update Overflow Indicator ✅
+
+**File:** `frontend/src/components/preview/OverflowIndicator.tsx`
+
+- [x] Update soft limits for compressed single-page layout:
+  - Summary: 500 -> 400 chars
+  - Experience entries: 5 -> 4
+  - Project entries: 4 -> 3
+
+---
+
+### Phase 11.6: Update README.md ✅
+
+**File:** `README.md`
+
+- [x] Update Features section - add iframe preview
+- [x] Update Architecture diagram - add preview flow
+- [x] Update API section - document `?mode=inline` parameter
+- [x] Add new "Preview System" section explaining iframe flow
+- [x] Update Project Structure - add `hooks/usePdfPreview.ts`
+- [x] Update Tech Stack - add `savetrees` (LaTeX) dependency
+- [x] Remove faang and executive from template table
+- [x] Update template count from 10 to 8
+
+---
+
+### Execution Order
+
+1. **Phase 11.1** - Delete faang + executive (6 files)
+2. **Phase 11.2** - Redesign minimal + compact (4 files)
+3. **Phase 11.3** - LaTeX compression (8 files)
+4. **Phase 11.4** - iframe preview (4 files, 1 new)
+5. **Phase 11.5** - Overflow limits (1 file)
+6. **Phase 11.6** - README (1 file)
+
+### Final Template Count: 8 (down from 10)
+
+| # | Template | Description |
+|---|----------|-------------|
+| 1 | Classic Professional | Traditional clean layout |
+| 2 | Minimal ATS | Ultra-clean, no section rules |
+| 3 | Modern Sidebar | Two-column with sidebar |
+| 4 | Engineering Resume | Technical-focused with photo |
+| 5 | Google Style | Blue accent color |
+| 6 | Compact One Page | Dense, two-column skills |
+| 7 | Academic Technical CV | Research-oriented with fancyhdr |
+| 8 | Elegant Professional | EB Garamond font, refined |
+
+---
+
+### Summary
+
+| Phase | Files Modified | Files Created | Files Deleted |
+|-------|---------------|---------------|---------------|
+| 11.1 | 0 | 0 | 6 |
+| 11.2 | 4 | 0 | 0 |
+| 11.3 | 8 | 0 | 0 |
+| 11.4 | 3 | 1 | 0 |
+| 11.5 | 1 | 0 | 0 |
+| 11.6 | 1 | 0 | 0 |
+| **Total** | **17** | **1** | **6** |
+
+---
+
+## Phase 12: Remove iframe Preview, Add HTML/CSS Preview ✅
+
+### Problem
+
+The iframe-based PDF preview required backend compilation on every edit (1.5s debounce), adding latency and a hard dependency on the Go backend for preview functionality.
+
+### Changes
+
+- [x] Replaced iframe PDF preview with direct HTML/CSS rendering in `ResumePreview.tsx`
+- [x] Preview now reads resume data from Zustand store and renders styled HTML
+- [x] Removed `usePdfPreview` hook dependency from preview component
+- [x] Added collapsible sidebar with icon-only mode and hover tooltips
+- [x] Added logo display in collapsed sidebar header
+- [x] Added right border to sidebar
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/components/preview/ResumePreview.tsx` | Replaced iframe with HTML/CSS resume rendering |
+| `src/components/editor/Sidebar.tsx` | Added collapse toggle, tooltips, icon-only mode, logo |
+| `README.md` | Updated preview documentation |
+| `plan.md` | Added Phase 12 |
+| `tracker.md` | Added Phase 12 entry |
+
+### Files No Longer Used by Preview
+
+| File | Status |
+|------|--------|
+| `src/hooks/usePdfPreview.ts` | Still exists (used by nothing in preview), can be removed later |
+
+---

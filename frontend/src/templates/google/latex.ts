@@ -14,7 +14,7 @@ export function generateGoogleLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildGoogleDocument(resume.personalInfo, body)
 }
@@ -35,10 +35,9 @@ function buildGoogleDocument(
 
   return `\\documentclass[11pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[margin=0.6in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -50,10 +49,10 @@ function buildGoogleDocument(
 
 \\definecolor{googleblue}{HTML}{1a73e8}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{googleblue}\\MakeUppercase}{}{0em}{}[\\color{googleblue}\\titlerule[0.8pt]]
-\\titlespacing*{\\section}{0pt}{6pt}{4pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{googleblue}}{}{0em}{\\MakeUppercase}[\\color{googleblue}\\rule{\\textwidth}{0.8pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{googleblue}{\\textbullet}}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{googleblue}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -68,8 +67,6 @@ function buildGoogleDocument(
 ${title}
 ${contactLine}
 \\end{center}
-
-\\vspace{4pt}
 
 ${body}
 

@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 9 Complete
+## Current Status: Phase 12 Complete
 
 ---
 
@@ -18,6 +18,8 @@
 | 8 | Remaining 8 Templates | ✅ Complete |
 | 9 | UI Polish (Dark Mode, Shortcuts, Toasts) | ✅ Complete |
 | 10 | Docker + README | ✅ Complete |
+| 11 | Remove Redundant Templates + iframe Preview | ✅ Complete |
+| 12 | Remove iframe Preview, Add HTML/CSS Preview | ✅ Complete |
 
 ---
 
@@ -349,3 +351,126 @@ af109f5 Phase 2: shadcn/ui, dependencies, types, Zustand store
 ## Project Complete
 
 All 10 phases are done. The application is production-ready.
+
+---
+
+## Phase 11 - Remove Redundant Templates + iframe Preview 🔄
+
+### Problem
+
+1. **Multi-page PDFs**: LaTeX generators don't enforce single-page output
+2. **Preview != PDF**: HTML preview and PDF use completely independent rendering engines
+3. **Template redundancy**: FAANG is duplicate of Classic, Executive is duplicate of Academic
+
+### Phase 11.1: Delete Redundant Templates ✅
+
+- [x] Deleted `templates/faang/` directory (3 files)
+- [x] Deleted `templates/executive/` directory (3 files)
+- [x] Verified no hardcoded references remain
+
+### Phase 11.2: Differentiate Minimal vs Compact ✅
+
+- [x] **Minimal**: Removed `\titlerule`, changed bullets to `--` em-dash
+- [x] **Compact**: Added two-column `tabularx` skills layout
+- [x] Updated preview components to match LaTeX changes
+
+### Phase 11.3: Add savetrees LaTeX Compression ✅
+
+Added `\usepackage{savetrees}` to all 8 remaining templates:
+- [x] `templates/classic/latex.ts`
+- [x] `templates/google/latex.ts`
+- [x] `templates/engineering/latex.ts`
+- [x] `templates/minimal/latex.ts`
+- [x] `templates/compact/latex.ts`
+- [x] `templates/elegant/latex.ts`
+- [x] `templates/sidebar/latex.ts`
+- [x] `templates/academic/latex.ts`
+
+Also tightened `\titlespacing*` from `{6pt}{4pt}` to `{4pt}{2pt}` in most templates.
+
+### Phase 11.4: iframe Preview System ✅
+
+#### 11.4.1: Backend - Inline PDF Mode
+
+- [x] Added `Mode` field to `CompileRequest` struct
+- [x] Add query parameter `?mode=inline` support
+- [x] Return `Content-Disposition: inline` when mode=inline
+
+#### 11.4.2: Frontend - usePdfPreview Hook
+
+- [x] Create `frontend/src/hooks/usePdfPreview.ts`
+- [x] Debounced compilation (1.5s)
+- [x] Blob URL lifecycle management
+- [x] Returns `{ pdfUrl, isCompiling, error }`
+
+#### 11.4.3: Frontend - iframe Preview
+
+- [x] Update `ResumePreview.tsx` to use iframe
+- [x] Add loading/error states
+- [x] Keep A4 container and zoom controls
+
+#### 11.4.4: Frontend - MainLayout Update
+
+- [x] Pass compilation state to preview
+
+### Phase 11.5: Update Overflow Indicator ✅
+
+- [x] Update soft limits: Summary 400 chars, Exp 4 entries, Proj 3 entries
+
+### Phase 11.6: Update README.md ✅
+
+- [x] Remove faang and executive from template table
+- [x] Update template count to 8
+- [x] Add iframe preview documentation
+- [x] Add savetrees to tech stack
+- [x] Update API docs with mode parameter
+- [x] Add Preview System section
+
+---
+
+### Final Template Count: 8
+
+| # | Template | Unique Feature |
+|---|----------|----------------|
+| 1 | Classic Professional | Traditional serif, ruled sections |
+| 2 | Minimal ATS | Ultra-clean, no section rules, em-dash bullets |
+| 3 | Modern Sidebar | Two-column TikZ layout |
+| 4 | Engineering Resume | Dark blue accent, photo support, tabularx skills |
+| 5 | Google Style | Blue accent color |
+| 6 | Compact One Page | 9pt font, two-column skills grid |
+| 7 | Academic Technical CV | fancyhdr, research-oriented labels |
+| 8 | Elegant Professional | EB Garamond font, gray accent, photo support |
+
+---
+
+## Phase 12 - Remove iframe Preview, Add HTML/CSS Preview ✅
+
+### Problem
+
+The iframe-based PDF preview required backend compilation on every edit (1.5s debounce), adding latency and a hard dependency on the Go backend for preview functionality.
+
+### Changes Implemented
+
+- [x] Replaced iframe PDF preview with direct HTML/CSS rendering in `ResumePreview.tsx`
+- [x] Preview now reads resume data from Zustand store and renders styled HTML
+- [x] Removed `usePdfPreview` hook dependency from preview component
+- [x] Added collapsible sidebar with icon-only mode and hover tooltips
+- [x] Added logo display in collapsed sidebar header
+- [x] Added right border to sidebar
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/components/preview/ResumePreview.tsx` | Replaced iframe with HTML/CSS resume rendering |
+| `src/components/editor/Sidebar.tsx` | Added collapse toggle, tooltips, icon-only mode, logo |
+| `README.md` | Updated preview documentation |
+| `plan.md` | Added Phase 12 |
+| `tracker.md` | Added Phase 12 entry |
+
+### Build Verification
+
+| Check | Status |
+|-------|--------|
+| TypeScript compilation | ✅ |
+| Vite production build | ✅ |

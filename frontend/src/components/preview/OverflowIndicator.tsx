@@ -2,12 +2,12 @@ import { useResumeStore } from '@/stores/resume-store'
 import { AlertTriangle } from 'lucide-react'
 
 const SOFT_LIMITS = {
-  summary: 500,
-  experience: { entries: 5, bulletsPerEntry: 6 },
-  projects: { entries: 4, bulletsPerEntry: 5 },
+  summary: 400,
+  experience: { entries: 4, bulletsPerEntry: 5 },
+  projects: { entries: 3, bulletsPerEntry: 4 },
 }
 
-export function OverflowIndicator({ isOverflowing }: { isOverflowing: boolean }) {
+export function OverflowIndicator() {
   const resume = useResumeStore((s) => s.resume)
 
   const summaryLen = resume.summary.length
@@ -34,28 +34,16 @@ export function OverflowIndicator({ isOverflowing }: { isOverflowing: boolean })
     warnings.push(`Project bullets: ${totalProjBullets} (max recommended: ${SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry})`)
   }
 
-  if (!isOverflowing && warnings.length === 0) return null
+  if (warnings.length === 0) return null
 
   return (
     <div className="border-t border-border px-3 py-2 space-y-1.5">
-      {isOverflowing && (
-        <div className="flex items-start gap-1.5 text-red-600 bg-red-50 dark:bg-red-950/30 rounded px-2 py-1.5">
-          <AlertTriangle className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-          <p className="text-[10px] leading-tight">
-            Your resume exceeds one A4 page. Consider shortening some sections.
-          </p>
+      {warnings.map((w, i) => (
+        <div key={i} className="flex items-center gap-1.5 text-amber-600 bg-amber-50 dark:bg-amber-950/30 rounded px-2 py-1">
+          <AlertTriangle className="h-3 w-3 shrink-0" />
+          <p className="text-[10px] leading-tight">{w}</p>
         </div>
-      )}
-      {warnings.length > 0 && (
-        <div className="space-y-0.5">
-          {warnings.map((w, i) => (
-            <div key={i} className="flex items-center gap-1.5 text-amber-600 bg-amber-50 dark:bg-amber-950/30 rounded px-2 py-1">
-              <AlertTriangle className="h-3 w-3 shrink-0" />
-              <p className="text-[10px] leading-tight">{w}</p>
-            </div>
-          ))}
-        </div>
-      )}
+      ))}
       <div className="flex gap-3 text-[9px] text-muted-foreground">
         <span>Summary: {summaryLen}/{SOFT_LIMITS.summary}</span>
         <span>Exp: {expCount}/{SOFT_LIMITS.experience.entries}</span>

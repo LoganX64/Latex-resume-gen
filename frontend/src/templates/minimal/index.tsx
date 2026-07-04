@@ -81,7 +81,8 @@ function SectionContent({
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0.5 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[8px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[8px] text-gray-700 pl-2 relative">
+                      <span className="absolute left-0 text-gray-400">--</span>
                       {bullet}
                     </li>
                   ))}
@@ -123,7 +124,8 @@ function SectionContent({
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[8px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[8px] text-gray-700 pl-2 relative">
+                      <span className="absolute left-0 text-gray-400">--</span>
                       {bullet}
                     </li>
                   ))}

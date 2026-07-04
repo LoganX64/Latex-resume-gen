@@ -15,7 +15,8 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 - **Multiple Entries** -- Support multiple experience, education, project, certification, and achievement entries
 - **LaTeX Export** -- Generate clean, editable `.tex` files compatible with Overleaf, TeX Live, MiKTeX
 - **PDF Export** -- Compile LaTeX to PDF via a Go backend using Tectonic
-- **10 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, FAANG, Google, Executive, Compact, Academic, Elegant
+- **8 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, Google, Compact, Academic, Elegant
+- **Live HTML/CSS Preview** -- Real-time preview renders resume content directly in the browser with no backend dependency for preview
 - **Dark/Light Mode** -- Toggle between themes
 - **Auto-Save** -- All changes persist to localStorage automatically
 - **Responsive UI** -- Modern interface built with shadcn/ui and Tailwind CSS v4
@@ -48,6 +49,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | Gin Framework | HTTP router |
 | Tectonic | LaTeX to PDF compiler |
 | gin-contrib/cors | CORS middleware |
+| savetrees (LaTeX) | Automatic single-page compression |
 
 ### DevOps
 
@@ -154,13 +156,15 @@ latex-resume-gen/
 │   │   │   ├── preview/         # Preview components (Phase 4)
 │   │   │   ├── theme-provider.tsx
 │   │   │   └── ui/              # shadcn/ui components
+│   │   ├── hooks/              # Custom React hooks
+│   │   │   └── useKeyboardShortcuts.ts
 │   │   ├── layouts/
 │   │   │   └── MainLayout.tsx   # Split-screen layout
 │   │   ├── stores/
 │   │   │   └── resume-store.ts  # Zustand global state
 │   │   ├── types/
 │   │   │   └── resume.ts        # TypeScript interfaces
-│   │   ├── templates/           # 10 template directories
+│   │   ├── templates/           # 8 template directories
 │   │   ├── lib/
 │   │   │   └── utils.ts         # cn(), generateId(), escapeLatex()
 │   │   ├── App.tsx
@@ -243,11 +247,18 @@ The API server runs at `http://localhost:8080`.
 
 Compile LaTeX source to PDF.
 
+**Query Parameters:**
+
+| Parameter | Values | Default | Description |
+|-----------|--------|---------|-------------|
+| `mode` | `attachment`, `inline` | `attachment` | `inline` returns PDF for iframe rendering; `attachment` triggers download |
+
 **Request:**
 
 ```json
 {
-  "latex": "\\documentclass{article}..."
+  "latex": "\\documentclass{article}...",
+  "mode": "inline"
 }
 ```
 
@@ -293,22 +304,43 @@ The editor supports these sections (all drag-and-drop reorderable):
 
 ## Templates
 
-10 ATS-friendly templates designed for IT professionals:
+8 ATS-friendly templates designed for IT professionals:
 
 | # | Template | Description |
 |---|----------|-------------|
 | 1 | Classic Professional | Traditional clean layout |
-| 2 | Minimal ATS | Ultra-clean, maximum ATS compatibility |
+| 2 | Minimal ATS | Ultra-clean, no section rules, em-dash bullets |
 | 3 | Modern Sidebar | Two-column with sidebar |
-| 4 | Engineering Resume | Technical-focused layout |
-| 5 | FAANG Style | Optimized for top tech companies |
-| 6 | Google Style | Clean, Google-inspired design |
-| 7 | Executive Technical | Senior leadership focus |
-| 8 | Compact One Page | Maximum content density |
-| 9 | Academic Technical CV | Research-oriented format |
-| 10 | Elegant Professional | Modern with subtle styling |
+| 4 | Engineering Resume | Technical-focused with photo support |
+| 5 | Google Style | Blue accent color |
+| 6 | Compact One Page | Dense, two-column skills grid |
+| 7 | Academic Technical CV | Research-oriented with fancyhdr |
+| 8 | Elegant Professional | EB Garamond font, refined styling |
 
-Each template includes a React preview component, LaTeX template, and configuration file.
+Each template includes a React preview component, LaTeX template, and configuration file. All templates use the `savetrees` package for automatic single-page compression.
+
+---
+
+## Preview System
+
+The preview system renders resume content directly in the browser using HTML/CSS, providing instant feedback without requiring backend compilation.
+
+**Flow:**
+1. User edits resume content in the editor
+2. Zustand store updates trigger a re-render of the preview component
+3. Resume sections are rendered as styled HTML inside an A4-sized container
+4. User sees a live representation of their resume with zoom controls
+
+**Benefits:**
+- Instant preview with no compilation delay
+- No backend dependency for preview (backend only needed for PDF export)
+- Collapsible sidebar with icon-only mode and hover tooltips
+
+**Implementation:**
+- `ResumePreview.tsx` renders all resume sections as styled HTML
+- A4 page simulation (210x297mm) with realistic margins and page shadow
+- Zoom controls (50%, 75%, 100%, 125%, 150%, Fit Width)
+- Overflow detection monitors content against soft limits (summary chars, experience entries, project entries)
 
 ---
 

@@ -14,7 +14,7 @@ export function generateEngineeringLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildEngineeringDocument(resume.personalInfo, body)
 }
@@ -53,10 +53,9 @@ ${contactLine}
 
   return `\\documentclass[11pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[margin=0.6in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -71,10 +70,10 @@ ${contactLine}
 \\definecolor{darkblue}{HTML}{1e3a5f}
 \\definecolor{lightgray}{HTML}{f0f0f0}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{darkblue}}{}{0em}{}[\\color{darkblue}\\titlerule[1pt]]
-\\titlespacing*{\\section}{0pt}{8pt}{4pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{darkblue}}{}{0em}{}[\\color{darkblue}\\rule{\\textwidth}{1pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{darkblue}{\\textbullet}}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{darkblue}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -85,8 +84,6 @@ ${contactLine}
 \\begin{document}
 
 ${headerBlock}
-
-\\vspace{10pt}
 
 ${body}
 

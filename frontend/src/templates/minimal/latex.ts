@@ -14,7 +14,7 @@ export function generateMinimalLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildMinimalDocument(resume.personalInfo, body)
 }
@@ -37,22 +37,22 @@ function buildMinimalDocument(
 
   return `\\documentclass[10pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage[margin=0.5in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
+\\usepackage{xcolor}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
 
-\\titleformat{\\section}{\\bfseries\\small\\MakeUppercase}{}{0em}{}[\\titlerule]
-\\titlespacing*{\\section}{0pt}{4pt}{2pt}
+\\titleformat{\\section}{\\bfseries\\small}{}{0em}{\\MakeUppercase}
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet}
+\\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textendash, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -67,8 +67,6 @@ function buildMinimalDocument(
 ${titleLine}
 ${contactLine ? `\\vspace{-4pt}\\begin{center}\n${contactLine}\n\\end{center}` : ''}
 \\end{center}
-
-\\vspace{2pt}
 
 ${body}
 

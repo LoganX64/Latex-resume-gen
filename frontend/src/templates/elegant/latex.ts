@@ -14,7 +14,7 @@ export function generateElegantLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n\n')
+    .join('\n')
 
   return buildElegantDocument(resume.personalInfo, body)
 }
@@ -51,12 +51,12 @@ ${contactLine}
 \\end{center}`
   }
 
-  return `\\documentclass[11pt,a4paper]{article}
+  return `\\documentclass[10pt,a4paper]{article}
 
-\\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 \\usepackage{ebgaramond}
-\\usepackage[margin=0.65in]{geometry}
+\\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -70,10 +70,10 @@ ${contactLine}
 
 \\definecolor{accent}{HTML}{4a5568}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\color{accent}\\titlerule[0.5pt]]
-\\titlespacing*{\\section}{0pt}{8pt}{4pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\color{accent}\\rule{\\textwidth}{0.5pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{accent}{\\textbullet}}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{accent}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -84,8 +84,6 @@ ${contactLine}
 \\begin{document}
 
 ${headerBlock}
-
-\\vspace{10pt}
 
 ${body}
 
