@@ -2,9 +2,12 @@ import { useResumeStore } from '@/stores/resume-store'
 import { AlertTriangle } from 'lucide-react'
 
 const SOFT_LIMITS = {
-  summary: 400,
-  experience: { entries: 4, bulletsPerEntry: 5 },
-  projects: { entries: 3, bulletsPerEntry: 4 },
+  summary: 300,
+  experience: { entries: 3, bulletsPerEntry: 4 },
+  projects: { entries: 2, bulletsPerEntry: 3 },
+  education: { entries: 1 },
+  certifications: { entries: 2 },
+  achievements: { entries: 1 },
 }
 
 export function OverflowIndicator() {
@@ -12,26 +15,36 @@ export function OverflowIndicator() {
 
   const summaryLen = resume.summary.length
   const expCount = resume.experience.length
-  const totalBullets = resume.experience.reduce((sum, e) => sum + e.bulletPoints.filter(Boolean).length, 0)
+  const expBullets = resume.experience.reduce((sum, e) => sum + e.bulletPoints.filter(Boolean).length, 0)
   const projCount = resume.projects.length
-  const totalProjBullets = resume.projects.reduce((sum, p) => sum + (p.bulletPoints?.filter(Boolean).length || 0), 0)
+  const projBullets = resume.projects.reduce((sum, p) => sum + (p.bulletPoints?.filter(Boolean).length || 0), 0)
+  const eduCount = resume.education.length
+  const certCount = resume.certifications.length
+  const achCount = resume.achievements.length
+  const langCount = resume.languages.length
+  const skCount = resume.skills.length
+
+  const totalSections = [summaryLen > 0, expCount > 0, projCount > 0, eduCount > 0, certCount > 0, achCount > 0, langCount > 0, skCount > 0].filter(Boolean).length
 
   const warnings: string[] = []
 
   if (summaryLen > SOFT_LIMITS.summary) {
-    warnings.push(`Summary: ${summaryLen}/${SOFT_LIMITS.summary} chars (consider shortening)`)
+    warnings.push(`Summary: ${summaryLen} chars keep it under ${SOFT_LIMITS.summary} for one-page fit`)
   }
   if (expCount > SOFT_LIMITS.experience.entries) {
-    warnings.push(`Experience: ${expCount} entries (max recommended: ${SOFT_LIMITS.experience.entries})`)
+    warnings.push(`Experience: ${expCount} entries — hide or remove to fit one page`)
   }
-  if (totalBullets > SOFT_LIMITS.experience.entries * SOFT_LIMITS.experience.bulletsPerEntry) {
-    warnings.push(`Experience bullets: ${totalBullets} (max recommended: ${SOFT_LIMITS.experience.entries * SOFT_LIMITS.experience.bulletsPerEntry})`)
+  if (expBullets > SOFT_LIMITS.experience.entries * SOFT_LIMITS.experience.bulletsPerEntry) {
+    warnings.push(`Experience bullets: ${expBullets} total — too many for one page`)
   }
   if (projCount > SOFT_LIMITS.projects.entries) {
-    warnings.push(`Projects: ${projCount} entries (max recommended: ${SOFT_LIMITS.projects.entries})`)
+    warnings.push(`Projects: ${projCount} entries — hide or remove to fit one page`)
   }
-  if (totalProjBullets > SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry) {
-    warnings.push(`Project bullets: ${totalProjBullets} (max recommended: ${SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry})`)
+  if (projBullets > SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry) {
+    warnings.push(`Project bullets: ${projBullets} total — too many for one page`)
+  }
+  if (totalSections > 7) {
+    warnings.push(`Too many sections: ${totalSections} active — hide some in the sidebar`)
   }
 
   if (warnings.length === 0) return null
@@ -44,10 +57,12 @@ export function OverflowIndicator() {
           <p className="text-[10px] leading-tight">{w}</p>
         </div>
       ))}
-      <div className="flex gap-3 text-[9px] text-muted-foreground">
-        <span>Summary: {summaryLen}/{SOFT_LIMITS.summary}</span>
-        <span>Exp: {expCount}/{SOFT_LIMITS.experience.entries}</span>
-        <span>Proj: {projCount}/{SOFT_LIMITS.projects.entries}</span>
+      <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[9px] text-muted-foreground">
+        <span>Sum: {summaryLen}</span>
+        <span>Exp: {expCount}</span>
+        <span>Proj: {projCount}</span>
+        <span>Edu: {eduCount}</span>
+        <span>Sections: {totalSections}</span>
       </div>
     </div>
   )

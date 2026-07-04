@@ -8,6 +8,7 @@ const config: TemplateConfig = {
   description: 'Refined, elegant design with subtle styling. Perfect balance of professionalism and visual appeal.',
   supportsPhoto: true,
   category: 'classic',
+  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
 }
 
 function Preview({
@@ -20,9 +21,9 @@ function Preview({
   const { personalInfo } = resume
 
   return (
-    <div style={{ fontFamily: 'Garamond, "EB Garamond", Georgia, serif', fontSize: '10px', lineHeight: '1.45' }}>
+    <div style={{ fontFamily: 'Garamond, "EB Garamond", Georgia, serif', fontSize: '13px', lineHeight: '1.25' }}>
       {personalInfo.fullName && (
-        <header className="text-center pb-2 mb-2" style={{ borderBottom: '0.5px solid #9ca3af' }}>
+        <header className="text-center pb-1.5 mb-1.5" style={{ borderBottom: '0.5px solid #9ca3af' }}>
           <div className="flex items-center justify-center gap-3">
             {resume.personalInfo.profileImage && (
               <div className="w-14 h-14 rounded-full overflow-hidden" style={{ border: '2px solid #9ca3af' }}>
@@ -38,7 +39,7 @@ function Preview({
               )}
             </div>
           </div>
-          <div className="flex flex-wrap justify-center gap-x-2 gap-y-0.5 mt-1.5 text-[8px]" style={{ color: '#4a5568' }}>
+          <div className="flex flex-wrap justify-center gap-x-2 gap-y-0.5 mt-1.5 text-[11px]" style={{ color: '#4a5568' }}>
             {personalInfo.email && <span>{personalInfo.email}</span>}
             {personalInfo.phone && <span>· {personalInfo.phone}</span>}
             {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
@@ -67,7 +68,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Professional Summary">
-          <p className="text-[9px] leading-relaxed italic" style={{ color: '#4a5568' }}>{resume.summary}</p>
+          <p className="text-[13px] leading-relaxed italic" style={{ color: '#4a5568' }}>{resume.summary}</p>
         </Section>
       ) : null
 
@@ -75,23 +76,23 @@ function SectionContent({
       return resume.experience.length > 0 ? (
         <Section title="Experience">
           {resume.experience.map((exp) => (
-            <div key={exp.id} className="mb-2 last:mb-0">
+            <div key={exp.id} className="mb-1.5 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[9px]">{exp.position || 'Position'}</span>
-                <span className="text-[8px] italic" style={{ color: '#6b7280' }}>
+                <span className="font-bold text-[13px]">{exp.position || 'Position'}</span>
+                <span className="text-[11px] italic" style={{ color: '#6b7280' }}>
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[9px] italic" style={{ color: '#4a5568' }}>{exp.company || 'Company'}</span>
+                <span className="text-[13px] italic" style={{ color: '#4a5568' }}>{exp.company || 'Company'}</span>
                 {exp.location && (
-                  <span className="text-[8px]" style={{ color: '#6b7280' }}>{exp.location}</span>
+                  <span className="text-[11px]" style={{ color: '#6b7280' }}>{exp.location}</span>
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0.5 space-y-0.5">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[8px] pl-2 relative" style={{ color: '#374151' }}>
+                    <li key={i} className="text-[11px] pl-2 relative" style={{ color: '#374151' }}>
                       <span className="absolute left-0" style={{ color: '#9ca3af' }}>–</span>
                       {bullet}
                     </li>
@@ -108,7 +109,7 @@ function SectionContent({
         <Section title="Skills">
           <div className="space-y-0.5">
             {resume.skills.map((cat) => (
-              <div key={cat.id} className="text-[8px]">
+              <div key={cat.id} className="text-[11px]">
                 <span className="font-bold">{cat.name || 'Category'}: </span>
                 <span style={{ color: '#374151' }}>{cat.skills.join(', ')}</span>
               </div>
@@ -123,21 +124,21 @@ function SectionContent({
           {resume.projects.map((proj) => (
             <div key={proj.id} className="mb-2 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[9px]">{proj.name || 'Project'}</span>
+                <span className="font-bold text-[13px]">{proj.name || 'Project'}</span>
                 {proj.duration && (
-                  <span className="text-[8px] italic" style={{ color: '#6b7280' }}>{proj.duration}</span>
+                  <span className="text-[11px] italic" style={{ color: '#6b7280' }}>{proj.duration}</span>
                 )}
               </div>
               {proj.role && (
-                <span className="text-[8px] italic" style={{ color: '#4a5568' }}>{proj.role}</span>
+                <span className="text-[11px] italic" style={{ color: '#4a5568' }}>{proj.role}</span>
               )}
               {proj.description && (
-                <p className="text-[8px] mt-0.5" style={{ color: '#374151' }}>{proj.description}</p>
+                <p className="text-[11px] mt-0.5" style={{ color: '#374151' }}>{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0.5 space-y-0.5">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[8px] pl-2 relative" style={{ color: '#374151' }}>
+                    <li key={i} className="text-[11px] pl-2 relative" style={{ color: '#374151' }}>
                       <span className="absolute left-0" style={{ color: '#9ca3af' }}>–</span>
                       {bullet}
                     </li>
@@ -145,7 +146,7 @@ function SectionContent({
                 </ul>
               )}
               {proj.technologies.length > 0 && (
-                <p className="text-[8px] mt-0.5 italic" style={{ color: '#6b7280' }}>
+                <p className="text-[11px] mt-0.5 italic" style={{ color: '#6b7280' }}>
                   <span className="font-medium not-italic">Tech:</span> {proj.technologies.join(', ')}
                 </p>
               )}
@@ -160,17 +161,17 @@ function SectionContent({
           {resume.education.map((edu) => (
             <div key={edu.id} className="mb-1.5 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[9px]">
+                <span className="font-bold text-[13px]">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
-                <span className="text-[8px] italic" style={{ color: '#6b7280' }}>
+                <span className="text-[11px] italic" style={{ color: '#6b7280' }}>
                   {edu.startDate} – {edu.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[9px] italic" style={{ color: '#4a5568' }}>{edu.institution || 'Institution'}</span>
-                {edu.cgpa && <span className="text-[8px]" style={{ color: '#6b7280' }}>CGPA: {edu.cgpa}</span>}
+                <span className="text-[13px] italic" style={{ color: '#4a5568' }}>{edu.institution || 'Institution'}</span>
+                {edu.cgpa && <span className="text-[11px]" style={{ color: '#6b7280' }}>CGPA: {edu.cgpa}</span>}
               </div>
             </div>
           ))}
@@ -182,11 +183,11 @@ function SectionContent({
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-1 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[9px]">
+              <span className="text-[13px]">
                 <span className="font-bold">{cert.name || 'Certification'}</span>
                 {cert.issuer && <span style={{ color: '#4a5568' }}> – {cert.issuer}</span>}
               </span>
-              <span className="text-[8px] italic" style={{ color: '#6b7280' }}>{cert.date}</span>
+              <span className="text-[11px] italic" style={{ color: '#6b7280' }}>{cert.date}</span>
             </div>
           ))}
         </Section>
@@ -198,11 +199,11 @@ function SectionContent({
           {resume.achievements.map((ach) => (
             <div key={ach.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[9px]">{ach.title || 'Achievement'}</span>
-                {ach.date && <span className="text-[8px] italic" style={{ color: '#6b7280' }}>{ach.date}</span>}
+                <span className="font-bold text-[13px]">{ach.title || 'Achievement'}</span>
+                {ach.date && <span className="text-[11px] italic" style={{ color: '#6b7280' }}>{ach.date}</span>}
               </div>
               {ach.description && (
-                <p className="text-[8px]" style={{ color: '#374151' }}>{ach.description}</p>
+                <p className="text-[11px]" style={{ color: '#374151' }}>{ach.description}</p>
               )}
             </div>
           ))}
@@ -215,12 +216,12 @@ function SectionContent({
           {resume.publications.map((pub) => (
             <div key={pub.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[9px] italic">{pub.title || 'Publication'}</span>
-                <span className="text-[8px]" style={{ color: '#6b7280' }}>{pub.date}</span>
+                <span className="font-bold text-[13px] italic">{pub.title || 'Publication'}</span>
+                <span className="text-[11px]" style={{ color: '#6b7280' }}>{pub.date}</span>
               </div>
-              <span className="text-[8px] italic" style={{ color: '#4a5568' }}>{pub.publisher}</span>
+              <span className="text-[11px] italic" style={{ color: '#4a5568' }}>{pub.publisher}</span>
               {pub.description && (
-                <p className="text-[8px]" style={{ color: '#374151' }}>{pub.description}</p>
+                <p className="text-[11px]" style={{ color: '#374151' }}>{pub.description}</p>
               )}
             </div>
           ))}
@@ -232,7 +233,7 @@ function SectionContent({
         <Section title="Languages">
           <div className="flex flex-wrap gap-x-3 gap-y-0.5">
             {resume.languages.map((lang) => (
-              <span key={lang.id} className="text-[8px]" style={{ color: '#374151' }}>
+              <span key={lang.id} className="text-[11px]" style={{ color: '#374151' }}>
                 <span className="font-medium">{lang.name || 'Language'}</span>
                 {lang.proficiency && <span style={{ color: '#6b7280' }}> – {lang.proficiency}</span>}
               </span>
@@ -246,7 +247,7 @@ function SectionContent({
         <>
           {resume.customSections.map((cs) => (
             <Section key={cs.id} title={cs.title || 'Custom Section'}>
-              <p className="text-[8px] whitespace-pre-wrap" style={{ color: '#374151' }}>{cs.content}</p>
+              <p className="text-[11px] whitespace-pre-wrap" style={{ color: '#374151' }}>{cs.content}</p>
             </Section>
           ))}
         </>
@@ -259,8 +260,8 @@ function SectionContent({
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mb-2.5">
-      <h2 className="text-[10px] font-bold uppercase tracking-wider pb-0.5 mb-1" style={{ color: '#4a5568', borderBottom: '0.5px solid #9ca3af' }}>
+    <div className="mb-1.5">
+      <h2 className="text-[14px] font-bold uppercase tracking-wider pb-0 mb-0.5" style={{ color: '#4a5568', borderBottom: '0.5px solid #9ca3af' }}>
         {title}
       </h2>
       {children}

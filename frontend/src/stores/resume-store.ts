@@ -91,7 +91,7 @@ const defaultResume: ResumeData = {
     website: 'alexchen.dev',
     professionalTitle: 'Senior Full Stack Engineer',
   },
-  summary: 'Results-driven full stack engineer with 6+ years of experience building scalable web applications and microservices. Proficient in React, TypeScript, Node.js, and cloud infrastructure. Led migration of monolithic architecture to microservices, reducing deployment time by 70%. Passionate about clean code, performance optimization, and mentoring junior developers.',
+  summary: 'Full stack engineer with 6+ years building scalable web apps and microservices. Proficient in React, TypeScript, Node.js, and cloud infrastructure. Led monolithic-to-microservices migration reducing deployment time by 70%.',
   experience: [
     {
       id: 'exp1',
@@ -103,10 +103,9 @@ const defaultResume: ResumeData = {
       current: true,
       description: '',
       bulletPoints: [
-        'Architected and built real-time payment analytics dashboard serving 50K+ merchants using React, TypeScript, and WebSocket',
-        'Led migration from REST to GraphQL API, reducing payload size by 60% and improving page load times by 40%',
+        'Architected real-time payment analytics dashboard serving 50K+ merchants using React and WebSocket',
+        'Led REST-to-GraphQL migration reducing payload size by 60% and page load times by 40%',
         'Implemented automated CI/CD pipeline with GitHub Actions, cutting deployment time from 45 to 12 minutes',
-        'Mentored 4 junior engineers through code reviews and weekly pair programming sessions',
       ],
     },
     {
@@ -122,7 +121,6 @@ const defaultResume: ResumeData = {
         'Built micro-frontend architecture for the host dashboard, enabling independent team deployments',
         'Developed RESTful APIs with Node.js and Express handling 10K+ requests per second',
         'Optimized PostgreSQL queries reducing average response time from 200ms to 45ms',
-        'Contributed to open-source design system used by 200+ internal components',
       ],
     },
     {
@@ -136,7 +134,6 @@ const defaultResume: ResumeData = {
       description: '',
       bulletPoints: [
         'Developed MVP from scratch using React, Node.js, and MongoDB, launching in 3 months',
-        'Implemented real-time collaboration features using Socket.io for 5K+ active users',
         'Set up AWS infrastructure with Terraform, achieving 99.9% uptime',
       ],
     },
@@ -187,7 +184,6 @@ const defaultResume: ResumeData = {
       description: 'Open-source deployment platform for Docker containers with auto-scaling and zero-downtime deployments.',
       bulletPoints: [
         'Built CLI tool in Go for managing deployments across multiple cloud providers',
-        'Implemented health check system with automatic rollback on failure',
         'Achieved 1.2K+ GitHub stars and 50+ community contributors',
       ],
       technologies: ['Go', 'React', 'Docker', 'Kubernetes', 'AWS'],
@@ -271,10 +267,10 @@ const defaultSectionVisibility: SectionVisibility = {
   education: true,
   skills: true,
   projects: true,
-  certifications: true,
-  achievements: true,
+  certifications: false,
+  achievements: false,
   publications: false,
-  languages: true,
+  languages: false,
   customSections: false,
 }
 

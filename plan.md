@@ -416,3 +416,45 @@ The iframe-based PDF preview required backend compilation on every edit (1.5s de
 | `src/hooks/usePdfPreview.ts` | Still exists (used by nothing in preview), can be removed later |
 
 ---
+
+## Phase 13: Fix A4 Preview Margins & Single-Page Preloaded Content ✅
+
+### Problem
+
+1. **Preview padding didn't match LaTeX margins**: Preview used 15mm top/bottom and 12mm left/right, while LaTeX templates used `0.3in` (7.62mm) margins. This was the biggest cause of preview/PDF mismatch.
+2. **Preloaded content overflowed**: Default resume data had too many bullets and sections to fit one page.
+3. **Too many sections enabled by default**: Certifications, achievements, and languages pushed content past page 1.
+
+### Changes
+
+| File | Change |
+|------|--------|
+| `src/types/resume.ts` | Added `Margins` interface, added `margins: Margins` to `TemplateConfig` |
+| All 8 `templates/*/config.ts` | Added `margins` matching their LaTeX `geometry` (default: 7.62mm = 0.3in) |
+| All 8 `templates/*/index.tsx` | Added `margins` to inline config objects |
+| `src/components/preview/ResumePreview.tsx` | Uses template-specific `margins` instead of hardcoded 15mm/12mm padding |
+| `src/stores/resume-store.ts` | Shortened summary (360→220 chars), reduced experience bullets (4→3), reduced project bullets (3→2) |
+| `src/stores/resume-store.ts` | Default visibility: disabled certifications, achievements, languages |
+| `src/components/preview/OverflowIndicator.tsx` | Better warnings with actionable messages, added section count tracking |
+
+### Margin Map
+
+| Template | LaTeX Geometry | Margins (mm) |
+|----------|---------------|--------------|
+| classic | `margin=0.3in` | 7.62 all |
+| sidebar | `top=0.3in, bottom=0.3in, left=0pt, right=0pt` | T/B: 7.62, L/R: 0 |
+| academic | `top=0.4in, bottom=0.4in, left=0.3in, right=0.3in` | T/B: 10.16, L/R: 7.62 |
+| google | `margin=0.3in` | 7.62 all |
+| compact | `margin=0.3in` | 7.62 all |
+| minimal | `margin=0.3in` | 7.62 all |
+| engineering | `margin=0.3in` | 7.62 all |
+| elegant | `margin=0.3in` | 7.62 all |
+
+### Result
+
+- Preview now accurately matches PDF output layout (same margins → same content width)
+- Default resume with visible sections fits cleanly on one A4 page
+- Users can enable more sections but will see actionable overflow warnings
+- Build passes: TypeScript + Vite
+
+---

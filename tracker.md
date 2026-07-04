@@ -1,6 +1,6 @@
 # Project Tracker
 
-## Current Status: Phase 12 Complete
+## Current Status: Phase 13 Complete
 
 ---
 
@@ -20,6 +20,7 @@
 | 10 | Docker + README | ✅ Complete |
 | 11 | Remove Redundant Templates + iframe Preview | ✅ Complete |
 | 12 | Remove iframe Preview, Add HTML/CSS Preview | ✅ Complete |
+| 13 | Fix A4 Preview Margins & Single-Page Preloaded Content | ✅ Complete |
 
 ---
 
@@ -467,6 +468,43 @@ The iframe-based PDF preview required backend compilation on every edit (1.5s de
 | `README.md` | Updated preview documentation |
 | `plan.md` | Added Phase 12 |
 | `tracker.md` | Added Phase 12 entry |
+
+### Build Verification
+
+| Check | Status |
+|-------|--------|
+| TypeScript compilation | ✅ |
+| Vite production build | ✅ |
+
+---
+
+## Phase 13 - Fix A4 Preview Margins & Single-Page Preloaded Content ✅
+
+### Problem
+
+1. **Preview padding didn't match LaTeX margins**: Preview used 15mm top/bottom and 12mm left/right, while LaTeX templates used `0.3in` (7.62mm) margins — nearly 2x difference.
+2. **Preloaded content overflowed**: Default resume data had too many bullets and sections to fit one page.
+3. **Too many sections enabled by default**: Certifications, achievements, and languages pushed content past page 1.
+
+### Changes Implemented
+
+- [x] Added `Margins` interface and `margins` field to `TemplateConfig` in types
+- [x] Updated all 8 template config files with margins matching their LaTeX geometry
+- [x] `ResumePreview.tsx` now uses template-specific margins instead of hardcoded 15mm/12mm
+- [x] Reduced preloaded content: summary 360→220 chars, experience 4→3 bullets, project 3→2 bullets
+- [x] Disabled certifications, achievements, languages by default
+- [x] Improved overflow indicator with actionable warnings and section count
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `src/types/resume.ts` | Added `Margins` + `margins` to `TemplateConfig` |
+| All 8 `templates/*/config.ts` | Added margin values |
+| All 8 `templates/*/index.tsx` | Added margin values to inline config |
+| `src/components/preview/ResumePreview.tsx` | Template-aware padding |
+| `src/stores/resume-store.ts` | Reduced preloaded content, fewer default sections |
+| `src/components/preview/OverflowIndicator.tsx` | Better warnings, section tracking |
 
 ### Build Verification
 

@@ -1,19 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useResumeStore } from '@/stores/resume-store'
 import { getTemplate } from '@/templates'
 import { AlertTriangle, Maximize, ZoomIn, ZoomOut } from 'lucide-react'
-import type { ZoomLevel } from '@/types/resume'
+import type { ZoomLevel, Margins } from '@/types/resume'
 
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
 const MM_TO_PX = 3.7795275591
 const A4_WIDTH_PX = Math.round(A4_WIDTH_MM * MM_TO_PX)
 const A4_HEIGHT_PX = Math.round(A4_HEIGHT_MM * MM_TO_PX)
-const PREVIEW_PADDING_TOP_MM = 15
-const PREVIEW_PADDING_BOTTOM_MM = 15
-const PREVIEW_PADDING_LEFT_MM = 12
-const PREVIEW_PADDING_RIGHT_MM = 12
+const DEFAULT_MARGINS: Margins = { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 }
 
 const zoomLevels: ZoomLevel[] = [50, 75, 100, 125, 150]
 
@@ -29,6 +26,7 @@ export function ResumePreview() {
 
   const scale = zoom === 'fit' ? 1 : zoom / 100
   const template = getTemplate(templateId)
+  const margins = useMemo(() => template?.config?.margins ?? DEFAULT_MARGINS, [template])
 
   const visibleSections = sectionOrder.filter((s) => {
     if (s.type === 'personalInfo') return true
@@ -96,7 +94,7 @@ export function ResumePreview() {
                 width: A4_WIDTH_PX,
                 height: A4_HEIGHT_PX,
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-                padding: `${PREVIEW_PADDING_TOP_MM * MM_TO_PX}px ${PREVIEW_PADDING_RIGHT_MM * MM_TO_PX}px ${PREVIEW_PADDING_BOTTOM_MM * MM_TO_PX}px ${PREVIEW_PADDING_LEFT_MM * MM_TO_PX}px`,
+                padding: `${margins.top * MM_TO_PX}px ${margins.right * MM_TO_PX}px ${margins.bottom * MM_TO_PX}px ${margins.left * MM_TO_PX}px`,
               }}
             >
               {template ? (

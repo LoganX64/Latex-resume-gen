@@ -121,6 +121,13 @@ export interface ResumeData {
   customSections: CustomSection[]
 }
 
+export interface Margins {
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
 export interface TemplateConfig {
   id: string
   name: string
@@ -128,6 +135,7 @@ export interface TemplateConfig {
   supportsPhoto: boolean
   category: 'classic' | 'modern' | 'minimal' | 'creative'
   pages?: number
+  margins: Margins
 }
 
 export type ZoomLevel = 50 | 75 | 100 | 125 | 150 | 'fit'
