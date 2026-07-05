@@ -59,7 +59,6 @@ interface EditorPanelProps {
 
 export function EditorPanel({ activeSection }: EditorPanelProps) {
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
-  const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const reorderSections = useResumeStore((s) => s.reorderSections)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({})
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -77,9 +76,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   )
 
-  const visibleSections = sectionOrder.filter(
-    (s) => sectionVisibility[s.type] ?? false
-  )
+  const visibleSections = sectionOrder
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
@@ -112,6 +109,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
             <div key={section.id} id={`section-${section.type}`}>
               <SectionWrapper
                 id={section.id}
+                sectionType={section.type}
                 label={sectionLabels[section.type] || section.label}
                 collapsed={collapsedSections[section.id] ?? false}
                 onToggleCollapse={() => toggleCollapse(section.id)}

@@ -15,6 +15,7 @@ import type { SectionVisibility } from '@/types/resume'
 
 interface SectionWrapperProps {
   id: string
+  sectionType: keyof SectionVisibility
   label: string
   collapsed: boolean
   onToggleCollapse: () => void
@@ -23,6 +24,7 @@ interface SectionWrapperProps {
 
 export function SectionWrapper({
   id,
+  sectionType,
   label,
   collapsed,
   onToggleCollapse,
@@ -45,8 +47,8 @@ export function SectionWrapper({
     transition,
   }
 
-  const sectionType = id as unknown as keyof SectionVisibility
-  const isVisible = sectionVisibility[sectionType] ?? true
+  const sectionTypeKey = sectionType
+  const isVisible = sectionVisibility[sectionTypeKey] ?? true
 
   return (
     <div
@@ -69,7 +71,7 @@ export function SectionWrapper({
             <Button
               variant="ghost"
               size="icon-xs"
-              onClick={() => toggleSectionVisibility(sectionType)}
+              onClick={() => toggleSectionVisibility(sectionTypeKey)}
               aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
