@@ -103,14 +103,6 @@ func CompileHandler(c *gin.Context) {
 	}
 
 	pageCount := countPDFPages(pdfData)
-	if req.Mode != "inline" && pageCount > 1 {
-		c.JSON(http.StatusUnprocessableEntity, CompileErrorResponse{
-			Success: false,
-			Message: "Resume is more than one page",
-			Errors:  []string{"Shorten or hide content before downloading the PDF."},
-		})
-		return
-	}
 
 	c.Header("Content-Type", "application/pdf")
 	c.Header("X-PDF-Page-Count", strconv.Itoa(pageCount))

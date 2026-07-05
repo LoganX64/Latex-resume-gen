@@ -39,6 +39,7 @@ export function MainLayout() {
   const setTemplateId = useResumeStore((s) => s.setTemplateId)
   const [isExportingPdf, setIsExportingPdf] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('personal')
 
   const templateConfigs = getAllTemplateConfigs()
   const currentTemplate = getTemplate(templateId)
@@ -75,6 +76,13 @@ export function MainLayout() {
         }
         toast.error('PDF export failed', { description: message })
         return
+      }
+      const pageCount = parseInt(response.headers.get('X-PDF-Page-Count') || '1', 10)
+      if (pageCount > 1) {
+        const confirmed = window.confirm(
+          `Your resume is ${pageCount} pages long. ATS systems prefer single-page resumes.\n\nDo you still want to download it?`
+        )
+        if (!confirmed) return
       }
       const blob = await response.blob()
       const name = resume.personalInfo.fullName || 'resume'
@@ -114,7 +122,7 @@ export function MainLayout() {
   return (
     <TooltipProvider delay={400}>
       <div className="flex h-screen overflow-hidden bg-background">
-        <Sidebar />
+        <Sidebar activeSection={activeSection} onSectionClick={setActiveSection} />
         <Separator orientation="vertical" className="h-auto" />
         <div className="flex flex-1 overflow-hidden">
           <div className="flex flex-col w-full md:w-[55%] min-w-0 border-r border-border">
@@ -143,7 +151,7 @@ export function MainLayout() {
               </div>
             </header>
             <div className="flex-1 overflow-y-auto">
-              <EditorPanel />
+              <EditorPanel activeSection={activeSection} />
             </div>
           </div>
           <div className="hidden md:flex md:flex-col md:flex-1 min-w-0 bg-muted/30">
