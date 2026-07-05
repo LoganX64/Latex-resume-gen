@@ -97,6 +97,18 @@ function SortableProjectEntry({
           />
         </div>
         <div className="space-y-1">
+          <Label htmlFor={`proj-duration-${project.id}`} className="text-[10px]">Duration</Label>
+          <Input
+            id={`proj-duration-${project.id}`}
+            value={project.duration}
+            onChange={(e) => updateProject(project.id, 'duration', e.target.value)}
+            placeholder="2023 - Present"
+            className="h-7 text-xs"
+          />
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-1">
           <Label htmlFor={`proj-role-${project.id}`} className="text-[10px]">Role</Label>
           <Input
             id={`proj-role-${project.id}`}
@@ -106,16 +118,16 @@ function SortableProjectEntry({
             className="h-7 text-xs"
           />
         </div>
-      </div>
-      <div className="space-y-1">
-        <Label htmlFor={`proj-desc-${project.id}`} className="text-[10px]">Description</Label>
-        <Textarea
-          id={`proj-desc-${project.id}`}
-          value={project.description}
-          onChange={(e) => updateProject(project.id, 'description', e.target.value)}
-          placeholder="Brief description of the project…"
-          className="min-h-[60px] text-xs resize-y"
-        />
+        <div className="space-y-1">
+          <Label htmlFor={`proj-desc-${project.id}`} className="text-[10px]">Description</Label>
+          <Textarea
+            id={`proj-desc-${project.id}`}
+            value={project.description}
+            onChange={(e) => updateProject(project.id, 'description', e.target.value)}
+            placeholder="Brief description of the project…"
+            className="min-h-[60px] text-xs resize-y"
+          />
+        </div>
       </div>
       <div className="space-y-1">
         <Label className="text-[10px]">Bullet Points</Label>

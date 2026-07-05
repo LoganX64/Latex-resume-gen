@@ -1,6 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
 import { escapeLatex } from '@/lib/utils'
-import { formatDateRange, generateBulletPoints, getContactParts } from '../shared'
+import { formatDateRange, generateBulletPoints } from '../shared'
 
 export function generateAcademicLatex(
   resume: ResumeData,
@@ -25,13 +25,33 @@ function buildAcademicDocument(
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
 
-  const contactParts = getContactParts(personalInfo, false)
-  const contactLine = contactParts.length > 0
-    ? `\\\\[2pt]{\\small ${contactParts.join(' $\\mid$ ')}}`
+  const contactItems: string[] = []
+  if (personalInfo.email) {
+    const escaped = escapeLatex(personalInfo.email)
+    contactItems.push(`\\href{mailto:${personalInfo.email}}{${escaped}}`)
+  }
+  if (personalInfo.phone) {
+    contactItems.push(escapeLatex(personalInfo.phone))
+  }
+  if (personalInfo.linkedin) {
+    const escaped = escapeLatex(personalInfo.linkedin)
+    contactItems.push(`\\href{https://${personalInfo.linkedin}}{${escaped}}`)
+  }
+  if (personalInfo.github) {
+    const escaped = escapeLatex(personalInfo.github)
+    contactItems.push(`\\href{https://${personalInfo.github}}{${escaped}}`)
+  }
+  if (personalInfo.website) {
+    const escaped = escapeLatex(personalInfo.website)
+    contactItems.push(`\\href{https://${personalInfo.website}}{${escaped}}`)
+  }
+  const contactLine = contactItems.length > 0
+    ? `\\\\[0pt]{\\small ${contactItems.join(' $\\mid$ ')}}`
     : ''
 
-  const titleLine = personalInfo.professionalTitle
-    ? `\\\\[2pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+  const titleParts = [personalInfo.professionalTitle, personalInfo.location].filter(Boolean)
+  const titleLine = titleParts.length > 0
+    ? `\\\\[2pt]{\\large\\textit{${titleParts.map(p => escapeLatex(p!)).join(' \\textendash{} ')}}}`
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
@@ -75,8 +95,8 @@ function buildAcademicDocument(
 \\setlength{\\parskip}{0pt}
 \\linespread{0.95}
 
-\\titleformat{\\section}{\\normalsize\\bfseries\\scshape}{}{0em}{}[\\rule{\\textwidth}{0.8pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\normalsize\\bfseries\\scshape}{}{0em}{}[\\titlerule]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -89,13 +109,11 @@ function buildAcademicDocument(
 \\begin{document}
 \\thispagestyle{firstpage}
 
-\\begin{center}
-{\\LARGE\\textsc{\\textbf{${name}}}}
-${titleLine}
-${contactLine}
-\\end{center}
-
-\\vspace{-2pt}
+\\begingroup
+\\centering
+{\\LARGE\\textsc{\\textbf{${name}}}}${titleLine}${contactLine}
+\\par
+\\endgroup
 \\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
@@ -134,7 +152,7 @@ function generateSummary(summary: string): string {
   if (!summary) return ''
   return `\\section{Research Interests}
 
-${escapeLatex(summary)}`
+\\textit{${escapeLatex(summary)}}`
 }
 
 function generateExperience(experience: ResumeData['experience']): string {
@@ -148,7 +166,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -171,18 +189,29 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
-      const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
+      const roleLine = proj.role ? ` \\textendash{} \\textit{${escapeLatex(proj.role)}}` : ''
+      const descLine = proj.description ? `\\\\\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
+      const hasBullets = bullets.length > 0
+
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `${hasBullets ? '\n' : '\\\\\n'}\\textbf{Technologies:} \\textit{${escapeLatex(proj.technologies.join(', '))}}`
           : ''
 
-      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets}${techLine}`
+      const linkAfterBullets = hasBullets && !techLine
+      const linkLine = proj.githubUrl || proj.liveDemoUrl
+        ? `${linkAfterBullets ? '\n' : '\\\\\n'}\\textit{${
+            [proj.githubUrl ? `GitHub: \\url{${escapeLatex(proj.githubUrl)}}` : '',
+             proj.liveDemoUrl ? `Demo: \\url{${escapeLatex(proj.liveDemoUrl)}}` : '']
+              .filter(Boolean)
+              .join(' $\\mid$ ')
+          }}`
+        : ''
+
+      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine}${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Research Projects}
 
@@ -258,7 +287,7 @@ function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
     .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
-    .join(' \\\\\n')
+    .join('\\quad ')
 
   return `\\section{Languages}
 

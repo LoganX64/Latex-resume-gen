@@ -27,16 +27,17 @@ function Preview({
           <h1 className="text-xl font-bold tracking-wide text-black" style={{ fontVariant: 'small-caps' }}>
             {personalInfo.fullName}
           </h1>
-          {personalInfo.professionalTitle && (
-            <p className="text-[15px] text-gray-600 italic mt-0">{personalInfo.professionalTitle}</p>
+          {(personalInfo.professionalTitle || personalInfo.location) && (
+            <p className="text-[15px] text-gray-600 italic mt-0">
+              {[personalInfo.professionalTitle, personalInfo.location].filter(Boolean).join(' — ')}
+            </p>
           )}
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 mt-1 text-[12px] text-gray-600">
             {personalInfo.email && <span>{personalInfo.email}</span>}
             {personalInfo.phone && <span>| {personalInfo.phone}</span>}
-            {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span>{personalInfo.linkedin}</span>}
-            {personalInfo.github && <span>{personalInfo.github}</span>}
-            {personalInfo.website && <span>{personalInfo.website}</span>}
+            {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
+            {personalInfo.github && <span>| {personalInfo.github}</span>}
+            {personalInfo.website && <span>| {personalInfo.website}</span>}
           </div>
         </header>
       )}
@@ -59,7 +60,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Research Interests">
-          <p className="text-[14px] leading-relaxed text-gray-700 italic">{resume.summary}</p>
+          <p className="text-[14px] leading-snug text-gray-700 italic">{resume.summary}</p>
         </Section>
       ) : null
 
@@ -114,14 +115,16 @@ function SectionContent({
           {resume.projects.map((proj) => (
             <div key={proj.id} className="mb-2 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[14px]">{proj.name || 'Project'}</span>
+                <div className="flex items-baseline gap-1 flex-wrap">
+                  <span className="font-bold text-[14px]">{proj.name || 'Project'}</span>
+                  {proj.role && (
+                    <span className="text-[12px] text-gray-600 italic"> — {proj.role}</span>
+                  )}
+                </div>
                 {proj.duration && (
                   <span className="text-[12px] text-gray-500 italic">{proj.duration}</span>
                 )}
               </div>
-              {proj.role && (
-                <span className="text-[12px] text-gray-600 italic">{proj.role}</span>
-              )}
               {proj.description && (
                 <p className="text-[12px] text-gray-700 mt-0">{proj.description}</p>
               )}
