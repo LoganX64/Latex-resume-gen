@@ -150,6 +150,13 @@ function SectionContent({
                   <span className="font-medium not-italic">Tech:</span> {proj.technologies.join(', ')}
                 </p>
               )}
+              {(proj.githubUrl || proj.liveDemoUrl) && (
+                <p className="text-[11px] mt-0.5 italic" style={{ color: '#6b7280' }}>
+                  {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span className="not-italic"> | </span>}
+                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                </p>
+              )}
             </div>
           ))}
         </Section>

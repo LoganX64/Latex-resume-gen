@@ -149,6 +149,13 @@ function SectionContent({
                   <span style={{ color: '#1e3a5f' }}>{proj.technologies.join(', ')}</span>
                 </p>
               )}
+              {(proj.githubUrl || proj.liveDemoUrl) && (
+                <p className="text-[12px] mt-0" style={{ color: '#1e3a5f' }}>
+                  {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
+                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                </p>
+              )}
             </div>
           ))}
         </Section>

@@ -137,6 +137,13 @@ function SectionContent({
                   <span className="font-medium">Tech:</span> {proj.technologies.join(', ')}
                 </p>
               )}
+              {(proj.githubUrl || proj.liveDemoUrl) && (
+                <p className="text-[11px] text-gray-500">
+                  {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
+                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                </p>
+              )}
             </div>
           ))}
         </Section>
