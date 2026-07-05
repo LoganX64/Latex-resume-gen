@@ -36,7 +36,7 @@ function buildModernDocument(
 \\usepackage[empty]{fullpage}
 \\usepackage{titlesec}
 \\usepackage{marvosym}
-\\usepackage[usenames,dvipsnames]{color}
+\\usepackage[usenames,dvipsnames]{xcolor}
 \\usepackage{verbatim}
 \\usepackage{enumitem}
 \\usepackage[hidelinks]{hyperref}
@@ -46,7 +46,11 @@ function buildModernDocument(
 \\usepackage{amsmath}
 \\usepackage[margin=0.5in]{geometry}
 \\usepackage[default]{sourcesanspro}
-\\input{glyphtounicode}
+\\ifx\\pdfglyphtounicode\\undefined
+\\else
+    \\input{glyphtounicode}
+    \\pdfgentounicode=1
+\\fi
 
 \\pagestyle{fancy}
 \\fancyhf{}
@@ -60,8 +64,6 @@ function buildModernDocument(
 \\setlength{\\tabcolsep}{0in}
 
 \\titleformat{\\section}{\\vspace{-5pt}\\scshape\\raggedright\\large}{}{0em}{}[\\color{black}\\titlerule\\vspace{-4pt}]
-
-\\pdfgentounicode=1
 
 \\definecolor{lightyellow}{cmyk}{0.00, 0.05, 0.20, 0.00}
 

@@ -267,10 +267,10 @@ const defaultSectionVisibility: SectionVisibility = {
   education: true,
   skills: true,
   projects: true,
-  certifications: false,
-  achievements: false,
-  publications: false,
-  languages: false,
+  certifications: true,
+  achievements: true,
+  publications: true,
+  languages: true,
   customSections: false,
 }
 

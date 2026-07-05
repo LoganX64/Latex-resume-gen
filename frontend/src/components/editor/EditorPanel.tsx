@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode, useEffect, useRef, useState } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -53,11 +53,24 @@ const sectionLabels: Record<string, string> = {
   customSections: 'Custom Sections',
 }
 
-export function EditorPanel() {
+interface EditorPanelProps {
+  activeSection?: string
+}
+
+export function EditorPanel({ activeSection }: EditorPanelProps) {
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const reorderSections = useResumeStore((s) => s.reorderSections)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({})
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!activeSection) return
+    const el = document.getElementById(`section-${activeSection}`)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [activeSection])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -83,8 +96,8 @@ export function EditorPanel() {
   }
 
   return (
-    <div className="p-4 space-y-4">
-      <PersonalInfoForm />
+    <div ref={scrollRef} className="p-4 space-y-4">
+      <div id="section-personal"><PersonalInfoForm /></div>
 
       <DndContext
         sensors={sensors}
@@ -96,15 +109,16 @@ export function EditorPanel() {
           strategy={verticalListSortingStrategy}
         >
           {visibleSections.map((section) => (
-            <SectionWrapper
-              key={section.id}
-              id={section.id}
-              label={sectionLabels[section.type] || section.label}
-              collapsed={collapsedSections[section.id] ?? false}
-              onToggleCollapse={() => toggleCollapse(section.id)}
-            >
-              {sectionComponents[section.type]}
-            </SectionWrapper>
+            <div key={section.id} id={`section-${section.type}`}>
+              <SectionWrapper
+                id={section.id}
+                label={sectionLabels[section.type] || section.label}
+                collapsed={collapsedSections[section.id] ?? false}
+                onToggleCollapse={() => toggleCollapse(section.id)}
+              >
+                {sectionComponents[section.type]}
+              </SectionWrapper>
+            </div>
           ))}
         </SortableContext>
       </DndContext>
