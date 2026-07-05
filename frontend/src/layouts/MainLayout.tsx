@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { Separator } from '@/components/ui/separator'
 import { Sidebar } from '@/components/editor/Sidebar'
@@ -15,8 +15,19 @@ import {
   RotateCcw,
   Search,
   Loader2,
+  TriangleAlert,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import {
   Tooltip,
   TooltipContent,
@@ -40,6 +51,9 @@ export function MainLayout() {
   const [isExportingPdf, setIsExportingPdf] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<string>('personal')
+  const [showMultiPageDialog, setShowMultiPageDialog] = useState(false)
+  const [multiPageCount, setMultiPageCount] = useState(0)
+  const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
 
   const templateConfigs = getAllTemplateConfigs()
   const currentTemplate = getTemplate(templateId)
@@ -78,15 +92,15 @@ export function MainLayout() {
         return
       }
       const pageCount = parseInt(response.headers.get('X-PDF-Page-Count') || '1', 10)
-      if (pageCount > 1) {
-        const confirmed = window.confirm(
-          `Your resume is ${pageCount} pages long. ATS systems prefer single-page resumes.\n\nDo you still want to download it?`
-        )
-        if (!confirmed) return
-      }
       const blob = await response.blob()
       const name = resume.personalInfo.fullName || 'resume'
       const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
+      if (pageCount > 1) {
+        pendingDownloadRef.current = { blob, filename }
+        setMultiPageCount(pageCount)
+        setShowMultiPageDialog(true)
+        return
+      }
       downloadPdf(blob, filename)
       toast.success('PDF exported', {
         description: `${filename} downloaded successfully.`,
@@ -101,6 +115,17 @@ export function MainLayout() {
       setIsExportingPdf(false)
     }
   }, [resume, sectionOrder, sectionVisibility, currentTemplate, isExportingPdf])
+
+  const handleMultiPageDownload = useCallback(() => {
+    const pending = pendingDownloadRef.current
+    if (!pending) return
+    downloadPdf(pending.blob, pending.filename)
+    toast.success('PDF exported', {
+      description: `${pending.filename} downloaded successfully.`,
+    })
+    setShowMultiPageDialog(false)
+    pendingDownloadRef.current = null
+  }, [])
 
   const handleResetResume = useCallback(() => {
     resetResume()
@@ -206,6 +231,31 @@ export function MainLayout() {
           isDarkMode={darkMode}
         />
       </div>
+      <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
+        <AlertDialogContent className="sm:max-w-sm">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-2">
+              <TriangleAlert className="h-5 w-5 text-destructive shrink-0" />
+              <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription>
+              Your resume is <strong>{multiPageCount} pages</strong> long.
+              Most ATS systems and recruiters prefer single-page resumes.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <p className="text-xs text-muted-foreground">
+            Try hiding less important sections or shortening bullet points to fit on one page.
+          </p>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowMultiPageDialog(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleMultiPageDownload}>
+              Download anyway
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   )
 }
