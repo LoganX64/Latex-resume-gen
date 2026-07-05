@@ -39,6 +39,13 @@ import { getTemplate, getAllTemplateConfigs } from '@/templates'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandPalette } from '@/components/CommandPalette'
 import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -183,18 +190,18 @@ export function MainLayout() {
             <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
-                <select
-                  value={templateId}
-                  onChange={(e) => setTemplateId(e.target.value)}
-                  className="text-[10px] bg-transparent border border-border rounded px-2 py-1 text-foreground cursor-pointer"
-                  aria-label="Select resume template"
-                >
-                  {templateConfigs.map((tc) => (
-                    <option key={tc.id} value={tc.id}>
-                      {tc.name}
-                    </option>
-                  ))}
-                </select>
+                <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
+                  <SelectTrigger className="text-[10px] h-6 px-2 py-1 gap-1 cursor-pointer" aria-label="Select resume template">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="min-w-32 text-[10px]">
+                    {templateConfigs.map((tc) => (
+                      <SelectItem key={tc.id} value={tc.id} className="py-0.5 pr-6 pl-1.5 text-[10px]">
+                        {tc.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="flex items-center gap-1">
                 <Tooltip>

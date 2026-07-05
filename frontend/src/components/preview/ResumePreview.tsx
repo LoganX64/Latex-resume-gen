@@ -22,7 +22,76 @@ export function ResumePreview() {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const templateId = useResumeStore((s) => s.templateId)
   const pageRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [isOverflowing, setIsOverflowing] = useState(false)
+  const isDragging = useRef(false)
+  const [showGrabbing, setShowGrabbing] = useState(false)
+  const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0, active: false })
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const DRAG_THRESHOLD = 5
+
+    const onMouseDown = (e: MouseEvent) => {
+      if (e.button !== 0) return
+      dragStart.current = {
+        x: e.clientX,
+        y: e.clientY,
+        scrollLeft: el.scrollLeft,
+        scrollTop: el.scrollTop,
+        active: true,
+      }
+      isDragging.current = false
+    }
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!dragStart.current.active) return
+      const dx = e.clientX - dragStart.current.x
+      const dy = e.clientY - dragStart.current.y
+
+      if (!isDragging.current) {
+        if (Math.abs(dx) <= DRAG_THRESHOLD && Math.abs(dy) <= DRAG_THRESHOLD) return
+        isDragging.current = true
+        setShowGrabbing(true)
+      }
+
+      e.preventDefault()
+      el.scrollLeft = dragStart.current.scrollLeft - dx
+      el.scrollTop = dragStart.current.scrollTop - dy
+    }
+
+    const onSelectStart = (e: Event) => {
+      if (isDragging.current) {
+        e.preventDefault()
+      }
+    }
+
+    const onMouseUp = () => {
+      isDragging.current = false
+      setShowGrabbing(false)
+      dragStart.current = { ...dragStart.current, active: false }
+    }
+
+    const onDragStart = (e: DragEvent) => {
+      e.preventDefault()
+    }
+
+    el.addEventListener('mousedown', onMouseDown)
+    document.addEventListener('mousemove', onMouseMove)
+    document.addEventListener('mouseup', onMouseUp)
+    document.addEventListener('selectstart', onSelectStart)
+    el.addEventListener('dragstart', onDragStart)
+
+    return () => {
+      el.removeEventListener('mousedown', onMouseDown)
+      document.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('mouseup', onMouseUp)
+      document.removeEventListener('selectstart', onSelectStart)
+      el.removeEventListener('dragstart', onDragStart)
+    }
+  }, [])
 
   const scale = zoom === 'fit' ? 1 : zoom / 100
   const template = getTemplate(templateId)
@@ -84,33 +153,46 @@ export function ResumePreview() {
           </Button>
         </div>
       </div>
-      <div className="flex-1 overflow-auto p-4">
-        <div className="flex items-start justify-center min-h-full">
-          <div style={{ transform: `scale(${scale})`, transformOrigin: 'top center', width: A4_WIDTH_PX }}>
-            <div
-              ref={pageRef}
-              className={`bg-white text-black relative overflow-hidden ${isOverflowing ? 'ring-2 ring-red-500' : ''}`}
-              style={{
-                width: A4_WIDTH_PX,
-                height: A4_HEIGHT_PX,
-                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-                padding: `${margins.top * MM_TO_PX}px ${margins.right * MM_TO_PX}px ${margins.bottom * MM_TO_PX}px ${margins.left * MM_TO_PX}px`,
-              }}
-            >
-              {template ? (
-                <template.Preview resume={resume} sections={visibleSections} />
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-400 text-xs">
-                  Select a template
+      <div
+        ref={containerRef}
+        className={`flex-1 overflow-auto p-4 ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
+      >
+        <div className="flex items-start min-h-full">
+          <div
+            style={{
+              width: A4_WIDTH_PX * scale + 16 * scale,
+              height: A4_HEIGHT_PX * scale + 16 * scale + (isOverflowing ? 48 * scale : 0),
+              marginLeft: scale <= 1 ? 'auto' : undefined,
+              marginRight: scale <= 1 ? 'auto' : undefined,
+              flexShrink: 0,
+            }}
+          >
+            <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', width: A4_WIDTH_PX }}>
+              <div
+                ref={pageRef}
+                className={`bg-white text-black relative overflow-hidden ${showGrabbing ? 'cursor-grabbing' : 'cursor-auto'} ${isOverflowing ? 'ring-2 ring-red-500' : ''}`}
+                style={{
+                  width: A4_WIDTH_PX,
+                  height: A4_HEIGHT_PX,
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+                  padding: `${margins.top * MM_TO_PX}px ${margins.right * MM_TO_PX}px ${margins.bottom * MM_TO_PX}px ${margins.left * MM_TO_PX}px`,
+                }}
+              >
+                {template ? (
+                  <template.Preview resume={resume} sections={visibleSections} />
+                ) : (
+                  <div className="flex items-center justify-center h-full text-gray-400 text-xs">
+                    Select a template
+                  </div>
+                )}
+              </div>
+              {isOverflowing && (
+                <div className="mt-3 flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-[11px] leading-snug text-red-700">
+                  <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                  This preview exceeds one A4 page. Shorten content or hide sections before downloading.
                 </div>
               )}
             </div>
-            {isOverflowing && (
-              <div className="mt-3 flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-[11px] leading-snug text-red-700">
-                <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                This preview exceeds one A4 page. Shorten content or hide sections before downloading.
-              </div>
-            )}
           </div>
         </div>
       </div>
