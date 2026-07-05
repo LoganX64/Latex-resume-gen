@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { useResumeStore } from '@/stores/resume-store'
 import { getTemplate } from '@/templates'
 import { AlertTriangle, Maximize, ZoomIn, ZoomOut } from 'lucide-react'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import type { ZoomLevel, Margins } from '@/types/resume'
 
 const A4_WIDTH_MM = 210
@@ -141,10 +142,15 @@ export function ResumePreview() {
           <Button variant="ghost" size="icon-xs" onClick={() => cycleZoom('out')} disabled={zoom === 50} aria-label="Zoom out">
             <ZoomOut className="h-3 w-3" />
           </Button>
-          <select value={zoom} onChange={(e) => { const val = e.target.value; setZoom(val === 'fit' ? 'fit' : Number(val) as ZoomLevel) }} className="text-[10px] bg-transparent border border-border rounded px-1.5 py-0.5 text-foreground cursor-pointer" aria-label="Zoom level">
-            {zoomLevels.map((z) => (<option key={z} value={z}>{z}%</option>))}
-            <option value="fit">Fit</option>
-          </select>
+          <Select value={String(zoom)} onValueChange={(v) => setZoom(v === 'fit' ? 'fit' : Number(v) as ZoomLevel)}>
+            <SelectTrigger className="text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0" aria-label="Zoom level">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="min-w-16 text-[10px]">
+              {zoomLevels.map((z) => (<SelectItem key={z} value={String(z)} className="py-0.5 pr-6 pl-1.5 text-[10px]">{z}%</SelectItem>))}
+              <SelectItem key="fit" value="fit" className="py-0.5 pr-6 pl-1.5 text-[10px]">Fit</SelectItem>
+            </SelectContent>
+          </Select>
           <Button variant="ghost" size="icon-xs" onClick={() => cycleZoom('in')} disabled={zoom === 150} aria-label="Zoom in">
             <ZoomIn className="h-3 w-3" />
           </Button>

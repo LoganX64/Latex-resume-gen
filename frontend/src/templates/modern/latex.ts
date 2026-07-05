@@ -62,6 +62,7 @@ function buildModernDocument(
 \\raggedbottom
 \\raggedright
 \\setlength{\\tabcolsep}{0in}
+\\linespread{0.95}
 
 \\titleformat{\\section}{\\vspace{-5pt}\\scshape\\raggedright\\large}{}{0em}{}[\\color{black}\\titlerule\\vspace{-4pt}]
 
@@ -230,7 +231,7 @@ function generateEducation(education: ResumeData['education']): string {
       const cgpa = edu.cgpa ? ` | GPA: ${escapeLatex(edu.cgpa)}` : ''
 
       return `\\resumeSubheading
-{${escapeLatex(edu.institution)}}{${dateRange}}
+{\\textbf{${escapeLatex(edu.institution)}}}{${dateRange}}
 {${degreeLine}}{${cgpa}}`
     })
     .join('\n\n')
@@ -292,7 +293,7 @@ ${items}
 function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
-    .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
+    .map((lang) => `\\textbf{${escapeLatex(lang.name)}} (${escapeLatex(lang.proficiency)})`)
     .join(', ')
 
   return `\\section{Languages}

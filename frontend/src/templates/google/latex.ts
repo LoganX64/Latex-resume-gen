@@ -36,6 +36,8 @@ function buildGoogleDocument(
   return `\\documentclass[11pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[scaled=0.9]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
 \\usepackage{savetrees}
 \\usepackage{enumitem}
@@ -46,6 +48,7 @@ function buildGoogleDocument(
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\definecolor{googleblue}{HTML}{1a73e8}
 
@@ -67,6 +70,9 @@ function buildGoogleDocument(
 ${title}
 ${contactLine}
 \\end{center}
+
+\\vspace{-2pt}
+\\noindent{\\color{googleblue}\\rule{\\textwidth}{1.5pt}}
 
 ${body}
 
@@ -146,7 +152,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
@@ -173,8 +179,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
     .join('\n\n')
 

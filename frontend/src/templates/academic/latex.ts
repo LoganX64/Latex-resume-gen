@@ -37,6 +37,7 @@ function buildAcademicDocument(
   return `\\documentclass[11pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage{mathpazo}
 \\usepackage[margin=0.3in]{geometry}
 \\usepackage{savetrees}
 \\usepackage{enumitem}
@@ -47,8 +48,8 @@ function buildAcademicDocument(
 \\usepackage{graphicx}
 
 \\geometry{
-  top=0.4in,
-  bottom=0.4in,
+  top=0.3in,
+  bottom=0.3in,
   left=0.3in,
   right=0.3in
 }
@@ -72,6 +73,7 @@ function buildAcademicDocument(
 
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\titleformat{\\section}{\\normalsize\\bfseries\\scshape}{}{0em}{}[\\rule{\\textwidth}{0.8pt}]
 \\titlespacing*{\\section}{0pt}{2pt}{0pt}
@@ -92,6 +94,9 @@ function buildAcademicDocument(
 ${titleLine}
 ${contactLine}
 \\end{center}
+
+\\vspace{-2pt}
+\\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
 
@@ -139,7 +144,7 @@ function generateExperience(experience: ResumeData['experience']): string {
       const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
       const bullets = generateBulletPoints(exp.bulletPoints)
 
-      return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
+      return `\\textbf{${escapeLatex(exp.position)}} \\hfill \\textit{${dateRange}} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
@@ -166,12 +171,12 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
+      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
@@ -194,8 +199,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill \\textit{${dateRange}} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
     .join('\n\n')
 
@@ -210,7 +215,7 @@ function generateCertifications(certifications: ResumeData['certifications']): s
     .map((cert) => {
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
+      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}\\textit{${dateStr}}`
     })
     .join(' \\\\\n')
 
@@ -240,7 +245,7 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textit{${escapeLatex(pub.title)}} -- ${escapeLatex(pub.publisher)}${dateStr}${descStr}`
+      return `\\textit{${escapeLatex(pub.title)}}${dateStr}${descStr}\n${escapeLatex(pub.publisher)}`
     })
     .join(' \\\\\n\n')
 

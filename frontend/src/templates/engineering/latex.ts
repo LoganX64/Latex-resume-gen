@@ -48,12 +48,16 @@ function buildEngineeringDocument(
 {\\LARGE\\textbf{\\color{darkblue}${name}}}
 ${title}
 ${contactLine}
-\\end{center}`
+\\end{center}
+\\vspace{-2pt}
+\\noindent{\\color{darkblue}\\rule{\\textwidth}{1.5pt}}`
   }
 
   return `\\documentclass[11pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[scaled=0.9]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
 \\usepackage{savetrees}
 \\usepackage{enumitem}
@@ -66,6 +70,7 @@ ${contactLine}
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\definecolor{darkblue}{HTML}{1e3a5f}
 \\definecolor{lightgray}{HTML}{f0f0f0}
@@ -145,17 +150,12 @@ ${items}`
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => {
-      const skillList = cat.skills.map((s) => `\\textbf{${escapeLatex(s)}}`).join(', ')
-      return `\\textbf{${escapeLatex(cat.name)}} & ${skillList}`
-    })
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
     .join(' \\\\\n')
 
   return `\\section{Technical Skills}
 
-\\begin{tabularx}{\\textwidth}{@{}lX@{}}
-${items}
-\\end{tabularx}`
+${items}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -163,12 +163,12 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill \\textcolor{gray}{${escapeLatex(proj.duration)}}` : ''
-      const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
+      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} \\textcolor{darkblue}{${escapeLatex(proj.technologies.join(', '))}}`
+          ? `\n\\textbf{Tech:} \\textcolor{darkblue}{${escapeLatex(proj.technologies.join(', '))}}`
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
@@ -195,8 +195,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: \\textbf{${escapeLatex(edu.cgpa)}}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
     .join('\n\n')
 

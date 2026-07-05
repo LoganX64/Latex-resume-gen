@@ -36,6 +36,8 @@ function buildCompactDocument(
   return `\\documentclass[9pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[scaled=0.9]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
 \\usepackage{savetrees}
 \\usepackage{enumitem}
@@ -47,6 +49,7 @@ function buildCompactDocument(
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\rule{\\textwidth}{0.5pt}]
 \\titlespacing*{\\section}{0pt}{2pt}{0pt}
@@ -65,6 +68,9 @@ function buildCompactDocument(
 {\\large\\textbf{${name}}${title}}
 ${contactLine}
 \\end{center}
+
+\\vspace{-2pt}
+\\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
 
@@ -126,14 +132,12 @@ ${items}`
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}} & ${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
     .join(' \\\\\n')
 
   return `\\section{Skills}
 
-\\begin{tabularx}{\\textwidth}{@{}lX@{}}
-${items}
-\\end{tabularx}`
+${items}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -168,8 +172,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-${escapeLatex(edu.institution)}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+${escapeLatex(edu.institution)}${cgpaLine}`
     })
     .join('\n\n')
 

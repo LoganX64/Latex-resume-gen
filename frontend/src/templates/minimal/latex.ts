@@ -38,6 +38,8 @@ function buildMinimalDocument(
   return `\\documentclass[10pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage[scaled=0.9]{helvet}
+\\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
 \\usepackage{savetrees}
 \\usepackage{enumitem}
@@ -48,8 +50,9 @@ function buildMinimalDocument(
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
-\\titleformat{\\section}{\\bfseries\\small}{}{0em}{\\MakeUppercase}
+\\titleformat{\\section}{\\bfseries\\small}{}{0em}{\\MakeUppercase}[\\titlerule]
 \\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textendash, topsep=0pt, itemsep=0pt}
@@ -115,7 +118,7 @@ function generateExperience(experience: ResumeData['experience']): string {
       const bullets = generateBulletPoints(exp.bulletPoints)
 
       return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
-${escapeLatex(exp.company)}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
+${escapeLatex(exp.company)}${exp.location ? ` $|$ ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
     .join('\n\n')
@@ -145,11 +148,15 @@ function generateProjects(projects: ResumeData['projects']): string {
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
+      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
+      const linkLine = links.length > 0
+        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
+        : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${dateLine} \\\\
-${descLine}${bullets}${techLine}`
+${descLine}${bullets}${techLine}${linkLine}`
     })
     .join('\n\n')
 
@@ -168,8 +175,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-${escapeLatex(edu.institution)}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+${escapeLatex(edu.institution)}${cgpaLine}`
     })
     .join('\n\n')
 
@@ -213,8 +220,7 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
+      return `\\textbf{${escapeLatex(pub.title)}}${dateStr}\n\\textit{${escapeLatex(pub.publisher)}}`
     })
     .join(' \\\\\n\n')
 
@@ -226,7 +232,7 @@ ${items}`
 function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
-    .map((lang) => `${escapeLatex(lang.name)}: ${escapeLatex(lang.proficiency)}`)
+    .map((lang) => `\\textbf{${escapeLatex(lang.name)}} (${escapeLatex(lang.proficiency)})`)
     .join(', ')
 
   return `\\section{Languages}

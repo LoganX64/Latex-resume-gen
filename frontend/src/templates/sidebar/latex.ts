@@ -67,6 +67,7 @@ ${contactItems.join('\\\\[2pt]\n')}`
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\definecolor{sidebar}{HTML}{1a365d}
 \\definecolor{sidebartext}{HTML}{ffffff}
@@ -192,16 +193,20 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill \\small ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
+      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} \\small ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} \\small ${escapeLatex(proj.technologies.join(', '))}`
           : ''
+      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
+      const linkLine = links.length > 0
+        ? `\n\\small ${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
+        : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets}${techLine}`
+${descLine}${bullets}${techLine}${linkLine}`
     })
     .join('\n\n')
 
@@ -220,8 +225,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill \\small ${dateRange}${cgpaLine} \\\\[1pt]
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill \\small ${dateRange} \\\\[1pt]
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
     .join('\n\n')
 
@@ -233,7 +238,7 @@ ${items}`
 function generateSidebarSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}\\\\\n${escapeLatex(cat.skills.join(', '))}`)
     .join('\\\\[2pt]\n')
 
   return `\\sidebarsection{Skills}
@@ -255,7 +260,7 @@ ${items}`
 function generateSidebarCertifications(certifications: ResumeData['certifications']): string {
   if (certifications.length === 0) return ''
   const items = certifications
-    .map((cert) => `${escapeLatex(cert.name)}${cert.issuer ? ` -- ${escapeLatex(cert.issuer)}` : ''}`)
+    .map((cert) => `${escapeLatex(cert.name)}${cert.issuer ? ` - ${escapeLatex(cert.issuer)}` : ''}`)
     .join('\\\\[2pt]\n')
 
   return `\\sidebarsection{Certifications}

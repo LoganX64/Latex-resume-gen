@@ -25,21 +25,21 @@ function buildElegantDocument(
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
   const title = personalInfo.professionalTitle
-    ? `\\\\[3pt]{\\large\\color{gray}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+    ? `\\\\[3pt]{\\large\\color{accent}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
   const contactParts = getContactParts(personalInfo, false)
   const contactLine = contactParts.length > 0
-    ? `\\\\[2pt]{\\small\\color{gray} ${contactParts.join(' $\\cdot$ ')}}`
+    ? `\\\\[2pt]{\\small\\color{accent} ${contactParts.join(' $\\cdot$ ')}}`
     : ''
 
   let headerBlock = ''
   if (personalInfo.profileImage) {
     const titleText = personalInfo.professionalTitle
-      ? `\\\\{\\large\\color{gray}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+      ? `\\\\{\\large\\color{accent}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
       : ''
     const contactLineLeft = contactParts.length > 0
-      ? `\\\\{\\small\\color{gray} ${contactParts.join(' $\\cdot$ ')}}`
+      ? `\\\\{\\small\\color{accent} ${contactParts.join(' $\\cdot$ ')}}`
       : ''
     const leftText = `{\\LARGE\\textbf{${name}}}${titleText}${contactLineLeft}`
     headerBlock = wrapPhotoHeader(personalInfo, leftText, 0.15)
@@ -48,7 +48,9 @@ function buildElegantDocument(
 {\\LARGE\\textbf{${name}}}
 ${title}
 ${contactLine}
-\\end{center}`
+\\end{center}
+\\vspace{-2pt}
+\\noindent{\\color{accent}\\rule{\\textwidth}{0.5pt}}`
   }
 
   return `\\documentclass[10pt,a4paper]{article}
@@ -67,13 +69,14 @@ ${contactLine}
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\definecolor{accent}{HTML}{4a5568}
 
 \\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\color{accent}\\rule{\\textwidth}{0.5pt}]
 \\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{accent}{\\textbullet}, topsep=0pt, itemsep=0pt}
+\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{accent}{\\textendash{}}, topsep=0pt, itemsep=0pt}
 
 \\hypersetup{
     colorlinks=true,
@@ -132,8 +135,8 @@ function generateExperience(experience: ResumeData['experience']): string {
       const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
       const bullets = generateBulletPoints(exp.bulletPoints)
 
-      return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
-\\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
+      return `\\textbf{${escapeLatex(exp.position)}} \\hfill \\textit{${dateRange}} \\\\
+\\textit{\\color{accent}${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
     .join('\n\n')
@@ -159,12 +162,12 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
+      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
@@ -191,8 +194,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
     .join('\n\n')
 
@@ -250,7 +253,7 @@ function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
     .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
-    .join(' \\\\\n')
+    .join(', ')
 
   return `\\section{Languages}
 

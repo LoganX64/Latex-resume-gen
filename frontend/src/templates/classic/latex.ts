@@ -36,7 +36,9 @@ function buildClassicDocument(
   return `\\documentclass[11pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage{charter}
 \\usepackage[margin=0.3in]{geometry}
+\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -45,9 +47,10 @@ function buildClassicDocument(
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}
+\\linespread{0.95}
 
 \\titleformat{\\section}{\\large\\bfseries}{}{0em}{\\MakeUppercase}[\\titlerule]
-\\titlespacing*{\\section}{0pt}{5pt}{2pt}
+\\titlespacing*{\\section}{0pt}{2pt}{2pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -64,6 +67,9 @@ function buildClassicDocument(
 ${title}
 ${contactLine}
 \\end{center}
+
+\\vspace{-2pt}
+\\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
 
@@ -115,7 +121,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n\\vspace{3pt}\n')
+    .join('\n\n\\vspace{1pt}\n')
 
   return `\\section{Work Experience}
 
@@ -125,14 +131,12 @@ ${items}`
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}} & ${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
     .join(' \\\\\n')
 
   return `\\section{Technical Skills}
 
-\\begin{tabular}{@{}ll@{}}
-${items}
-\\end{tabular}`
+${items}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -140,12 +144,12 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? ` \\textit{\\textendash{} ${escapeLatex(proj.role)}}` : ''
+      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textit{Technologies:} ${escapeLatex(proj.technologies.join(', '))}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
@@ -155,7 +159,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n\\vspace{3pt}\n')
+    .join('\n\n\\vspace{1pt}\n')
 
   return `\\section{Projects}
 
@@ -172,10 +176,10 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange}${cgpaLine} \\\\
-\\textit{${escapeLatex(edu.institution)}}`
+      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
-    .join('\n\n\\vspace{3pt}\n')
+    .join('\n\n\\vspace{1pt}\n')
 
   return `\\section{Education}
 
@@ -218,7 +222,7 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
+      return `\\textbf{${escapeLatex(pub.title)}}${dateStr}${descStr}\n\\textit{${escapeLatex(pub.publisher)}}`
     })
     .join(' \\\\\n\n')
 
@@ -230,8 +234,8 @@ ${items}`
 function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
-    .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
-    .join(' \\\\\n')
+    .map((lang) => `\\textbf{${escapeLatex(lang.name)}} (${escapeLatex(lang.proficiency)})`)
+    .join(', ')
 
   return `\\section{Languages}
 
