@@ -51,8 +51,8 @@ function buildCompactDocument(
 \\setlength{\\parskip}{0pt}
 \\linespread{0.95}
 
-\\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\rule{\\textwidth}{0.5pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\vspace{-0.4ex}\\rule{\\textwidth}{0.5pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -122,7 +122,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? `, ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -131,13 +131,23 @@ ${items}`
 
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
-  const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
-    .join(' \\\\\n')
+  const rows: string[] = []
+  for (let i = 0; i < skills.length; i += 2) {
+    const left = `\\textbf{${escapeLatex(skills[i].name)}}: ${escapeLatex(skills[i].skills.join(', '))}`
+    if (i + 1 < skills.length) {
+      const right = `\\textbf{${escapeLatex(skills[i + 1].name)}}: ${escapeLatex(skills[i + 1].skills.join(', '))}`
+      rows.push(`${left} & ${right} \\\\`)
+    } else {
+      rows.push(`\\multicolumn{2}{@{}p{\\textwidth}@{}}{${left}} \\\\`)
+    }
+  }
 
   return `\\section{Skills}
 
-${items}`
+\\setlength{\\tabcolsep}{0pt}
+\\begin{tabularx}{\\textwidth}{@{}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{\\hspace{0.04\\textwidth}}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{}}
+${rows.join('\n')}
+\\end{tabularx}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -155,7 +165,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${techLine}${dateLine} \\\\
 ${descLine}${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 

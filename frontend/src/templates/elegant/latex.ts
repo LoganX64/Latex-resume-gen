@@ -73,8 +73,8 @@ ${contactLine}
 
 \\definecolor{accent}{HTML}{4a5568}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\color{accent}\\rule{\\textwidth}{0.5pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{accent}}{}{0em}{}[\\vspace{-0.4ex}\\color{accent}\\rule{\\textwidth}{0.5pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{accent}{\\textendash{}}, topsep=0pt, itemsep=0pt}
 
@@ -139,7 +139,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{\\color{accent}${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -177,7 +177,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 

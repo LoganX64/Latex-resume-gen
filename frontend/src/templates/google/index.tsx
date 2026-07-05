@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { googleConfig as config } from './config'
 import { generateGoogleLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'google',
-  name: 'Google Style',
-  description: 'Clean, structured layout inspired by Google engineering resumes. Clear hierarchy with bolded metrics.',
-  supportsPhoto: false,
-  category: 'modern',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
-}
 
 function Preview({
   resume,

@@ -52,8 +52,8 @@ function buildGoogleDocument(
 
 \\definecolor{googleblue}{HTML}{1a73e8}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{googleblue}}{}{0em}{\\MakeUppercase}[\\color{googleblue}\\rule{\\textwidth}{0.8pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{googleblue}}{}{0em}{\\MakeUppercase}[\\vspace{-0.4ex}\\color{googleblue}\\rule{\\textwidth}{0.8pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{googleblue}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
@@ -124,7 +124,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -162,7 +162,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 

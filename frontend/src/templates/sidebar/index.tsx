@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { sidebarConfig as config } from './config'
 import { generateSidebarLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'sidebar',
-  name: 'Modern Sidebar',
-  description: 'Two-column layout with a colored sidebar for skills and contact info. Modern and visually appealing.',
-  supportsPhoto: true,
-  category: 'modern',
-  margins: { top: 7.62, bottom: 7.62, left: 0, right: 0 },
-}
 
 function Preview({
   resume,

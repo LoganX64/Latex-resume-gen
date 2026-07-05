@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { classicConfig as config } from './config'
 import { generateClassicLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'classic',
-  name: 'Classic Professional',
-  description: 'Traditional single-column layout with serif typography. Clean, timeless design trusted by recruiters.',
-  supportsPhoto: false,
-  category: 'classic',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
-}
 
 function Preview({
   resume,
@@ -83,7 +75,7 @@ function SectionContent({
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0">
+                <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
                     <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}
@@ -123,10 +115,10 @@ function SectionContent({
                 <span className="text-[12px] text-gray-600 italic">{proj.role}</span>
               )}
               {proj.description && (
-                <p className="text-[12px] text-gray-700 mt-0.5">{proj.description}</p>
+                <p className="text-[12px] text-gray-700 mt-0">{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0">
+                <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
                     <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}

@@ -79,8 +79,8 @@ ${contactItems.join('\\\\[2pt]\n')}`
   right=0pt,
 }
 
-\\titleformat{\\section}{\\normalsize\\bfseries\\color{sidebar}}{}{0em}{}[\\color{sidebar}\\titlerule]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\normalsize\\bfseries\\color{sidebar}}{}{0em}{}[\\vspace{-0.4ex}\\color{sidebar}\\titlerule]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textcolor{sidebar}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
@@ -181,7 +181,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill \\small ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -208,7 +208,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 

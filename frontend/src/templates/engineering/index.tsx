@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { engineeringConfig as config } from './config'
 import { generateEngineeringLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'engineering',
-  name: 'Engineering Resume',
-  description: 'Technical-focused layout with prominent skills section and project highlights. Ideal for software engineers.',
-  supportsPhoto: true,
-  category: 'modern',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
-}
 
 function Preview({
   resume,

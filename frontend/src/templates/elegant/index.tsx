@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { elegantConfig as config } from './config'
 import { generateElegantLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'elegant',
-  name: 'Elegant Professional',
-  description: 'Refined, elegant design with subtle styling. Perfect balance of professionalism and visual appeal.',
-  supportsPhoto: true,
-  category: 'classic',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
-}
 
 function Preview({
   resume,
@@ -90,7 +82,7 @@ function SectionContent({
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0.5">
+                <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
                     <li key={i} className="text-[11px] pl-2 relative" style={{ color: '#374151' }}>
                       <span className="absolute left-0" style={{ color: '#9ca3af' }}>–</span>
@@ -133,10 +125,10 @@ function SectionContent({
                 <span className="text-[11px] italic" style={{ color: '#4a5568' }}>{proj.role}</span>
               )}
               {proj.description && (
-                <p className="text-[11px] mt-0.5" style={{ color: '#374151' }}>{proj.description}</p>
+                <p className="text-[11px] mt-0" style={{ color: '#374151' }}>{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0.5">
+                <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
                     <li key={i} className="text-[11px] pl-2 relative" style={{ color: '#374151' }}>
                       <span className="absolute left-0" style={{ color: '#9ca3af' }}>–</span>

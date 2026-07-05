@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { minimalConfig as config } from './config'
 import { generateMinimalLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'minimal',
-  name: 'Minimal ATS',
-  description: 'Ultra-clean, keyword-optimized layout. Maximum ATS compatibility with minimal formatting.',
-  supportsPhoto: false,
-  category: 'minimal',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
-}
 
 function Preview({
   resume,
@@ -80,7 +72,7 @@ function SectionContent({
                 {exp.company || 'Company'}{exp.location ? ` | ${exp.location}` : ''}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0">
+                <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
                     <li key={i} className="text-[11px] text-gray-700 pl-2 relative">
                       <span className="absolute left-0 text-gray-400">--</span>

@@ -52,8 +52,8 @@ function buildMinimalDocument(
 \\setlength{\\parskip}{0pt}
 \\linespread{0.95}
 
-\\titleformat{\\section}{\\bfseries\\small}{}{0em}{\\MakeUppercase}[\\titlerule]
-\\titlespacing*{\\section}{0pt}{2pt}{0pt}
+\\titleformat{\\section}{\\bfseries\\small}{}{0em}{\\MakeUppercase}[\\vspace{-0.4ex}\\titlerule]
+\\titlespacing*{\\section}{0pt}{2pt}{4pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textendash, topsep=0pt, itemsep=0pt}
 
@@ -121,7 +121,7 @@ function generateExperience(experience: ResumeData['experience']): string {
 ${escapeLatex(exp.company)}${exp.location ? ` $|$ ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Experience}
 
@@ -158,7 +158,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       return `\\textbf{${escapeLatex(proj.name)}}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{3pt}\n')
 
   return `\\section{Projects}
 
