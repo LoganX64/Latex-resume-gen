@@ -13,17 +13,17 @@ function Preview({
   const { personalInfo } = resume
 
   return (
-    <div style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: '14px', lineHeight: '1.25' }}>
+    <div style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: '14px', lineHeight: '1.15' }}>
       {/* Header */}
       {personalInfo.fullName && (
-        <header className="text-center border-b border-gray-300 pb-1.5 mb-1.5">
-          <h1 className="text-xl font-bold tracking-wide text-gray-900">
+        <header className="text-center border-b border-gray-300 pb-[2px] mb-[2px]">
+          <h1 className="text-[19px] font-bold tracking-wide text-gray-900">
             {personalInfo.fullName}
           </h1>
           {personalInfo.professionalTitle && (
-            <p className="text-[15px] text-gray-600 italic mt-0">{personalInfo.professionalTitle}</p>
+            <p className="text-[16px] text-gray-600 italic mt-0">{personalInfo.professionalTitle}</p>
           )}
-          <div className="flex flex-wrap justify-center gap-x-3 gap-y-0 mt-1 text-[12px] text-gray-600">
+          <div className="flex flex-wrap justify-center gap-x-3 gap-y-0 mt-1 text-[11px] text-gray-600">
             {personalInfo.email && <span>{personalInfo.email}</span>}
             {personalInfo.phone && <span>{personalInfo.phone}</span>}
             {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
@@ -53,7 +53,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Professional Summary">
-          <p className="text-[14px] leading-relaxed text-gray-700">{resume.summary}</p>
+          <p className="text-[13px] text-gray-700">{resume.summary}</p>
         </Section>
       ) : null
 
@@ -61,23 +61,23 @@ function SectionContent({
       return resume.experience.length > 0 ? (
         <Section title="Work Experience">
           {resume.experience.map((exp) => (
-            <div key={exp.id} className="mb-1 last:mb-0">
+            <div key={exp.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{exp.position || 'Position'}</span>
-                <span className="text-[12px] text-gray-500">
+                <span className="font-semibold text-[13px]">{exp.position || 'Position'}</span>
+                <span className="text-[11px] text-gray-500">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[14px] text-gray-600 italic">{exp.company || 'Company'}</span>
+                <span className="text-[13px] text-gray-600 italic">{exp.company || 'Company'}</span>
                 {exp.location && (
-                  <span className="text-[12px] text-gray-500">{exp.location}</span>
+                  <span className="text-[11px] text-gray-500">{exp.location}</span>
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[11px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}
                     </li>
                   ))}
@@ -92,9 +92,9 @@ function SectionContent({
       return resume.skills.length > 0 ? (
         <Section title="Technical Skills">
           {resume.skills.map((cat) => (
-            <div key={cat.id} className="mb-1 last:mb-0">
-              <span className="font-semibold text-[14px]">{cat.name || 'Category'}: </span>
-              <span className="text-[12px] text-gray-700">{cat.skills.join(', ')}</span>
+            <div key={cat.id} className="mb-[2px] last:mb-0">
+              <span className="font-semibold text-[13px]">{cat.name || 'Category'}: </span>
+              <span className="text-[11px] text-gray-700">{cat.skills.join(', ')}</span>
             </div>
           ))}
         </Section>
@@ -104,35 +104,35 @@ function SectionContent({
       return resume.projects.length > 0 ? (
         <Section title="Projects">
           {resume.projects.map((proj) => (
-            <div key={proj.id} className="mb-1 last:mb-0">
+            <div key={proj.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{proj.name || 'Project'}</span>
+                <span className="font-semibold text-[13px]">{proj.name || 'Project'}</span>
                 {proj.duration && (
-                  <span className="text-[12px] text-gray-500">{proj.duration}</span>
+                  <span className="text-[11px] text-gray-500">{proj.duration}</span>
                 )}
               </div>
               {proj.role && (
-                <span className="text-[12px] text-gray-600 italic">{proj.role}</span>
+                <span className="text-[11px] text-gray-600 italic">{proj.role}</span>
               )}
               {proj.description && (
-                <p className="text-[12px] text-gray-700 mt-0">{proj.description}</p>
+                <p className="text-[11px] text-gray-700 mt-0">{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[11px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}
                     </li>
                   ))}
                 </ul>
               )}
               {proj.technologies.length > 0 && (
-                <p className="text-[12px] text-gray-500 mt-0.5">
+                <p className="text-[11px] text-gray-500 mt-[1px]">
                   <span className="font-medium">Tech:</span> {proj.technologies.join(', ')}
                 </p>
               )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
-                <p className="text-[12px] text-gray-500 mt-0.5">
+                <p className="text-[11px] text-gray-500 mt-[1px]">
                   {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
                   {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
                   {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
@@ -147,19 +147,19 @@ function SectionContent({
       return resume.education.length > 0 ? (
         <Section title="Education">
           {resume.education.map((edu) => (
-            <div key={edu.id} className="mb-1 last:mb-0">
+            <div key={edu.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">
+                <span className="font-semibold text-[13px]">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
-                <span className="text-[12px] text-gray-500">
+                <span className="text-[11px] text-gray-500">
                   {edu.startDate} – {edu.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[14px] text-gray-600 italic">{edu.institution || 'Institution'}</span>
-                {edu.cgpa && <span className="text-[12px] text-gray-500">CGPA: {edu.cgpa}</span>}
+                <span className="text-[13px] text-gray-600 italic">{edu.institution || 'Institution'}</span>
+                {edu.cgpa && <span className="text-[11px] text-gray-500">CGPA: {edu.cgpa}</span>}
               </div>
             </div>
           ))}
@@ -170,12 +170,12 @@ function SectionContent({
       return resume.certifications.length > 0 ? (
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
-            <div key={cert.id} className="mb-1 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[14px]">
+            <div key={cert.id} className="mb-[2px] last:mb-0 flex justify-between items-baseline">
+              <span className="text-[13px]">
                 <span className="font-semibold">{cert.name || 'Certification'}</span>
                 {cert.issuer && <span className="text-gray-600"> – {cert.issuer}</span>}
               </span>
-              <span className="text-[12px] text-gray-500">{cert.date}</span>
+              <span className="text-[11px] text-gray-500">{cert.date}</span>
             </div>
           ))}
         </Section>
@@ -185,13 +185,13 @@ function SectionContent({
       return resume.achievements.length > 0 ? (
         <Section title="Achievements">
           {resume.achievements.map((ach) => (
-            <div key={ach.id} className="mb-1 last:mb-0">
+            <div key={ach.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{ach.title || 'Achievement'}</span>
-                {ach.date && <span className="text-[12px] text-gray-500">{ach.date}</span>}
+                <span className="font-semibold text-[13px]">{ach.title || 'Achievement'}</span>
+                {ach.date && <span className="text-[11px] text-gray-500">{ach.date}</span>}
               </div>
               {ach.description && (
-                <p className="text-[12px] text-gray-700">{ach.description}</p>
+                <p className="text-[11px] text-gray-700">{ach.description}</p>
               )}
             </div>
           ))}
@@ -202,14 +202,14 @@ function SectionContent({
       return resume.publications.length > 0 ? (
         <Section title="Publications">
           {resume.publications.map((pub) => (
-            <div key={pub.id} className="mb-1 last:mb-0">
+            <div key={pub.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{pub.title || 'Publication'}</span>
-                <span className="text-[12px] text-gray-500">{pub.date}</span>
+                <span className="font-semibold text-[13px]">{pub.title || 'Publication'}</span>
+                <span className="text-[11px] text-gray-500">{pub.date}</span>
               </div>
-              <span className="text-[12px] text-gray-600 italic">{pub.publisher}</span>
+              <span className="text-[11px] text-gray-600 italic">{pub.publisher}</span>
               {pub.description && (
-                <p className="text-[12px] text-gray-700">{pub.description}</p>
+                <p className="text-[11px] text-gray-700">{pub.description}</p>
               )}
             </div>
           ))}
@@ -219,7 +219,7 @@ function SectionContent({
     case 'languages':
       return resume.languages.length > 0 ? (
         <Section title="Languages">
-          <span className="text-[12px] text-gray-700">
+          <span className="text-[11px] text-gray-700">
             {resume.languages.map((lang) => 
               `${lang.name || 'Language'}${lang.proficiency ? ` (${lang.proficiency})` : ''}`
             ).join(', ')}
@@ -232,7 +232,7 @@ function SectionContent({
         <>
           {resume.customSections.map((cs) => (
             <Section key={cs.id} title={cs.title || 'Custom Section'}>
-              <p className="text-[12px] text-gray-700 whitespace-pre-wrap">{cs.content}</p>
+              <p className="text-[11px] text-gray-700 whitespace-pre-wrap">{cs.content}</p>
             </Section>
           ))}
         </>
@@ -245,8 +245,8 @@ function SectionContent({
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mb-1.5">
-      <h2 className="text-[15px] font-bold uppercase tracking-wider text-gray-800 border-b border-gray-300 pb-0 mb-0.5">
+    <div className="mb-[3px]">
+      <h2 className="text-[16px] font-bold uppercase tracking-wider text-gray-800 border-b border-gray-300 pb-[3px] mb-[1px]">
         {title}
       </h2>
       {children}
