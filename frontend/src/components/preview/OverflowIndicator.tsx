@@ -28,9 +28,6 @@ export function OverflowIndicator() {
 
   const warnings: string[] = []
 
-  if (summaryLen > SOFT_LIMITS.summary) {
-    warnings.push(`Summary: ${summaryLen} chars keep it under ${SOFT_LIMITS.summary} for one-page fit`)
-  }
   if (expCount > SOFT_LIMITS.experience.entries) {
     warnings.push(`Experience: ${expCount} entries — hide or remove to fit one page`)
   }
@@ -42,9 +39,6 @@ export function OverflowIndicator() {
   }
   if (projBullets > SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry) {
     warnings.push(`Project bullets: ${projBullets} total — too many for one page`)
-  }
-  if (totalSections > 7) {
-    warnings.push(`Too many sections: ${totalSections} active — hide some in the sidebar`)
   }
 
   if (warnings.length === 0) return null
