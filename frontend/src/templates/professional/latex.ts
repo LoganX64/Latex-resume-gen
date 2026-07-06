@@ -244,10 +244,12 @@ function generateProjects(projects: ResumeData['projects']): string {
 
       const urlParts: string[] = []
       if (proj.githubUrl) {
-        urlParts.push(`GitHub: ${escapeLatex(proj.githubUrl)}`)
+        const url = escapeLatex(proj.githubUrl)
+        urlParts.push(`GitHub: \\href{https://${proj.githubUrl}}{\\underline{${url}}}`)
       }
       if (proj.liveDemoUrl) {
-        urlParts.push(`Demo: ${escapeLatex(proj.liveDemoUrl)}`)
+        const url = escapeLatex(proj.liveDemoUrl)
+        urlParts.push(`Demo: \\href{https://${proj.liveDemoUrl}}{\\underline{${url}}}`)
       }
       if (urlParts.length > 0) {
         item += `\n{\\small ${urlParts.join(' $|$ ')}}`
