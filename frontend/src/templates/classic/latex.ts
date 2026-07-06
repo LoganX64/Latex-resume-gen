@@ -193,16 +193,17 @@ ${items}`
 function generateCertifications(certifications: ResumeData['certifications']): string {
   if (certifications.length === 0) return ''
   const items = certifications
-    .map((cert) => {
+    .map((cert, i) => {
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
+      const lineBreak = i < certifications.length - 1 ? ' \\\\' : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}${lineBreak}`
     })
-    .join(' \\\\\n')
+    .join('\n')
 
   return `\\section{Certifications}
 
-${items}`
+${items}%`
 }
 
 function generateAchievements(achievements: ResumeData['achievements']): string {
