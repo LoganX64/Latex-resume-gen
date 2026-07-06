@@ -219,14 +219,11 @@ function SectionContent({
     case 'languages':
       return resume.languages.length > 0 ? (
         <Section title="Languages">
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5">
-            {resume.languages.map((lang) => (
-              <span key={lang.id} className="text-[12px] text-gray-700">
-                <span className="font-medium">{lang.name || 'Language'}</span>
-                {lang.proficiency && <span className="text-gray-500"> ({lang.proficiency})</span>}
-              </span>
-            ))}
-          </div>
+          <span className="text-[12px] text-gray-700">
+            {resume.languages.map((lang) => 
+              `${lang.name || 'Language'}${lang.proficiency ? ` (${lang.proficiency})` : ''}`
+            ).join(', ')}
+          </span>
         </Section>
       ) : null
 

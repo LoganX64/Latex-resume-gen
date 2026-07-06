@@ -14,7 +14,7 @@ export function generateClassicLatex(
   const body = sections
     .map((section) => generateSection(section.type, resume))
     .filter(Boolean)
-    .join('\n')
+    .join('\n\\vspace{3pt}\n')
 
   return buildClassicDocument(resume.personalInfo, body)
 }
@@ -30,7 +30,7 @@ function buildClassicDocument(
 
   const contactParts = getContactParts(personalInfo, false)
   const contactLine = contactParts.length > 0
-    ? `\\\\[2pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
+    ? `\\\\[0pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
@@ -50,7 +50,7 @@ function buildClassicDocument(
 \\linespread{0.95}
 
 \\titleformat{\\section}{\\large\\bfseries}{}{0em}{\\MakeUppercase}[\\vspace{-0.4ex}\\titlerule]
-\\titlespacing*{\\section}{0pt}{2pt}{4pt}
+\\titlespacing*{\\section}{0pt}{0pt}{3pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -68,7 +68,7 @@ ${title}
 ${contactLine}
 \\end{center}
 
-\\vspace{-2pt}
+\\vspace{-13pt}
 \\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
@@ -143,21 +143,25 @@ function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
+      const dateLine = proj.duration ? ` \\hfill \\mbox{${escapeLatex(proj.duration)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
           ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
-      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
-      const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
-        : ''
+      const githubLink = proj.githubUrl ? `\\textbf{GitHub:} \\url{${proj.githubUrl}}` : ''
+      const demoLink = proj.liveDemoUrl ? `\\textbf{Demo:} \\url{${proj.liveDemoUrl}}` : ''
+      const linkLine = githubLink && demoLink
+        ? `\n\n${githubLink} | ${demoLink}`
+        : githubLink
+          ? `\n\n${githubLink}`
+          : demoLink
+            ? `\n\n${demoLink}`
+            : ''
 
-      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets}${techLine}${linkLine}`
+      return `\\textbf{${escapeLatex(proj.name)}}${dateLine} \\\\
+\\textit{${proj.role ? escapeLatex(proj.role) : ''}}\\\\[-4pt]${descLine}${bullets}${techLine}${linkLine}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
