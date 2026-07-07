@@ -24,59 +24,41 @@ function Preview({
   const summarySection = sections.find((s) => s.type === 'summary')
 
   return (
-    <div style={{ fontFamily: '"Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '14px', lineHeight: '1.2' }}>
-      {/* Header - 3 lines without horizontal rules */}
+    <div style={{ fontFamily: '"Source Sans Pro", sans-serif', fontSize: '14px', lineHeight: 1.2 }}>
+      {/* Header */}
       {personalInfo.fullName && (
-        <header className="pb-1 mb-1">
-          {/* Line 1: Name */}
+        <header style={{ marginBottom: '4px' }}>
+          {/* Name */}
           <div>
-            <h1 className="text-[28px] font-bold" style={{ color: titleColor }}>
+            <h1 style={{ fontSize: '48px', fontWeight: 700, lineHeight: 1.22, margin: 0, color: titleColor }}>
               {personalInfo.fullName}
             </h1>
           </div>
 
-          {/* Line 2: Title */}
+          {/* Title */}
           {personalInfo.professionalTitle && (
-            <div>
-              <p className="text-[12px] mt-0.5" style={{ color: titleColor, fontFamily: '"Courier New", Courier, monospace' }}>
+            <div style={{ marginTop: '4px' }}>
+              <p style={{ fontSize: '19px', lineHeight: 1.2, margin: 0, color: titleColor }}>
                 {personalInfo.professionalTitle}
               </p>
             </div>
           )}
 
-          {/* Line 3: Contact line with icons */}
-          <div>
-            <div className="flex flex-wrap gap-x-2 gap-y-0 mt-0.5 text-[10px]" style={{ color: titleColor, fontFamily: '"Courier New", Courier, monospace' }}>
-              {personalInfo.website && (
-                <span>
-                  <span className="mr-0.5">🏠</span>
-                  <a href={`https://${personalInfo.website}`} className="underline">{personalInfo.website}</a>
+          {/* Contact line */}
+          <div style={{ marginTop: '2px' }}>
+            <div style={{ fontSize: '13px', lineHeight: 1.3, color: titleColor }}>
+              {[
+                personalInfo.website && <a key="web" href={`https://${personalInfo.website}`} style={{ color: titleColor }}>{personalInfo.website}</a>,
+                personalInfo.github && <a key="gh" href={`https://${personalInfo.github}`} style={{ color: titleColor }}>{personalInfo.github}</a>,
+                personalInfo.linkedin && <a key="li" href={`https://${personalInfo.linkedin}`} style={{ color: titleColor }}>{personalInfo.linkedin}</a>,
+                personalInfo.email && <a key="em" href={`mailto:${personalInfo.email}`} style={{ color: titleColor }}>{personalInfo.email}</a>,
+                personalInfo.phone && <a key="ph" href={`tel:${personalInfo.phone}`} style={{ color: titleColor }}>{personalInfo.phone}</a>,
+              ].filter(Boolean).map((item, i, arr) => (
+                <span key={i}>
+                  {item}
+                  {i < arr.length - 1 && <span style={{ margin: '0 6px' }}>·</span>}
                 </span>
-              )}
-              {personalInfo.github && (
-                <span>
-                  <span className="mr-0.5">⟳</span>
-                  <a href={`https://${personalInfo.github}`} className="underline">{personalInfo.github}</a>
-                </span>
-              )}
-              {personalInfo.linkedin && (
-                <span>
-                  <span className="mr-0.5">in</span>
-                  <a href={`https://${personalInfo.linkedin}`} className="underline">{personalInfo.linkedin}</a>
-                </span>
-              )}
-              {personalInfo.email && (
-                <span>
-                  <span className="mr-0.5">✉</span>
-                  <a href={`mailto:${personalInfo.email}`} className="underline">{personalInfo.email}</a>
-                </span>
-              )}
-              {personalInfo.phone && (
-                <span>
-                  <span className="mr-0.5">☎</span>
-                  {personalInfo.phone}
-                </span>
-              )}
+              ))}
             </div>
           </div>
         </header>
@@ -84,25 +66,23 @@ function Preview({
 
       {/* Summary (full width) */}
       {summarySection && resume.summary && (
-        <div className="mb-1">
-          <h2 className="text-[13px] font-bold uppercase tracking-wider" style={{ color: titleColor }}>
-            Professional Summary
-          </h2>
-          <p className="text-[10px] mt-0.5" style={{ color: subheadingsColor }}>{resume.summary}</p>
+        <div style={{ marginBottom: '8px' }}>
+          <SectionTitle title="Professional Summary" />
+          <p style={{ fontSize: '12px', lineHeight: 1.4, marginTop: '2px', color: subheadingsColor }}>{resume.summary}</p>
         </div>
       )}
 
       {/* Two columns */}
-      <div className="flex gap-2">
+      <div style={{ display: 'flex', gap: '8px' }}>
         {/* Left column - 70% */}
-        <div className="flex-[7] min-w-0">
+        <div style={{ flex: 7, minWidth: 0 }}>
           {leftSections.map((section) => (
             <LeftSection key={section.id} section={section} resume={resume} />
           ))}
         </div>
 
         {/* Right column - 25% */}
-        <div className="flex-[3] min-w-0">
+        <div style={{ flex: 3, minWidth: 0 }}>
           {rightSections.map((section) => (
             <RightSection key={section.id} section={section} resume={resume} />
           ))}
@@ -122,28 +102,25 @@ function LeftSection({
   switch (section.type) {
     case 'experience':
       return resume.experience.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Experience" />
           {resume.experience.map((exp) => (
-            <div key={exp.id} className="mt-0.5 mb-1 last:mb-0">
-              {/* Company name - bold uppercase */}
-              <div className="text-[11px] font-bold uppercase" style={{ color: subheadingsColor }}>
-                {exp.company || 'Company'}
-              </div>
-              {/* Position - small caps */}
-              <div className="text-[9px] uppercase" style={{ color: subheadingsColor, fontVariant: 'small-caps' }}>
-                | {exp.position || 'Position'}
+            <div key={exp.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
+              {/* Company | Position - same line */}
+              <div style={{ lineHeight: 1.3, color: subheadingsColor }}>
+                <span style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const }}>{exp.company || 'Company'}</span>
+                <span style={{ fontSize: '13px' }}> | {exp.position || 'Position'}</span>
               </div>
               {/* Date | Location - gray */}
-              <div className="text-[8px]" style={{ color: headingsColor }}>
+              <div style={{ fontSize: '12px', lineHeight: 1.3, color: headingsColor }}>
                 {exp.startDate} – {exp.current ? 'Current' : exp.endDate}{exp.location ? ` | ${exp.location}` : ''}
               </div>
               {/* Bullet points with diamond */}
               {exp.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0">
+                <ul style={{ marginTop: '2px', paddingLeft: '14px', listStyle: 'none' }}>
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[9px] pl-2 relative" style={{ color: subheadingsColor }}>
-                      <span className="absolute left-0" style={{ color: titleColor }}>◆</span>
+                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: subheadingsColor, position: 'relative', marginBottom: '1px' }}>
+                      <span style={{ position: 'absolute', left: '-12px', color: titleColor, fontSize: '8px', top: '3px' }}>◆</span>
                       {bullet}
                     </li>
                   ))}
@@ -156,32 +133,29 @@ function LeftSection({
 
     case 'projects':
       return resume.projects.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Projects" />
           {resume.projects.map((proj) => (
-            <div key={proj.id} className="mt-0.5 mb-1 last:mb-0">
-              {/* Project name - bold uppercase */}
-              <div className="text-[11px] font-bold uppercase" style={{ color: subheadingsColor }}>
-                {proj.name || 'Project'}
+            <div key={proj.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
+              {/* Project | Technologies - same line */}
+              <div style={{ lineHeight: 1.3, color: subheadingsColor }}>
+                <span style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const }}>{proj.name || 'Project'}</span>
+                {proj.technologies.length > 0 && (
+                  <span style={{ fontSize: '13px' }}> | {proj.technologies.join(', ')}</span>
+                )}
               </div>
-              {/* Technologies - small caps */}
-              {proj.technologies.length > 0 && (
-                <div className="text-[9px] uppercase" style={{ color: subheadingsColor, fontVariant: 'small-caps' }}>
-                  | {proj.technologies.join(', ')}
-                </div>
-              )}
               {/* Date */}
               {proj.duration && (
-                <div className="text-[8px]" style={{ color: headingsColor }}>
+                <div style={{ fontSize: '12px', lineHeight: 1.3, color: headingsColor }}>
                   {proj.duration}
                 </div>
               )}
               {/* Bullet points */}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
-                <ul className="mt-0.5 space-y-0">
+                <ul style={{ marginTop: '2px', paddingLeft: '14px', listStyle: 'none' }}>
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[9px] pl-2 relative" style={{ color: subheadingsColor }}>
-                      <span className="absolute left-0" style={{ color: titleColor }}>◆</span>
+                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: subheadingsColor, position: 'relative', marginBottom: '1px' }}>
+                      <span style={{ position: 'absolute', left: '-12px', color: titleColor, fontSize: '8px', top: '3px' }}>◆</span>
                       {bullet}
                     </li>
                   ))}
@@ -194,13 +168,13 @@ function LeftSection({
 
     case 'certifications':
       return resume.certifications.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Certifications" />
           {resume.certifications.map((cert) => (
-            <div key={cert.id} className="mt-0.5 mb-0.5 last:mb-0">
-              <span className="font-bold text-[9px]" style={{ color: subheadingsColor }}>{cert.name || 'Certification'}</span>
-              {cert.issuer && <span className="text-[9px]" style={{ color: headingsColor }}> - {cert.issuer}</span>}
-              {cert.date && <span className="text-[8px] italic ml-1" style={{ color: headingsColor }}>{cert.date}</span>}
+            <div key={cert.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{cert.name || 'Certification'}</span>
+              {cert.issuer && <span style={{ fontSize: '12px', color: headingsColor }}> – {cert.issuer}</span>}
+              {cert.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{cert.date}</span>}
             </div>
           ))}
         </div>
@@ -208,13 +182,13 @@ function LeftSection({
 
     case 'achievements':
       return resume.achievements.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Achievements" />
           {resume.achievements.map((ach) => (
-            <div key={ach.id} className="mt-0.5 mb-0.5 last:mb-0">
-              <span className="font-bold text-[9px]" style={{ color: subheadingsColor }}>{ach.title || 'Achievement'}</span>
-              {ach.date && <span className="text-[8px] italic ml-1" style={{ color: headingsColor }}>{ach.date}</span>}
-              {ach.description && <p className="text-[9px] mt-0" style={{ color: subheadingsColor }}>{ach.description}</p>}
+            <div key={ach.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{ach.title || 'Achievement'}</span>
+              {ach.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{ach.date}</span>}
+              {ach.description && <p style={{ fontSize: '12px', lineHeight: 1.3, margin: '2px 0 0 0', color: subheadingsColor }}>{ach.description}</p>}
             </div>
           ))}
         </div>
@@ -222,13 +196,13 @@ function LeftSection({
 
     case 'publications':
       return resume.publications.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Publications" />
           {resume.publications.map((pub) => (
-            <div key={pub.id} className="mt-0.5 mb-0.5 last:mb-0">
-              <span className="font-bold text-[9px]" style={{ color: subheadingsColor }}>{pub.title || 'Publication'}</span>
-              {pub.date && <span className="text-[8px] italic ml-1" style={{ color: headingsColor }}>{pub.date}</span>}
-              <span className="text-[9px] italic block" style={{ color: headingsColor }}>{pub.publisher}</span>
+            <div key={pub.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{pub.title || 'Publication'}</span>
+              {pub.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{pub.date}</span>}
+              <span style={{ fontSize: '12px', fontStyle: 'italic', display: 'block', color: headingsColor }}>{pub.publisher}</span>
             </div>
           ))}
         </div>
@@ -236,12 +210,12 @@ function LeftSection({
 
     case 'languages':
       return resume.languages.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Languages" />
-          <div className="text-[9px]" style={{ color: headingsColor }}>
+          <div style={{ fontSize: '12px', lineHeight: 1.4, color: headingsColor }}>
             {resume.languages.map((lang) =>
-              `${lang.name || 'Language'}${lang.proficiency ? ` (${lang.proficiency})` : ''}`
-            ).join(', ')}
+              `${lang.name || 'Language'}${lang.proficiency ? ` – ${lang.proficiency}` : ''}`
+            ).join(' \\\\n')}
           </div>
         </div>
       ) : null
@@ -250,9 +224,9 @@ function LeftSection({
       return resume.customSections.length > 0 ? (
         <>
           {resume.customSections.map((cs) => (
-            <div key={cs.id} className="mb-1.5">
+            <div key={cs.id} style={{ marginBottom: '8px' }}>
               <SectionTitle title={cs.title || 'Custom Section'} />
-              <p className="text-[9px] whitespace-pre-wrap mt-0.5" style={{ color: subheadingsColor }}>{cs.content}</p>
+              <p style={{ fontSize: '12px', lineHeight: 1.4, marginTop: '2px', whiteSpace: 'pre-wrap', color: subheadingsColor }}>{cs.content}</p>
             </div>
           ))}
         </>
@@ -273,13 +247,17 @@ function RightSection({
   switch (section.type) {
     case 'skills':
       return resume.skills.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Skills" />
-          <div className="space-y-1 mt-0.5">
+          <div style={{ marginTop: '4px' }}>
             {resume.skills.map((cat) => (
-              <div key={cat.id}>
-                <span className="font-bold text-[9px] uppercase" style={{ color: subheadingsColor }}>{cat.name || 'Category'}</span>
-                <p className="text-[9px] mt-0" style={{ color: headingsColor }}>{cat.skills.join(', ')}</p>
+              <div key={cat.id} style={{ marginBottom: '6px' }}>
+                <div style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const, lineHeight: 1.3, color: subheadingsColor }}>
+                  {cat.name || 'Category'}
+                </div>
+                <div style={{ fontSize: '12px', lineHeight: 1.4, color: headingsColor, marginTop: '2px' }}>
+                  {cat.skills.join(' • ')}
+                </div>
               </div>
             ))}
           </div>
@@ -288,25 +266,25 @@ function RightSection({
 
     case 'education':
       return resume.education.length > 0 ? (
-        <div className="mb-1.5">
+        <div style={{ marginBottom: '8px' }}>
           <SectionTitle title="Education" />
           {resume.education.map((edu) => (
-            <div key={edu.id} className="mt-0.5 mb-1 last:mb-0">
+            <div key={edu.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
               {/* University name */}
-              <p className="font-bold text-[10px] uppercase" style={{ color: subheadingsColor }}>
+              <p style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const, lineHeight: 1.3, margin: 0, color: subheadingsColor }}>
                 {edu.institution || 'Institution'}
               </p>
               {/* Degree - small caps */}
-              <p className="text-[9px] uppercase" style={{ color: subheadingsColor, fontVariant: 'small-caps' }}>
+              <p style={{ fontSize: '13px', fontVariant: 'small-caps' as const, lineHeight: 1.3, margin: 0, color: subheadingsColor }}>
                 {edu.degree || 'Degree'}{edu.specialization ? ` in ${edu.specialization}` : ''}
               </p>
-              {/* Date | Location */}
-              <p className="text-[8px]" style={{ color: headingsColor }}>
+              {/* Date */}
+              <p style={{ fontSize: '12px', lineHeight: 1.3, margin: 0, color: headingsColor }}>
                 {edu.startDate} – {edu.endDate}
               </p>
               {/* GPA */}
               {edu.cgpa && (
-                <p className="text-[8px]" style={{ color: headingsColor }}>
+                <p style={{ fontSize: '12px', lineHeight: 1.3, margin: 0, color: headingsColor }}>
                   Cum. GPA: {edu.cgpa}
                 </p>
               )}
@@ -322,10 +300,7 @@ function RightSection({
 
 function SectionTitle({ title }: { title: string }) {
   return (
-    <h2
-      className="text-[13px] font-bold uppercase tracking-wider pb-0 mb-0"
-      style={{ color: titleColor, fontVariant: 'small-caps' }}
-    >
+    <h2 style={{ fontSize: '18px', fontWeight: 700, textTransform: 'uppercase' as const, lineHeight: 1.2, margin: '0 0 4px 0', color: titleColor }}>
       {title}
     </h2>
   )
