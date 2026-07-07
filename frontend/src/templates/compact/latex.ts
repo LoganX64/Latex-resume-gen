@@ -39,7 +39,7 @@ function buildCompactDocument(
 \\usepackage[scaled=0.9]{helvet}
 \\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
-\\usepackage{savetrees}
+
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

@@ -68,7 +68,7 @@ function buildProfessionalDocument(
 \\usepackage[english]{babel}
 \\usepackage{tabularx}
 \\usepackage[margin=0.5in]{geometry}
-\\usepackage{savetrees}
+
 \\usepackage{enumitem}
 \\ifx\\pdfglyphtounicode\\undefined
 \\else

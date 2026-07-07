@@ -17,9 +17,9 @@ export function escapeLatex(text: string): string {
     .replace(/~/g, `${placeholder}TILDE${placeholder}`)
     .replace(/\^/g, `${placeholder}CIRCUM${placeholder}`)
     .replace(/[&%$#_{}]/g, (match) => `\\${match}`)
-    .replace(new RegExp(`${placeholder}BACKSLASH${placeholder}`), '\\textbackslash{}')
-    .replace(new RegExp(`${placeholder}TILDE${placeholder}`), '\\textasciitilde{}')
-    .replace(new RegExp(`${placeholder}CIRCUM${placeholder}`), '\\textasciicircum{}')
+    .replace(new RegExp(`${placeholder}BACKSLASH${placeholder}`, 'g'), '\\textbackslash{}')
+    .replace(new RegExp(`${placeholder}TILDE${placeholder}`, 'g'), '\\textasciitilde{}')
+    .replace(new RegExp(`${placeholder}CIRCUM${placeholder}`, 'g'), '\\textasciicircum{}')
   return result
 }
 

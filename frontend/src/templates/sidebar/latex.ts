@@ -55,7 +55,6 @@ ${contactItems.join('\\\\[2pt]\n')}`
 
 \\usepackage[T1]{fontenc}
 \\usepackage[margin=0pt]{geometry}
-\\usepackage{savetrees}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

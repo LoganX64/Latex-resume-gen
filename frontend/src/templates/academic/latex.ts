@@ -59,7 +59,7 @@ function buildAcademicDocument(
 \\usepackage[T1]{fontenc}
 \\usepackage{mathpazo}
 \\usepackage[margin=0.3in]{geometry}
-\\usepackage{savetrees}
+
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

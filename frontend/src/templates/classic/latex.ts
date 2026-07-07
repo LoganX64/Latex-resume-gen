@@ -38,7 +38,7 @@ function buildClassicDocument(
 \\usepackage[T1]{fontenc}
 \\usepackage{charter}
 \\usepackage[margin=0.3in]{geometry}
-\\usepackage{savetrees}
+
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}

@@ -1,8 +1,8 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
 import { escapeLatex } from '@/lib/utils'
-import { formatDateRange, generateBulletPoints, getContactParts, wrapPhotoHeader } from '../shared'
+import { formatDateRange, generateBulletPoints } from '../shared'
 
-export function generateEngineeringLatex(
+export function generateDatasciLatex(
   resume: ResumeData,
   sectionOrder: SectionOrder[],
   sectionVisibility: SectionVisibility
@@ -16,79 +16,111 @@ export function generateEngineeringLatex(
     .filter(Boolean)
     .join('\n')
 
-  return buildEngineeringDocument(resume.personalInfo, body)
+  return buildDatasciDocument(resume.personalInfo, body)
 }
 
-function buildEngineeringDocument(
+function buildDatasciDocument(
   personalInfo: ResumeData['personalInfo'],
   body: string
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
   const title = personalInfo.professionalTitle
-    ? `\\\\[2pt]{\\large\\color{darkblue}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
+    ? escapeLatex(personalInfo.professionalTitle)
+    : 'Data Scientist / Junior Developer'
+
+  const phone = personalInfo.phone ? escapeLatex(personalInfo.phone) : ''
+  const city = personalInfo.location ? escapeLatex(personalInfo.location) : ''
+  const email = personalInfo.email
+    ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`
+    : ''
+  const github = personalInfo.github
+    ? `\\href{https://github.com/${personalInfo.github}}{\\underline{github.com/${escapeLatex(personalInfo.github)}}}`
+    : ''
+  const linkedin = personalInfo.linkedin
+    ? `\\href{https://www.linkedin.com/in/${personalInfo.linkedin}}{\\underline{linkedin.com/in/${escapeLatex(personalInfo.linkedin)}}}`
+    : ''
+  const portfolio = personalInfo.website
+    ? `Portfolio: \\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}`
     : ''
 
-  const contactParts = getContactParts(personalInfo, false)
-  const contactLine = contactParts.length > 0
-    ? `\\\\[2pt]{\\small ${contactParts.join(' $\\mid$ ')}}`
-    : ''
-
-  let headerBlock = ''
-  if (personalInfo.profileImage) {
-    const titleText = personalInfo.professionalTitle
-      ? `\\\\{\\large\\color{darkblue}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
-      : ''
-    const contactLineLeft = contactParts.length > 0
-      ? `\\\\{\\small ${contactParts.join(' $\\mid$ ')}}`
-      : ''
-    const leftText = `{\\LARGE\\textbf{\\color{darkblue}${name}}}${titleText}${contactLineLeft}`
-    headerBlock = wrapPhotoHeader(personalInfo, leftText, 0.14)
-  } else {
-    headerBlock = `\\begin{center}
-{\\LARGE\\textbf{\\color{darkblue}${name}}}
-${title}
-${contactLine}
-\\end{center}
-\\vspace{-2pt}
-\\noindent{\\color{darkblue}\\rule{\\textwidth}{1.5pt}}`
-  }
-
-  return `\\documentclass[11pt,a4paper]{article}
+  return `\\documentclass[10pt]{article}
+\\usepackage[utf8]{inputenc}
 
 \\usepackage[T1]{fontenc}
-\\usepackage[scaled=0.9]{helvet}
-\\renewcommand{\\familydefault}{\\sfdefault}
-\\usepackage[margin=0.3in]{geometry}
+\\usepackage[default,semibold]{sourcesanspro}
+\\usepackage[10pt]{moresize}
+\\usepackage{anyfontsize}
+\\usepackage{csquotes}
 
-\\usepackage{enumitem}
-\\usepackage{hyperref}
-\\usepackage{titlesec}
+\\usepackage[margin=.5in, top=.5in, bottom=1in]{geometry}
+\\raggedright
+\\raggedbottom
+
 \\usepackage{xcolor}
-\\usepackage{tabularx}
-\\usepackage{graphicx}
+\\definecolor{highlight}{RGB}{61,90,128}
 
-\\pagestyle{empty}
-\\setlength{\\parindent}{0pt}
-\\setlength{\\parskip}{0pt}
-\\linespread{0.95}
+\\usepackage{hyperref}
+\\hypersetup{colorlinks=true,urlcolor=highlight}
 
-\\definecolor{darkblue}{HTML}{1e3a5f}
-\\definecolor{lightgray}{HTML}{f0f0f0}
+\\usepackage[inline]{enumitem}
+\\setlength{\\tabcolsep}{0in}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{darkblue}}{}{0em}{}[\\vspace{-0.4ex}\\color{darkblue}\\rule{\\textwidth}{1pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{4pt}
+\\usepackage[nostruts]{titlesec}
+\\titlespacing*{\\section}{0em}{0.5em}{0em}
+\\titleformat{\\section}{\\color{highlight} \\scshape \\raggedright \\large}{}{0em}{}[\\vspace{-0.75em}\\hrulefill]
 
-\\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{darkblue}{\\textbullet}, topsep=0pt, itemsep=0pt}
+\\titlespacing*{\\subsection}{0em}{0em}{0em}
+\\titleformat{\\subsection}{\\bfseries}{}{0em}{}[]
 
-\\hypersetup{
-    colorlinks=true,
-    linkcolor=darkblue,
-    urlcolor=darkblue
+\\newcommand{\\skills}[1]{ {\\bfseries #1}}
+\\newcommand{\\subtext}[1]{\\textit{#1}\\par\\vspace{-.5em}}
+
+\\setlist[itemize]{align=parleft,left=0pt..1em}
+\\newenvironment{zitemize}{
+\\begin{itemize} \\itemsep 0pt \\parskip 0pt \\parsep 1pt}
+{\\end{itemize}\\vspace{-.5em}}
+
+\\pagenumbering{gobble}
+
+\\RequirePackage{fancyhdr}
+
+\\def\\name{${name}}
+\\def\\phone{${phone}}
+\\def\\city{${city}}
+\\def\\email{${email}}
+\\def\\role{${title}}
+
+\\fancypagestyle{first_page}{
+\\fancyhf{}
+\\lhead{
+${phone} \\\\[2pt]
+${city} \\\\[2pt]
+${email}
+}
+\\chead{
+\\centering
+{\\Huge \\skills{\\name}} \\\\[.25em]
+{\\color{highlight} \\Large{${title}}}
+}
+\\rhead{
+${portfolio} \\\\[2pt]
+${github} \\\\[2pt]
+${linkedin}
+}
+\\renewcommand{\\headrulewidth}{1pt}
+\\renewcommand{\\headrule}{\\hbox to\\headwidth{\\color{highlight}\\leaders\\hrule height \\headrulewidth\\hfill}}
+\\setlength{\\headheight}{90pt}
+\\setlength{\\headsep}{5pt}
 }
 
-\\begin{document}
+\\fancypagestyle{others}{
+\\fancyhf{}
+\\renewcommand{\\headrulewidth}{0pt}
+\\setlength{\\headheight}{30pt}
+\\setlength{\\headsep}{5pt}
+}
 
-${headerBlock}
+\\begin{document}\\pagestyle{others}\\thispagestyle{first_page}
 
 ${body}
 
@@ -124,7 +156,7 @@ function generateSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return `\\section{Professional Summary}
+  return `\\section{Objective}
 
 ${escapeLatex(summary)}`
 }
@@ -142,43 +174,33 @@ ${bullets}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
-  return `\\section{Work Experience}
+  return `\\section{Technical Experience}
 
 ${items}`
 }
 
 function generateSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
-  const rows: string[] = []
-  for (let i = 0; i < skills.length; i += 2) {
-    const left = `\\textbf{${escapeLatex(skills[i].name)}}: ${escapeLatex(skills[i].skills.join(', '))}`
-    if (i + 1 < skills.length) {
-      const right = `\\textbf{${escapeLatex(skills[i + 1].name)}}: ${escapeLatex(skills[i + 1].skills.join(', '))}`
-      rows.push(`${left} & ${right} \\\\`)
-    } else {
-      rows.push(`\\multicolumn{2}{@{}p{\\textwidth}@{}}{${left}} \\\\`)
-    }
-  }
+  const items = skills
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}: ${escapeLatex(cat.skills.join(', '))}`)
+    .join(' \\\\\n')
 
-  return `\\section{Technical Skills}
+  return `\\section{Skills}
 
-\\setlength{\\tabcolsep}{0pt}
-\\begin{tabularx}{\\textwidth}{@{}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{\\hspace{0.04\\textwidth}}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{}}
-${rows.join('\n')}
-\\end{tabularx}`
+${items}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const dateLine = proj.duration ? ` \\hfill \\textcolor{gray}{${escapeLatex(proj.duration)}}` : ''
+      const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
       const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textbf{Tech:} \\textcolor{darkblue}{${escapeLatex(proj.technologies.join(', '))}}`
+          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
           : ''
       const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
       const linkLine = links.length > 0
@@ -203,7 +225,7 @@ function generateEducation(education: ResumeData['education']): string {
         ? `${escapeLatex(edu.degree)} in ${escapeLatex(edu.specialization)}`
         : escapeLatex(edu.degree)
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
-      const cgpaLine = edu.cgpa ? ` \\hfill CGPA: \\textbf{${escapeLatex(edu.cgpa)}}` : ''
+      const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
       return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
@@ -266,7 +288,7 @@ function generateLanguages(languages: ResumeData['languages']): string {
     .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
     .join(' \\\\\n')
 
-  return `\\section{Languages}
+  return `\\section{Activities}
 
 ${items}`
 }
