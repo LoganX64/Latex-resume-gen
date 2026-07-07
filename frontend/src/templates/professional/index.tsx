@@ -21,7 +21,7 @@ function Preview({
             {personalInfo.fullName}
           </h1>
           {personalInfo.professionalTitle && (
-            <p className="text-[12px] text-gray-500 italic mt-0">{personalInfo.professionalTitle}</p>
+            <p className="text-[12px] text-gray-700 italic mt-0">{personalInfo.professionalTitle}</p>
           )}
           <div className="flex flex-wrap justify-center gap-x-1 gap-y-0 mt-1 text-[14px] text-black">
             {personalInfo.phone && <span>{personalInfo.phone}</span>}
@@ -75,14 +75,14 @@ function SectionContent({
             <div key={exp.id} className="mb-2 last:mb-0">
               <div className="flex justify-between items-baseline">
                 <span className="font-bold text-[14px]">{exp.position || 'Position'}</span>
-                <span className="text-[14px] text-gray-500">
+                <span className="text-[14px] text-gray-700">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[12px] text-gray-500 italic">{exp.company || 'Company'}</span>
+                <span className="text-[12px] text-gray-700 italic">{exp.company || 'Company'}</span>
                 {exp.location && (
-                  <span className="text-[12px] text-gray-500 italic">{exp.location}</span>
+                  <span className="text-[12px] text-gray-700 italic">{exp.location}</span>
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
@@ -124,7 +124,7 @@ function SectionContent({
                   {proj.role && <> — <span className="italic font-normal">{proj.role}</span></>}
                 </span>
                 {proj.duration && (
-                  <span className="text-[12px] text-gray-500">{proj.duration}</span>
+                  <span className="text-[12px] text-gray-700">{proj.duration}</span>
                 )}
               </div>
               {proj.description && (
@@ -140,12 +140,12 @@ function SectionContent({
                 </ul>
               )}
               {proj.technologies.length > 0 && (
-                <p className="text-[12px] text-gray-500 mt-[1px]">
+                <p className="text-[12px] text-gray-700 mt-[1px]">
                   <span className="italic">{proj.technologies.join(', ')}</span>
                 </p>
               )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
-                <p className="text-[12px] text-gray-500 mt-[1px]">
+                <p className="text-[12px] text-gray-700 mt-[1px]">
                   {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
                   {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
                   {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
@@ -165,16 +165,16 @@ function SectionContent({
                 <span className="font-bold text-[14px]">
                   {edu.institution || 'Institution'}
                 </span>
-                <span className="text-[14px] text-gray-500">
+                <span className="text-[14px] text-gray-700">
                   {edu.startDate} – {edu.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[12px] text-gray-500 italic">
+                <span className="text-[12px] text-gray-700 italic">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? `, ${edu.specialization}` : ''}
                 </span>
-                {edu.cgpa && <span className="text-[12px] text-gray-500">CGPA: {edu.cgpa}</span>}
+                {edu.cgpa && <span className="text-[12px] text-gray-700">CGPA: {edu.cgpa}</span>}
               </div>
             </div>
           ))}
@@ -187,8 +187,8 @@ function SectionContent({
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-1 last:mb-0">
               <span className="font-bold text-[12px]">{cert.name || 'Certification'}</span>
-              {cert.issuer && <span className="text-[12px] text-gray-500"> - {cert.issuer}</span>}
-              {cert.date && <span className="text-[12px] text-gray-500 italic ml-1">{cert.date}</span>}
+              {cert.issuer && <span className="text-[12px] text-gray-700"> - {cert.issuer}</span>}
+              {cert.date && <span className="text-[12px] text-gray-700 italic ml-1">{cert.date}</span>}
             </div>
           ))}
         </Section>
@@ -201,7 +201,7 @@ function SectionContent({
             <div key={ach.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
                 <span className="font-bold text-[14px]">{ach.title || 'Achievement'}</span>
-                {ach.date && <span className="text-[14px] text-gray-500">{ach.date}</span>}
+                {ach.date && <span className="text-[14px] text-gray-700">{ach.date}</span>}
               </div>
               {ach.description && (
                 <p className="text-[14px]">{ach.description}</p>
@@ -218,9 +218,9 @@ function SectionContent({
             <div key={pub.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
                 <span className="font-bold text-[14px]">{pub.title || 'Publication'}</span>
-                <span className="text-[14px] text-gray-500">{pub.date}</span>
+                <span className="text-[14px] text-gray-700">{pub.date}</span>
               </div>
-              <span className="text-[14px] text-gray-500 italic">{pub.publisher}</span>
+              <span className="text-[14px] text-gray-700 italic">{pub.publisher}</span>
               {pub.description && (
                 <p className="text-[14px]">{pub.description}</p>
               )}
