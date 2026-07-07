@@ -205,9 +205,10 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\descript{| ${escapeLatex(exp.position)}}
 \\location{${dateRange}${loc}}
 \\begin{tightemize}
+\\sectionsep
 ${bullets ? bullets.split('\n').filter(l => l.trim().startsWith('\\item')).join('\n') : ''}
 \\end{tightemize}
-\\vspace{-2pt}`
+\\sectionsep`
     })
     .join('\n')
 
@@ -231,7 +232,7 @@ function generateProjects(projects: ResumeData['projects']): string {
 \\begin{tightemize}
 ${bullets ? bullets.split('\n').filter(l => l.trim().startsWith('\\item')).join('\n') : ''}
 \\end{tightemize}
-\\vspace{-2pt}`
+\\sectionsep`
     })
     .join('\n')
 
@@ -245,6 +246,7 @@ function generateSkills(skills: ResumeData['skills']): string {
     .map((cat) => `\\subsection{${escapeLatex(cat.name)}}
 \\sectionsep
 ${cat.skills.map(s => escapeLatex(s)).join(' \\textbullet{} ')} \\\\
+\\sectionsep
 \\sectionsep`)
     .join('\n')
 
