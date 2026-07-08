@@ -154,9 +154,9 @@ function SectionContent({
               )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
                 <p className="text-[11px] text-gray-500 mt-0">
-                  {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
-                  {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
-                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                  {proj.githubUrl && <span><span className="font-medium">GitHub:</span> {proj.githubUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span> </span>}
+                  {proj.liveDemoUrl && <span><span className="font-medium">Live:</span> {proj.liveDemoUrl}</span>}
                 </p>
               )}
             </div>
@@ -225,10 +225,13 @@ function SectionContent({
           {resume.publications.map((pub) => (
             <div key={pub.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[11px]">{pub.title || 'Publication'}</span>
+                <span className="text-[11px]">
+                  <span className="font-semibold">{pub.title || 'Publication'}</span>
+                  {pub.publisher && <span className="text-gray-600"> - {pub.publisher}</span>}
+                </span>
                 <span className="text-[10px] text-gray-500">{pub.date}</span>
               </div>
-              <span className="text-[11px] text-gray-600 italic">{pub.publisher}</span>
+              {pub.description && <p className="text-[11px] text-gray-700 mt-0">{pub.description}</p>}
             </div>
           ))}
         </Section>

@@ -49,6 +49,11 @@ function buildDatasciDocument(
     ? `Portfolio: \\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}`
     : ''
 
+  const leftLines = [phone, city, email].filter(Boolean)
+  const rightLines = [portfolio, github, linkedin].filter(Boolean)
+  const lheadContent = leftLines.join(' \\\\[2pt]\n')
+  const rheadContent = rightLines.join(' \\\\[2pt]\n')
+
   return `\\documentclass[10pt]{article}
 \\usepackage[utf8]{inputenc}
 
@@ -61,6 +66,8 @@ function buildDatasciDocument(
 \\usepackage[margin=.5in, top=.5in, bottom=1in]{geometry}
 \\raggedright
 \\raggedbottom
+\\setlength{\\parindent}{0pt}
+\\setlength{\\parskip}{0pt}
 
 \\usepackage{xcolor}
 \\definecolor{highlight}{RGB}{61,90,128}
@@ -72,8 +79,9 @@ function buildDatasciDocument(
 \\setlength{\\tabcolsep}{0in}
 
 \\usepackage[nostruts]{titlesec}
-\\titlespacing*{\\section}{0em}{0.5em}{0em}
+\\titlespacing*{\\section}{0em}{0pt}{0em}
 \\titleformat{\\section}{\\color{highlight} \\scshape \\raggedright \\large}{}{0em}{}[\\vspace{-0.75em}\\hrulefill]
+\\linespread{0.95}
 
 \\titlespacing*{\\subsection}{0em}{0em}{0em}
 \\titleformat{\\subsection}{\\bfseries}{}{0em}{}[]
@@ -83,8 +91,8 @@ function buildDatasciDocument(
 
 \\setlist[itemize]{align=parleft,left=0pt..1em}
 \\newenvironment{zitemize}{
-\\begin{itemize} \\itemsep 0pt \\parskip 0pt \\parsep 1pt}
-{\\end{itemize}\\vspace{-.5em}}
+\\begin{itemize}[topsep=0pt,itemsep=0pt,parsep=1pt]}
+{\\end{itemize}}
 
 \\pagenumbering{gobble}
 
@@ -99,9 +107,7 @@ function buildDatasciDocument(
 \\fancypagestyle{first_page}{
 \\fancyhf{}
 \\lhead{
-${phone} \\\\[2pt]
-${city} \\\\[2pt]
-${email}
+${lheadContent}
 }
 \\chead{
 \\centering
@@ -109,9 +115,7 @@ ${email}
 {\\color{highlight} \\Large{${title}}}
 }
 \\rhead{
-${portfolio} \\\\[2pt]
-${github} \\\\[2pt]
-${linkedin}
+${rheadContent}
 }
 \\renewcommand{\\headrulewidth}{1pt}
 \\renewcommand{\\headrule}{\\hbox to\\headwidth{\\color{highlight}\\leaders\\hrule height \\headrulewidth\\hfill}}
@@ -174,7 +178,6 @@ function generateExperience(experience: ResumeData['experience']): string {
 
       return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
-\\vspace{-5pt}
 ${bullets}`
     })
     .join('\n\n\\vspace{3pt}\n')
@@ -199,34 +202,42 @@ function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const lines: string[] = []
+      const headerLines: string[] = []
 
       const datePart = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      lines.push(`\\textbf{${escapeLatex(proj.name)}}${datePart}`)
+      headerLines.push(`\\textbf{${escapeLatex(proj.name)}}${datePart}`)
 
       if (proj.role) {
-        lines.push(`\\textit{${escapeLatex(proj.role)}}`)
+        headerLines.push(`\\textit{${escapeLatex(proj.role)}}`)
       }
 
       if (proj.description) {
-        lines.push(`\\textit{${escapeLatex(proj.description)}}`)
+        headerLines.push(`\\textit{${escapeLatex(proj.description)}}`)
+      }
+
+      const footerLines: string[] = []
+
+      if (proj.technologies.length > 0) {
+        footerLines.push(`\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`)
+      }
+
+      const linkParts: string[] = []
+      if (proj.githubUrl) {
+        linkParts.push(`\\textbf{GitHub:} \\url{${proj.githubUrl}}`)
+      }
+      if (proj.liveDemoUrl) {
+        linkParts.push(`\\textbf{Live:} \\url{${proj.liveDemoUrl}}`)
+      }
+      if (linkParts.length > 0) {
+        footerLines.push(linkParts.join(' \\quad '))
       }
 
       const bullets = generateBulletPoints(proj.bulletPoints, 'zitemize')
-      if (bullets) {
-        lines.push(bullets)
-      }
 
-      if (proj.technologies.length > 0) {
-        lines.push(`\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`)
-      }
+      const header = headerLines.join(' \\\\\n')
+      const footer = footerLines.length > 0 ? '\n' + footerLines.join(' \\\\\n') : ''
 
-      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
-      if (links.length > 0) {
-        lines.push(links.map((l) => `\\url{${l}}`).join(' \\quad '))
-      }
-
-      return lines.join(' \\\\\n')
+      return `${header}${bullets}${footer}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -291,7 +302,7 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
+      return `\\textbf{${escapeLatex(pub.title)}}${pub.publisher ? ` - ${escapeLatex(pub.publisher)}` : ''}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 
@@ -304,7 +315,7 @@ function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
     .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
-    .join(' \\\\\n')
+    .join(' \\quad ')
 
   return `\\section{Activities}
 
