@@ -143,7 +143,8 @@ function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const dateLine = proj.duration ? ` \\hfill \\mbox{${escapeLatex(proj.duration)}}` : ''
+      const rolePart = proj.role ? ` -- \\textit{${escapeLatex(proj.role)}}` : ''
+      const datePart = proj.duration ? ` \\hfill \\mbox{${escapeLatex(proj.duration)}}` : ''
       const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
@@ -160,8 +161,7 @@ function generateProjects(projects: ResumeData['projects']): string {
             ? `\n\n${demoLink}`
             : ''
 
-      return `\\textbf{${escapeLatex(proj.name)}}${dateLine} \\\\
-\\textit{${proj.role ? escapeLatex(proj.role) : ''}}\\\\[-4pt]${descLine}${bullets}${techLine}${linkLine}`
+      return `\\textbf{${escapeLatex(proj.name)}}${rolePart}${datePart} \\\\${descLine}${bullets}${techLine}${linkLine}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -211,7 +211,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? `\\\\\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -226,8 +226,9 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}}${dateStr}${descStr}\n\\textit{${escapeLatex(pub.publisher)}}`
+      const publisherPart = pub.publisher ? ` --- \\textit{${escapeLatex(pub.publisher)}}` : ''
+      const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${publisherPart}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 
