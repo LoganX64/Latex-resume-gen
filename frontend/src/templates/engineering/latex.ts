@@ -53,7 +53,9 @@ ${leftText}
 \\vspace{0pt}
 \\raggedleft
 \\IfFileExists{profile.png}{\\begin{tikzpicture}[baseline=(current bounding box.north)]\\clip[rounded corners=8pt] (0,0) rectangle (\\linewidth,\\linewidth);\\node at (\\linewidth/2,\\linewidth/2) {\\includegraphics[width=\\linewidth,height=\\linewidth,keepaspectratio]{profile.png}};\\end{tikzpicture}}{}
-\\end{minipage}`
+\\end{minipage}
+\\par\\vspace{4pt}
+\\noindent{\\color{darkblue}\\rule{\\textwidth}{1.5pt}}`
   } else {
     headerBlock = `\\begin{center}
 {\\LARGE\\textbf{\\color{darkblue}${name}}}
@@ -287,7 +289,7 @@ function generateLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
     .map((lang) => `\\textbf{${escapeLatex(lang.name)}} \\textendash{} ${escapeLatex(lang.proficiency)}`)
-    .join(' \\\\\n')
+    .join(', ')
 
   return `\\section{Languages}
 

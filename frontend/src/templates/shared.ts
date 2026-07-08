@@ -57,7 +57,7 @@ export function getContactParts(personalInfo: {
   }
   if (personalInfo.website) {
     const escaped = escapeLatex(personalInfo.website)
-    parts.push(useIcons ? `\\faIcon{globe}\\ \\href{https://${personalInfo.website}}{${escaped}}` : `\\href{https://${personalInfo.website}}{${escaped}}`)
+    parts.push(useIcons ? `\\faIcon{globe}\\ \\href{https://${personalInfo.website}}{\\mbox{${escaped}}}` : `\\href{https://${personalInfo.website}}{\\mbox{${escaped}}}`)
   }
 
   return parts
