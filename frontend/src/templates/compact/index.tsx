@@ -13,16 +13,16 @@ function Preview({
   const { personalInfo } = resume
 
   return (
-    <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontSize: '12px', lineHeight: '1.2' }}>
+    <div style={{ fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif', fontSize: '9px', lineHeight: '1.2' }}>
       {personalInfo.fullName && (
         <header className="text-center border-b border-gray-300 pb-1 mb-1">
-          <h1 className="text-base font-bold text-black">
+          <h1 className="text-[11px] font-bold text-black">
             {personalInfo.fullName}
             {personalInfo.professionalTitle && (
               <span className="text-gray-500 font-normal italic"> | {personalInfo.professionalTitle}</span>
             )}
           </h1>
-          <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-0 mt-0.5 text-[10px] text-gray-500">
+          <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-0 mt-0.5 text-[8px] text-gray-500">
             {personalInfo.email && <span>{personalInfo.email}</span>}
             {personalInfo.phone && <span>· {personalInfo.phone}</span>}
             {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
@@ -51,7 +51,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Summary">
-          <p className="text-[11px] leading-relaxed text-gray-700">{resume.summary}</p>
+          <p className="text-[9px] leading-relaxed text-gray-700">{resume.summary}</p>
         </Section>
       ) : null
 
@@ -61,18 +61,18 @@ function SectionContent({
           {resume.experience.map((exp) => (
             <div key={exp.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[11px]">{exp.position || 'Position'}</span>
-                <span className="text-[10px] text-gray-500">
+                <span className="font-bold text-[9px]">{exp.position || 'Position'}</span>
+                <span className="text-[8px] text-gray-500">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
-              <div className="text-[10px] text-gray-600 italic">
+              <div className="text-[9px] text-gray-600 italic">
                 {exp.company || 'Company'}{exp.location ? `, ${exp.location}` : ''}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[10px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[9px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}
                     </li>
                   ))}
@@ -88,7 +88,7 @@ function SectionContent({
         <Section title="Skills">
           <div className="grid grid-cols-2 gap-x-3 gap-y-0">
             {resume.skills.map((cat) => (
-              <div key={cat.id} className="text-[10px]">
+              <div key={cat.id} className="text-[9px]">
                 <span className="font-bold">{cat.name || 'Category'}: </span>
                 <span className="text-gray-700">{cat.skills.join(', ')}</span>
               </div>
@@ -103,33 +103,36 @@ function SectionContent({
           {resume.projects.map((proj) => (
             <div key={proj.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[11px]">
+                <span className="font-bold text-[9px]">
                   {proj.name || 'Project'}
                   {proj.technologies.length > 0 && (
                     <span className="font-normal text-gray-500 italic"> [{proj.technologies.join(', ')}]</span>
                   )}
                 </span>
                 {proj.duration && (
-                  <span className="text-[10px] text-gray-500">{proj.duration}</span>
+                  <span className="text-[8px] text-gray-500">{proj.duration}</span>
                 )}
               </div>
+              {proj.role && (
+                <p className="text-[9px] text-gray-600 italic mt-0">{proj.role}</p>
+              )}
               {proj.description && (
-                <p className="text-[10px] text-gray-700">{proj.description}</p>
+                <p className="text-[9px] text-gray-700">{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[10px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
+                    <li key={i} className="text-[9px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-gray-400">
                       {bullet}
                     </li>
                   ))}
                 </ul>
               )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
-                <p className="text-[10px] text-gray-500 mt-0">
+                <p className="text-[9px] text-gray-500 mt-0">
                   {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
-                  {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
-                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span> · </span>}
+                  {proj.liveDemoUrl && <span>Live: {proj.liveDemoUrl}</span>}
                 </p>
               )}
             </div>
@@ -143,17 +146,17 @@ function SectionContent({
           {resume.education.map((edu) => (
             <div key={edu.id} className="mb-0.5 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[11px]">
+                <span className="font-bold text-[9px]">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
-                <span className="text-[10px] text-gray-500">
+                <span className="text-[8px] text-gray-500">
                   {edu.startDate} – {edu.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[10px] text-gray-600">{edu.institution || 'Institution'}</span>
-                {edu.cgpa && <span className="text-[10px] text-gray-500">CGPA: {edu.cgpa}</span>}
+                <span className="text-[9px] text-gray-600">{edu.institution || 'Institution'}</span>
+                {edu.cgpa && <span className="text-[9px] text-gray-500">CGPA: {edu.cgpa}</span>}
               </div>
             </div>
           ))}
@@ -165,11 +168,11 @@ function SectionContent({
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-0 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[10px]">
+              <span className="text-[9px]">
                 <span className="font-bold">{cert.name || 'Certification'}</span>
                 {cert.issuer && <span className="text-gray-600">, {cert.issuer}</span>}
               </span>
-              <span className="text-[10px] text-gray-500">{cert.date}</span>
+              <span className="text-[8px] text-gray-500">{cert.date}</span>
             </div>
           ))}
         </Section>
@@ -179,12 +182,14 @@ function SectionContent({
       return resume.achievements.length > 0 ? (
         <Section title="Achievements">
           {resume.achievements.map((ach) => (
-            <div key={ach.id} className="mb-0 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[10px]">
-                {ach.title || 'Achievement'}
-                {ach.description && <span className="text-gray-600"> -- {ach.description}</span>}
-              </span>
-              {ach.date && <span className="text-[10px] text-gray-500">{ach.date}</span>}
+            <div key={ach.id} className="mb-0 last:mb-0">
+              <div className="flex justify-between items-baseline">
+                <span className="font-bold text-[9px]">{ach.title || 'Achievement'}</span>
+                {ach.date && <span className="text-[8px] text-gray-500">{ach.date}</span>}
+              </div>
+              {ach.description && (
+                <p className="text-[9px] text-gray-700">{ach.description}</p>
+              )}
             </div>
           ))}
         </Section>
@@ -194,9 +199,17 @@ function SectionContent({
       return resume.publications.length > 0 ? (
         <Section title="Publications">
           {resume.publications.map((pub) => (
-            <div key={pub.id} className="mb-0 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[10px] italic">{pub.title || 'Publication'} -- {pub.publisher}</span>
-              <span className="text-[10px] text-gray-500">{pub.date}</span>
+            <div key={pub.id} className="mb-0 last:mb-0">
+              <div className="flex justify-between items-baseline">
+                <span className="text-[9px]">
+                  <span className="font-bold">{pub.title || 'Publication'}</span>
+                  <span className="italic"> — {pub.publisher}</span>
+                </span>
+                <span className="text-[8px] text-gray-500">{pub.date}</span>
+              </div>
+              {pub.description && (
+                <p className="text-[9px] text-gray-700">{pub.description}</p>
+              )}
             </div>
           ))}
         </Section>
@@ -205,7 +218,7 @@ function SectionContent({
     case 'languages':
       return resume.languages.length > 0 ? (
         <Section title="Languages">
-          <p className="text-[10px] text-gray-700">
+          <p className="text-[9px] text-gray-700">
             {resume.languages.map((lang, i) => (
               <span key={lang.id}>
                 {lang.name || 'Language'}: {lang.proficiency}
@@ -221,7 +234,7 @@ function SectionContent({
         <>
           {resume.customSections.map((cs) => (
             <Section key={cs.id} title={cs.title || 'Custom Section'}>
-              <p className="text-[10px] text-gray-700 whitespace-pre-wrap">{cs.content}</p>
+              <p className="text-[9px] text-gray-700 whitespace-pre-wrap">{cs.content}</p>
             </Section>
           ))}
         </>
@@ -235,7 +248,7 @@ function SectionContent({
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mb-1">
-      <h2 className="text-[13px] font-bold uppercase tracking-wider border-b border-gray-300 pb-0 mb-0.5">
+      <h2 className="text-[9px] font-bold uppercase tracking-wider border-b border-gray-300 pb-0 mb-0.5">
         {title}
       </h2>
       {children}

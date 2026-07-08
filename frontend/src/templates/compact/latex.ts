@@ -30,12 +30,13 @@ function buildCompactDocument(
 
   const contactParts = getContactParts(personalInfo, false)
   const contactLine = contactParts.length > 0
-    ? `\\\\[1pt]{\\scriptsize ${contactParts.join(' $\\cdot$ ')}}`
+    ? `\\\\[1pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
 
   return `\\documentclass[9pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
+\\usepackage{lmodern}
 \\usepackage[scaled=0.9]{helvet}
 \\renewcommand{\\familydefault}{\\sfdefault}
 \\usepackage[margin=0.3in]{geometry}
@@ -51,8 +52,8 @@ function buildCompactDocument(
 \\setlength{\\parskip}{0pt}
 \\linespread{0.95}
 
-\\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\vspace{-0.4ex}\\rule{\\textwidth}{0.5pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{4pt}
+\\titleformat{\\section}{\\normalsize\\bfseries}{}{0em}{\\MakeUppercase}[\\vspace{-1.5ex}\\rule{\\textwidth}{0.5pt}]
+\\titlespacing*{\\section}{0pt}{1pt}{1pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.2em, label=\\textbullet, topsep=0pt, itemsep=0pt}
 
@@ -69,7 +70,7 @@ function buildCompactDocument(
 ${contactLine}
 \\end{center}
 
-\\vspace{-2pt}
+\\vspace{-8pt}
 \\noindent\\rule{\\textwidth}{0.4pt}
 
 ${body}
@@ -155,15 +156,26 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
+      const descLine = proj.description ? `${escapeLatex(proj.description)}\n` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
           ? ` \\textit{[${escapeLatex(proj.technologies.join(', '))}]}`
           : ''
+      const roleLine = proj.role ? `\\textit{${escapeLatex(proj.role)}}` : ''
+
+      const links: string[] = []
+      if (proj.githubUrl) {
+        links.push(`GitHub: \\url{${escapeLatex(proj.githubUrl)}}`)
+      }
+      if (proj.liveDemoUrl) {
+        links.push(`Live: \\url{${escapeLatex(proj.liveDemoUrl)}}`)
+      }
+      const linksLine = links.length > 0 ? `${links.join(' $\\cdot$ ')}` : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${techLine}${dateLine} \\\\
-${descLine}${bullets}`
+${roleLine} \\\\
+${descLine}${bullets}${linksLine}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -212,8 +224,8 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? ` -- ${escapeLatex(ach.description)}` : ''
-      return `${escapeLatex(ach.title)}${descStr}${dateStr}`
+      return `\\textbf{${escapeLatex(ach.title)}}${dateStr} \\\\
+${escapeLatex(ach.description || '')}`
     })
     .join(' \\\\\n')
 
@@ -227,7 +239,8 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      return `\\textit{${escapeLatex(pub.title)}} -- ${escapeLatex(pub.publisher)}${dateStr}`
+      return `\\textbf{${escapeLatex(pub.title)}} -- \\textit{${escapeLatex(pub.publisher)}}${dateStr} \\\\
+${escapeLatex(pub.description || '')}`
     })
     .join(' \\\\\n')
 
