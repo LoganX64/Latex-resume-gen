@@ -12,13 +12,14 @@ export function formatDateRange(startDate: string, endDate: string, current: boo
 
 /**
  * Formats a list of bullet points into a LaTeX itemize block.
+ * @param env - The LaTeX list environment to use (default: 'itemize')
  */
-export function generateBulletPoints(bullets: (string | undefined)[]): string {
+export function generateBulletPoints(bullets: (string | undefined)[], env: string = 'itemize'): string {
   const clean = bullets.filter((b): b is string => !!b && b.trim() !== '')
   if (clean.length === 0) return ''
-  return `\\begin{itemize}
+  return `\\begin{${env}}
 ${clean.map((b) => `  \\item ${escapeLatex(b)}`).join('\n')}
-\\end{itemize}`
+\\end{${env}}`
 }
 
 /**

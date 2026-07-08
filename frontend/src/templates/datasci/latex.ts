@@ -34,10 +34,16 @@ function buildDatasciDocument(
     ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`
     : ''
   const github = personalInfo.github
-    ? `\\href{https://github.com/${personalInfo.github}}{\\underline{github.com/${escapeLatex(personalInfo.github)}}}`
+    ? (() => {
+        const gh = personalInfo.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//, '')
+        return `\\href{https://github.com/${gh}}{\\underline{github.com/${escapeLatex(gh)}}}`
+      })()
     : ''
   const linkedin = personalInfo.linkedin
-    ? `\\href{https://www.linkedin.com/in/${personalInfo.linkedin}}{\\underline{linkedin.com/in/${escapeLatex(personalInfo.linkedin)}}}`
+    ? (() => {
+        const li = personalInfo.linkedin.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//, '')
+        return `\\href{https://www.linkedin.com/in/${li}}{\\underline{linkedin.com/in/${escapeLatex(li)}}}`
+      })()
     : ''
   const portfolio = personalInfo.website
     ? `Portfolio: \\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}`
@@ -156,9 +162,7 @@ function generateSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return `\\section{Objective}
-
-${escapeLatex(summary)}`
+  return escapeLatex(summary)
 }
 
 function generateExperience(experience: ResumeData['experience']): string {
@@ -166,10 +170,11 @@ function generateExperience(experience: ResumeData['experience']): string {
   const items = experience
     .map((exp) => {
       const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
-      const bullets = generateBulletPoints(exp.bulletPoints)
+      const bullets = generateBulletPoints(exp.bulletPoints, 'zitemize')
 
       return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
+\\vspace{-5pt}
 ${bullets}`
     })
     .join('\n\n\\vspace{3pt}\n')
@@ -194,21 +199,34 @@ function generateProjects(projects: ResumeData['projects']): string {
   if (projects.length === 0) return ''
   const items = projects
     .map((proj) => {
-      const dateLine = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
-      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
-      const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
-      const bullets = generateBulletPoints(proj.bulletPoints)
-      const techLine =
-        proj.technologies.length > 0
-          ? `\n\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`
-          : ''
-      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
-      const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
-        : ''
+      const lines: string[] = []
 
-      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets}${techLine}${linkLine}`
+      const datePart = proj.duration ? ` \\hfill ${escapeLatex(proj.duration)}` : ''
+      lines.push(`\\textbf{${escapeLatex(proj.name)}}${datePart}`)
+
+      if (proj.role) {
+        lines.push(`\\textit{${escapeLatex(proj.role)}}`)
+      }
+
+      if (proj.description) {
+        lines.push(`\\textit{${escapeLatex(proj.description)}}`)
+      }
+
+      const bullets = generateBulletPoints(proj.bulletPoints, 'zitemize')
+      if (bullets) {
+        lines.push(bullets)
+      }
+
+      if (proj.technologies.length > 0) {
+        lines.push(`\\textbf{Tech:} ${escapeLatex(proj.technologies.join(', '))}`)
+      }
+
+      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
+      if (links.length > 0) {
+        lines.push(links.map((l) => `\\url{${l}}`).join(' \\quad '))
+      }
+
+      return lines.join(' \\\\\n')
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -257,7 +275,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? `\\\\\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -272,7 +290,7 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
+      const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
