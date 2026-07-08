@@ -143,9 +143,9 @@ function SectionContent({
               )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
                 <p className="text-[12px] mt-0" style={{ color: '#1e3a5f' }}>
-                  {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
-                  {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
-                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                  {proj.githubUrl && <span><span className="font-medium">GitHub:</span> {proj.githubUrl}</span>}
+                  {proj.githubUrl && proj.liveDemoUrl && <span> </span>}
+                  {proj.liveDemoUrl && <span><span className="font-medium">Live:</span> {proj.liveDemoUrl}</span>}
                 </p>
               )}
             </div>

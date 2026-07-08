@@ -1,6 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
 import { escapeLatex } from '@/lib/utils'
-import { formatDateRange, generateBulletPoints, getContactParts, wrapPhotoHeader } from '../shared'
+import { formatDateRange, generateBulletPoints, getContactParts } from '../shared'
 
 export function generateEngineeringLatex(
   resume: ResumeData,
@@ -30,7 +30,7 @@ function buildEngineeringDocument(
 
   const contactParts = getContactParts(personalInfo, false)
   const contactLine = contactParts.length > 0
-    ? `\\\\[2pt]{\\small ${contactParts.join(' $\\mid$ ')}}`
+    ? `\\\\[2pt]{\\small\\textit{${contactParts.join(' $\\mid$ ')}}}`
     : ''
 
   let headerBlock = ''
@@ -39,10 +39,21 @@ function buildEngineeringDocument(
       ? `\\\\{\\large\\color{darkblue}\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
       : ''
     const contactLineLeft = contactParts.length > 0
-      ? `\\\\{\\small ${contactParts.join(' $\\mid$ ')}}`
+      ? `\\\\{\\small\\textit{${contactParts.join(' $\\mid$ ')}}}`
       : ''
     const leftText = `{\\LARGE\\textbf{\\color{darkblue}${name}}}${titleText}${contactLineLeft}`
-    headerBlock = wrapPhotoHeader(personalInfo, leftText, 0.14)
+    const photoWidth = 0.09
+    const leftWidth = 1.0 - photoWidth - 0.04
+    headerBlock = `\\begin{minipage}[t]{${leftWidth.toFixed(2)}\\textwidth}%
+\\vspace{0pt}
+${leftText}
+\\end{minipage}%
+\\hfill%
+\\begin{minipage}[t]{${photoWidth.toFixed(2)}\\textwidth}%
+\\vspace{0pt}
+\\raggedleft
+\\IfFileExists{profile.png}{\\begin{tikzpicture}[baseline=(current bounding box.north)]\\clip[rounded corners=8pt] (0,0) rectangle (\\linewidth,\\linewidth);\\node at (\\linewidth/2,\\linewidth/2) {\\includegraphics[width=\\linewidth,height=\\linewidth,keepaspectratio]{profile.png}};\\end{tikzpicture}}{}
+\\end{minipage}`
   } else {
     headerBlock = `\\begin{center}
 {\\LARGE\\textbf{\\color{darkblue}${name}}}
@@ -66,6 +77,7 @@ ${contactLine}
 \\usepackage{xcolor}
 \\usepackage{tabularx}
 \\usepackage{graphicx}
+\\usepackage{tikz}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
@@ -75,8 +87,8 @@ ${contactLine}
 \\definecolor{darkblue}{HTML}{1e3a5f}
 \\definecolor{lightgray}{HTML}{f0f0f0}
 
-\\titleformat{\\section}{\\large\\bfseries\\color{darkblue}}{}{0em}{}[\\vspace{-0.4ex}\\color{darkblue}\\rule{\\textwidth}{1pt}]
-\\titlespacing*{\\section}{0pt}{2pt}{4pt}
+\\titleformat{\\section}{\\large\\bfseries\\color{darkblue}}{}{0em}{}[\\vspace{-1.5ex}\\color{darkblue}\\rule{\\textwidth}{1pt}]
+\\titlespacing*{\\section}{0pt}{2pt}{0pt}
 
 \\setlist[itemize]{nosep, leftmargin=1.5em, label=\\textcolor{darkblue}{\\textbullet}, topsep=0pt, itemsep=0pt}
 
@@ -162,10 +174,12 @@ function generateSkills(skills: ResumeData['skills']): string {
 
   return `\\section{Technical Skills}
 
+{\\linespread{0.90}\\selectfont
+\\renewcommand{\\arraystretch}{1.0}
 \\setlength{\\tabcolsep}{0pt}
 \\begin{tabularx}{\\textwidth}{@{}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{\\hspace{0.04\\textwidth}}>{\\raggedright\\arraybackslash}p{0.48\\textwidth}@{}}
 ${rows.join('\n')}
-\\end{tabularx}`
+\\end{tabularx}}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -173,20 +187,29 @@ function generateProjects(projects: ResumeData['projects']): string {
   const items = projects
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill \\textcolor{gray}{${escapeLatex(proj.duration)}}` : ''
-      const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
-      const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
+      const roleLine = proj.role ? ` \\textit{${escapeLatex(proj.role)}}` : ''
+      const descLine = proj.description ? `${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
-          ? `\n\\textbf{Tech:} \\textcolor{darkblue}{${escapeLatex(proj.technologies.join(', '))}}`
+          ? `\\textbf{Tech:} \\textcolor{darkblue}{${escapeLatex(proj.technologies.join(', '))}}`
           : ''
-      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
-      const linkLine = links.length > 0
-        ? `\n${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
+      const linkParts: string[] = []
+      if (proj.githubUrl) {
+        linkParts.push(`\\textbf{GitHub:} \\url{${proj.githubUrl}}`)
+      }
+      if (proj.liveDemoUrl) {
+        linkParts.push(`\\textbf{Live:} \\url{${proj.liveDemoUrl}}`)
+      }
+      const linkLine = linkParts.length > 0
+        ? `${linkParts.join(' \\quad ')}`
         : ''
 
-      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
-${descLine}${bullets}${techLine}${linkLine}`
+      return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\[0pt]
+${descLine}
+${bullets}
+${techLine} \\\\
+${linkLine}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -235,7 +258,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? `\\\\\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -250,7 +273,7 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
+      const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
