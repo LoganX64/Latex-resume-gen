@@ -1,6 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
 import { escapeLatex } from '@/lib/utils'
-import { formatDateRange, generateBulletPoints, getContactParts } from '../shared'
+import { formatDateRange, generateBulletPoints } from '../shared'
 
 export function generateSidebarLatex(
   resume: ResumeData,
@@ -21,7 +21,7 @@ export function generateSidebarLatex(
   const sidebar = sidebarSections
     .map((section) => generateSidebarSection(section.type, resume))
     .filter(Boolean)
-    .join('\n')
+    .join('\n\\vspace{4pt}\n')
 
   const main = mainSections
     .map((section) => generateMainSection(section.type, resume))
@@ -41,20 +41,16 @@ function buildSidebarDocument(
     ? `\\\\[1pt]{\\small\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactItems = getContactParts(personalInfo, false)
-  const contactBlock = contactItems.length > 0
-    ? `\\sidebarsection{Contact}
-${contactItems.join('\\\\[2pt]\n')}`
-    : ''
+  const contactBlock = buildSidebarContactBlock(personalInfo)
 
   const photoBlock = personalInfo.profileImage
-    ? `\\IfFileExists{profile.png}{\\includegraphics[width=3cm,height=3cm,keepaspectratio]{profile.png}\\\\[8pt]}{} `
+    ? `\\IfFileExists{profile.png}{\\begin{tikzpicture}\\clip circle (1.5cm) node[inner sep=0pt] {\\includegraphics[width=3cm,height=3cm,keepaspectratio]{profile.png}};\\end{tikzpicture}\\\\[8pt]}{} `
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
 
 \\usepackage[T1]{fontenc}
-\\usepackage[margin=0pt]{geometry}
+\\usepackage{geometry}
 \\usepackage{enumitem}
 \\usepackage{hyperref}
 \\usepackage{titlesec}
@@ -74,8 +70,8 @@ ${contactItems.join('\\\\[2pt]\n')}`
 \\geometry{
   top=0.3in,
   bottom=0.3in,
-  left=0pt,
-  right=0pt,
+  left=0.15in,
+  right=0.15in,
 }
 
 \\titleformat{\\section}{\\normalsize\\bfseries\\color{sidebar}}{}{0em}{}[\\vspace{-0.4ex}\\color{sidebar}\\titlerule]
@@ -85,23 +81,24 @@ ${contactItems.join('\\\\[2pt]\n')}`
 
 \\hypersetup{
     colorlinks=true,
-    linkcolor=sidebar,
-    urlcolor=sidebar
+    linkcolor=sidebartext,
+    urlcolor=sidebartext
 }
 
 \\newcommand{\\sidebarsection}[1]{%
-  \\textbf{\\color{sidebartext}\\normalsize #1}\\\\[-1pt]
-  \\textcolor{sidebartext!50}{\\rule{\\linewidth}{0.4pt}}\\\\[3pt]
+  \\noindent{\\textbf{\\color{sidebartext}\\normalsize\\MakeUppercase{#1}}}\\\\[-\\baselineskip+3pt]
+  \\textcolor{sidebartext!50}{\\rule{\\dimexpr\\linewidth-\\leftskip-\\rightskip-4pt}{0.4pt}}\\\\[0pt]
 }
 
 \\begin{document}
 
 \\begin{tikzpicture}[remember picture, overlay]
-  \\fill[sidebar] (current page.north west) rectangle ([xshift=6.5cm]current page.south west);
+  \\fill[sidebar] (current page.north west) rectangle ([xshift=5.8cm+12pt]current page.south west);
 \\end{tikzpicture}%
 
-\\begin{minipage}[t]{6cm}
+\\begin{minipage}[t]{5.8cm}
 \\color{sidebartext}
+\\leftskip=12pt \\rightskip=12pt
 
 \\vspace{0.3in}
 
@@ -117,15 +114,43 @@ ${sidebar}
 
 \\end{minipage}%
 \\hfill%
-\\begin{minipage}[t]{\\dimexpr\\paperwidth-6.5cm}
+\\begin{minipage}[t]{\\dimexpr\\paperwidth-5.8cm-12pt}
 
 \\vspace{0.3in}
+\\hspace{12pt}
 
 ${main}
 
 \\end{minipage}
 
 \\end{document}`
+}
+
+function buildSidebarContactBlock(personalInfo: ResumeData['personalInfo']): string {
+  const items: string[] = []
+
+  if (personalInfo.email) {
+    items.push(`\\mbox{@}\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+  }
+  if (personalInfo.phone) {
+    items.push(`\\#\\ ${escapeLatex(personalInfo.phone)}`)
+  }
+  if (personalInfo.location) {
+    items.push(`*\\ ${escapeLatex(personalInfo.location)}`)
+  }
+  if (personalInfo.linkedin) {
+    items.push(`in\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+  }
+  if (personalInfo.github) {
+    items.push(`gh\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+  }
+  if (personalInfo.website) {
+    items.push(`www\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
+  }
+
+  if (items.length === 0) return ''
+
+  return items.join('\\\\[2pt]\n')
 }
 
 function generateSidebarSection(type: string, resume: ResumeData): string {
@@ -237,34 +262,37 @@ ${items}`
 function generateSidebarSkills(skills: ResumeData['skills']): string {
   if (skills.length === 0) return ''
   const items = skills
-    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}\\\\\n${escapeLatex(cat.skills.join(', '))}`)
+    .map((cat) => `\\textbf{${escapeLatex(cat.name)}}\\\\\n{\\small ${escapeLatex(cat.skills.join(', '))}}`)
     .join('\\\\[2pt]\n')
 
   return `\\sidebarsection{Skills}
-
-${items}`
+${items}\\\\[0pt]`
 }
 
 function generateSidebarLanguages(languages: ResumeData['languages']): string {
   if (languages.length === 0) return ''
   const items = languages
-    .map((lang) => `${escapeLatex(lang.name)} \\hfill ${escapeLatex(lang.proficiency)}`)
-    .join('\\\\[2pt]\n')
+    .map((lang) => {
+      const proficiency = lang.proficiency ? `\\\\{\\scriptsize ${escapeLatex(lang.proficiency)}}` : ''
+      return `{\\scriptsize \\textbf{${escapeLatex(lang.name)}}${proficiency}}`
+    })
+    .join('\\\\[0pt]\n')
 
   return `\\sidebarsection{Languages}
-
-${items}`
+${items}\\\\[0pt]`
 }
 
 function generateSidebarCertifications(certifications: ResumeData['certifications']): string {
   if (certifications.length === 0) return ''
   const items = certifications
-    .map((cert) => `${escapeLatex(cert.name)}${cert.issuer ? ` - ${escapeLatex(cert.issuer)}` : ''}`)
-    .join('\\\\[2pt]\n')
+    .map((cert) => {
+      const issuer = cert.issuer ? `\\\\{\\scriptsize ${escapeLatex(cert.issuer)}}` : ''
+      return `{\\scriptsize \\textbf{${escapeLatex(cert.name)}}${issuer}}`
+    })
+    .join('\\\\[0pt]\n')
 
   return `\\sidebarsection{Certifications}
-
-${items}`
+${items}\\\\[0pt]`
 }
 
 function generateAchievements(achievements: ResumeData['achievements']): string {
