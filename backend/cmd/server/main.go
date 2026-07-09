@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"latex-resume-backend/internal/handlers"
+	"latex-resume-backend/internal/middleware"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -49,11 +50,13 @@ func main() {
 
 	r.MaxMultipartMemory = MaxRequestSize
 
+	compileLimiter := middleware.NewRateLimiter(5, 10)
+
 	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
-	r.POST("/api/compile", handlers.CompileHandler)
+	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)
 
 	r.Run(ServerPort)
 }
