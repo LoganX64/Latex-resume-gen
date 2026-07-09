@@ -43,7 +43,7 @@ body {
 
 /* Smooth transitions for theme switching */
 @media (prefers-reduced-motion: no-preference) {
-  html {
+  body {
     transition: background-color 0.2s ease, color 0.2s ease;
   }
 

@@ -26,6 +26,7 @@ interface CommandPaletteProps {
   onExportPdf: () => void
   onToggleDarkMode: () => void
   onResetResume: () => void
+  onClearResume: () => void
   onTemplateChange: (id: string) => void
   templateOptions: { id: string; name: string }[]
   isDarkMode: boolean
@@ -36,6 +37,7 @@ export function CommandPalette({
   onExportPdf,
   onToggleDarkMode,
   onResetResume,
+  onClearResume,
   onTemplateChange,
   templateOptions,
   isDarkMode,
@@ -101,7 +103,11 @@ export function CommandPalette({
             </CommandItem>
             <CommandItem onSelect={() => runAction(onResetResume)}>
               <RotateCcw className="mr-2 h-4 w-4" />
-              <span>Reset Resume</span>
+              <span>Load Sample Data</span>
+            </CommandItem>
+            <CommandItem onSelect={() => runAction(onClearResume)}>
+              <RotateCcw className="mr-2 h-4 w-4" />
+              <span>Clear Resume</span>
             </CommandItem>
           </CommandGroup>
         </CommandList>

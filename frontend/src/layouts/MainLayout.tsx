@@ -13,6 +13,7 @@ import {
   Download,
   FileText,
   RotateCcw,
+  Trash2,
   Search,
   Loader2,
   TriangleAlert,
@@ -50,6 +51,7 @@ import {
 export function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
   const resetResume = useResumeStore((s) => s.resetResume)
+  const clearResume = useResumeStore((s) => s.clearResume)
   const resume = useResumeStore((s) => s.resume)
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
@@ -60,7 +62,6 @@ export function MainLayout() {
   const [activeSection, setActiveSection] = useState<string>('personal')
   const [showMultiPageDialog, setShowMultiPageDialog] = useState(false)
   const [multiPageCount, setMultiPageCount] = useState(0)
-  const [showResetDialog, setShowResetDialog] = useState(false)
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
 
   const templateConfigs = getAllTemplateConfigs()
@@ -135,15 +136,15 @@ export function MainLayout() {
     pendingDownloadRef.current = null
   }, [])
 
-  const handleResetResume = useCallback(() => {
-    setShowResetDialog(true)
-  }, [])
-
-  const handleConfirmReset = useCallback(() => {
+  const handleLoadSample = useCallback(() => {
     resetResume()
-    setShowResetDialog(false)
-    toast.success('Resume reset', { description: 'All fields restored to defaults.' })
+    toast.success('Sample data loaded', { description: 'Resume populated with sample data.' })
   }, [resetResume])
+
+  const handleClearResume = useCallback(() => {
+    clearResume()
+    toast.success('Resume cleared', { description: 'All fields have been cleared.' })
+  }, [clearResume])
 
   const shortcuts = useMemo(
     () => ({
@@ -168,10 +169,16 @@ export function MainLayout() {
               <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
               <div className="flex items-center gap-1">
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleResetResume} aria-label="Reset resume" />}>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleClearResume} aria-label="Clear resume" />}>
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </TooltipTrigger>
+                  <TooltipContent>Clear resume</TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleLoadSample} aria-label="Load sample data" />}>
                     <RotateCcw className="h-3.5 w-3.5" />
                   </TooltipTrigger>
-                  <TooltipContent>Reset resume</TooltipContent>
+                  <TooltipContent>Load sample data</TooltipContent>
                 </Tooltip>
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={toggleDarkMode} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} />}>
@@ -238,30 +245,13 @@ export function MainLayout() {
           onExportLatex={handleExportLatex}
           onExportPdf={handleExportPdf}
           onToggleDarkMode={toggleDarkMode}
-          onResetResume={handleResetResume}
+          onResetResume={handleLoadSample}
+          onClearResume={handleClearResume}
           onTemplateChange={setTemplateId}
           templateOptions={templateConfigs.map((tc) => ({ id: tc.id, name: tc.name }))}
           isDarkMode={darkMode}
         />
       </div>
-      <AlertDialog open={showResetDialog} onOpenChange={setShowResetDialog}>
-        <AlertDialogContent className="sm:max-w-sm">
-          <AlertDialogHeader>
-            <AlertDialogTitle>Reset resume?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This will clear all your data and restore default fields. This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowResetDialog(false)}>
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmReset}>
-              Reset
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>

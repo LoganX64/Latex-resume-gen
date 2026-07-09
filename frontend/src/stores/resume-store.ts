@@ -78,9 +78,10 @@ interface ResumeStore {
   reorderSections: (oldIndex: number, newIndex: number) => void
 
   resetResume: () => void
+  clearResume: () => void
 }
 
-const defaultResume: ResumeData = {
+const sampleResume: ResumeData = {
   personalInfo: {
     fullName: 'Alex Chen',
     email: 'alex.chen@email.com',
@@ -247,6 +248,23 @@ const defaultResume: ResumeData = {
   customSections: [],
 }
 
+const emptyResume: ResumeData = {
+  personalInfo: {
+    fullName: '', email: '', phone: '', location: '',
+    linkedin: '', github: '', website: '', professionalTitle: '',
+  },
+  summary: '',
+  experience: [],
+  education: [],
+  skills: [],
+  projects: [],
+  certifications: [],
+  achievements: [],
+  publications: [],
+  languages: [],
+  customSections: [],
+}
+
 const defaultSectionOrder: SectionOrder[] = [
   { id: '1', type: 'summary', label: 'Professional Summary' },
   { id: '2', type: 'experience', label: 'Work Experience' },
@@ -277,7 +295,7 @@ const defaultSectionVisibility: SectionVisibility = {
 export const useResumeStore = create<ResumeStore>()(
   persist(
     (set) => ({
-      resume: defaultResume,
+      resume: sampleResume,
       templateId: 'classic',
       sectionOrder: defaultSectionOrder,
       sectionVisibility: defaultSectionVisibility,
@@ -681,12 +699,20 @@ export const useResumeStore = create<ResumeStore>()(
 
       resetResume: () =>
         set({
-          resume: defaultResume,
+          resume: sampleResume,
           templateId: 'classic',
           sectionOrder: defaultSectionOrder,
           sectionVisibility: defaultSectionVisibility,
           zoom: 100,
         }),
+      clearResume: () =>
+        set((state) => ({
+          resume: emptyResume,
+          templateId: state.templateId,
+          sectionOrder: defaultSectionOrder,
+          sectionVisibility: defaultSectionVisibility,
+          zoom: state.zoom,
+        })),
     }),
     {
       name: 'latex-resume-storage',
