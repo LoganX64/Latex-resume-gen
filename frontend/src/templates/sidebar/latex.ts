@@ -46,7 +46,9 @@ function buildSidebarDocument(
     ? `\\\\[1pt]{\\small\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactBlock = buildSidebarContactBlock(personalInfo)
+  const contactBlock = personalInfo.email || personalInfo.phone || personalInfo.location || personalInfo.linkedin || personalInfo.github || personalInfo.website
+    ? `\\begingroup\\hypersetup{urlcolor=sidebartext}\n${buildSidebarContactBlock(personalInfo)}\n\\endgroup`
+    : ''
 
   const photoBlock = personalInfo.profileImage
     ? `\\IfFileExists{profile.png}{\\begin{tikzpicture}\\begin{scope}\\clip circle (1.48cm);\\node[inner sep=0pt] {\\includegraphics[width=2.96cm,height=2.96cm,keepaspectratio]{profile.png}};\\end{scope}\\draw[white, thick] circle (1.48cm);\\end{tikzpicture}\\\\[8pt]}{} `
