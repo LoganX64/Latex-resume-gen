@@ -48,7 +48,7 @@ export function Sidebar({ activeSection, onSectionClick }: SidebarProps) {
 
   return (
     <div
-      className={`flex flex-col bg-background border-r border-border transition-all duration-300 ease-in-out ${
+      className={`flex flex-col bg-background border-r border-border transition-[width] duration-300 ease-in-out ${
         isCollapsed ? 'w-12 min-w-[48px]' : 'w-52 min-w-[208px]'
       }`}
     >

@@ -42,28 +42,30 @@ body {
 }
 
 /* Smooth transitions for theme switching */
-html {
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
 
-/* Smooth fade-in for page load */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+  /* Smooth fade-in for page load */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-out;
+  }
 
-/* Smooth slide-up for modals and popups */
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+  /* Smooth slide-up for modals and popups */
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-.animate-slide-up {
-  animation: slide-up 0.2s ease-out;
+  .animate-slide-up {
+    animation: slide-up 0.2s ease-out;
+  }
 }
 
 @theme inline {
