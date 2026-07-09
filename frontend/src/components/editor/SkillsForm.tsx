@@ -118,7 +118,7 @@ function SortableSkillCategory({
               addSkill()
             }
           }}
-          placeholder="Type a skill and press Enter"
+          placeholder="Type a skill and press Enter…"
           aria-label="New skill name"
           className="h-7 text-xs"
         />

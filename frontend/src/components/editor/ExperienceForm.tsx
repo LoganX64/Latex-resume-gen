@@ -149,6 +149,7 @@ function SortableExperienceEntry({
       </div>
       <div className="space-y-1">
         <Label className="text-[10px]">Bullet Points</Label>
+        {experience.bulletPoints.length === 0 && <p className="text-[10px] text-muted-foreground">No bullet points yet</p>}
         {experience.bulletPoints.map((bullet, bIndex) => (
           <div key={bIndex} className="flex gap-1">
     <Input

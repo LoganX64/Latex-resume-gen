@@ -70,8 +70,8 @@ function Preview({
               personalInfo.email,
               personalInfo.phone,
               personalInfo.location,
-              personalInfo.linkedin && `@${personalInfo.linkedin.replace('linkedin.com/in/', '')}`,
-              personalInfo.github && `@${personalInfo.github.replace('github.com/', '')}`,
+              personalInfo.linkedin && personalInfo.linkedin.replace(/^https?:\/\//, '').replace(/\/$/, ''),
+              personalInfo.github && personalInfo.github.replace(/^https?:\/\//, '').replace(/\/$/, ''),
               personalInfo.website,
             ].filter(Boolean).join(' | ')}
           </div>
@@ -110,7 +110,7 @@ function SectionContent({
           <ul style={styles.itemList}>
             {resume.experience.map((exp) => (
               <li key={exp.id} style={{ marginBottom: '4px' }}>
-                <ProjectHeading date={`${exp.startDate} – ${exp.current ? 'Present' : exp.endDate}`}>
+                <ProjectHeading date={exp.startDate ? `${exp.startDate} – ${exp.current ? 'Present' : exp.endDate}` : ''}>
                   <strong>{exp.position}</strong> | <em>{exp.company}</em>
                 </ProjectHeading>
                 {exp.bulletPoints.filter(Boolean).length > 0 && (
@@ -183,7 +183,7 @@ function SectionContent({
               const degreeLine = edu.specialization
                 ? `${edu.degree} in ${edu.specialization}`
                 : edu.degree
-              const dateRange = `${edu.startDate} – ${edu.endDate}`
+              const dateRange = edu.startDate ? `${edu.startDate} – ${edu.endDate}` : ''
               return (
                 <li key={edu.id} style={{ marginBottom: '3px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', width: '97%' }}>

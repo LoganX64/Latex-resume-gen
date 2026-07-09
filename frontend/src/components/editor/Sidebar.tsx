@@ -54,7 +54,7 @@ export function Sidebar({ activeSection, onSectionClick }: SidebarProps) {
     >
       {isCollapsed ? (
         <div className="flex items-center justify-center py-3">
-          <img src="/favicon.svg" alt="Logo" className="h-6 w-6" />
+          <img src="/favicon.svg" alt="Logo" width={24} height={24} className="h-6 w-6" />
         </div>
       ) : (
         <div className="px-3 py-3">
@@ -124,6 +124,7 @@ export function Sidebar({ activeSection, onSectionClick }: SidebarProps) {
                   isCollapsed ? 'h-8 w-8' : 'justify-start gap-2 h-8 text-xs'
                 } font-normal`}
                 onClick={() => setIsCollapsed(!isCollapsed)}
+                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
                 {isCollapsed ? (
                   <PanelLeftOpen className="h-3.5 w-3.5 shrink-0" />

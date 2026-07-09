@@ -200,6 +200,7 @@ export function ResumePreview() {
         <div
           ref={containerRef}
           className={`flex-1 overflow-auto p-4 ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
+          style={{ touchAction: 'manipulation' }}
         >
           <div className="flex items-start min-h-full">
             <div
@@ -226,7 +227,7 @@ export function ResumePreview() {
       </div>
 
       {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center" style={{ overscrollBehavior: 'contain' }}>
           <div
             style={{
               transform: `scale(${displayScale})`,

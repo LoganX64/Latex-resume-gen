@@ -60,6 +60,7 @@ export function MainLayout() {
   const [activeSection, setActiveSection] = useState<string>('personal')
   const [showMultiPageDialog, setShowMultiPageDialog] = useState(false)
   const [multiPageCount, setMultiPageCount] = useState(0)
+  const [showResetDialog, setShowResetDialog] = useState(false)
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
 
   const templateConfigs = getAllTemplateConfigs()
@@ -135,7 +136,12 @@ export function MainLayout() {
   }, [])
 
   const handleResetResume = useCallback(() => {
+    setShowResetDialog(true)
+  }, [])
+
+  const handleConfirmReset = useCallback(() => {
     resetResume()
+    setShowResetDialog(false)
     toast.success('Resume reset', { description: 'All fields restored to defaults.' })
   }, [resetResume])
 
@@ -238,6 +244,24 @@ export function MainLayout() {
           isDarkMode={darkMode}
         />
       </div>
+      <AlertDialog open={showResetDialog} onOpenChange={setShowResetDialog}>
+        <AlertDialogContent className="sm:max-w-sm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Reset resume?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will clear all your data and restore default fields. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowResetDialog(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmReset}>
+              Reset
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>

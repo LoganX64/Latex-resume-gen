@@ -121,22 +121,30 @@ function SortableEducationEntry({
         <div className="space-y-1">
           <Label className="text-[10px]">Dates</Label>
           <div className="flex gap-1">
-            <Input
-              type="month"
-              name="eduStartDate"
-              value={education.startDate}
-              onChange={(e) => updateEducation(education.id, 'startDate', e.target.value)}
-              aria-label="Start date"
-              className="h-7 text-xs"
-            />
-            <Input
-              type="month"
-              name="eduEndDate"
-              value={education.endDate}
-              onChange={(e) => updateEducation(education.id, 'endDate', e.target.value)}
-              aria-label="End date"
-              className="h-7 text-xs"
-            />
+            <div className="flex-1">
+              <Label htmlFor={`edu-start-${education.id}`} className="sr-only">Start date</Label>
+              <Input
+                id={`edu-start-${education.id}`}
+                type="month"
+                name="eduStartDate"
+                value={education.startDate}
+                onChange={(e) => updateEducation(education.id, 'startDate', e.target.value)}
+                aria-label="Start date"
+                className="h-7 text-xs"
+              />
+            </div>
+            <div className="flex-1">
+              <Label htmlFor={`edu-end-${education.id}`} className="sr-only">End date</Label>
+              <Input
+                id={`edu-end-${education.id}`}
+                type="month"
+                name="eduEndDate"
+                value={education.endDate}
+                onChange={(e) => updateEducation(education.id, 'endDate', e.target.value)}
+                aria-label="End date"
+                className="h-7 text-xs"
+              />
+            </div>
           </div>
         </div>
       </div>

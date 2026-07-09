@@ -65,7 +65,7 @@ export function SectionWrapper({
               {...attributes}
               {...listeners}
             >
-              <GripVertical className="h-4 w-4" />
+              <GripVertical className="h-4 w-4" aria-hidden="true" />
             </button>
             <CardTitle className="text-sm font-medium flex-1">{label}</CardTitle>
             <Button

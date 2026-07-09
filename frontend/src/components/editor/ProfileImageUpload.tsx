@@ -81,7 +81,7 @@ export function ProfileImageUpload() {
       <div className="relative w-20 h-20">
         <div className="w-full h-full rounded-full border-2 border-dashed border-muted-foreground/30 flex items-center justify-center overflow-hidden bg-muted">
           {profileImage ? (
-            <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+            <img src={profileImage} alt="Profile" width={80} height={80} loading="lazy" className="w-full h-full object-cover" />
           ) : (
             <User className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
           )}
