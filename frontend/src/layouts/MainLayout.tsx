@@ -80,12 +80,6 @@ export function MainLayout() {
     if (!currentTemplate || isExportingPdf) return
     setIsExportingPdf(true)
     const latex = currentTemplate.generateLatex(resume, sectionOrder, sectionVisibility)
-    console.log('=== LATEX BEING SENT TO BACKEND ===')
-    console.log('Template ID:', templateId)
-    console.log('Template function:', currentTemplate.generateLatex.name)
-    console.log('LaTeX length:', latex.length)
-    console.log('First 500 chars:', latex.substring(0, 500))
-    console.log('=== END LATEX LOG ===')
     const profileImage = resume.personalInfo.profileImage || ''
     try {
       const response = await fetch('/api/compile', {
