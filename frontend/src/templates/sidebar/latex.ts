@@ -19,9 +19,14 @@ export function generateSidebarLatex(
   )
 
   const sidebar = sidebarSections
-    .map((section) => generateSidebarSection(section.type, resume))
+    .map((section) => {
+      const content = generateSidebarSection(section.type, resume)
+      if (!content) return ''
+      const spacing = section.type === 'skills' ? '3pt' : '2pt'
+      return `\n\\vspace*{${spacing}}\n${content}`
+    })
     .filter(Boolean)
-    .join('\n\\vspace{4pt}\n')
+    .join('\n')
 
   const main = mainSections
     .map((section) => generateMainSection(section.type, resume))
@@ -44,7 +49,7 @@ function buildSidebarDocument(
   const contactBlock = buildSidebarContactBlock(personalInfo)
 
   const photoBlock = personalInfo.profileImage
-    ? `\\IfFileExists{profile.png}{\\begin{tikzpicture}\\clip circle (1.5cm) node[inner sep=0pt] {\\includegraphics[width=3cm,height=3cm,keepaspectratio]{profile.png}};\\end{tikzpicture}\\\\[8pt]}{} `
+    ? `\\IfFileExists{profile.png}{\\begin{tikzpicture}\\begin{scope}\\clip circle (1.48cm);\\node[inner sep=0pt] {\\includegraphics[width=2.96cm,height=2.96cm,keepaspectratio]{profile.png}};\\end{scope}\\draw[white, thick] circle (1.48cm);\\end{tikzpicture}\\\\[8pt]}{} `
     : ''
 
   return `\\documentclass[11pt,a4paper]{article}
@@ -71,7 +76,7 @@ function buildSidebarDocument(
   top=0.3in,
   bottom=0.3in,
   left=0.15in,
-  right=0.15in,
+  right=0.25in,
 }
 
 \\titleformat{\\section}{\\normalsize\\bfseries\\color{sidebar}}{}{0em}{}[\\vspace{-0.4ex}\\color{sidebar}\\titlerule]
@@ -82,7 +87,7 @@ function buildSidebarDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=sidebartext,
-    urlcolor=sidebartext
+    urlcolor=sidebar
 }
 
 \\newcommand{\\sidebarsection}[1]{%
@@ -114,10 +119,10 @@ ${sidebar}
 
 \\end{minipage}%
 \\hfill%
-\\begin{minipage}[t]{\\dimexpr\\paperwidth-5.8cm-12pt}
+\\begin{minipage}[t]{\\dimexpr\\paperwidth-5.8cm-36pt}
 
 \\vspace{0.3in}
-\\hspace{12pt}
+\\hspace{24pt}
 
 ${main}
 
@@ -189,7 +194,7 @@ function generateMainSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return `\\section{Professional Summary}
+  return `\\section{PROFESSIONAL SUMMARY}
 
 ${escapeLatex(summary)}`
 }
@@ -205,9 +210,9 @@ function generateExperience(experience: ResumeData['experience']): string {
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill \\small ${escapeLatex(exp.location)}` : ''}
 ${bullets}`
     })
-    .join('\n\n\\vspace{3pt}\n')
+    .join('\n\n\\vspace{6pt}\n')
 
-  return `\\section{Experience}
+  return `\\section{EXPERIENCE}
 
 ${items}`
 }
@@ -218,23 +223,25 @@ function generateProjects(projects: ResumeData['projects']): string {
     .map((proj) => {
       const dateLine = proj.duration ? ` \\hfill \\small ${escapeLatex(proj.duration)}` : ''
       const roleLine = proj.role ? `\n\\textit{${escapeLatex(proj.role)}}` : ''
-      const descLine = proj.description ? `\n${escapeLatex(proj.description)}` : ''
+      const descLine = proj.description ? `${escapeLatex(proj.description)}` : ''
       const bullets = generateBulletPoints(proj.bulletPoints)
       const techLine =
         proj.technologies.length > 0
           ? `\n\\textbf{Tech:} \\small ${escapeLatex(proj.technologies.join(', '))}`
           : ''
-      const links = [proj.githubUrl, proj.liveDemoUrl].filter((l): l is string => !!l)
+      const links: string[] = []
+      if (proj.githubUrl) links.push(`GitHub: \\url{${proj.githubUrl}}`)
+      if (proj.liveDemoUrl) links.push(`Live: \\url{${proj.liveDemoUrl}}`)
       const linkLine = links.length > 0
-        ? `\n\\small ${links.map((l) => `\\url{${l}}`).join(' \\quad ')}`
+        ? `\\\\\n\\small ${links.join(' \\quad ')}`
         : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${roleLine}${dateLine} \\\\
 ${descLine}${bullets}${techLine}${linkLine}`
     })
-    .join('\n\n\\vspace{3pt}\n')
+    .join('\n\n\\vspace{6pt}\n')
 
-  return `\\section{Projects}
+  return `\\section{PROJECTS}
 
 ${items}`
 }
@@ -252,9 +259,9 @@ function generateEducation(education: ResumeData['education']): string {
       return `\\textbf{${degreeLine}} \\hfill \\small ${dateRange} \\\\[1pt]
 \\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
     })
-    .join('\n\n')
+    .join('\n\n\\vspace{6pt}\n')
 
-  return `\\section{Education}
+  return `\\section{EDUCATION}
 
 ${items}`
 }
@@ -300,12 +307,12 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill \\small ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n\\small ${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? `\\\\\n\\small ${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 
-  return `\\section{Achievements}
+  return `\\section{ACHIEVEMENTS}
 
 ${items}`
 }
@@ -315,12 +322,12 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill \\small ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n\\small ${escapeLatex(pub.description)}` : ''
+      const descStr = pub.description ? `\\\\\n\\small ${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 
-  return `\\section{Publications}
+  return `\\section{PUBLICATIONS}
 
 ${items}`
 }
