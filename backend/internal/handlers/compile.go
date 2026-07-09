@@ -61,8 +61,6 @@ func CompileHandler(c *gin.Context) {
 
 	result, err := compiler.Compile(req.LaTeX, req.ProfileImage)
 
-	log.Printf("received latex compile request: %d bytes", len(req.LaTeX))
-
 	// Set up deferred cleanup of the temporary directory (if it was created)
 	// to avoid resource leaks under all circumstances.
 	defer func() {
