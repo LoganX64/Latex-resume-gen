@@ -33,6 +33,8 @@ export function AchievementsForm() {
               <Label htmlFor={`ach-title-${ach.id}`} className="text-[10px]">Title *</Label>
               <Input
                 id={`ach-title-${ach.id}`}
+                name="achTitle"
+                autoComplete="off"
                 value={ach.title}
                 onChange={(e) => updateAchievement(ach.id, 'title', e.target.value)}
                 placeholder="Best Innovation Award"
@@ -43,6 +45,7 @@ export function AchievementsForm() {
               <Label htmlFor={`ach-date-${ach.id}`} className="text-[10px]">Date</Label>
               <Input
                 id={`ach-date-${ach.id}`}
+                name="achDate"
                 type="month"
                 value={ach.date}
                 onChange={(e) => updateAchievement(ach.id, 'date', e.target.value)}
@@ -54,6 +57,7 @@ export function AchievementsForm() {
             <Label htmlFor={`ach-desc-${ach.id}`} className="text-[10px]">Description</Label>
             <Textarea
               id={`ach-desc-${ach.id}`}
+              name="achDescription"
               value={ach.description}
               onChange={(e) => updateAchievement(ach.id, 'description', e.target.value)}
               placeholder="Brief description of the achievement…"

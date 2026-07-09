@@ -90,6 +90,8 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-name-${project.id}`} className="text-[10px]">Project Name *</Label>
           <Input
             id={`proj-name-${project.id}`}
+            name="projectName"
+            autoComplete="off"
             value={project.name}
             onChange={(e) => updateProject(project.id, 'name', e.target.value)}
             placeholder="E-Commerce Platform"
@@ -100,6 +102,8 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-duration-${project.id}`} className="text-[10px]">Duration</Label>
           <Input
             id={`proj-duration-${project.id}`}
+            name="projectDuration"
+            autoComplete="off"
             value={project.duration}
             onChange={(e) => updateProject(project.id, 'duration', e.target.value)}
             placeholder="2023 - Present"
@@ -112,6 +116,7 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-role-${project.id}`} className="text-[10px]">Role</Label>
           <Input
             id={`proj-role-${project.id}`}
+            name="projectRole"
             value={project.role}
             onChange={(e) => updateProject(project.id, 'role', e.target.value)}
             placeholder="Lead Developer"
@@ -122,6 +127,7 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-desc-${project.id}`} className="text-[10px]">Description</Label>
           <Textarea
             id={`proj-desc-${project.id}`}
+            name="projectDescription"
             value={project.description}
             onChange={(e) => updateProject(project.id, 'description', e.target.value)}
             placeholder="Brief description of the project…"
@@ -134,6 +140,8 @@ function SortableProjectEntry({
         {(project.bulletPoints || []).map((bullet, bIndex) => (
           <div key={bIndex} className="flex gap-1">
             <Input
+              name="projectBulletPoint"
+              autoComplete="off"
               value={bullet}
               onChange={(e) => {
                 const newBullets = [...(project.bulletPoints || [])]
@@ -188,6 +196,8 @@ function SortableProjectEntry({
       </div>
       <div className="flex gap-1">
         <Input
+          name="newTechnology"
+          autoComplete="off"
           value={newTech}
           onChange={(e) => setNewTech(e.target.value)}
           onKeyDown={(e) => {
@@ -209,6 +219,8 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-github-${project.id}`} className="text-[10px]">GitHub URL</Label>
           <Input
             id={`proj-github-${project.id}`}
+            name="projectGitHubUrl"
+            autoComplete="url"
             value={project.githubUrl}
             onChange={(e) => updateProject(project.id, 'githubUrl', e.target.value)}
             placeholder="github.com/user/project"
@@ -221,6 +233,8 @@ function SortableProjectEntry({
           <Label htmlFor={`proj-demo-${project.id}`} className="text-[10px]">Live Demo URL</Label>
           <Input
             id={`proj-demo-${project.id}`}
+            name="projectDemoUrl"
+            autoComplete="url"
             value={project.liveDemoUrl}
             onChange={(e) => updateProject(project.id, 'liveDemoUrl', e.target.value)}
             placeholder="project.example.com"

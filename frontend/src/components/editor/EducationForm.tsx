@@ -73,6 +73,8 @@ function SortableEducationEntry({
           <Label htmlFor={`edu-institution-${education.id}`} className="text-[10px]">Institution *</Label>
           <Input
             id={`edu-institution-${education.id}`}
+            name="institution"
+            autoComplete="organization"
             value={education.institution}
             onChange={(e) => updateEducation(education.id, 'institution', e.target.value)}
             placeholder="MIT"
@@ -83,6 +85,8 @@ function SortableEducationEntry({
           <Label htmlFor={`edu-degree-${education.id}`} className="text-[10px]">Degree *</Label>
           <Input
             id={`edu-degree-${education.id}`}
+            name="degree"
+            autoComplete="off"
             value={education.degree}
             onChange={(e) => updateEducation(education.id, 'degree', e.target.value)}
             placeholder="B.S. Computer Science"
@@ -95,6 +99,7 @@ function SortableEducationEntry({
           <Label htmlFor={`edu-spec-${education.id}`} className="text-[10px]">Specialization</Label>
           <Input
             id={`edu-spec-${education.id}`}
+            name="specialization"
             value={education.specialization}
             onChange={(e) => updateEducation(education.id, 'specialization', e.target.value)}
             placeholder="AI/ML"
@@ -105,6 +110,8 @@ function SortableEducationEntry({
           <Label htmlFor={`edu-cgpa-${education.id}`} className="text-[10px]">CGPA</Label>
           <Input
             id={`edu-cgpa-${education.id}`}
+            name="cgpa"
+            autoComplete="off"
             value={education.cgpa}
             onChange={(e) => updateEducation(education.id, 'cgpa', e.target.value)}
             placeholder="3.9/4.0"
@@ -116,6 +123,7 @@ function SortableEducationEntry({
           <div className="flex gap-1">
             <Input
               type="month"
+              name="eduStartDate"
               value={education.startDate}
               onChange={(e) => updateEducation(education.id, 'startDate', e.target.value)}
               aria-label="Start date"
@@ -123,6 +131,7 @@ function SortableEducationEntry({
             />
             <Input
               type="month"
+              name="eduEndDate"
               value={education.endDate}
               onChange={(e) => updateEducation(education.id, 'endDate', e.target.value)}
               aria-label="End date"

@@ -32,6 +32,8 @@ export function PublicationsForm() {
             <Label htmlFor={`pub-title-${pub.id}`} className="text-[10px]">Title *</Label>
             <Input
               id={`pub-title-${pub.id}`}
+              name="pubTitle"
+              autoComplete="off"
               value={pub.title}
               onChange={(e) => updatePublication(pub.id, 'title', e.target.value)}
               placeholder="Research paper or article title"
@@ -43,6 +45,8 @@ export function PublicationsForm() {
               <Label htmlFor={`pub-publisher-${pub.id}`} className="text-[10px]">Publisher *</Label>
               <Input
                 id={`pub-publisher-${pub.id}`}
+                name="pubPublisher"
+                autoComplete="organization"
                 value={pub.publisher}
                 onChange={(e) => updatePublication(pub.id, 'publisher', e.target.value)}
                 placeholder="IEEE / ACM"
@@ -53,6 +57,7 @@ export function PublicationsForm() {
               <Label htmlFor={`pub-date-${pub.id}`} className="text-[10px]">Date *</Label>
               <Input
                 id={`pub-date-${pub.id}`}
+                name="pubDate"
                 type="month"
                 value={pub.date}
                 onChange={(e) => updatePublication(pub.id, 'date', e.target.value)}
@@ -65,6 +70,8 @@ export function PublicationsForm() {
               <Label htmlFor={`pub-url-${pub.id}`} className="text-[10px]">URL</Label>
               <Input
                 id={`pub-url-${pub.id}`}
+                name="pubUrl"
+                autoComplete="url"
                 value={pub.url}
                 onChange={(e) => updatePublication(pub.id, 'url', e.target.value)}
                 placeholder="https://…"
@@ -77,6 +84,7 @@ export function PublicationsForm() {
               <Label htmlFor={`pub-desc-${pub.id}`} className="text-[10px]">Description</Label>
               <Textarea
                 id={`pub-desc-${pub.id}`}
+                name="pubDescription"
                 value={pub.description}
                 onChange={(e) => updatePublication(pub.id, 'description', e.target.value)}
                 placeholder="Brief description…"

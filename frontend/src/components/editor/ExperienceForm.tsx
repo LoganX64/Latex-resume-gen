@@ -75,6 +75,8 @@ function SortableExperienceEntry({
           <Label htmlFor={`exp-company-${experience.id}`} className="text-[10px]">Company *</Label>
           <Input
             id={`exp-company-${experience.id}`}
+            name="company"
+            autoComplete="organization"
             value={experience.company}
             onChange={(e) => updateExperience(experience.id, 'company', e.target.value)}
             placeholder="Google"
@@ -85,6 +87,8 @@ function SortableExperienceEntry({
           <Label htmlFor={`exp-position-${experience.id}`} className="text-[10px]">Position *</Label>
           <Input
             id={`exp-position-${experience.id}`}
+            name="position"
+            autoComplete="organization-title"
             value={experience.position}
             onChange={(e) => updateExperience(experience.id, 'position', e.target.value)}
             placeholder="Senior Software Engineer"
@@ -97,6 +101,8 @@ function SortableExperienceEntry({
           <Label htmlFor={`exp-location-${experience.id}`} className="text-[10px]">Location</Label>
           <Input
             id={`exp-location-${experience.id}`}
+            name="expLocation"
+            autoComplete="off"
             value={experience.location}
             onChange={(e) => updateExperience(experience.id, 'location', e.target.value)}
             placeholder="Mountain View, CA"
@@ -107,6 +113,7 @@ function SortableExperienceEntry({
           <Label htmlFor={`exp-start-${experience.id}`} className="text-[10px]">Start Date *</Label>
           <Input
             id={`exp-start-${experience.id}`}
+            name="expStartDate"
             type="month"
             value={experience.startDate}
             onChange={(e) => updateExperience(experience.id, 'startDate', e.target.value)}
@@ -117,6 +124,7 @@ function SortableExperienceEntry({
           <Label htmlFor={`exp-end-${experience.id}`} className="text-[10px]">End Date</Label>
           <Input
             id={`exp-end-${experience.id}`}
+            name="expEndDate"
             type="month"
             value={experience.endDate}
             onChange={(e) => updateExperience(experience.id, 'endDate', e.target.value)}
@@ -143,17 +151,19 @@ function SortableExperienceEntry({
         <Label className="text-[10px]">Bullet Points</Label>
         {experience.bulletPoints.map((bullet, bIndex) => (
           <div key={bIndex} className="flex gap-1">
-            <Input
-              value={bullet}
-              onChange={(e) => {
-                const newBullets = [...experience.bulletPoints]
-                newBullets[bIndex] = e.target.value
-                updateExperienceBulletPoints(experience.id, newBullets)
-              }}
-              placeholder="• Describe your achievement…"
-              aria-label={`Bullet point ${bIndex + 1}`}
-              className="h-7 text-xs"
-            />
+    <Input
+      name="expBulletPoint"
+      autoComplete="off"
+      value={bullet}
+      onChange={(e) => {
+        const newBullets = [...experience.bulletPoints]
+        newBullets[bIndex] = e.target.value
+        updateExperienceBulletPoints(experience.id, newBullets)
+      }}
+      placeholder="• Describe your achievement…"
+      aria-label={`Bullet point ${bIndex + 1}`}
+      className="h-7 text-xs"
+    />
             <Button
               variant="ghost"
               size="icon-xs"

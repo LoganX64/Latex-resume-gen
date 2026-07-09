@@ -72,6 +72,8 @@ function SortableSkillCategory({
           <GripVertical className="h-3.5 w-3.5" />
         </button>
         <Input
+          name="skillCategoryName"
+          autoComplete="off"
           value={category.name}
           onChange={(e) => updateSkillCategory(category.id, e.target.value)}
           placeholder="Category name (e.g., Programming Languages)"
@@ -106,6 +108,8 @@ function SortableSkillCategory({
       </div>
       <div className="flex gap-1">
         <Input
+          name="newSkill"
+          autoComplete="off"
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
           onKeyDown={(e) => {

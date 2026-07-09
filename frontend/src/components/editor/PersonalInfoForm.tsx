@@ -21,6 +21,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="fullName" className="text-xs">Full Name *</Label>
                 <Input
                   id="fullName"
+                  name="fullName"
+                  autoComplete="name"
                   value={personalInfo.fullName}
                   onChange={(e) => updatePersonalInfo('fullName', e.target.value)}
                   placeholder="John Doe"
@@ -31,6 +33,8 @@ export function PersonalInfoForm() {
                 <Label htmlFor="professionalTitle" className="text-xs">Professional Title</Label>
                 <Input
                   id="professionalTitle"
+                  name="professionalTitle"
+                  autoComplete="organization-title"
                   value={personalInfo.professionalTitle}
                   onChange={(e) => updatePersonalInfo('professionalTitle', e.target.value)}
                   placeholder="Senior Software Engineer"
@@ -43,7 +47,10 @@ export function PersonalInfoForm() {
                 <Label htmlFor="email" className="text-xs">Email *</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
+                  spellCheck={false}
                   value={personalInfo.email}
                   onChange={(e) => updatePersonalInfo('email', e.target.value)}
                   placeholder="john@example.com"
@@ -54,8 +61,10 @@ export function PersonalInfoForm() {
                 <Label htmlFor="phone" className="text-xs">Phone *</Label>
                 <Input
                   id="phone"
+                  name="phone"
                   type="tel"
                   inputMode="tel"
+                  autoComplete="tel"
                   value={personalInfo.phone}
                   onChange={(e) => updatePersonalInfo('phone', e.target.value)}
                   placeholder="+1 234 567 890"
@@ -65,21 +74,25 @@ export function PersonalInfoForm() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="location" className="text-xs">Location *</Label>
-              <Input
-                id="location"
-                value={personalInfo.location}
-                onChange={(e) => updatePersonalInfo('location', e.target.value)}
-                placeholder="San Francisco, CA"
-                className="h-8 text-xs"
-              />
+                <Input
+                  id="location"
+                  name="location"
+                  autoComplete="address-level1"
+                  value={personalInfo.location}
+                  onChange={(e) => updatePersonalInfo('location', e.target.value)}
+                  placeholder="San Francisco, CA"
+                  className="h-8 text-xs"
+                />
             </div>
             <div className="grid grid-cols-3 gap-3">
               <div className="space-y-1.5">
                 <Label htmlFor="linkedin" className="text-xs">LinkedIn</Label>
                 <Input
                   id="linkedin"
+                  name="linkedin"
                   type="url"
                   inputMode="url"
+                  autoComplete="url"
                   value={personalInfo.linkedin}
                   onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
                   placeholder="linkedin.com/in/johndoe"
@@ -90,8 +103,10 @@ export function PersonalInfoForm() {
                 <Label htmlFor="github" className="text-xs">GitHub</Label>
                 <Input
                   id="github"
+                  name="github"
                   type="url"
                   inputMode="url"
+                  autoComplete="url"
                   value={personalInfo.github}
                   onChange={(e) => updatePersonalInfo('github', e.target.value)}
                   placeholder="github.com/johndoe"
@@ -102,8 +117,10 @@ export function PersonalInfoForm() {
                 <Label htmlFor="website" className="text-xs">Website</Label>
                 <Input
                   id="website"
+                  name="website"
                   type="url"
                   inputMode="url"
+                  autoComplete="url"
                   value={personalInfo.website}
                   onChange={(e) => updatePersonalInfo('website', e.target.value)}
                   placeholder="johndoe.dev"

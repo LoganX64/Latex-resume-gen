@@ -32,6 +32,8 @@ export function CustomSectionsForm() {
             <Label htmlFor={`custom-title-${section.id}`} className="text-[10px]">Section Title *</Label>
             <Input
               id={`custom-title-${section.id}`}
+              name="customSectionTitle"
+              autoComplete="off"
               value={section.title}
               onChange={(e) => updateCustomSection(section.id, 'title', e.target.value)}
               placeholder="e.g., Volunteer Experience"
@@ -42,6 +44,7 @@ export function CustomSectionsForm() {
             <Label htmlFor={`custom-content-${section.id}`} className="text-[10px]">Content *</Label>
             <Textarea
               id={`custom-content-${section.id}`}
+              name="customSectionContent"
               value={section.content}
               onChange={(e) => updateCustomSection(section.id, 'content', e.target.value)}
               placeholder="Enter content for this section…"

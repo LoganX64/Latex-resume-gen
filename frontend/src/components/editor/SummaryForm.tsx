@@ -13,6 +13,8 @@ export function SummaryForm() {
       </Label>
       <Textarea
         id="summary"
+        name="summary"
+        autoComplete="off"
         value={summary}
         onChange={(e) => updateSummary(e.target.value)}
         placeholder="Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud infrastructure…"

@@ -32,6 +32,8 @@ export function CertificationsForm() {
               <Label htmlFor={`cert-name-${cert.id}`} className="text-[10px]">Name *</Label>
               <Input
                 id={`cert-name-${cert.id}`}
+                name="certName"
+                autoComplete="off"
                 value={cert.name}
                 onChange={(e) => updateCertification(cert.id, 'name', e.target.value)}
                 placeholder="AWS Solutions Architect"
@@ -42,6 +44,8 @@ export function CertificationsForm() {
               <Label htmlFor={`cert-issuer-${cert.id}`} className="text-[10px]">Issuer *</Label>
               <Input
                 id={`cert-issuer-${cert.id}`}
+                name="certIssuer"
+                autoComplete="organization"
                 value={cert.issuer}
                 onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
                 placeholder="Amazon Web Services"
@@ -54,6 +58,7 @@ export function CertificationsForm() {
               <Label htmlFor={`cert-date-${cert.id}`} className="text-[10px]">Date *</Label>
               <Input
                 id={`cert-date-${cert.id}`}
+                name="certDate"
                 type="month"
                 value={cert.date}
                 onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
@@ -64,6 +69,8 @@ export function CertificationsForm() {
               <Label htmlFor={`cert-url-${cert.id}`} className="text-[10px]">URL</Label>
               <Input
                 id={`cert-url-${cert.id}`}
+                name="certUrl"
+                autoComplete="url"
                 value={cert.url}
                 onChange={(e) => updateCertification(cert.id, 'url', e.target.value)}
                 placeholder="https://…"

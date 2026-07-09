@@ -39,6 +39,8 @@ export function LanguagesForm() {
               <Label htmlFor={`lang-name-${lang.id}`} className="text-[10px]">Language *</Label>
               <Input
                 id={`lang-name-${lang.id}`}
+                name="langName"
+                autoComplete="off"
                 value={lang.name}
                 onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
                 placeholder="English"
