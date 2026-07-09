@@ -37,20 +37,20 @@ function buildProfessionalDocument(
     contactParts.push(escapeLatex(personalInfo.phone))
   }
   if (personalInfo.email) {
-    contactParts.push(`\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`)
+    contactParts.push(`\\href{mailto:${personalInfo.email}}{\\underline{\\smash{${escapeLatex(personalInfo.email)}}\\vphantom{g}}}`)
   }
   if (personalInfo.linkedin) {
-    contactParts.push(`\\href{https://${personalInfo.linkedin}}{\\underline{${escapeLatex(personalInfo.linkedin)}}}`)
+    contactParts.push(`\\href{https://${personalInfo.linkedin}}{\\underline{\\smash{${escapeLatex(personalInfo.linkedin)}}\\vphantom{g}}}`)
   }
   if (personalInfo.github) {
-    contactParts.push(`\\href{https://${personalInfo.github}}{\\underline{${escapeLatex(personalInfo.github)}}}`)
+    contactParts.push(`\\href{https://${personalInfo.github}}{\\underline{\\smash{${escapeLatex(personalInfo.github)}}\\vphantom{g}}}`)
   }
   if (personalInfo.website) {
-    contactParts.push(`\\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}`)
+    contactParts.push(`\\href{https://${personalInfo.website}}{\\underline{\\smash{${escapeLatex(personalInfo.website)}}\\vphantom{g}}}`)
   }
 
   if (contactParts.length > 0) {
-    headerLines.push(contactParts.join(' $|$ '))
+    headerLines.push(`{\\small ${contactParts.join(' $|$ ')}}`)
   }
 
   const header = headerLines.join(' \\\\\n')
@@ -63,7 +63,7 @@ function buildProfessionalDocument(
 \\usepackage{marvosym}
 \\usepackage[usenames,dvipsnames]{xcolor}
 \\usepackage{verbatim}
-\\usepackage[hidelinks]{hyperref}
+\\usepackage{hyperref}
 \\usepackage{fancyhdr}
 \\usepackage[english]{babel}
 \\usepackage{tabularx}
@@ -133,7 +133,8 @@ function buildProfessionalDocument(
 \\hypersetup{
     colorlinks=true,
     linkcolor=black,
-    urlcolor=blue!70!black
+    urlcolor=blue!70!black,
+    pdfborder={0 0 0}
 }
 
 \\begin{document}
@@ -245,11 +246,11 @@ function generateProjects(projects: ResumeData['projects']): string {
       const urlParts: string[] = []
       if (proj.githubUrl) {
         const url = escapeLatex(proj.githubUrl)
-        urlParts.push(`GitHub: \\href{https://${proj.githubUrl}}{\\underline{${url}}}`)
+        urlParts.push(`GitHub: \\href{https://${proj.githubUrl}}{\\underline{\\smash{${url}}\\vphantom{g}}}`)
       }
       if (proj.liveDemoUrl) {
         const url = escapeLatex(proj.liveDemoUrl)
-        urlParts.push(`Demo: \\href{https://${proj.liveDemoUrl}}{\\underline{${url}}}`)
+        urlParts.push(`Demo: \\href{https://${proj.liveDemoUrl}}{\\underline{\\smash{${url}}\\vphantom{g}}}`)
       }
       if (urlParts.length > 0) {
         item += `\n{\\small ${urlParts.join(' $|$ ')}}`
