@@ -19,6 +19,7 @@ const (
 
 func main() {
 	r := gin.Default()
+	r.Use(gin.Recovery())
 
 	allowedOrigins := []string{
 		"http://localhost:5173",
