@@ -16,31 +16,37 @@ export interface Template {
   ) => string
 }
 
-const templateModules = import.meta.glob<{ default: Template }>('./*/index.tsx', {
+const configModules = import.meta.glob<{ default: TemplateConfig }>('./*/config.ts', {
   eager: true,
 })
 
-const templates: Record<string, Template> = {}
+const templateModules = import.meta.glob<{ default: Template }>('./*/index.tsx')
 
-for (const [path, mod] of Object.entries(templateModules)) {
+const configs: Record<string, TemplateConfig> = {}
+for (const [path, mod] of Object.entries(configModules)) {
   const id = path.split('/')[1]
   if (mod.default) {
-    templates[id] = mod.default
+    configs[id] = mod.default
   }
 }
 
-export function getTemplate(id: string): Template | undefined {
-  return templates[id]
+const templateCache = new Map<string, Template>()
+
+export async function loadTemplate(id: string): Promise<Template | undefined> {
+  if (templateCache.has(id)) return templateCache.get(id)!
+  const path = `./${id}/index.tsx`
+  if (!templateModules[path]) return undefined
+  const mod = await templateModules[path]()
+  const config = configs[id]
+  const template: Template = { ...mod.default, config }
+  templateCache.set(id, template)
+  return template
 }
 
 export function getTemplateConfig(id: string): TemplateConfig | undefined {
-  return templates[id]?.config
-}
-
-export function getAllTemplates(): Template[] {
-  return Object.values(templates)
+  return configs[id]
 }
 
 export function getAllTemplateConfigs(): TemplateConfig[] {
-  return Object.values(templates).map((t) => t.config)
+  return Object.values(configs)
 }

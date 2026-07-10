@@ -1,3 +1,4 @@
+import { memo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,9 +21,8 @@ import {
   useSortable,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useState } from 'react'
 
-function SortableProjectEntry({
+const SortableProjectEntry = memo(function SortableProjectEntry({
   id,
   index,
 }: {
@@ -246,7 +246,7 @@ function SortableProjectEntry({
       </div>
     </div>
   )
-}
+})
 
 export function ProjectsForm() {
   const projects = useResumeStore((s) => s.resume.projects)

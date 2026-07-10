@@ -36,7 +36,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useTheme } from '@/components/theme-provider'
-import { getTemplate, getAllTemplateConfigs } from '@/templates'
+import { loadTemplate, getAllTemplateConfigs } from '@/templates'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandPalette } from '@/components/CommandPalette'
 import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
@@ -65,23 +65,28 @@ export function MainLayout() {
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
 
   const templateConfigs = getAllTemplateConfigs()
-  const currentTemplate = getTemplate(templateId)
 
-  const handleExportLatex = useCallback(() => {
-    if (!currentTemplate) return
-    const latex = currentTemplate.generateLatex(resume, sectionOrder, sectionVisibility)
+  const handleExportLatex = useCallback(async () => {
+    const template = await loadTemplate(templateId)
+    if (!template) return
+    const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
     const name = resume.personalInfo.fullName || 'resume'
     const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
     downloadFile(latex, filename, 'application/x-latex')
     toast.success('LaTeX file exported', {
       description: `${filename} downloaded successfully.`,
     })
-  }, [resume, sectionOrder, sectionVisibility, currentTemplate])
+  }, [resume, sectionOrder, sectionVisibility, templateId])
 
   const handleExportPdf = useCallback(async () => {
-    if (!currentTemplate || isExportingPdf) return
+    if (isExportingPdf) return
     setIsExportingPdf(true)
-    const latex = currentTemplate.generateLatex(resume, sectionOrder, sectionVisibility)
+    const template = await loadTemplate(templateId)
+    if (!template) {
+      setIsExportingPdf(false)
+      return
+    }
+    const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
     const profileImage = resume.personalInfo.profileImage || ''
     try {
       const response = await fetch('/api/compile', {
@@ -123,7 +128,7 @@ export function MainLayout() {
     } finally {
       setIsExportingPdf(false)
     }
-  }, [resume, sectionOrder, sectionVisibility, currentTemplate, isExportingPdf])
+  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf])
 
   const handleMultiPageDownload = useCallback(() => {
     const pending = pendingDownloadRef.current

@@ -9,17 +9,21 @@ export function generateId(): string {
   return Math.random().toString(36).substring(2, 9)
 }
 
+const LATEX_PLACEHOLDER = '\x00'
+const LATEX_BACKSLASH_PATTERN = new RegExp(`${LATEX_PLACEHOLDER}BACKSLASH${LATEX_PLACEHOLDER}`, 'g')
+const LATEX_TILDE_PATTERN = new RegExp(`${LATEX_PLACEHOLDER}TILDE${LATEX_PLACEHOLDER}`, 'g')
+const LATEX_CIRCUM_PATTERN = new RegExp(`${LATEX_PLACEHOLDER}CIRCUM${LATEX_PLACEHOLDER}`, 'g')
+
 export function escapeLatex(text: string): string {
   if (!text) return ''
-  const placeholder = '\x00'
   let result = text
-    .replace(/\\/g, `${placeholder}BACKSLASH${placeholder}`)
-    .replace(/~/g, `${placeholder}TILDE${placeholder}`)
-    .replace(/\^/g, `${placeholder}CIRCUM${placeholder}`)
+    .replace(/\\/g, `${LATEX_PLACEHOLDER}BACKSLASH${LATEX_PLACEHOLDER}`)
+    .replace(/~/g, `${LATEX_PLACEHOLDER}TILDE${LATEX_PLACEHOLDER}`)
+    .replace(/\^/g, `${LATEX_PLACEHOLDER}CIRCUM${LATEX_PLACEHOLDER}`)
     .replace(/[&%$#_{}]/g, (match) => `\\${match}`)
-    .replace(new RegExp(`${placeholder}BACKSLASH${placeholder}`, 'g'), '\\textbackslash{}')
-    .replace(new RegExp(`${placeholder}TILDE${placeholder}`, 'g'), '\\textasciitilde{}')
-    .replace(new RegExp(`${placeholder}CIRCUM${placeholder}`, 'g'), '\\textasciicircum{}')
+    .replace(LATEX_BACKSLASH_PATTERN, '\\textbackslash{}')
+    .replace(LATEX_TILDE_PATTERN, '\\textasciitilde{}')
+    .replace(LATEX_CIRCUM_PATTERN, '\\textasciicircum{}')
   return result
 }
 

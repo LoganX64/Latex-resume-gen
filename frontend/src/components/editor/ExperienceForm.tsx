@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -21,7 +22,7 @@ import {
 import { CSS } from '@dnd-kit/utilities'
 import { GripVertical } from 'lucide-react'
 
-function SortableExperienceEntry({
+const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
   index,
 }: {
@@ -192,7 +193,7 @@ function SortableExperienceEntry({
       </div>
     </div>
   )
-}
+})
 
 export function ExperienceForm() {
   const experience = useResumeStore((s) => s.resume.experience)

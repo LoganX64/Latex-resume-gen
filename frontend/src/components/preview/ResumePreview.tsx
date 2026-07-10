@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useResumeStore } from '@/stores/resume-store'
-import { getTemplate } from '@/templates'
+import { loadTemplate, getTemplateConfig } from '@/templates'
 import { AlertTriangle, Maximize, X, ZoomIn, ZoomOut } from 'lucide-react'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import type { ZoomLevel, Margins } from '@/types/resume'
+import type { Template } from '@/templates'
 
 const A4_WIDTH_MM = 210
 const A4_HEIGHT_MM = 297
@@ -26,7 +27,7 @@ export function ResumePreview() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isOverflowing, setIsOverflowing] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [viewport, setViewport] = useState({ w: window.innerWidth, h: window.innerHeight })
+  const [viewport, setViewport] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const isDragging = useRef(false)
   const [showGrabbing, setShowGrabbing] = useState(false)
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0, active: false })
@@ -97,8 +98,17 @@ export function ResumePreview() {
   }, [])
 
   const scale = zoom === 'fit' ? 1 : zoom / 100
-  const template = getTemplate(templateId)
-  const margins = useMemo(() => template?.config?.margins ?? DEFAULT_MARGINS, [template])
+  const [template, setTemplate] = useState<Template | null>(null)
+  const config = getTemplateConfig(templateId)
+  const margins = useMemo(() => config?.margins ?? DEFAULT_MARGINS, [config])
+
+  useEffect(() => {
+    let cancelled = false
+    loadTemplate(templateId).then((t) => {
+      if (!cancelled) setTemplate(t ?? null)
+    })
+    return () => { cancelled = true }
+  }, [templateId])
 
   const visibleSections = sectionOrder.filter((s) => {
     if (s.type === 'personalInfo') return true
@@ -112,7 +122,8 @@ export function ResumePreview() {
   }, [])
 
   useEffect(() => {
-    checkOverflow()
+    const timer = setTimeout(checkOverflow, 150)
+    return () => clearTimeout(timer)
   }, [resume, sectionOrder, sectionVisibility, templateId, checkOverflow])
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useResumeStore } from '@/stores/resume-store'
@@ -20,7 +20,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-function SortableSkillCategory({
+const SortableSkillCategory = memo(function SortableSkillCategory({
   id,
   index,
 }: {
@@ -128,7 +128,7 @@ function SortableSkillCategory({
       </div>
     </div>
   )
-}
+})
 
 export function SkillsForm() {
   const skills = useResumeStore((s) => s.resume.skills)

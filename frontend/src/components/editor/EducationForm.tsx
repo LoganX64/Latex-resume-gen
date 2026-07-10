@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,7 +21,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
-function SortableEducationEntry({
+const SortableEducationEntry = memo(function SortableEducationEntry({
   id,
   index,
 }: {
@@ -150,7 +151,7 @@ function SortableEducationEntry({
       </div>
     </div>
   )
-}
+})
 
 export function EducationForm() {
   const education = useResumeStore((s) => s.resume.education)
