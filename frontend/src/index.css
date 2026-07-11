@@ -43,10 +43,6 @@ body {
 
 /* Smooth transitions for theme switching */
 @media (prefers-reduced-motion: no-preference) {
-  body {
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
   /* Smooth fade-in for page load */
   @keyframes fade-in {
     from { opacity: 0; }

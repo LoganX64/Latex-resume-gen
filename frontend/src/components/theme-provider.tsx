@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, type ReactNode } from 'react'
+import { createContext, useContext, useLayoutEffect, type ReactNode } from 'react'
 import { useResumeStore } from '@/stores/resume-store'
 
 interface ThemeContextType {
@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const darkMode = useResumeStore((s) => s.darkMode)
   const toggleDarkMode = useResumeStore((s) => s.toggleDarkMode)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode)
   }, [darkMode])
 
