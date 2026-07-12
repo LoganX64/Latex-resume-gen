@@ -6,5 +6,5 @@ export default {
   description: 'TLCresume-inspired data science layout with compact header, skills table, and structured sections for technical roles.',
   supportsPhoto: false,
   category: 'classic',
-  margins: { top: 7.62, bottom: 7.62, left: 7.62, right: 7.62 },
+  margins: { top: 12.7, bottom: 25.4, left: 12.7, right: 12.7 },
 } satisfies TemplateConfig

@@ -29,16 +29,16 @@ export function OverflowIndicator() {
   const warnings: string[] = []
 
   if (expCount > SOFT_LIMITS.experience.entries) {
-    warnings.push(`Experience: ${expCount} entries — hide or remove to fit one page`)
+    warnings.push(`Experience: ${expCount} entries — consider reducing for shorter resume`)
   }
   if (expBullets > SOFT_LIMITS.experience.entries * SOFT_LIMITS.experience.bulletsPerEntry) {
-    warnings.push(`Experience bullets: ${expBullets} total — too many for one page`)
+    warnings.push(`Experience bullets: ${expBullets} total — consider reducing`)
   }
   if (projCount > SOFT_LIMITS.projects.entries) {
-    warnings.push(`Projects: ${projCount} entries — hide or remove to fit one page`)
+    warnings.push(`Projects: ${projCount} entries — consider reducing for shorter resume`)
   }
   if (projBullets > SOFT_LIMITS.projects.entries * SOFT_LIMITS.projects.bulletsPerEntry) {
-    warnings.push(`Project bullets: ${projBullets} total — too many for one page`)
+    warnings.push(`Project bullets: ${projBullets} total — consider reducing`)
   }
 
   if (warnings.length === 0) return null

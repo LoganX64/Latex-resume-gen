@@ -268,7 +268,7 @@ function SectionContent({
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mb-1.5">
+    <div className="mb-1.5" data-section="true">
       <h2
         className="text-[13px] font-bold uppercase tracking-wider pb-0 mb-0.5"
         style={{ color: highlight, fontVariant: 'small-caps' }}

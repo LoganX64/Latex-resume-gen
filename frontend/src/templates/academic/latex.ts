@@ -58,7 +58,7 @@ function buildAcademicDocument(
 
 \\usepackage[T1]{fontenc}
 \\usepackage{mathpazo}
-\\usepackage[margin=0.3in]{geometry}
+\\usepackage[margin=0.5in, top=0.5in, bottom=1in]{geometry}
 
 \\usepackage{enumitem}
 \\usepackage{hyperref}
@@ -67,29 +67,12 @@ function buildAcademicDocument(
 \\usepackage{fancyhdr}
 \\usepackage{graphicx}
 
-\\geometry{
-  top=0.3in,
-  bottom=0.3in,
-  left=0.3in,
-  right=0.3in
-}
-
 \\pagestyle{fancy}
 \\fancyhf{}
-\\renewcommand{\\headrulewidth}{0.5pt}
+\\renewcommand{\\headrulewidth}{0pt}
 \\renewcommand{\\footrulewidth}{0pt}
 
-% Running header on subsequent pages
-\\fancyhead[L]{\\small\\color{gray}\\textsc{${name}} \\textbar{} Curriculum Vitae}
-\\fancyhead[R]{\\small\\color{gray}Page \\thepage}
 \\fancyfoot{}
-
-% Page style for the first page (no header)
-\\fancypagestyle{firstpage}{
-  \\fancyhf{}
-  \\renewcommand{\\headrulewidth}{0pt}
-  \\fancyfoot[C]{\\small Page \\thepage}
-}
 
 \\setlength{\\parindent}{0pt}
 \\setlength{\\parskip}{0pt}

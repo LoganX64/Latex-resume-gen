@@ -102,7 +102,7 @@ function LeftSection({
   switch (section.type) {
     case 'experience':
       return resume.experience.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Experience" />
           {resume.experience.map((exp) => (
             <div key={exp.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
@@ -133,7 +133,7 @@ function LeftSection({
 
     case 'projects':
       return resume.projects.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Projects" />
           {resume.projects.map((proj) => (
             <div key={proj.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
@@ -168,7 +168,7 @@ function LeftSection({
 
     case 'certifications':
       return resume.certifications.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Certifications" />
           {resume.certifications.map((cert) => (
             <div key={cert.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
@@ -182,7 +182,7 @@ function LeftSection({
 
     case 'achievements':
       return resume.achievements.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Achievements" />
           {resume.achievements.map((ach) => (
             <div key={ach.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
@@ -196,7 +196,7 @@ function LeftSection({
 
     case 'publications':
       return resume.publications.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Publications" />
           {resume.publications.map((pub) => (
             <div key={pub.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
@@ -210,7 +210,7 @@ function LeftSection({
 
     case 'languages':
       return resume.languages.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Languages" />
           <div style={{ fontSize: '12px', lineHeight: 1.4, color: headingsColor }}>
             {resume.languages.map((lang) =>
@@ -224,7 +224,7 @@ function LeftSection({
       return resume.customSections.length > 0 ? (
         <>
           {resume.customSections.map((cs) => (
-            <div key={cs.id} style={{ marginBottom: '8px' }}>
+            <div key={cs.id} style={{ marginBottom: '8px' }} data-section="true">
               <SectionTitle title={cs.title || 'Custom Section'} />
               <p style={{ fontSize: '12px', lineHeight: 1.4, marginTop: '2px', whiteSpace: 'pre-wrap', color: subheadingsColor }}>{cs.content}</p>
             </div>
@@ -247,7 +247,7 @@ function RightSection({
   switch (section.type) {
     case 'skills':
       return resume.skills.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Skills" />
           <div style={{ marginTop: '4px' }}>
             {resume.skills.map((cat) => (
@@ -266,7 +266,7 @@ function RightSection({
 
     case 'education':
       return resume.education.length > 0 ? (
-        <div style={{ marginBottom: '8px' }}>
+        <div style={{ marginBottom: '8px' }} data-section="true">
           <SectionTitle title="Education" />
           {resume.education.map((edu) => (
             <div key={edu.id} style={{ marginTop: '2px', marginBottom: '4px' }}>

@@ -6,5 +6,5 @@ export default {
   description: 'Academic-style layout with emphasis on publications, research, and education. Ideal for research-focused roles.',
   supportsPhoto: false,
   category: 'classic',
-  margins: { top: 10.16, bottom: 10.16, left: 7.62, right: 7.62 },
+  margins: { top: 12.7, bottom: 25.4, left: 12.7, right: 12.7 },
 } satisfies TemplateConfig

@@ -99,7 +99,7 @@ function SidebarSection({
   switch (section.type) {
     case 'skills':
       return resume.skills.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[14px] font-bold uppercase tracking-wider mb-1 pb-0.5 border-b border-white/30">
             Skills
           </h3>
@@ -116,7 +116,7 @@ function SidebarSection({
 
     case 'languages':
       return resume.languages.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[14px] font-bold uppercase tracking-wider mb-1 pb-0.5 border-b border-white/30">
             Languages
           </h3>
@@ -133,7 +133,7 @@ function SidebarSection({
 
     case 'certifications':
       return resume.certifications.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[14px] font-bold uppercase tracking-wider mb-1 pb-0.5 border-b border-white/30">
             Certifications
           </h3>
@@ -163,7 +163,7 @@ function MainSection({
   switch (section.type) {
     case 'summary':
       return resume.summary ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Professional Summary
           </h3>
@@ -173,7 +173,7 @@ function MainSection({
 
     case 'experience':
       return resume.experience.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Experience
           </h3>
@@ -207,7 +207,7 @@ function MainSection({
 
     case 'projects':
       return resume.projects.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Projects
           </h3>
@@ -253,7 +253,7 @@ function MainSection({
 
     case 'education':
       return resume.education.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Education
           </h3>
@@ -279,7 +279,7 @@ function MainSection({
 
     case 'achievements':
       return resume.achievements.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Achievements
           </h3>
@@ -299,7 +299,7 @@ function MainSection({
 
     case 'publications':
       return resume.publications.length > 0 ? (
-        <div className="mb-1.5">
+        <div className="mb-1.5" data-section="true">
           <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
             Publications
           </h3>
@@ -322,7 +322,7 @@ function MainSection({
       return resume.customSections.length > 0 ? (
         <>
           {resume.customSections.map((cs) => (
-            <div key={cs.id} className="mb-2">
+            <div key={cs.id} className="mb-2" data-section="true">
               <h3 className="text-[15px] font-bold uppercase tracking-wider mb-0.5 pb-0" style={{ color: '#1a365d', borderBottom: '1px solid #1a365d' }}>
                 {cs.title || 'Custom Section'}
               </h3>

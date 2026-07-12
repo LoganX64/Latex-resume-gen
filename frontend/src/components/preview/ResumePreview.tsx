@@ -25,12 +25,63 @@ export function ResumePreview() {
   const templateId = useResumeStore((s) => s.templateId)
   const pageRef = useRef<HTMLDivElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isOverflowing, setIsOverflowing] = useState(false)
+  const measureRef = useRef<HTMLDivElement>(null)
+  const [totalContentHeight, setTotalContentHeight] = useState(0)
+  const [sectionBounds, setSectionBounds] = useState<{ top: number; height: number }[]>([])
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [viewport, setViewport] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const isDragging = useRef(false)
   const [showGrabbing, setShowGrabbing] = useState(false)
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0, active: false })
+
+  const scale = zoom === 'fit' ? 1 : zoom / 100
+  const [template, setTemplate] = useState<Template | null>(null)
+  const config = getTemplateConfig(templateId)
+  const margins = useMemo(() => config?.margins ?? DEFAULT_MARGINS, [config])
+
+  const paddingY = (margins.top + margins.bottom) * MM_TO_PX
+  const paddingX = (margins.left + margins.right) * MM_TO_PX
+  const contentAreaHeight = A4_HEIGHT_PX - paddingY
+
+  const pageOffsets = useMemo(() => {
+    if (totalContentHeight <= 0) return [0]
+    if (sectionBounds.length === 0) {
+      const count = Math.max(1, Math.ceil(totalContentHeight / contentAreaHeight))
+      return Array.from({ length: count }, (_, i) => i * contentAreaHeight)
+    }
+
+    const offsets: number[] = [0]
+    let currentOffset = 0
+
+    while (currentOffset + contentAreaHeight < totalContentHeight) {
+      const pageEnd = currentOffset + contentAreaHeight
+      let needPush = false
+
+      for (const section of sectionBounds) {
+        const sectionStart = section.top
+        const sectionEnd = section.top + section.height
+
+        if (sectionStart < pageEnd && sectionEnd > pageEnd && section.height <= contentAreaHeight) {
+          currentOffset = sectionEnd
+          needPush = true
+          break
+        }
+      }
+
+      if (!needPush) {
+        currentOffset = pageEnd
+      }
+
+      if (currentOffset < totalContentHeight) {
+        offsets.push(currentOffset)
+      }
+    }
+
+    return offsets
+  }, [totalContentHeight, contentAreaHeight, sectionBounds])
+
+  const numberOfPages = Math.max(1, pageOffsets.length)
+  const isOverflowing = numberOfPages > 1
 
   useEffect(() => {
     const el = containerRef.current
@@ -97,11 +148,6 @@ export function ResumePreview() {
     }
   }, [])
 
-  const scale = zoom === 'fit' ? 1 : zoom / 100
-  const [template, setTemplate] = useState<Template | null>(null)
-  const config = getTemplateConfig(templateId)
-  const margins = useMemo(() => config?.margins ?? DEFAULT_MARGINS, [config])
-
   useEffect(() => {
     let cancelled = false
     loadTemplate(templateId).then((t) => {
@@ -115,16 +161,25 @@ export function ResumePreview() {
     return sectionVisibility[s.type]
   })
 
-  const checkOverflow = useCallback(() => {
-    if (!pageRef.current) return
-    const el = pageRef.current
-    setIsOverflowing(el.scrollHeight > el.clientHeight + 5)
+  const measureContent = useCallback(() => {
+    if (!measureRef.current) return
+    const el = measureRef.current
+    setTotalContentHeight(el.scrollHeight)
+
+    const sections = el.querySelectorAll<HTMLElement>('[data-section]')
+    const sectionData: { top: number; height: number }[] = []
+    sections.forEach((s) => {
+      const top = (s as HTMLElement).offsetTop
+      const height = (s as HTMLElement).offsetHeight
+      if (height > 0) sectionData.push({ top, height })
+    })
+    setSectionBounds(sectionData)
   }, [])
 
   useEffect(() => {
-    const timer = setTimeout(checkOverflow, 150)
+    const timer = setTimeout(measureContent, 150)
     return () => clearTimeout(timer)
-  }, [resume, sectionOrder, sectionVisibility, templateId, checkOverflow])
+  }, [resume, sectionOrder, sectionVisibility, templateId, measureContent])
 
   useEffect(() => {
     const onResize = () => setViewport({ w: window.innerWidth, h: window.innerHeight })
@@ -136,8 +191,9 @@ export function ResumePreview() {
     setIsFullscreen((v) => !v)
   }
 
+  const totalScaledHeight = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
   const displayScale = isFullscreen
-    ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / A4_HEIGHT_PX, 1.5)
+    ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / totalScaledHeight, 1.5)
     : scale
 
   function cycleZoom(direction: 'in' | 'out') {
@@ -153,17 +209,8 @@ export function ResumePreview() {
     }
   }
 
-  const a4Content = (
-    <div
-      ref={pageRef}
-      className="bg-white text-black relative overflow-hidden"
-      style={{
-        width: A4_WIDTH_PX,
-        height: A4_HEIGHT_PX,
-        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-        padding: `${margins.top * MM_TO_PX}px ${margins.right * MM_TO_PX}px ${margins.bottom * MM_TO_PX}px ${margins.left * MM_TO_PX}px`,
-      }}
-    >
+  const renderPageContent = () => (
+    <>
       {template ? (
         <template.Preview resume={resume} sections={visibleSections} />
       ) : (
@@ -171,6 +218,44 @@ export function ResumePreview() {
           Select a template
         </div>
       )}
+    </>
+  )
+
+  const renderSinglePage = (pageNum: number) => {
+    const contentOffset = pageOffsets[pageNum - 1] ?? 0
+
+    return (
+      <div
+        key={pageNum}
+        className="bg-white text-black relative"
+        style={{
+          width: A4_WIDTH_PX,
+          height: A4_HEIGHT_PX,
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: margins.top * MM_TO_PX,
+            left: margins.left * MM_TO_PX,
+            right: margins.right * MM_TO_PX,
+            bottom: margins.bottom * MM_TO_PX,
+            overflow: 'hidden',
+          }}
+        >
+          <div style={{ position: 'relative', top: -contentOffset }}>
+            {renderPageContent()}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const a4Content = (
+    <div ref={pageRef} className="flex flex-col gap-4">
+      {Array.from({ length: numberOfPages }, (_, i) => renderSinglePage(i + 1))}
     </div>
   )
 
@@ -179,11 +264,11 @@ export function ResumePreview() {
       <div className="flex flex-col h-full">
         <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
           <div className="flex items-center gap-2 min-w-0">
-            <span className="text-[10px] text-muted-foreground">A4 HTML Preview</span>
+            <span className="text-[10px] text-muted-foreground">A4 Page Preview</span>
             {isOverflowing && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-red-600">
+              <span className="inline-flex items-center gap-1 text-[10px] text-amber-600">
                 <AlertTriangle className="h-3 w-3" />
-                Exceeds one page
+                {numberOfPages} pages
               </span>
             )}
           </div>
@@ -217,7 +302,6 @@ export function ResumePreview() {
             <div
               style={{
                 width: A4_WIDTH_PX * scale + 16 * scale,
-                height: A4_HEIGHT_PX * scale + 16 * scale + (isOverflowing ? 48 * scale : 0),
                 marginLeft: scale <= 1 ? 'auto' : undefined,
                 marginRight: scale <= 1 ? 'auto' : undefined,
                 flexShrink: 0,
@@ -225,27 +309,38 @@ export function ResumePreview() {
             >
               <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', width: A4_WIDTH_PX }}>
                 {a4Content}
-                {isOverflowing && (
-                  <div className="mt-3 flex items-start gap-2 rounded border border-red-200 bg-red-50 px-3 py-2 text-[11px] leading-snug text-red-700">
-                    <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                    This preview exceeds one A4 page. Shorten content or hide sections before downloading.
-                  </div>
-                )}
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Hidden measurement container - matches page structure exactly */}
+      <div
+        ref={measureRef}
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: 0,
+          width: A4_WIDTH_PX - paddingX,
+          visibility: 'hidden',
+        }}
+      >
+        {renderPageContent()}
+      </div>
+
       {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center" style={{ overscrollBehavior: 'contain' }}>
-          <div
-            style={{
-              transform: `scale(${displayScale})`,
-              transformOrigin: 'center center',
-            }}
-          >
-            {a4Content}
+        <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center overflow-auto" style={{ overscrollBehavior: 'contain' }}>
+          <div className="py-4">
+            <div
+              style={{
+                transform: `scale(${displayScale})`,
+                transformOrigin: 'top center',
+                width: A4_WIDTH_PX,
+              }}
+            >
+              {a4Content}
+            </div>
           </div>
           <button
             onClick={toggleFullscreen}
