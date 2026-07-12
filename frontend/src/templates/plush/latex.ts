@@ -204,8 +204,8 @@ function generateExperience(experience: ResumeData['experience']): string {
       return `\\runsubsection{${escapeLatex(exp.company)}}
 \\descript{| ${escapeLatex(exp.position)}}
 \\location{${dateRange}${loc}}
-\\begin{tightemize}
 \\sectionsep
+\\begin{tightemize}
 ${bullets ? bullets.split('\n').filter(l => l.trim().startsWith('\\item')).join('\n') : ''}
 \\end{tightemize}
 \\sectionsep`

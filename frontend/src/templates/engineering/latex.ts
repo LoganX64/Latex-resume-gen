@@ -71,7 +71,7 @@ ${contactLine}
 \\usepackage[T1]{fontenc}
 \\usepackage[scaled=0.9]{helvet}
 \\renewcommand{\\familydefault}{\\sfdefault}
-\\usepackage[margin=0.3in]{geometry}
+\\usepackage[margin=0.5in]{geometry}
 
 \\usepackage{enumitem}
 \\usepackage{hyperref}

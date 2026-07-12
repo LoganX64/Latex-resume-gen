@@ -39,7 +39,7 @@ function buildCompactDocument(
 \\usepackage{lmodern}
 \\usepackage[scaled=0.9]{helvet}
 \\renewcommand{\\familydefault}{\\sfdefault}
-\\usepackage[margin=0.3in]{geometry}
+\\usepackage[margin=0.5in]{geometry}
 
 \\usepackage{enumitem}
 \\usepackage{hyperref}
@@ -174,8 +174,7 @@ function generateProjects(projects: ResumeData['projects']): string {
       const linksLine = links.length > 0 ? `${links.join(' $\\cdot$ ')}` : ''
 
       return `\\textbf{${escapeLatex(proj.name)}}${techLine}${dateLine} \\\\
-${roleLine} \\\\
-${descLine}${bullets}${linksLine}`
+${roleLine ? `${roleLine} \\\\\n` : ''}${descLine}${bullets}${linksLine}`
     })
     .join('\n\n\\vspace{3pt}\n')
 

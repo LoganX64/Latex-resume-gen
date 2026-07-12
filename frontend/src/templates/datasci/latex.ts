@@ -51,8 +51,8 @@ function buildDatasciDocument(
 
   const leftLines = [phone, city, email].filter(Boolean)
   const rightLines = [portfolio, github, linkedin].filter(Boolean)
-  const lheadContent = leftLines.join(' \\\\[2pt]\n')
-  const rheadContent = rightLines.join(' \\\\[2pt]\n')
+  const lheadContent = leftLines.join(' \\\\\n')
+  const rheadContent = rightLines.join(' \\\\\n')
 
   return `\\documentclass[10pt]{article}
 \\usepackage[utf8]{inputenc}
@@ -63,7 +63,7 @@ function buildDatasciDocument(
 \\usepackage{anyfontsize}
 \\usepackage{csquotes}
 
-\\usepackage[margin=.5in, top=.5in, bottom=1in]{geometry}
+\\usepackage[margin=0.5in]{geometry}
 \\raggedright
 \\raggedbottom
 \\setlength{\\parindent}{0pt}
@@ -96,41 +96,28 @@ function buildDatasciDocument(
 
 \\pagenumbering{gobble}
 
-\\RequirePackage{fancyhdr}
+\\begin{document}
 
-\\def\\name{${name}}
-\\def\\phone{${phone}}
-\\def\\city{${city}}
-\\def\\email{${email}}
-\\def\\role{${title}}
-
-\\fancypagestyle{first_page}{
-\\fancyhf{}
-\\lhead{
+% --- Header ---
+\\begin{minipage}[t]{0.25\\textwidth}
+\\raggedright
+\\small
 ${lheadContent}
-}
-\\chead{
+\\end{minipage}%
+\\begin{minipage}[t]{0.5\\textwidth}
 \\centering
-{\\Huge \\skills{\\name}} \\\\[.25em]
+{\\Huge \\skills{${name}}} \\\\[0.25em]
 {\\color{highlight} \\Large{${title}}}
-}
-\\rhead{
+\\end{minipage}%
+\\begin{minipage}[t]{0.25\\textwidth}
+\\raggedleft
+\\small
 ${rheadContent}
-}
-\\renewcommand{\\headrulewidth}{1pt}
-\\renewcommand{\\headrule}{\\hbox to\\headwidth{\\color{highlight}\\leaders\\hrule height \\headrulewidth\\hfill}}
-\\setlength{\\headheight}{90pt}
-\\setlength{\\headsep}{5pt}
-}
+\\end{minipage}
 
-\\fancypagestyle{others}{
-\\fancyhf{}
-\\renewcommand{\\headrulewidth}{0pt}
-\\setlength{\\headheight}{30pt}
-\\setlength{\\headsep}{5pt}
-}
-
-\\begin{document}\\pagestyle{others}\\thispagestyle{first_page}
+\\vspace{4pt}
+{\\color{highlight}\\hrule height 1pt}
+\\vspace{8pt}
 
 ${body}
 
@@ -166,7 +153,9 @@ function generateSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return escapeLatex(summary)
+  return `\\section{Objective}
+
+${escapeLatex(summary)}`
 }
 
 function generateExperience(experience: ResumeData['experience']): string {

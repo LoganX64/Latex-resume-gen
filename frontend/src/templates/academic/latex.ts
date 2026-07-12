@@ -58,7 +58,7 @@ function buildAcademicDocument(
 
 \\usepackage[T1]{fontenc}
 \\usepackage{mathpazo}
-\\usepackage[margin=0.5in, top=0.5in, bottom=1in]{geometry}
+\\usepackage[margin=0.5in]{geometry}
 
 \\usepackage{enumitem}
 \\usepackage{hyperref}
@@ -90,7 +90,7 @@ function buildAcademicDocument(
 }
 
 \\begin{document}
-\\thispagestyle{firstpage}
+\\thispagestyle{empty}
 
 \\begingroup
 \\centering

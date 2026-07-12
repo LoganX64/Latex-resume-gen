@@ -177,7 +177,7 @@ function generateSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return `\\section*{Summary}
+  return `\\section{Summary}
 
 ${escapeLatex(summary)}`
 }

@@ -37,7 +37,7 @@ function buildClassicDocument(
 
 \\usepackage[T1]{fontenc}
 \\usepackage{charter}
-\\usepackage[margin=0.3in]{geometry}
+\\usepackage[margin=0.5in]{geometry}
 
 \\usepackage{enumitem}
 \\usepackage{hyperref}

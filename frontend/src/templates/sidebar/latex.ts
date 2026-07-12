@@ -31,7 +31,7 @@ export function generateSidebarLatex(
   const main = mainSections
     .map((section) => generateMainSection(section.type, resume))
     .filter(Boolean)
-    .join('\n')
+    .join('\n\n\\vspace{4pt}\n')
 
   return buildSidebarDocument(resume.personalInfo, sidebar, main)
 }
