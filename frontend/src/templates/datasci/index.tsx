@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { datasciConfig as config } from './config'
+import config from './config'
 import { generateDatasciLatex } from './latex'
 
 const highlight = '#3d5a80'

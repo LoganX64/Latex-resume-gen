@@ -1,15 +1,7 @@
-import type { ResumeData, TemplateConfig } from '@/types/resume'
+import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import { generateModernLatex } from './latex'
-
-const config: TemplateConfig = {
-  id: 'modern',
-  name: 'Modern Sans-Serif',
-  description: 'Clean sans-serif layout using Source Sans Pro. Based on the popular sb2nov/resume template (MIT license).',
-  supportsPhoto: false,
-  category: 'classic',
-  margins: { top: 12.7, bottom: 12.7, left: 12.7, right: 12.7 },
-}
+import config from './config'
 
 const styles = {
   sectionTitle: {

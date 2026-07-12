@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { classicConfig as config } from './config'
+import config from './config'
 import { generateClassicLatex } from './latex'
 
 function Preview({

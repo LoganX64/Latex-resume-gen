@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { professionalConfig as config } from './config'
+import config from './config'
 import { generateProfessionalLatex } from './latex'
 
 function Preview({

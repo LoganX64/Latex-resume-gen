@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { plushConfig as config } from './config'
+import config from './config'
 import { generatePlushLatex } from './latex'
 
 const titleColor = '#1d76e2'

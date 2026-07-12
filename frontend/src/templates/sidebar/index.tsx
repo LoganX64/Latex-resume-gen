@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { sidebarConfig as config } from './config'
+import config from './config'
 import { generateSidebarLatex } from './latex'
 
 function Preview({

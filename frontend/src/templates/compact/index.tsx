@@ -1,6 +1,6 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
-import { compactConfig as config } from './config'
+import config from './config'
 import { generateCompactLatex } from './latex'
 
 function Preview({
