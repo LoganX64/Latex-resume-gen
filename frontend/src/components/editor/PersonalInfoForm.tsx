@@ -14,9 +14,9 @@ export function PersonalInfoForm() {
         <CardTitle className="text-sm font-medium">Personal Information</CardTitle>
       </CardHeader>
       <CardContent className="px-3 pb-3 pt-0">
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 space-y-3">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label htmlFor="fullName" className="text-xs">Full Name *</Label>
                 <Input
@@ -42,7 +42,7 @@ export function PersonalInfoForm() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
                 <Label htmlFor="email" className="text-xs">Email *</Label>
                 <Input
@@ -84,7 +84,7 @@ export function PersonalInfoForm() {
                   className="h-8 text-xs"
                 />
             </div>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="space-y-1.5">
                 <Label htmlFor="linkedin" className="text-xs">LinkedIn</Label>
                 <Input

@@ -36,7 +36,7 @@ export function LanguagesForm() {
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`lang-name-${lang.id}`} className="text-[10px]">Language *</Label>
               <Input

@@ -43,7 +43,7 @@ export function PublicationsForm() {
               className="h-7 text-xs"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`pub-publisher-${pub.id}`} className="text-[10px]">Publisher *</Label>
               <Input
@@ -66,7 +66,7 @@ export function PublicationsForm() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`pub-url-${pub.id}`} className="text-[10px]">URL</Label>
               <Input

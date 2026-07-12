@@ -30,7 +30,7 @@ export function CertificationsForm() {
               <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`cert-name-${cert.id}`} className="text-[10px]">Name *</Label>
               <Input
@@ -56,7 +56,7 @@ export function CertificationsForm() {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`cert-date-${cert.id}`} className="text-[10px]">Date *</Label>
               <MonthPicker

@@ -87,7 +87,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
           <Label htmlFor={`proj-name-${project.id}`} className="text-[10px]">Project Name *</Label>
           <Input
@@ -113,7 +113,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
           <Label htmlFor={`proj-role-${project.id}`} className="text-[10px]">Role</Label>
           <Input
@@ -216,7 +216,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           Add
         </Button>
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
           <Label htmlFor={`proj-github-${project.id}`} className="text-[10px]">GitHub URL</Label>
           <Input

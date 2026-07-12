@@ -8,6 +8,7 @@ import { AppSidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
+import { MobilePreviewButton } from '@/components/preview/MobilePreviewButton'
 import { useResumeStore } from '@/stores/resume-store'
 import { downloadFile, downloadPdf } from '@/utils/download'
 import {
@@ -172,8 +173,8 @@ export function MainLayout() {
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} />
         <SidebarInset className="h-screen overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
-            <div className="flex flex-col w-full md:w-[55%] min-w-0 border-r border-border">
-              <header className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
+              <header className="flex flex-wrap items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
                 <div className="flex items-center gap-1">
                 <Tooltip>
@@ -207,7 +208,7 @@ export function MainLayout() {
               <EditorPanel activeSection={activeSection} />
             </div>
           </div>
-          <div className="hidden md:flex md:flex-col md:flex-1 min-w-0 bg-muted/30">
+          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
@@ -261,6 +262,7 @@ export function MainLayout() {
         />
         </SidebarInset>
       </SidebarProvider>
+      <MobilePreviewButton />
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>

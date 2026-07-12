@@ -93,7 +93,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
   }
 
   return (
-    <div ref={scrollRef} className="p-4 space-y-4">
+    <div ref={scrollRef} className="p-2 sm:p-4 space-y-4">
       <div id="section-personal"><PersonalInfoForm /></div>
 
       <DndContext
