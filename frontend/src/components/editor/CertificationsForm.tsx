@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2 } from 'lucide-react'
 
@@ -13,7 +15,8 @@ export function CertificationsForm() {
   return (
     <div className="space-y-3">
       {certifications.map((cert, index) => (
-        <div key={cert.id} className="border rounded-md p-3 space-y-2 bg-card">
+        <Card key={cert.id}>
+          <CardContent className="p-3 space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-medium text-muted-foreground flex-1">
               Certification {index + 1}
@@ -56,12 +59,10 @@ export function CertificationsForm() {
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-1">
               <Label htmlFor={`cert-date-${cert.id}`} className="text-[10px]">Date *</Label>
-              <Input
+              <MonthPicker
                 id={`cert-date-${cert.id}`}
-                name="certDate"
-                type="month"
                 value={cert.date}
-                onChange={(e) => updateCertification(cert.id, 'date', e.target.value)}
+                onValueChange={(val) => updateCertification(cert.id, 'date', val)}
                 className="h-7 text-xs"
               />
             </div>
@@ -80,7 +81,8 @@ export function CertificationsForm() {
               />
             </div>
           </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
       <Button
         variant="outline"

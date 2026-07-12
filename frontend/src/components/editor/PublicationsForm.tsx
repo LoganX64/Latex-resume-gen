@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { MonthPicker } from '@/components/ui/month-picker'
 import { Textarea } from '@/components/ui/textarea'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2 } from 'lucide-react'
@@ -14,7 +16,8 @@ export function PublicationsForm() {
   return (
     <div className="space-y-3">
       {publications.map((pub, index) => (
-        <div key={pub.id} className="border rounded-md p-3 space-y-2 bg-card">
+        <Card key={pub.id}>
+          <CardContent className="p-3 space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-medium text-muted-foreground flex-1">
               Publication {index + 1}
@@ -55,12 +58,10 @@ export function PublicationsForm() {
             </div>
             <div className="space-y-1">
               <Label htmlFor={`pub-date-${pub.id}`} className="text-[10px]">Date *</Label>
-              <Input
+              <MonthPicker
                 id={`pub-date-${pub.id}`}
-                name="pubDate"
-                type="month"
                 value={pub.date}
-                onChange={(e) => updatePublication(pub.id, 'date', e.target.value)}
+                onValueChange={(val) => updatePublication(pub.id, 'date', val)}
                 className="h-7 text-xs"
               />
             </div>
@@ -92,7 +93,8 @@ export function PublicationsForm() {
               />
             </div>
           </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
       <Button
         variant="outline"

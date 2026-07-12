@@ -1,5 +1,6 @@
 import { memo, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2, GripVertical, X } from 'lucide-react'
@@ -57,11 +58,12 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
   }
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
-      className={`border rounded-md p-3 space-y-2 ${isDragging ? 'opacity-50 bg-muted' : 'bg-card'}`}
+      className={isDragging ? 'opacity-50 bg-muted' : ''}
     >
+      <CardContent className="p-3 space-y-2">
       <div className="flex items-center gap-2">
         <button
           aria-label={`Drag to reorder ${category.name || 'skill category'}`}
@@ -126,7 +128,8 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           Add
         </Button>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 })
 

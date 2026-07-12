@@ -1,7 +1,10 @@
 import { memo } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2 } from 'lucide-react'
 import {
@@ -45,11 +48,12 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
   if (!experience) return null
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
-      className={`border rounded-md p-3 space-y-2 ${isDragging ? 'opacity-50 bg-muted' : 'bg-card'}`}
+      className={isDragging ? 'opacity-50 bg-muted' : ''}
     >
+      <CardContent className="p-3 space-y-2">
       <div className="flex items-center gap-2">
         <button
           aria-label={`Drag to reorder experience ${index + 1}`}
@@ -112,23 +116,19 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
         </div>
         <div className="space-y-1">
           <Label htmlFor={`exp-start-${experience.id}`} className="text-[10px]">Start Date *</Label>
-          <Input
+          <MonthPicker
             id={`exp-start-${experience.id}`}
-            name="expStartDate"
-            type="month"
             value={experience.startDate}
-            onChange={(e) => updateExperience(experience.id, 'startDate', e.target.value)}
+            onValueChange={(val) => updateExperience(experience.id, 'startDate', val)}
             className="h-7 text-xs"
           />
         </div>
         <div className="space-y-1">
           <Label htmlFor={`exp-end-${experience.id}`} className="text-[10px]">End Date</Label>
-          <Input
+          <MonthPicker
             id={`exp-end-${experience.id}`}
-            name="expEndDate"
-            type="month"
             value={experience.endDate}
-            onChange={(e) => updateExperience(experience.id, 'endDate', e.target.value)}
+            onValueChange={(val) => updateExperience(experience.id, 'endDate', val)}
             disabled={experience.current}
             className="h-7 text-xs"
           />
@@ -136,12 +136,10 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       </div>
       <div className="space-y-1">
         <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
+          <Checkbox
             id={`current-${experience.id}`}
             checked={experience.current}
-            onChange={(e) => updateExperience(experience.id, 'current', e.target.checked)}
-            className="rounded"
+            onCheckedChange={(checked) => updateExperience(experience.id, 'current', checked === true)}
           />
           <Label htmlFor={`current-${experience.id}`} className="text-[10px]">
             Currently working here
@@ -191,7 +189,8 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           Add Bullet
         </Button>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 })
 

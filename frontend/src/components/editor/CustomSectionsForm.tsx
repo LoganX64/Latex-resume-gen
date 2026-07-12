@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -14,7 +15,8 @@ export function CustomSectionsForm() {
   return (
     <div className="space-y-3">
       {customSections.map((section, index) => (
-        <div key={section.id} className="border rounded-md p-3 space-y-2 bg-card">
+        <Card key={section.id}>
+          <CardContent className="p-3 space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-medium text-muted-foreground flex-1">
               Custom Section {index + 1}
@@ -51,7 +53,8 @@ export function CustomSectionsForm() {
               className="min-h-[80px] text-xs resize-y"
             />
           </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
       <Button
         variant="outline"

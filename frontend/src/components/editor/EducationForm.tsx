@@ -1,7 +1,9 @@
 import { memo } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2, GripVertical } from 'lucide-react'
 import {
@@ -43,11 +45,12 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
   if (!education) return null
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
-      className={`border rounded-md p-3 space-y-2 ${isDragging ? 'opacity-50 bg-muted' : 'bg-card'}`}
+      className={isDragging ? 'opacity-50 bg-muted' : ''}
     >
+      <CardContent className="p-3 space-y-2">
       <div className="flex items-center gap-2">
         <button
           aria-label={`Drag to reorder education ${index + 1}`}
@@ -124,24 +127,20 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           <div className="flex gap-1">
             <div className="flex-1">
               <Label htmlFor={`edu-start-${education.id}`} className="sr-only">Start date</Label>
-              <Input
+              <MonthPicker
                 id={`edu-start-${education.id}`}
-                type="month"
-                name="eduStartDate"
                 value={education.startDate}
-                onChange={(e) => updateEducation(education.id, 'startDate', e.target.value)}
+                onValueChange={(val) => updateEducation(education.id, 'startDate', val)}
                 aria-label="Start date"
                 className="h-7 text-xs"
               />
             </div>
             <div className="flex-1">
               <Label htmlFor={`edu-end-${education.id}`} className="sr-only">End date</Label>
-              <Input
+              <MonthPicker
                 id={`edu-end-${education.id}`}
-                type="month"
-                name="eduEndDate"
                 value={education.endDate}
-                onChange={(e) => updateEducation(education.id, 'endDate', e.target.value)}
+                onValueChange={(val) => updateEducation(education.id, 'endDate', val)}
                 aria-label="End date"
                 className="h-7 text-xs"
               />
@@ -149,7 +148,8 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           </div>
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 })
 

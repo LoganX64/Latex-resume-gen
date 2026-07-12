@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useResumeStore } from '@/stores/resume-store'
@@ -20,7 +21,8 @@ export function LanguagesForm() {
   return (
     <div className="space-y-3">
       {languages.map((lang, index) => (
-        <div key={lang.id} className="border rounded-md p-3 space-y-2 bg-card">
+        <Card key={lang.id}>
+          <CardContent className="p-3 space-y-2">
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-medium text-muted-foreground flex-1">
               Language {index + 1}
@@ -66,7 +68,8 @@ export function LanguagesForm() {
               </Select>
             </div>
           </div>
-        </div>
+          </CardContent>
+        </Card>
       ))}
       <Button
         variant="outline"

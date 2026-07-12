@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
+import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
 import { Upload, X, User } from 'lucide-react'
 import Cropper from 'react-easy-crop'
@@ -134,14 +135,13 @@ export function ProfileImageUpload() {
           </div>
           <div className="flex items-center gap-2">
             <label htmlFor="crop-zoom" className="text-xs text-muted-foreground">Zoom</label>
-            <input
+            <Slider
               id="crop-zoom"
-              type="range"
               min={1}
               max={3}
               step={0.1}
-              value={zoom}
-              onChange={(e) => setZoom(Number(e.target.value))}
+              value={[zoom]}
+              onValueChange={(value) => setZoom(Array.isArray(value) ? value[0] : value)}
               className="flex-1"
             />
           </div>

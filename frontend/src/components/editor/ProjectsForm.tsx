@@ -1,5 +1,6 @@
 import { memo, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -59,11 +60,12 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
   }
 
   return (
-    <div
+    <Card
       ref={setNodeRef}
       style={style}
-      className={`border rounded-md p-3 space-y-2 ${isDragging ? 'opacity-50 bg-muted' : 'bg-card'}`}
+      className={isDragging ? 'opacity-50 bg-muted' : ''}
     >
+      <CardContent className="p-3 space-y-2">
       <div className="flex items-center gap-2">
         <button
           aria-label={`Drag to reorder project ${index + 1}`}
@@ -244,7 +246,8 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           />
         </div>
       </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 })
 
