@@ -175,14 +175,22 @@ function SectionContent({
               const degreeLine = edu.specialization
                 ? `${edu.degree} in ${edu.specialization}`
                 : edu.degree
-              const dateRange = edu.startDate ? `${edu.startDate} – ${edu.endDate}` : ''
+              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+              const fmtDate = (d: string) => {
+                if (!d) return ''
+                const [y, m] = d.split('-')
+                return m ? `${months[parseInt(m, 10) - 1]} ${y}` : y
+              }
+              const start = fmtDate(edu.startDate)
+              const end = edu.endDate ? fmtDate(edu.endDate) : ''
+              const dateRange = start ? (end ? `${start} – ${end}` : start) : ''
               return (
                 <li key={edu.id} style={{ marginBottom: '3px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', width: '97%' }}>
-                    <span><strong>{edu.institution}</strong></span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '97%' }}>
+                    <span style={{ fontSize: '12px' }}><strong>{edu.institution}</strong></span>
                     <span style={{ fontSize: '11px', fontStyle: 'italic', color: '#555' }}>{dateRange}</span>
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', width: '97%' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '97%' }}>
                     <span style={{ fontSize: '11px' }}><strong>{degreeLine}</strong></span>
                     {edu.cgpa && <span style={{ fontSize: '11px', fontStyle: 'italic', color: '#555' }}>GPA: {edu.cgpa}</span>}
                   </div>
@@ -219,8 +227,12 @@ function SectionContent({
               <li key={ach.id} style={{ marginBottom: '2px' }}>
                 <ProjectHeading date={ach.date}>
                   <strong>{ach.title}</strong>
-                  {ach.description && <span> -- {ach.description}</span>}
                 </ProjectHeading>
+                {ach.description && (
+                  <ul style={styles.bulletList}>
+                    <SubItem>{ach.description}</SubItem>
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -237,6 +249,11 @@ function SectionContent({
                 <ProjectHeading date={pub.date}>
                   <strong>{pub.title}</strong> <em>-- {pub.publisher}</em>
                 </ProjectHeading>
+                {pub.description && (
+                  <ul style={styles.bulletList}>
+                    <SubItem>{pub.description}</SubItem>
+                  </ul>
+                )}
               </li>
             ))}
           </ul>

@@ -68,7 +68,7 @@ function buildModernDocument(
 
 \\definecolor{lightyellow}{cmyk}{0.00, 0.05, 0.20, 0.00}
 
-\\newcommand{\\sectionspace}{\\vspace{-20pt}}
+\\newcommand{\\sectionspace}{\\vspace{-8pt}}
 \\newcommand{\\subheadingtitlevspace}{\\vspace{-3pt}}
 
 \\newcommand{\\resumeItem}[1]{\\item{#1\\vspace{-4pt}}}
@@ -79,9 +79,10 @@ function buildModernDocument(
 
 \\newcommand{\\resumeSubheading}[4]{
 \\item
-\\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}l@{}l}
-{#1} & \\titleItem{#3} | {#2} & \\textit{#4}\\\\
-\\end{tabular*}\\vspace{-10pt}
+\\begin{tabular*}{0.97\\textwidth}[t]{l@{\\extracolsep{\\fill}}r}
+\\textbf{#1} & \\textit{\\small #2}\\\\
+\\textit{\\small #3} & \\textit{\\small #4}\\\\
+\\end{tabular*}\\vspace{-7pt}
 }
 
 \\newcommand{\\resumeSubSubheading}[2]{
@@ -153,11 +154,9 @@ function generateSection(type: string, resume: ResumeData): string {
 function generateSummary(summary: string): string {
   if (!summary) return ''
   return `\\section{Professional Summary}
-\\vspace{-3pt}
-\\begin{itemize}[leftmargin=0.15in, label={}]
-\\item{${escapeLatex(summary)}}
-\\end{itemize}
-\\sectionspace`
+\\resumeSubHeadingListStart
+\\item{${escapeLatex(summary)}\\vspace{-8pt}}
+\\resumeSubHeadingListEnd`
 }
 
 function generateExperience(experience: ResumeData['experience']): string {
@@ -189,11 +188,9 @@ function generateSkills(skills: ResumeData['skills']): string {
     .join(' \\\\\n')
 
   return `\\section{Technical Skills}
-\\subheadingtitlevspace
-\\begin{itemize}[leftmargin=0.15in, label={}]
-\\item{${items}}
-\\end{itemize}
-\\sectionspace`
+\\resumeSubHeadingListStart
+\\item{${items}\\vspace{-8pt}}
+\\resumeSubHeadingListEnd`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -203,9 +200,15 @@ function generateProjects(projects: ResumeData['projects']): string {
       const techTag = proj.technologies.length > 0
         ? ` $|$ \\emph{${escapeLatex(proj.technologies.join(', '))}}`
         : ''
-      const bullets = proj.bulletPoints.filter((b): b is string => !!b && b.trim() !== '')
+      const bullets = proj.bulletPoints.filter((b): b is string => !!b && b.trim() !== '').map((b) => escapeLatex(b))
+      
+      const links = []
+      if (proj.githubUrl) links.push(`\\href{${escapeLatex(proj.githubUrl)}}{\\underline{GitHub}}`)
+      if (proj.liveDemoUrl) links.push(`\\href{${escapeLatex(proj.liveDemoUrl)}}{\\underline{Live Demo}}`)
+      if (links.length > 0) bullets.push(links.join(' $|$ '))
+      
       const bulletBlock = bullets.length > 0
-        ? `\\resumeItemListStart\n${bullets.map((b) => `\\resumeItem{${escapeLatex(b)}}`).join('\n')}\n\\resumeItemListEnd`
+        ? `\\resumeItemListStart\n${bullets.map((b) => `\\resumeItem{${b}}`).join('\n')}\n\\resumeItemListEnd`
         : ''
 
       return `\\resumeProjectHeading
@@ -228,10 +231,10 @@ function generateEducation(education: ResumeData['education']): string {
       const degreeLine = edu.specialization
         ? `${escapeLatex(edu.degree)} in ${escapeLatex(edu.specialization)}`
         : escapeLatex(edu.degree)
-      const cgpa = edu.cgpa ? ` | GPA: ${escapeLatex(edu.cgpa)}` : ''
+      const cgpa = edu.cgpa ? `GPA: ${escapeLatex(edu.cgpa)}` : ''
 
       return `\\resumeSubheading
-{\\textbf{${escapeLatex(edu.institution)}}}{${dateRange}}
+{${escapeLatex(edu.institution)}}{${dateRange}}
 {${degreeLine}}{${cgpa}}`
     })
     .join('\n\n')
@@ -255,17 +258,18 @@ function generateCertifications(certifications: ResumeData['certifications']): s
   return `\\section{Awards and Certifications}
 \\resumeSubHeadingListStart
 ${items}
-\\resumeSubHeadingListEnd
-\\sectionspace`
+\\resumeSubHeadingListEnd`
 }
 
 function generateAchievements(achievements: ResumeData['achievements']): string {
   if (achievements.length === 0) return ''
   const items = achievements
     .map((ach) => {
-      const descStr = ach.description ? ` -- ${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description 
+        ? `\n\\resumeItemListStart\n\\resumeItem{${escapeLatex(ach.description)}}\n\\resumeItemListEnd`
+        : ''
       return `\\resumeProjectHeading
-{\\titleItem{${escapeLatex(ach.title)}}${descStr}}{${escapeLatex(ach.date || '')}}`
+{\\titleItem{${escapeLatex(ach.title)}}}{${escapeLatex(ach.date || '')}}${descStr}`
     })
     .join('\n')
 
@@ -279,8 +283,11 @@ function generatePublications(publications: ResumeData['publications']): string 
   if (publications.length === 0) return ''
   const items = publications
     .map((pub) => {
+      const descStr = pub.description 
+        ? `\n\\resumeItemListStart\n\\resumeItem{${escapeLatex(pub.description)}}\n\\resumeItemListEnd`
+        : ''
       return `\\resumeProjectHeading
-{\\titleItem{${escapeLatex(pub.title)}} \\emph{-- ${escapeLatex(pub.publisher)}}}{${escapeLatex(pub.date || '')}}`
+{\\titleItem{${escapeLatex(pub.title)}} \\emph{-- ${escapeLatex(pub.publisher)}}}{${escapeLatex(pub.date || '')}}${descStr}`
     })
     .join('\n')
 
