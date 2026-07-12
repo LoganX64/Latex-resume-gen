@@ -258,7 +258,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? `\\\\\n${escapeLatex(ach.description)}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -274,9 +274,9 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textit{${escapeLatex(pub.title)}}${dateStr}${descStr}\n${escapeLatex(pub.publisher)}`
+      return `\\textbf{\\textit{${escapeLatex(pub.title)}}}${dateStr}\\\\\n${escapeLatex(pub.publisher)}${descStr ? `\\\\${descStr}` : ''}`
     })
-    .join(' \\\\\n\n')
+    .join(' \\\\\n')
 
   return `\\section{Publications}
 

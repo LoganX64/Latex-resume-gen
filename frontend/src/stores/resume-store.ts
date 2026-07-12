@@ -232,7 +232,23 @@ const sampleResume: ResumeData = {
       date: '2023-09',
     },
   ],
-  publications: [],
+  publications: [
+    {
+      id: 'pub1',
+      title: 'Scalable Micro-Frontend Architecture for Modern Web Applications',
+      publisher: 'IEEE Software',
+      date: '2023-06',
+      url: 'https://ieeexplore.ieee.org/example',
+      description: 'Presented a novel approach to micro-frontend architecture that reduces inter-module coupling by 45%.',
+    },
+    {
+      id: 'pub2',
+      title: 'Real-Time Payment Analytics Using WebSocket and React',
+      publisher: 'ACM Conference on Human Factors',
+      date: '2022-11',
+      description: 'Authored a paper on building low-latency analytics dashboards serving 50K+ concurrent users.',
+    },
+  ],
   languages: [
     {
       id: 'lang1',

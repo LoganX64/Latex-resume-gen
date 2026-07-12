@@ -207,7 +207,7 @@ function SectionContent({
           {resume.publications.map((pub) => (
             <div key={pub.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="text-[14px] italic">{pub.title || 'Publication'}</span>
+                <span className="text-[14px] font-bold italic">{pub.title || 'Publication'}</span>
                 <span className="text-[12px] text-gray-500">{pub.date}</span>
               </div>
               <span className="text-[12px] text-gray-600">{pub.publisher}</span>
