@@ -1,7 +1,10 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import { Separator } from '@/components/ui/separator'
-import { Sidebar } from '@/components/editor/Sidebar'
+import {
+  SidebarProvider,
+  SidebarInset,
+} from '@/components/ui/sidebar'
+import { AppSidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
@@ -15,10 +18,10 @@ import {
   RotateCcw,
   Trash2,
   Search,
-  Loader2,
   TriangleAlert,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -165,14 +168,14 @@ export function MainLayout() {
 
   return (
     <TooltipProvider delay={400}>
-      <div className="flex h-screen overflow-hidden bg-background">
-        <Sidebar activeSection={activeSection} onSectionClick={setActiveSection} />
-        <Separator orientation="vertical" className="h-auto" />
-        <div className="flex flex-1 overflow-hidden">
-          <div className="flex flex-col w-full md:w-[55%] min-w-0 border-r border-border">
-            <header className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
-              <div className="flex items-center gap-1">
+      <SidebarProvider>
+        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} />
+        <SidebarInset className="h-screen overflow-hidden">
+          <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-col w-full md:w-[55%] min-w-0 border-r border-border">
+              <header className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
+                <div className="flex items-center gap-1">
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleClearResume} aria-label="Clear resume" />}>
                     <Trash2 className="h-3.5 w-3.5" />
@@ -231,7 +234,7 @@ export function MainLayout() {
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleExportPdf} disabled={isExportingPdf} aria-label="Export PDF file" />}>
                     {isExportingPdf ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      <Spinner className="h-3.5 w-3.5" />
                     ) : (
                       <Download className="h-3.5 w-3.5" />
                     )}
@@ -256,7 +259,8 @@ export function MainLayout() {
           templateOptions={templateConfigs.map((tc) => ({ id: tc.id, name: tc.name }))}
           isDarkMode={darkMode}
         />
-      </div>
+        </SidebarInset>
+      </SidebarProvider>
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
