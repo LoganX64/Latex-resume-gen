@@ -1,7 +1,5 @@
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2 } from 'lucide-react'
 import {
@@ -19,57 +17,41 @@ export function LanguagesForm() {
   const removeLanguage = useResumeStore((s) => s.removeLanguage)
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-1.5">
       {languages.map((lang, index) => (
-        <Card key={lang.id}>
-          <CardContent className="p-3 space-y-2">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-medium text-muted-foreground flex-1">
-              Language {index + 1}
-            </span>
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              onClick={() => removeLanguage(lang.id)}
-              aria-label={`Remove language ${index + 1}`}
-            >
-              <Trash2 className="h-3 w-3 text-destructive" />
-            </Button>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <div className="space-y-1">
-              <Label htmlFor={`lang-name-${lang.id}`} className="text-[10px]">Language *</Label>
-              <Input
-                id={`lang-name-${lang.id}`}
-                name="langName"
-                autoComplete="off"
-                value={lang.name}
-                onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
-                placeholder="English"
-                className="h-7 text-xs"
-              />
-            </div>
-            <div className="space-y-1">
-              <Label className="text-[10px]">Proficiency *</Label>
-              <Select
-                value={lang.proficiency}
-                onValueChange={(value) => { if (value) updateLanguage(lang.id, 'proficiency', value) }}
-              >
-                <SelectTrigger className="h-7 text-xs" aria-label="Proficiency level">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Native">Native</SelectItem>
-                  <SelectItem value="Fluent">Fluent</SelectItem>
-                  <SelectItem value="Advanced">Advanced</SelectItem>
-                  <SelectItem value="Intermediate">Intermediate</SelectItem>
-                  <SelectItem value="Basic">Basic</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          </CardContent>
-        </Card>
+        <div key={lang.id} className="flex items-center gap-2">
+          <Input
+            name="langName"
+            autoComplete="off"
+            value={lang.name}
+            onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
+            placeholder="Language"
+            className="h-7 text-xs flex-1 min-w-0"
+          />
+          <Select
+            value={lang.proficiency}
+            onValueChange={(value) => { if (value) updateLanguage(lang.id, 'proficiency', value) }}
+          >
+            <SelectTrigger className="h-7 text-xs w-[120px]" aria-label="Proficiency level">
+              <SelectValue placeholder="Level" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="Native">Native</SelectItem>
+              <SelectItem value="Fluent">Fluent</SelectItem>
+              <SelectItem value="Advanced">Advanced</SelectItem>
+              <SelectItem value="Intermediate">Intermediate</SelectItem>
+              <SelectItem value="Basic">Basic</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={() => removeLanguage(lang.id)}
+            aria-label={`Remove language ${index + 1}`}
+          >
+            <Trash2 className="h-3 w-3 text-destructive" />
+          </Button>
+        </div>
       ))}
       <Button
         variant="outline"
