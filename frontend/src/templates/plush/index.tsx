@@ -16,8 +16,8 @@ function Preview({
 }): ReactNode {
   const { personalInfo } = resume
 
-  const rightTypes = ['skills', 'education']
-  const leftTypes = ['experience', 'projects', 'certifications', 'achievements', 'publications', 'languages', 'customSections']
+  const rightTypes = ['skills', 'education', 'languages', 'certifications']
+  const leftTypes = ['experience', 'projects', 'achievements', 'publications', 'customSections']
 
   const rightSections = sections.filter((s) => rightTypes.includes(s.type))
   const leftSections = sections.filter((s) => leftTypes.includes(s.type))
@@ -119,7 +119,7 @@ function LeftSection({
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul style={{ marginTop: '2px', paddingLeft: '14px', listStyle: 'none' }}>
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: subheadingsColor, position: 'relative', marginBottom: '1px' }}>
+                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: headingsColor, position: 'relative', marginBottom: '1px' }}>
                       <span style={{ position: 'absolute', left: '-12px', color: titleColor, fontSize: '8px', top: '3px' }}>◆</span>
                       {bullet}
                     </li>
@@ -137,24 +137,29 @@ function LeftSection({
           <SectionTitle title="Projects" />
           {resume.projects.map((proj) => (
             <div key={proj.id} style={{ marginTop: '2px', marginBottom: '4px' }}>
-              {/* Project | Technologies - same line */}
-              <div style={{ lineHeight: 1.3, color: subheadingsColor }}>
-                <span style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const }}>{proj.name || 'Project'}</span>
-                {proj.technologies.length > 0 && (
-                  <span style={{ fontSize: '13px' }}> | {proj.technologies.join(', ')}</span>
+              {/* Project | Technologies - same line with date right-aligned */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', lineHeight: 1.3, color: subheadingsColor }}>
+                <span>
+                  <span style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const }}>{proj.name || 'Project'}</span>
+                  {proj.technologies.length > 0 && (
+                    <span style={{ fontSize: '13px' }}> | {proj.technologies.join(', ')}</span>
+                  )}
+                </span>
+                {proj.duration && (
+                  <span style={{ fontSize: '12px', lineHeight: 1.3, color: headingsColor, whiteSpace: 'nowrap' }}>
+                    {proj.duration}
+                  </span>
                 )}
               </div>
-              {/* Date */}
-              {proj.duration && (
-                <div style={{ fontSize: '12px', lineHeight: 1.3, color: headingsColor }}>
-                  {proj.duration}
-                </div>
+              {/* Description */}
+              {proj.description && (
+                <p style={{ fontSize: '12px', lineHeight: 1.3, margin: '2px 0 0 0', color: headingsColor }}>{proj.description}</p>
               )}
               {/* Bullet points */}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul style={{ marginTop: '2px', paddingLeft: '14px', listStyle: 'none' }}>
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: subheadingsColor, position: 'relative', marginBottom: '1px' }}>
+                    <li key={i} style={{ fontSize: '12px', lineHeight: 1.35, color: headingsColor, position: 'relative', marginBottom: '1px' }}>
                       <span style={{ position: 'absolute', left: '-12px', color: titleColor, fontSize: '8px', top: '3px' }}>◆</span>
                       {bullet}
                     </li>
@@ -188,7 +193,7 @@ function LeftSection({
             <div key={ach.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{ach.title || 'Achievement'}</span>
               {ach.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{ach.date}</span>}
-              {ach.description && <p style={{ fontSize: '12px', lineHeight: 1.3, margin: '2px 0 0 0', color: subheadingsColor }}>{ach.description}</p>}
+              {ach.description && <p style={{ fontSize: '12px', lineHeight: 1.3, margin: '2px 0 0 0', color: headingsColor }}>{ach.description}</p>}
             </div>
           ))}
         </div>
@@ -200,9 +205,12 @@ function LeftSection({
           <SectionTitle title="Publications" />
           {resume.publications.map((pub) => (
             <div key={pub.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
-              <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{pub.title || 'Publication'}</span>
-              {pub.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{pub.date}</span>}
-              <span style={{ fontSize: '12px', fontStyle: 'italic', display: 'block', color: headingsColor }}>{pub.publisher}</span>
+              <div>
+                <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{pub.title || 'Publication'}</span>
+                {pub.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{pub.date}</span>}
+              </div>
+              {pub.publisher && <span style={{ fontSize: '12px', fontStyle: 'italic', display: 'block', color: headingsColor }}>{pub.publisher}</span>}
+              {pub.description && <span style={{ fontSize: '12px', display: 'block', color: headingsColor }}>{pub.description}</span>}
             </div>
           ))}
         </div>
@@ -255,7 +263,7 @@ function RightSection({
                 <div style={{ fontSize: '15px', fontWeight: 700, textTransform: 'uppercase' as const, lineHeight: 1.3, color: subheadingsColor }}>
                   {cat.name || 'Category'}
                 </div>
-                <div style={{ fontSize: '12px', lineHeight: 1.4, color: headingsColor, marginTop: '2px' }}>
+                <div style={{ fontSize: '13px', lineHeight: 1.4, color: headingsColor, marginTop: '2px' }}>
                   {cat.skills.join(' • ')}
                 </div>
               </div>
