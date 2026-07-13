@@ -11,8 +11,8 @@ export function generatePlushLatex(
     (s) => sectionVisibility[s.type] ?? false
   )
 
-  const rightTypes = ['skills', 'education']
-  const leftTypes = ['experience', 'projects', 'certifications', 'achievements', 'publications', 'languages', 'customSections']
+  const rightTypes = ['skills', 'education', 'languages']
+  const leftTypes = ['experience', 'projects', 'certifications', 'achievements', 'publications', 'customSections']
 
   const rightSections = sections.filter((s) => rightTypes.includes(s.type))
   const leftSections = sections.filter((s) => leftTypes.includes(s.type))
@@ -188,6 +188,8 @@ function generateRightSection(type: string, resume: ResumeData): string {
       return generateSkills(resume.skills)
     case 'education':
       return generateEducation(resume.education)
+    case 'languages':
+      return generateLanguages(resume.languages)
     default:
       return ''
   }
@@ -226,12 +228,14 @@ function generateProjects(projects: ResumeData['projects']): string {
       const dateStr = proj.duration || ''
       const bullets = generateBulletPoints(proj.bulletPoints)
 
-      return `\\runsubsection{${escapeLatex(proj.name)}}
-\\descript{${techLabel}}
-\\location{${escapeLatex(dateStr)}}
+      const descStr = proj.description ? `\\leavevmode\\\\\n${escapeLatex(proj.description)}` : ''
+
+      return `\\runsubsection{${escapeLatex(proj.name)}}{\\color{subheadings}\\fontsize{10}{12pt}\\selectfont${techLabel}} \\hfill {\\color{headings}\\fontsize{9}{12pt}\\selectfont${escapeLatex(dateStr)}}\\normalfont
+{\\color{headings}\\fontsize{9}{12pt}\\selectfont${descStr}
+${proj.description ? '\\par\\vspace*{3pt}' : '\\sectionsep'}
 \\begin{tightemize}
 ${bullets ? bullets.split('\n').filter(l => l.trim().startsWith('\\item')).join('\n') : ''}
-\\end{tightemize}
+\\end{tightemize}}
 \\sectionsep`
     })
     .join('\n')
@@ -295,7 +299,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
   const items = achievements
     .map((ach) => {
       const dateStr = ach.date ? ` \\hfill \\small ${escapeLatex(ach.date)}` : ''
-      const descStr = ach.description ? `\n\\small ${escapeLatex(ach.description)}` : ''
+      const descStr = ach.description ? ` \\\\\n{\\color{headings}\\fontsize{9}{12pt}\\selectfont ${escapeLatex(ach.description)}}` : ''
       return `\\textbf{${escapeLatex(ach.title)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
@@ -309,8 +313,9 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill \\small ${escapeLatex(pub.date)}` : ''
-      const descStr = pub.description ? `\n\\small ${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
+      const pubStr = pub.publisher ? ` \\\\\n{\\color{headings}\\fontsize{9}{12pt}\\selectfont\\textit{${escapeLatex(pub.publisher)}}}` : ''
+      const descStr = pub.description ? ` \\\\\n{\\color{headings}\\fontsize{9}{12pt}\\selectfont ${escapeLatex(pub.description)}}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${dateStr}${pubStr}${descStr}`
     })
     .join(' \\\\\n\n')
 
