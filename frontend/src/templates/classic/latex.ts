@@ -107,7 +107,7 @@ function generateSummary(summary: string): string {
   if (!summary) return ''
   return `\\section{Professional Summary}
 
-${escapeLatex(summary)}`
+\\small{${escapeLatex(summary)}}`
 }
 
 function generateExperience(experience: ResumeData['experience']): string {
@@ -117,9 +117,9 @@ function generateExperience(experience: ResumeData['experience']): string {
       const dateRange = formatDateRange(exp.startDate, exp.endDate, exp.current)
       const bullets = generateBulletPoints(exp.bulletPoints)
 
-      return `\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
+      return `\\small{\\textbf{${escapeLatex(exp.position)}} \\hfill ${dateRange} \\\\
 \\textit{${escapeLatex(exp.company)}}${exp.location ? ` \\hfill ${escapeLatex(exp.location)}` : ''}
-${bullets}`
+${bullets}}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -136,7 +136,7 @@ function generateSkills(skills: ResumeData['skills']): string {
 
   return `\\section{Technical Skills}
 
-${items}`
+\\small{${items}}`
 }
 
 function generateProjects(projects: ResumeData['projects']): string {
@@ -161,7 +161,7 @@ function generateProjects(projects: ResumeData['projects']): string {
             ? `\n\n${demoLink}`
             : ''
 
-      return `\\textbf{${escapeLatex(proj.name)}}${rolePart}${datePart} \\\\${descLine}${bullets}${techLine}${linkLine}`
+      return `\\small{\\textbf{${escapeLatex(proj.name)}}${rolePart}${datePart} \\\\${descLine}${bullets}${techLine}${linkLine}}`
     })
     .join('\n\n\\vspace{3pt}\n')
 
@@ -180,8 +180,8 @@ function generateEducation(education: ResumeData['education']): string {
       const dateRange = formatDateRange(edu.startDate, edu.endDate, false)
       const cgpaLine = edu.cgpa ? ` \\hfill CGPA: ${escapeLatex(edu.cgpa)}` : ''
 
-      return `\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
-\\textit{${escapeLatex(edu.institution)}}${cgpaLine}`
+      return `\\small{\\textbf{${degreeLine}} \\hfill ${dateRange} \\\\
+\\textit{${escapeLatex(edu.institution)}}${cgpaLine}}`
     })
     .join('\n\n')
 
@@ -203,7 +203,7 @@ function generateCertifications(certifications: ResumeData['certifications']): s
 
   return `\\section{Certifications}
 
-${items}%`
+\\small{${items}}%`
 }
 
 function generateAchievements(achievements: ResumeData['achievements']): string {
@@ -218,7 +218,7 @@ function generateAchievements(achievements: ResumeData['achievements']): string 
 
   return `\\section{Achievements}
 
-${items}`
+\\small{${items}}`
 }
 
 function generatePublications(publications: ResumeData['publications']): string {
@@ -230,11 +230,11 @@ function generatePublications(publications: ResumeData['publications']): string 
       const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
       return `\\textbf{${escapeLatex(pub.title)}}${publisherPart}${dateStr}${descStr}`
     })
-    .join(' \\\\\n\n')
+    .join(' \\\\\n')
 
   return `\\section{Publications}
 
-${items}`
+\\small{${items}}`
 }
 
 function generateLanguages(languages: ResumeData['languages']): string {
@@ -245,12 +245,12 @@ function generateLanguages(languages: ResumeData['languages']): string {
 
   return `\\section{Languages}
 
-${items}`
+\\small{${items}}`
 }
 
 function generateCustomSection(section: { title: string; content: string }): string {
   if (!section.title || !section.content) return ''
   return `\\section{${escapeLatex(section.title)}}
 
-${escapeLatex(section.content)}`
+\\small{${escapeLatex(section.content)}}`
 }

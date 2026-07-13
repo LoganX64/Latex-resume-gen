@@ -82,13 +82,13 @@ function SectionContent({
           {resume.experience.map((exp) => (
             <div key={exp.id} style={{ marginBottom: '6px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontWeight: 600, fontSize: '12px' }}>{exp.position || 'Position'}</span>
+                <span style={{ fontWeight: 600, fontSize: '11px' }}>{exp.position || 'Position'}</span>
                 <span style={{ fontSize: '11px', color: '#6b7280' }}>
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontSize: '12px', color: '#4b5563', fontStyle: 'italic' }}>{exp.company || 'Company'}</span>
+                <span style={{ fontSize: '11px', color: '#4b5563', fontStyle: 'italic' }}>{exp.company || 'Company'}</span>
                 {exp.location && (
                   <span style={{ fontSize: '11px', color: '#6b7280' }}>{exp.location}</span>
                 )}
@@ -128,7 +128,7 @@ function SectionContent({
           {resume.projects.map((proj) => (
             <div key={proj.id} style={{ marginBottom: '6px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontWeight: 600, fontSize: '12px' }}>{proj.name || 'Project'}</span>
+                <span style={{ fontWeight: 600, fontSize: '11px' }}>{proj.name || 'Project'}</span>
                 {proj.duration && (
                   <span style={{ fontSize: '11px', color: '#6b7280' }}>{proj.duration}</span>
                 )}
@@ -172,7 +172,7 @@ function SectionContent({
           {resume.education.map((edu) => (
             <div key={edu.id} style={{ marginBottom: '4px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontWeight: 600, fontSize: '12px' }}>
+                <span style={{ fontWeight: 600, fontSize: '11px' }}>
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
@@ -181,7 +181,7 @@ function SectionContent({
                 </span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontSize: '12px', color: '#4b5563', fontStyle: 'italic' }}>{edu.institution || 'Institution'}</span>
+                <span style={{ fontSize: '11px', color: '#4b5563', fontStyle: 'italic' }}>{edu.institution || 'Institution'}</span>
                 {edu.cgpa && <span style={{ fontSize: '11px', color: '#6b7280' }}>CGPA: {edu.cgpa}</span>}
               </div>
             </div>

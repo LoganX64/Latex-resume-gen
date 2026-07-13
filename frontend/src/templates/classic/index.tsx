@@ -53,7 +53,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Professional Summary">
-          <p className="text-[13px] text-gray-900">{resume.summary}</p>
+          <p className="text-[11px] text-gray-900">{resume.summary}</p>
         </Section>
       ) : null
 
@@ -63,13 +63,13 @@ function SectionContent({
           {resume.experience.map((exp) => (
             <div key={exp.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[13px]">{exp.position || 'Position'}</span>
+                <span className="font-semibold text-[11px]">{exp.position || 'Position'}</span>
                 <span className="text-[11px] text-gray-800">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[13px] text-gray-900 italic">{exp.company || 'Company'}</span>
+                <span className="text-[11px] text-gray-900 italic">{exp.company || 'Company'}</span>
                 {exp.location && (
                   <span className="text-[11px] text-gray-800">{exp.location}</span>
                 )}
@@ -93,7 +93,7 @@ function SectionContent({
         <Section title="Technical Skills">
           {resume.skills.map((cat) => (
             <div key={cat.id} className="mb-[2px] last:mb-0">
-              <span className="font-semibold text-[13px]">{cat.name || 'Category'}: </span>
+              <span className="font-semibold text-[11px]">{cat.name || 'Category'}: </span>
               <span className="text-[11px] text-gray-900">{cat.skills.join(', ')}</span>
             </div>
           ))}
@@ -107,9 +107,9 @@ function SectionContent({
             <div key={proj.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
                 <div>
-                  <span className="font-semibold text-[13px]">{proj.name || 'Project'}</span>
+                  <span className="font-semibold text-[11px]">{proj.name || 'Project'}</span>
                   {proj.role && (
-                    <span className="text-[13px] text-gray-900 italic"> – {proj.role}</span>
+                    <span className="text-[11px] text-gray-900 italic"> – {proj.role}</span>
                   )}
                 </div>
                 {proj.duration && (
@@ -151,7 +151,7 @@ function SectionContent({
           {resume.education.map((edu) => (
             <div key={edu.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[13px]">
+                <span className="font-semibold text-[11px]">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
@@ -160,7 +160,7 @@ function SectionContent({
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[13px] text-gray-900 italic">{edu.institution || 'Institution'}</span>
+                <span className="text-[11px] text-gray-900 italic">{edu.institution || 'Institution'}</span>
                 {edu.cgpa && <span className="text-[11px] text-gray-800">CGPA: {edu.cgpa}</span>}
               </div>
             </div>
@@ -173,7 +173,7 @@ function SectionContent({
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-[2px] last:mb-0 flex justify-between items-baseline">
-              <span className="text-[13px]">
+              <span className="text-[11px]">
                 <span className="font-semibold">{cert.name || 'Certification'}</span>
                 {cert.issuer && <span className="text-gray-900"> – {cert.issuer}</span>}
               </span>
@@ -189,7 +189,7 @@ function SectionContent({
           {resume.achievements.map((ach) => (
             <div key={ach.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[13px]">{ach.title || 'Achievement'}</span>
+                <span className="font-semibold text-[11px]">{ach.title || 'Achievement'}</span>
                 {ach.date && <span className="text-[11px] text-gray-800">{ach.date}</span>}
               </div>
               {ach.description && (
@@ -207,9 +207,9 @@ function SectionContent({
             <div key={pub.id} className="mb-[2px] last:mb-0">
               <div className="flex justify-between items-baseline">
                 <div>
-                  <span className="font-semibold text-[13px]">{pub.title || 'Publication'}</span>
+                  <span className="font-semibold text-[11px]">{pub.title || 'Publication'}</span>
                   {pub.publisher && (
-                    <span className="text-[13px] text-gray-900 italic"> — {pub.publisher}</span>
+                    <span className="text-[11px] text-gray-900 italic"> — {pub.publisher}</span>
                   )}
                 </div>
                 <span className="text-[11px] text-gray-800">{pub.date}</span>
