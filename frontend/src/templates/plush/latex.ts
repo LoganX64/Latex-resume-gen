@@ -11,8 +11,8 @@ export function generatePlushLatex(
     (s) => sectionVisibility[s.type] ?? false
   )
 
-  const rightTypes = ['skills', 'education', 'languages']
-  const leftTypes = ['experience', 'projects', 'certifications', 'achievements', 'publications', 'customSections']
+  const rightTypes = ['skills', 'education', 'languages', 'certifications']
+  const leftTypes = ['experience', 'projects', 'achievements', 'publications', 'customSections']
 
   const rightSections = sections.filter((s) => rightTypes.includes(s.type))
   const leftSections = sections.filter((s) => leftTypes.includes(s.type))
@@ -190,6 +190,8 @@ function generateRightSection(type: string, resume: ResumeData): string {
       return generateEducation(resume.education)
     case 'languages':
       return generateLanguages(resume.languages)
+    case 'certifications':
+      return generateCertifications(resume.certifications)
     default:
       return ''
   }
