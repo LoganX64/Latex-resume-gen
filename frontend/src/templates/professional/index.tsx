@@ -17,29 +17,29 @@ function Preview({
       {/* Header */}
       {personalInfo.fullName && (
         <header className="text-center pb-1 mb-1">
-          <h1 className="text-[28px] font-bold text-black" style={{ fontVariant: 'small-caps' }}>
+          <h1 className="text-[30px] font-bold text-black" style={{ fontVariant: 'small-caps' }}>
             {personalInfo.fullName}
           </h1>
           {personalInfo.professionalTitle && (
-            <p className="text-[12px] text-gray-700 italic mt-0">{personalInfo.professionalTitle}</p>
+            <p className="text-[13px] text-gray-700 italic mt-0">{personalInfo.professionalTitle}</p>
           )}
           <div className="flex flex-wrap justify-center gap-x-1 gap-y-0 mt-1 text-[14px] text-black">
             {personalInfo.phone && <span>{personalInfo.phone}</span>}
             {personalInfo.phone && (personalInfo.email || personalInfo.linkedin || personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.email && (
-              <a href={`mailto:${personalInfo.email}`} className="underline text-blue-700">{personalInfo.email}</a>
+              <a href={`mailto:${personalInfo.email}`} className="underline text-black">{personalInfo.email}</a>
             )}
             {(personalInfo.email) && (personalInfo.linkedin || personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.linkedin && (
-              <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="underline text-blue-700">{personalInfo.linkedin}</a>
+              <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.linkedin}</a>
             )}
             {personalInfo.linkedin && (personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.github && (
-              <a href={`https://${personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="underline text-blue-700">{personalInfo.github}</a>
+              <a href={`https://${personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.github}</a>
             )}
             {personalInfo.github && personalInfo.website && <span> | </span>}
             {personalInfo.website && (
-              <a href={`https://${personalInfo.website}`} target="_blank" rel="noopener noreferrer" className="underline text-blue-700">{personalInfo.website}</a>
+              <a href={`https://${personalInfo.website}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.website}</a>
             )}
           </div>
         </header>
@@ -80,15 +80,15 @@ function SectionContent({
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[12px] text-gray-700 italic">{exp.company || 'Company'}</span>
+                <span className="text-[13px] text-gray-700 italic">{exp.company || 'Company'}</span>
                 {exp.location && (
-                  <span className="text-[12px] text-gray-700 italic">{exp.location}</span>
+                  <span className="text-[13px] text-gray-700 italic">{exp.location}</span>
                 )}
               </div>
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] pl-2 relative before:content-['•'] before:absolute before:left-0">
+                    <li key={i} className="text-[13px] pl-2 relative before:content-['•'] before:absolute before:left-0">
                       {bullet}
                     </li>
                   ))}
@@ -102,7 +102,7 @@ function SectionContent({
     case 'skills':
       return resume.skills.length > 0 ? (
         <Section title="Technical Skills">
-          <div className="text-[12px]">
+          <div className="text-[13px]">
             {resume.skills.map((cat) => (
               <div key={cat.id} className="mb-0.5 last:mb-0">
                 <span className="font-bold">{cat.name || 'Category'}:</span>{' '}
@@ -119,33 +119,33 @@ function SectionContent({
           {resume.projects.map((proj) => (
             <div key={proj.id} className="mb-2 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-bold text-[12px]">
+                <span className="font-bold text-[13px]">
                   {proj.name || 'Project'}
                   {proj.role && <> — <span className="italic font-normal">{proj.role}</span></>}
                 </span>
                 {proj.duration && (
-                  <span className="text-[12px] text-gray-700">{proj.duration}</span>
+                  <span className="text-[14px] text-gray-700">{proj.duration}</span>
                 )}
               </div>
+              {proj.technologies.length > 0 && (
+                <p className="text-[13px] text-gray-700 mt-[1px]">
+                  <span className="italic">{proj.technologies.join(', ')}</span>
+                </p>
+              )}
               {proj.description && (
-                <p className="text-[12px] mt-0">{proj.description}</p>
+                <p className="text-[13px] mt-0">{proj.description}</p>
               )}
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] pl-2 relative before:content-['•'] before:absolute before:left-0">
+                    <li key={i} className="text-[13px] pl-2 relative before:content-['•'] before:absolute before:left-0">
                       {bullet}
                     </li>
                   ))}
                 </ul>
               )}
-              {proj.technologies.length > 0 && (
-                <p className="text-[12px] text-gray-700 mt-[1px]">
-                  <span className="italic">{proj.technologies.join(', ')}</span>
-                </p>
-              )}
               {(proj.githubUrl || proj.liveDemoUrl) && (
-                <p className="text-[12px] text-gray-700 mt-[1px]">
+                <p className="text-[13px] text-gray-700 mt-[1px]">
                   {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
                   {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
                   {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
@@ -170,11 +170,11 @@ function SectionContent({
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[12px] text-gray-700 italic">
+                <span className="text-[13px] text-gray-700 italic">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? `, ${edu.specialization}` : ''}
                 </span>
-                {edu.cgpa && <span className="text-[12px] text-gray-700">CGPA: {edu.cgpa}</span>}
+                {edu.cgpa && <span className="text-[13px] text-gray-700">CGPA: {edu.cgpa}</span>}
               </div>
             </div>
           ))}
@@ -186,9 +186,9 @@ function SectionContent({
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-1 last:mb-0">
-              <span className="font-bold text-[12px]">{cert.name || 'Certification'}</span>
-              {cert.issuer && <span className="text-[12px] text-gray-700"> - {cert.issuer}</span>}
-              {cert.date && <span className="text-[12px] text-gray-700 italic ml-1">{cert.date}</span>}
+              <span className="font-bold text-[13px]">{cert.name || 'Certification'}</span>
+              {cert.issuer && <span className="text-[13px] text-gray-700"> - {cert.issuer}</span>}
+              {cert.date && <span className="text-[13px] text-gray-700 italic ml-1">{cert.date}</span>}
             </div>
           ))}
         </Section>
@@ -232,7 +232,7 @@ function SectionContent({
     case 'languages':
       return resume.languages.length > 0 ? (
         <Section title="Languages">
-          <span className="text-[12px]">
+          <span className="text-[13px]">
             {resume.languages.map((lang) =>
               `${lang.name || 'Language'}${lang.proficiency ? ` (${lang.proficiency})` : ''}`
             ).join(', ')}
