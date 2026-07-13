@@ -13,10 +13,10 @@ function Preview({
   const { personalInfo } = resume
 
   return (
-    <div style={{ fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '14px', lineHeight: '1.25' }}>
+    <div style={{ fontFamily: '"Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '14px', lineHeight: '1.1' }}>
       {/* Header */}
       {personalInfo.fullName && (
-        <header className="flex justify-between items-center pb-1.5 mb-1.5" style={{ borderBottom: '2px solid #1e3a5f' }}>
+        <header className="flex justify-between items-center pb-1 mb-1" style={{ borderBottom: '2px solid #1e3a5f' }}>
           <div className={personalInfo.profileImage ? 'text-left' : 'text-center w-full'}>
             <h1 className="text-xl font-bold" style={{ color: '#1e3a5f' }}>
               {personalInfo.fullName}
@@ -60,7 +60,7 @@ function SectionContent({
     case 'summary':
       return resume.summary ? (
         <Section title="Professional Summary">
-          <p className="text-[14px] leading-relaxed text-gray-700">{resume.summary}</p>
+          <p className="text-[12px] leading-relaxed text-gray-700">{resume.summary}</p>
         </Section>
       ) : null
 
@@ -68,15 +68,15 @@ function SectionContent({
       return resume.experience.length > 0 ? (
         <Section title="Work Experience">
           {resume.experience.map((exp) => (
-            <div key={exp.id} className="mb-2 last:mb-0">
+            <div key={exp.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{exp.position || 'Position'}</span>
+                <span className="font-semibold text-[12px]">{exp.position || 'Position'}</span>
                 <span className="text-[12px] text-gray-500">
                   {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[14px] text-gray-600 italic">{exp.company || 'Company'}</span>
+                <span className="text-[12px] text-gray-600 italic">{exp.company || 'Company'}</span>
                 {exp.location && (
                   <span className="text-[12px] text-gray-500">{exp.location}</span>
                 )}
@@ -113,9 +113,9 @@ function SectionContent({
       return resume.projects.length > 0 ? (
         <Section title="Projects">
           {resume.projects.map((proj) => (
-            <div key={proj.id} className="mb-2 last:mb-0">
+            <div key={proj.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{proj.name || 'Project'}</span>
+                <span className="font-semibold text-[12px]">{proj.name || 'Project'}</span>
                 {proj.duration && (
                   <span className="text-[12px] text-gray-500">{proj.duration}</span>
                 )}
@@ -159,7 +159,7 @@ function SectionContent({
           {resume.education.map((edu) => (
             <div key={edu.id} className="mb-1.5 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">
+                <span className="font-semibold text-[12px]">
                   {edu.degree || 'Degree'}
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
@@ -168,7 +168,7 @@ function SectionContent({
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
-                <span className="text-[14px] text-gray-600 italic">{edu.institution || 'Institution'}</span>
+                <span className="text-[12px] text-gray-600 italic">{edu.institution || 'Institution'}</span>
                 {edu.cgpa && <span className="text-[12px] text-gray-500">CGPA: <span className="font-semibold">{edu.cgpa}</span></span>}
               </div>
             </div>
@@ -181,7 +181,7 @@ function SectionContent({
         <Section title="Certifications">
           {resume.certifications.map((cert) => (
             <div key={cert.id} className="mb-1 last:mb-0 flex justify-between items-baseline">
-              <span className="text-[14px]">
+              <span className="text-[12px]">
                 <span className="font-semibold">{cert.name || 'Certification'}</span>
                 {cert.issuer && <span className="text-gray-600"> – {cert.issuer}</span>}
               </span>
@@ -197,7 +197,7 @@ function SectionContent({
           {resume.achievements.map((ach) => (
             <div key={ach.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{ach.title || 'Achievement'}</span>
+                <span className="font-semibold text-[12px]">{ach.title || 'Achievement'}</span>
                 {ach.date && <span className="text-[12px] text-gray-500">{ach.date}</span>}
               </div>
               {ach.description && (
@@ -214,7 +214,7 @@ function SectionContent({
           {resume.publications.map((pub) => (
             <div key={pub.id} className="mb-1 last:mb-0">
               <div className="flex justify-between items-baseline">
-                <span className="font-semibold text-[14px]">{pub.title || 'Publication'}</span>
+                <span className="font-semibold text-[12px]">{pub.title || 'Publication'}</span>
                 <span className="text-[12px] text-gray-500">{pub.date}</span>
               </div>
               <span className="text-[12px] text-gray-600 italic">{pub.publisher}</span>
@@ -258,8 +258,8 @@ function SectionContent({
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="mb-1.5" data-section="true">
-      <h2 className="text-[15px] font-bold uppercase tracking-wider pb-0 mb-0.5" style={{ color: '#1e3a5f', borderBottom: '1px solid #1e3a5f' }}>
+    <div className="mb-1" data-section="true">
+      <h2 className="text-[15px] font-bold uppercase tracking-wider pb-0 mb-0" style={{ color: '#1e3a5f', borderBottom: '1px solid #1e3a5f' }}>
         {title}
       </h2>
       {children}
