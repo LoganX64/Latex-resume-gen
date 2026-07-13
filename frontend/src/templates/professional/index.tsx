@@ -17,7 +17,7 @@ function Preview({
       {/* Header */}
       {personalInfo.fullName && (
         <header className="text-center pb-1 mb-1">
-          <h1 className="text-[30px] font-bold text-black" style={{ fontVariant: 'small-caps' }}>
+          <h1 className="text-[33px] font-bold text-black" style={{ fontVariant: 'small-caps' }}>
             {personalInfo.fullName}
           </h1>
           {personalInfo.professionalTitle && (
