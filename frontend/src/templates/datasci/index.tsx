@@ -71,9 +71,7 @@ function SectionContent({
   switch (section.type) {
     case 'summary':
       return resume.summary ? (
-        <Section title="Objective">
-          <p style={{ fontSize: '11px', color: '#374151', margin: 0 }}>{resume.summary}</p>
-        </Section>
+        <p style={{ fontSize: '11px', color: '#374151', margin: 0, marginBottom: '6px' }}>{resume.summary}</p>
       ) : null
 
     case 'experience':

@@ -153,9 +153,7 @@ function generateSection(type: string, resume: ResumeData): string {
 
 function generateSummary(summary: string): string {
   if (!summary) return ''
-  return `\\section{Objective}
-
-${escapeLatex(summary)}`
+  return `\\small{${escapeLatex(summary)}}`
 }
 
 function generateExperience(experience: ResumeData['experience']): string {
