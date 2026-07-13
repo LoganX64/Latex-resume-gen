@@ -251,7 +251,7 @@ function generateSkills(skills: ResumeData['skills']): string {
   const items = skills
     .map((cat) => `\\subsection{${escapeLatex(cat.name)}}
 \\sectionsep
-${cat.skills.map(s => escapeLatex(s)).join(' \\textbullet{} ')} \\\\
+{\\fontsize{10}{12pt}\\selectfont ${cat.skills.map(s => escapeLatex(s)).join(' \\textbullet{} ')}} \\\\
 \\sectionsep
 \\sectionsep`)
     .join('\n')
