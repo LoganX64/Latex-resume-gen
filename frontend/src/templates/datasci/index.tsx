@@ -15,7 +15,7 @@ function Preview({
   const { personalInfo } = resume
 
   return (
-    <div style={{ fontFamily: '"Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '14px', lineHeight: '1.3' }}>
+    <div style={{ fontFamily: '"Source Sans Pro", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif', fontSize: '14px', lineHeight: '1.1' }}>
       {/* 3-column header */}
       <header style={{ position: 'relative', paddingBottom: '8px', marginBottom: '8px', borderBottom: `2px solid ${highlight}` }}>
         <div style={{ display: 'flex' }}>
@@ -71,7 +71,7 @@ function SectionContent({
   switch (section.type) {
     case 'summary':
       return resume.summary ? (
-        <p style={{ fontSize: '11px', color: '#374151', margin: 0, marginBottom: '6px' }}>{resume.summary}</p>
+        <p data-section="true" style={{ fontSize: '11px', color: '#374151', margin: 0, marginBottom: '6px' }}>{resume.summary}</p>
       ) : null
 
     case 'experience':
@@ -268,13 +268,13 @@ function SectionContent({
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div style={{ marginBottom: '6px' }} data-section="true">
+    <div style={{ marginBottom: '4px' }} data-section="true">
       <h2
         style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 0, marginBottom: '2px', color: highlight, fontVariant: 'small-caps' }}
       >
         {title}
       </h2>
-      <div style={{ borderBottom: `1px solid ${highlight}`, marginBottom: '4px' }} />
+      <div style={{ borderBottom: `1px solid ${highlight}`, marginBottom: '2px' }} />
       {children}
     </div>
   )
