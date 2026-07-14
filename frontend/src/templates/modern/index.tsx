@@ -1,8 +1,16 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { formatDate } from '@/lib/utils'
 import { generateModernLatex } from './latex'
 import config from './config'
 import { ContactIcon } from '../icons'
+
+function fmtDateRange(start: string, end: string, current: boolean): string {
+  const s = formatDate(start)
+  const e = current ? 'Present' : formatDate(end)
+  if (!s) return ''
+  return `${s} – ${e}`
+}
 
 const styles = {
   sectionTitle: {
@@ -107,7 +115,7 @@ function SectionContent({
           <ul style={styles.itemList}>
             {resume.experience.map((exp) => (
               <li key={exp.id} style={{ marginBottom: '4px' }}>
-                <ProjectHeading date={exp.startDate ? `${exp.startDate} – ${exp.current ? 'Present' : exp.endDate}` : ''}>
+                <ProjectHeading date={exp.startDate ? fmtDateRange(exp.startDate, exp.endDate, exp.current) : ''}>
                   <strong>{exp.position}</strong> | <em>{exp.company}</em>
                 </ProjectHeading>
                 {exp.bulletPoints.filter(Boolean).length > 0 && (
@@ -180,15 +188,7 @@ function SectionContent({
               const degreeLine = edu.specialization
                 ? `${edu.degree} in ${edu.specialization}`
                 : edu.degree
-              const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-              const fmtDate = (d: string) => {
-                if (!d) return ''
-                const [y, m] = d.split('-')
-                return m ? `${months[parseInt(m, 10) - 1]} ${y}` : y
-              }
-              const start = fmtDate(edu.startDate)
-              const end = edu.endDate ? fmtDate(edu.endDate) : ''
-              const dateRange = start ? (end ? `${start} – ${end}` : start) : ''
+              const dateRange = fmtDateRange(edu.startDate, edu.endDate, false)
               return (
                 <li key={edu.id} style={{ marginBottom: '3px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', width: '97%' }}>
@@ -215,6 +215,11 @@ function SectionContent({
               <li key={cert.id} style={{ marginBottom: '2px' }}>
                 <ProjectHeading date={cert.date}>
                   <strong>{cert.name}</strong>
+                  {cert.url && (
+                    <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: '#6b7280' }}>
+                      <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                    </a>
+                  )}
                   {cert.issuer && <em> | {cert.issuer}</em>}
                 </ProjectHeading>
               </li>
@@ -252,7 +257,13 @@ function SectionContent({
             {resume.publications.map((pub) => (
               <li key={pub.id} style={{ marginBottom: '2px' }}>
                 <ProjectHeading date={pub.date}>
-                  <strong>{pub.title}</strong> <em>-- {pub.publisher}</em>
+                  <strong>{pub.title}</strong>
+                  {pub.url && (
+                    <a href={pub.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: '#6b7280' }}>
+                      <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                    </a>
+                  )}
+                  <em>-- {pub.publisher}</em>
                 </ProjectHeading>
                 {pub.description && (
                   <ul style={styles.bulletList}>

@@ -195,6 +195,11 @@ function SectionContent({
             <div key={cert.id} style={{ marginBottom: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
               <span style={{ fontSize: '11px' }}>
                 <span style={{ fontWeight: 600 }}>{cert.name || 'Certification'}</span>
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: '#6b7280' }}>
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
                 {cert.issuer && <span style={{ color: '#4b5563' }}> – {cert.issuer}</span>}
               </span>
               <span style={{ fontSize: '10px', color: '#6b7280' }}>{cert.date}</span>
@@ -228,6 +233,11 @@ function SectionContent({
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <span style={{ fontSize: '11px' }}>
                   <span style={{ fontWeight: 600 }}>{pub.title || 'Publication'}</span>
+                  {pub.url && (
+                    <a href={pub.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: '#6b7280' }}>
+                      <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                    </a>
+                  )}
                   {pub.publisher && <span style={{ color: '#4b5563' }}> - {pub.publisher}</span>}
                 </span>
                 <span style={{ fontSize: '10px', color: '#6b7280' }}>{pub.date}</span>

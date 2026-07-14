@@ -62,6 +62,10 @@ function buildTwocolumnDocument(
     contactParts.push(`\\mbox{\\faPhone\\ \\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}}`)
   }
 
+  while (contactParts.length < 5) {
+    contactParts.push('')
+  }
+
   const contactLine = contactParts.length > 0
     ? `{\\contactline{${contactParts.join('}{')}}}`
     : ''

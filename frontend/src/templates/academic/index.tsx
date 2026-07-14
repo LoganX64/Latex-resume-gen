@@ -22,7 +22,7 @@ function Preview({
           </h1>
           {(personalInfo.professionalTitle || personalInfo.location) && (
             <p className="text-[15px] text-gray-600 italic mt-0">
-              {[personalInfo.professionalTitle, personalInfo.location].filter(Boolean).join(' — ')}
+              {[personalInfo.professionalTitle, personalInfo.location].filter(Boolean).join(' – ')}
             </p>
           )}
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 mt-1 text-[11px] text-gray-600">
@@ -177,6 +177,11 @@ function SectionContent({
             <div key={cert.id} className="mb-1 last:mb-0 flex justify-between items-baseline">
               <span className="text-[13px]">
                 <span className="font-bold">{cert.name || 'Certification'}</span>
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-gray-400 hover:text-gray-600">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
                 {cert.issuer && <span className="text-gray-600"> – {cert.issuer}</span>}
               </span>
               <span className="text-[11px] text-gray-500 italic">{cert.date}</span>
@@ -211,7 +216,13 @@ function SectionContent({
                 <span className="text-[13px] font-bold italic">{pub.title || 'Publication'}</span>
                 <span className="text-[11px] text-gray-500">{pub.date}</span>
               </div>
-              <span className="text-[11px] text-gray-600">{pub.publisher}</span>
+              <span className="text-[11px] text-gray-600">{pub.publisher}
+                {pub.url && (
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-gray-400 hover:text-gray-600 not-italic">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
+              </span>
               {pub.description && (
                 <p className="text-[11px] text-gray-700 mt-0">{pub.description}</p>
               )}

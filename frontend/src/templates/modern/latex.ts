@@ -203,6 +203,8 @@ function generateProjects(projects: ResumeData['projects']): string {
         : ''
       const bullets = proj.bulletPoints.filter((b): b is string => !!b && b.trim() !== '').map((b) => escapeLatex(b))
       
+      if (proj.description) bullets.unshift(escapeLatex(proj.description))
+      
       const links = []
       if (proj.githubUrl) links.push(`\\href{${escapeLatex(proj.githubUrl)}}{\\underline{GitHub}}`)
       if (proj.liveDemoUrl) links.push(`\\href{${escapeLatex(proj.liveDemoUrl)}}{\\underline{Live Demo}}`)

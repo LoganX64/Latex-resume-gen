@@ -142,6 +142,11 @@ function SidebarSection({
             {resume.certifications.map((cert) => (
               <div key={cert.id} className="text-[12px]">
                 <span className="font-semibold">{cert.name || 'Certification'}</span>
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-white/50 hover:text-white/80">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
                 {cert.issuer && <span className="text-white/70"> - {cert.issuer}</span>}
               </div>
             ))}
@@ -244,7 +249,7 @@ function MainSection({
                 <p className="text-[12px] text-gray-500 mt-0">
                   {proj.githubUrl && <span>GitHub: {proj.githubUrl}</span>}
                   {proj.githubUrl && proj.liveDemoUrl && <span> | </span>}
-                  {proj.liveDemoUrl && <span>Demo: {proj.liveDemoUrl}</span>}
+                  {proj.liveDemoUrl && <span>Live: {proj.liveDemoUrl}</span>}
                 </p>
               )}
             </div>
@@ -310,7 +315,13 @@ function MainSection({
                 <span className="font-semibold text-[12px]">{pub.title || 'Publication'}</span>
                 <span className="text-[12px] text-gray-500">{pub.date}</span>
               </div>
-              <span className="text-[12px] text-gray-600 italic">{pub.publisher}</span>
+              <span className="text-[12px] text-gray-600 italic">{pub.publisher}
+                {pub.url && (
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-gray-400 hover:text-gray-600 not-italic">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
+              </span>
               {pub.description && (
                 <p className="text-[12px] text-gray-700">{pub.description}</p>
               )}

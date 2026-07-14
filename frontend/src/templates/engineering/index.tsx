@@ -1,8 +1,16 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { formatDate } from '@/lib/utils'
 import config from './config'
 import { generateEngineeringLatex } from './latex'
 import { ContactIcon } from '../icons'
+
+function fmtDateRange(start: string, end: string, current: boolean): string {
+  const s = formatDate(start)
+  const e = current ? 'Present' : formatDate(end)
+  if (!s) return ''
+  return `${s} – ${e}`
+}
 
 function Preview({
   resume,
@@ -73,7 +81,7 @@ function SectionContent({
               <div className="flex justify-between items-baseline">
                 <span className="font-semibold text-[12px]">{exp.position || 'Position'}</span>
                 <span className="text-[12px] text-gray-500">
-                  {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
+                  {fmtDateRange(exp.startDate, exp.endDate, exp.current)}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
@@ -85,7 +93,7 @@ function SectionContent({
               {exp.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {exp.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0" style={{ color: '#1e3a5f' }}>
+                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-[#1e3a5f]">
                       {bullet}
                     </li>
                   ))}
@@ -130,7 +138,7 @@ function SectionContent({
               {proj.bulletPoints.filter(Boolean).length > 0 && (
                 <ul className="mt-0 space-y-0">
                   {proj.bulletPoints.filter(Boolean).map((bullet, i) => (
-                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0" style={{ color: '#1e3a5f' }}>
+                    <li key={i} className="text-[12px] text-gray-700 pl-2 relative before:content-['•'] before:absolute before:left-0 before:text-[#1e3a5f]">
                       {bullet}
                     </li>
                   ))}
@@ -165,7 +173,7 @@ function SectionContent({
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
                 <span className="text-[12px] text-gray-500">
-                  {edu.startDate} – {edu.endDate}
+                  {fmtDateRange(edu.startDate, edu.endDate, false)}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
@@ -184,6 +192,11 @@ function SectionContent({
             <div key={cert.id} className="mb-1 last:mb-0 flex justify-between items-baseline">
               <span className="text-[12px]">
                 <span className="font-semibold">{cert.name || 'Certification'}</span>
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-gray-400 hover:text-gray-600">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
                 {cert.issuer && <span className="text-gray-600"> – {cert.issuer}</span>}
               </span>
               <span className="text-[12px] text-gray-500">{cert.date}</span>
@@ -218,7 +231,13 @@ function SectionContent({
                 <span className="font-semibold text-[12px]">{pub.title || 'Publication'}</span>
                 <span className="text-[12px] text-gray-500">{pub.date}</span>
               </div>
-              <span className="text-[12px] text-gray-600 italic">{pub.publisher}</span>
+              <span className="text-[12px] text-gray-600 italic">{pub.publisher}
+                {pub.url && (
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer" className="ml-1 text-gray-400 hover:text-gray-600 not-italic">
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
+              </span>
               {pub.description && (
                 <p className="text-[12px] text-gray-700">{pub.description}</p>
               )}

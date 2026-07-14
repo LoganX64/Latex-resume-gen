@@ -1,8 +1,16 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
+import { formatDate } from '@/lib/utils'
 import config from './config'
 import { generateCompactLatex } from './latex'
 import { ContactIcon } from '../icons'
+
+function fmtDateRange(start: string, end: string, current: boolean): string {
+  const s = formatDate(start)
+  const e = current ? 'Present' : formatDate(end)
+  if (!s) return ''
+  return `${s} – ${e}`
+}
 
 function Preview({
   resume,
@@ -64,7 +72,7 @@ function SectionContent({
               <div className="flex justify-between items-baseline">
                 <span className="font-bold text-[9px]">{exp.position || 'Position'}</span>
                 <span className="text-[8px] text-gray-500">
-                  {exp.startDate} – {exp.current ? 'Present' : exp.endDate}
+                  {fmtDateRange(exp.startDate, exp.endDate, exp.current)}
                 </span>
               </div>
               <div className="text-[9px] text-gray-600 italic">
@@ -152,7 +160,7 @@ function SectionContent({
                   {edu.specialization ? ` in ${edu.specialization}` : ''}
                 </span>
                 <span className="text-[8px] text-gray-500">
-                  {edu.startDate} – {edu.endDate}
+                  {fmtDateRange(edu.startDate, edu.endDate, false)}
                 </span>
               </div>
               <div className="flex justify-between items-baseline">
@@ -171,6 +179,11 @@ function SectionContent({
             <div key={cert.id} className="mb-0 last:mb-0 flex justify-between items-baseline">
               <span className="text-[9px]">
                 <span className="font-bold">{cert.name || 'Certification'}</span>
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" className="ml-0.5 text-gray-400 hover:text-gray-600">
+                    <ContactIcon type="externalLink" className="w-2.5 h-2.5 inline" />
+                  </a>
+                )}
                 {cert.issuer && <span className="text-gray-600">, {cert.issuer}</span>}
               </span>
               <span className="text-[8px] text-gray-500">{cert.date}</span>
@@ -204,6 +217,11 @@ function SectionContent({
               <div className="flex justify-between items-baseline">
                 <span className="text-[9px]">
                   <span className="font-bold">{pub.title || 'Publication'}</span>
+                  {pub.url && (
+                    <a href={pub.url} target="_blank" rel="noopener noreferrer" className="ml-0.5 text-gray-400 hover:text-gray-600">
+                      <ContactIcon type="externalLink" className="w-2.5 h-2.5 inline" />
+                    </a>
+                  )}
                   <span className="italic"> — {pub.publisher}</span>
                 </span>
                 <span className="text-[8px] text-gray-500">{pub.date}</span>

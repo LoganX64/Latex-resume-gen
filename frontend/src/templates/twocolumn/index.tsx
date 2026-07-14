@@ -76,14 +76,14 @@ function Preview({
       {/* Two columns */}
       <div style={{ display: 'flex', gap: '8px' }}>
         {/* Left column - 70% */}
-        <div style={{ flex: 7, minWidth: 0 }}>
+        <div style={{ flex: '0 0 70%', minWidth: 0 }}>
           {leftSections.map((section) => (
             <LeftSection key={section.id} section={section} resume={resume} />
           ))}
         </div>
 
         {/* Right column - 25% */}
-        <div style={{ flex: 3, minWidth: 0 }}>
+        <div style={{ flex: '0 0 25%', minWidth: 0 }}>
           {rightSections.map((section) => (
             <RightSection key={section.id} section={section} resume={resume} />
           ))}
@@ -179,6 +179,11 @@ function LeftSection({
           {resume.certifications.map((cert) => (
             <div key={cert.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
               <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{cert.name || 'Certification'}</span>
+              {cert.url && (
+                <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: headingsColor }}>
+                  <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                </a>
+              )}
               {cert.issuer && <span style={{ fontSize: '12px', color: headingsColor }}> – {cert.issuer}</span>}
               {cert.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{cert.date}</span>}
             </div>
@@ -208,6 +213,11 @@ function LeftSection({
             <div key={pub.id} style={{ marginTop: '2px', marginBottom: '2px' }}>
               <div>
                 <span style={{ fontSize: '12px', fontWeight: 700, color: subheadingsColor }}>{pub.title || 'Publication'}</span>
+                {pub.url && (
+                  <a href={pub.url} target="_blank" rel="noopener noreferrer" style={{ marginLeft: '4px', color: headingsColor }}>
+                    <ContactIcon type="externalLink" className="w-3 h-3 inline" />
+                  </a>
+                )}
                 {pub.date && <span style={{ fontSize: '11px', fontStyle: 'italic', marginLeft: '6px', color: headingsColor }}>{pub.date}</span>}
               </div>
               {pub.publisher && <span style={{ fontSize: '12px', fontStyle: 'italic', display: 'block', color: headingsColor }}>{pub.publisher}</span>}
