@@ -65,6 +65,7 @@ function buildSidebarDocument(
 \\usepackage{tikz}
 \\usepackage{graphicx}
 \\usepackage{calc}
+\\usepackage{fontawesome}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
@@ -137,22 +138,22 @@ function buildSidebarContactBlock(personalInfo: ResumeData['personalInfo']): str
   const items: string[] = []
 
   if (personalInfo.email) {
-    items.push(`\\mbox{@}\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+    items.push(`\\mbox{\\faEnvelope\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}}`)
   }
   if (personalInfo.phone) {
-    items.push(`\\#\\ ${escapeLatex(personalInfo.phone)}`)
+    items.push(`\\mbox{\\faPhone\\ ${escapeLatex(personalInfo.phone)}}`)
   }
   if (personalInfo.location) {
-    items.push(`*\\ ${escapeLatex(personalInfo.location)}`)
+    items.push(`\\mbox{\\faMapMarker\\ ${escapeLatex(personalInfo.location)}}`)
   }
   if (personalInfo.linkedin) {
-    items.push(`in\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+    items.push(`\\mbox{\\faLinkedin\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}}`)
   }
   if (personalInfo.github) {
-    items.push(`gh\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+    items.push(`\\mbox{\\faGithub\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}}`)
   }
   if (personalInfo.website) {
-    items.push(`www\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
+    items.push(`\\mbox{\\faGlobe\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}}`)
   }
 
   if (items.length === 0) return ''
@@ -296,7 +297,8 @@ function generateSidebarCertifications(certifications: ResumeData['certification
   const items = certifications
     .map((cert) => {
       const issuer = cert.issuer ? `\\\\{\\scriptsize ${escapeLatex(cert.issuer)}}` : ''
-      return `{\\scriptsize \\textbf{${escapeLatex(cert.name)}}${issuer}}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `{\\scriptsize \\textbf{${escapeLatex(cert.name)}}${issuer}${urlIcon}}`
     })
     .join('\\\\[0pt]\n')
 
@@ -325,7 +327,8 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill \\small ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\\\\\n\\small ${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${urlIcon} \\textit{\\textendash{} ${escapeLatex(pub.publisher)}}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 

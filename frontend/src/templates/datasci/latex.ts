@@ -28,25 +28,25 @@ function buildDatasciDocument(
     ? escapeLatex(personalInfo.professionalTitle)
     : 'Data Scientist / Junior Developer'
 
-  const phone = personalInfo.phone ? escapeLatex(personalInfo.phone) : ''
-  const city = personalInfo.location ? escapeLatex(personalInfo.location) : ''
+  const phone = personalInfo.phone ? `\\mbox{\\faPhone\\ ${escapeLatex(personalInfo.phone)}}` : ''
+  const city = personalInfo.location ? `\\mbox{\\faMapMarker\\ ${escapeLatex(personalInfo.location)}}` : ''
   const email = personalInfo.email
-    ? `\\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}`
+    ? `\\mbox{\\faEnvelope\\ \\href{mailto:${personalInfo.email}}{\\underline{${escapeLatex(personalInfo.email)}}}}`
     : ''
   const github = personalInfo.github
     ? (() => {
         const gh = personalInfo.github.replace(/^(https?:\/\/)?(www\.)?github\.com\//, '')
-        return `\\href{https://github.com/${gh}}{\\underline{github.com/${escapeLatex(gh)}}}`
+        return `\\mbox{\\faGithub\\ \\href{https://github.com/${gh}}{\\underline{github.com/${escapeLatex(gh)}}}}`
       })()
     : ''
   const linkedin = personalInfo.linkedin
     ? (() => {
         const li = personalInfo.linkedin.replace(/^(https?:\/\/)?(www\.)?linkedin\.com\/in\//, '')
-        return `\\href{https://www.linkedin.com/in/${li}}{\\underline{linkedin.com/in/${escapeLatex(li)}}}`
+        return `\\mbox{\\faLinkedin\\ \\href{https://www.linkedin.com/in/${li}}{\\underline{linkedin.com/in/${escapeLatex(li)}}}}`
       })()
     : ''
   const portfolio = personalInfo.website
-    ? `Portfolio: \\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}`
+    ? `\\mbox{\\faGlobe\\ Portfolio: \\href{https://${personalInfo.website}}{\\underline{${escapeLatex(personalInfo.website)}}}}`
     : ''
 
   const leftLines = [phone, city, email].filter(Boolean)
@@ -79,6 +79,7 @@ function buildDatasciDocument(
 \\setlength{\\tabcolsep}{0in}
 
 \\usepackage[nostruts]{titlesec}
+\\usepackage{fontawesome}
 \\titlespacing*{\\section}{0em}{0pt}{0em}
 \\titleformat{\\section}{\\color{highlight} \\scshape \\raggedright \\large}{}{0em}{}[\\vspace{-0.75em}\\hrulefill]
 \\linespread{0.95}
@@ -259,7 +260,8 @@ function generateCertifications(certifications: ResumeData['certifications']): s
     .map((cert) => {
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}${dateStr}`
     })
     .join(' \\\\\n')
 
@@ -289,7 +291,8 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}}${pub.publisher ? ` - ${escapeLatex(pub.publisher)}` : ''}${dateStr}${descStr}`
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${urlIcon}${pub.publisher ? ` - ${escapeLatex(pub.publisher)}` : ''}${dateStr}${descStr}`
     })
     .join(' \\\\\n\n')
 

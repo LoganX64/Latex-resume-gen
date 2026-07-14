@@ -28,22 +28,22 @@ function buildAcademicDocument(
   const contactItems: string[] = []
   if (personalInfo.email) {
     const escaped = escapeLatex(personalInfo.email)
-    contactItems.push(`\\href{mailto:${personalInfo.email}}{${escaped}}`)
+    contactItems.push(`\\mbox{\\faEnvelope\\ \\href{mailto:${personalInfo.email}}{${escaped}}}`)
   }
   if (personalInfo.phone) {
-    contactItems.push(escapeLatex(personalInfo.phone))
+    contactItems.push(`\\mbox{\\faPhone\\ ${escapeLatex(personalInfo.phone)}}`)
   }
   if (personalInfo.linkedin) {
     const escaped = escapeLatex(personalInfo.linkedin)
-    contactItems.push(`\\href{https://${personalInfo.linkedin}}{${escaped}}`)
+    contactItems.push(`\\mbox{\\faLinkedin\\ \\href{https://${personalInfo.linkedin}}{${escaped}}}`)
   }
   if (personalInfo.github) {
     const escaped = escapeLatex(personalInfo.github)
-    contactItems.push(`\\href{https://${personalInfo.github}}{${escaped}}`)
+    contactItems.push(`\\mbox{\\faGithub\\ \\href{https://${personalInfo.github}}{${escaped}}}`)
   }
   if (personalInfo.website) {
     const escaped = escapeLatex(personalInfo.website)
-    contactItems.push(`\\href{https://${personalInfo.website}}{${escaped}}`)
+    contactItems.push(`\\mbox{\\faGlobe\\ \\href{https://${personalInfo.website}}{${escaped}}}`)
   }
   const contactLine = contactItems.length > 0
     ? `\\\\[0pt]{\\small ${contactItems.join(' $\\mid$ ')}}`
@@ -66,6 +66,7 @@ function buildAcademicDocument(
 \\usepackage{xcolor}
 \\usepackage{fancyhdr}
 \\usepackage{graphicx}
+\\usepackage{fontawesome}
 
 \\pagestyle{fancy}
 \\fancyhf{}
@@ -227,7 +228,8 @@ function generateCertifications(certifications: ResumeData['certifications']): s
     .map((cert) => {
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}\\textit{${dateStr}}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}\\textit{${dateStr}}`
     })
     .join(' \\\\\n')
 
@@ -257,7 +259,8 @@ function generatePublications(publications: ResumeData['publications']): string 
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const descStr = pub.description ? `\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{\\textit{${escapeLatex(pub.title)}}}${dateStr}\\\\\n${escapeLatex(pub.publisher)}${descStr ? `\\\\${descStr}` : ''}`
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{\\textit{${escapeLatex(pub.title)}}}${urlIcon}${dateStr}\\\\\n${escapeLatex(pub.publisher)}${descStr ? `\\\\${descStr}` : ''}`
     })
     .join(' \\\\\n')
 

@@ -32,32 +32,32 @@ export function getContactParts(personalInfo: {
   linkedin?: string
   github?: string
   website?: string
-}, useIcons: boolean = false): string[] {
+}, useIcons: boolean = true): string[] {
   const parts: string[] = []
 
   if (personalInfo.email) {
     const escaped = escapeLatex(personalInfo.email)
-    parts.push(useIcons ? `\\faIcon{envelope}\\ \\href{mailto:${personalInfo.email}}{${escaped}}` : `\\href{mailto:${personalInfo.email}}{${escaped}}`)
+    parts.push(useIcons ? `\\mbox{\\faEnvelope\\ \\href{mailto:${personalInfo.email}}{${escaped}}}` : `\\href{mailto:${personalInfo.email}}{${escaped}}`)
   }
   if (personalInfo.phone) {
     const escaped = escapeLatex(personalInfo.phone)
-    parts.push(useIcons ? `\\faIcon{phone}\\ \\href{tel:${personalInfo.phone}}{${escaped}}` : escaped)
+    parts.push(useIcons ? `\\mbox{\\faPhone\\ \\href{tel:${personalInfo.phone}}{${escaped}}}` : escaped)
   }
   if (personalInfo.location) {
     const escaped = escapeLatex(personalInfo.location)
-    parts.push(useIcons ? `\\faIcon{map-marker-alt}\\ ${escaped}` : escaped)
+    parts.push(useIcons ? `\\mbox{\\faMapMarker\\ ${escaped}}` : escaped)
   }
   if (personalInfo.linkedin) {
     const escaped = escapeLatex(personalInfo.linkedin)
-    parts.push(useIcons ? `\\faIcon{linkedin}\\ \\href{https://${personalInfo.linkedin}}{${escaped}}` : `\\href{https://${personalInfo.linkedin}}{${escaped}}`)
+    parts.push(useIcons ? `\\mbox{\\faLinkedin\\ \\href{https://${personalInfo.linkedin}}{${escaped}}}` : `\\href{https://${personalInfo.linkedin}}{${escaped}}`)
   }
   if (personalInfo.github) {
     const escaped = escapeLatex(personalInfo.github)
-    parts.push(useIcons ? `\\faIcon{github}\\ \\href{https://${personalInfo.github}}{${escaped}}` : `\\href{https://${personalInfo.github}}{${escaped}}`)
+    parts.push(useIcons ? `\\mbox{\\faGithub\\ \\href{https://${personalInfo.github}}{${escaped}}}` : `\\href{https://${personalInfo.github}}{${escaped}}`)
   }
   if (personalInfo.website) {
     const escaped = escapeLatex(personalInfo.website)
-    parts.push(useIcons ? `\\faIcon{globe}\\ \\href{https://${personalInfo.website}}{\\mbox{${escaped}}}` : `\\href{https://${personalInfo.website}}{\\mbox{${escaped}}}`)
+    parts.push(useIcons ? `\\mbox{\\faGlobe\\ \\href{https://${personalInfo.website}}{\\mbox{${escaped}}}}` : `\\href{https://${personalInfo.website}}{\\mbox{${escaped}}}`)
   }
 
   return parts

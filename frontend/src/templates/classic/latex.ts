@@ -28,7 +28,7 @@ function buildClassicDocument(
     ? `\\\\[2pt]{\\large\\textit{${escapeLatex(personalInfo.professionalTitle)}}}`
     : ''
 
-  const contactParts = getContactParts(personalInfo, false)
+  const contactParts = getContactParts(personalInfo, true)
   const contactLine = contactParts.length > 0
     ? `\\\\[0pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
@@ -43,6 +43,7 @@ function buildClassicDocument(
 \\usepackage{hyperref}
 \\usepackage{titlesec}
 \\usepackage{xcolor}
+\\usepackage{fontawesome}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
@@ -197,7 +198,8 @@ function generateCertifications(certifications: ResumeData['certifications']): s
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
       const lineBreak = i < certifications.length - 1 ? ' \\\\' : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}${lineBreak}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}${dateStr}${lineBreak}`
     })
     .join('\n')
 
@@ -228,7 +230,8 @@ function generatePublications(publications: ResumeData['publications']): string 
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
       const publisherPart = pub.publisher ? ` --- \\textit{${escapeLatex(pub.publisher)}}` : ''
       const descStr = pub.description ? `\\\\\n${escapeLatex(pub.description)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}}${publisherPart}${dateStr}${descStr}`
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${urlIcon}${publisherPart}${dateStr}${descStr}`
     })
     .join(' \\\\\n')
 

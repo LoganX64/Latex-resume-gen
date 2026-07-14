@@ -47,19 +47,19 @@ function buildPlushDocument(
 
   const contactParts: string[] = []
   if (personalInfo.website) {
-    contactParts.push(`\\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}`)
+    contactParts.push(`\\mbox{\\faGlobe\\ \\href{https://${personalInfo.website}}{${escapeLatex(personalInfo.website)}}}`)
   }
   if (personalInfo.github) {
-    contactParts.push(`\\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}`)
+    contactParts.push(`\\mbox{\\faGithub\\ \\href{https://${personalInfo.github}}{${escapeLatex(personalInfo.github)}}}`)
   }
   if (personalInfo.linkedin) {
-    contactParts.push(`\\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}`)
+    contactParts.push(`\\mbox{\\faLinkedin\\ \\href{https://${personalInfo.linkedin}}{${escapeLatex(personalInfo.linkedin)}}}`)
   }
   if (personalInfo.email) {
-    contactParts.push(`\\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}`)
+    contactParts.push(`\\mbox{\\faEnvelope\\ \\href{mailto:${personalInfo.email}}{${escapeLatex(personalInfo.email)}}}`)
   }
   if (personalInfo.phone) {
-    contactParts.push(`\\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}`)
+    contactParts.push(`\\mbox{\\faPhone\\ \\href{tel:${personalInfo.phone}}{${escapeLatex(personalInfo.phone)}}}`)
   }
 
   const contactLine = contactParts.length > 0
@@ -79,6 +79,7 @@ function buildPlushDocument(
 \\usepackage{titlesec}
 \\usepackage{fancyhdr}
 \\usepackage[default]{sourcesanspro}
+\\usepackage{fontawesome}
 
 \\definecolor{date}{HTML}{666666}
 \\definecolor{title}{HTML}{1D76E2}
@@ -227,12 +228,17 @@ function generateProjects(projects: ResumeData['projects']): string {
       const techLabel = proj.technologies.length > 0
         ? ` | ${escapeLatex(proj.technologies.join(', '))}`
         : ''
+      const urlIcons = [
+        proj.githubUrl ? `\\href{${proj.githubUrl}}{\\faGithub}` : '',
+        proj.liveDemoUrl ? `\\href{${proj.liveDemoUrl}}{\\faExternalLink}` : ''
+      ].filter(Boolean).join(' \\, ')
+      const urlPart = urlIcons ? ` \\hspace{4pt}\\textcolor{subheadings}{${urlIcons}}` : ''
       const dateStr = proj.duration || ''
       const bullets = generateBulletPoints(proj.bulletPoints)
 
       const descStr = proj.description ? `\\leavevmode\\\\\n${escapeLatex(proj.description)}` : ''
 
-      return `\\runsubsection{${escapeLatex(proj.name)}}{\\color{subheadings}\\fontsize{10}{12pt}\\selectfont${techLabel}} \\hfill {\\color{headings}\\fontsize{9}{12pt}\\selectfont${escapeLatex(dateStr)}}\\normalfont
+      return `\\runsubsection{${escapeLatex(proj.name)}}{\\color{subheadings}\\fontsize{10}{12pt}\\selectfont${techLabel}${urlPart}} \\hfill {\\color{headings}\\fontsize{9}{12pt}\\selectfont${escapeLatex(dateStr)}}\\normalfont
 {\\color{headings}\\fontsize{9}{12pt}\\selectfont${descStr}
 ${proj.description ? '\\par\\vspace*{3pt}' : '\\sectionsep'}
 \\begin{tightemize}
@@ -288,7 +294,8 @@ function generateCertifications(certifications: ResumeData['certifications']): s
     .map((cert) => {
       const issuerStr = cert.issuer ? ` \\textendash{} ${escapeLatex(cert.issuer)}` : ''
       const dateStr = cert.date ? ` \\hfill \\small ${escapeLatex(cert.date)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}${dateStr}`
     })
     .join(' \\\\\n')
 
@@ -317,7 +324,8 @@ function generatePublications(publications: ResumeData['publications']): string 
       const dateStr = pub.date ? ` \\hfill \\small ${escapeLatex(pub.date)}` : ''
       const pubStr = pub.publisher ? ` \\\\\n{\\color{headings}\\fontsize{9}{12pt}\\selectfont\\textit{${escapeLatex(pub.publisher)}}}` : ''
       const descStr = pub.description ? ` \\\\\n{\\color{headings}\\fontsize{9}{12pt}\\selectfont ${escapeLatex(pub.description)}}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}}${dateStr}${pubStr}${descStr}`
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${urlIcon}${dateStr}${pubStr}${descStr}`
     })
     .join(' \\\\\n\n')
 

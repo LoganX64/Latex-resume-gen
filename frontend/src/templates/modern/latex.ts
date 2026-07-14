@@ -24,7 +24,7 @@ function buildModernDocument(
   body: string
 ): string {
   const name = escapeLatex(personalInfo.fullName || 'Your Name')
-  const contactParts = getContactParts(personalInfo, false)
+  const contactParts = getContactParts(personalInfo, true)
   const contactLine = contactParts.length > 0
     ? contactParts.join(' $|$ ')
     : ''
@@ -46,6 +46,7 @@ function buildModernDocument(
 \\usepackage{amsmath}
 \\usepackage[margin=0.5in]{geometry}
 \\usepackage[default]{sourcesanspro}
+\\usepackage{fontawesome}
 \\ifx\\pdfglyphtounicode\\undefined
 \\else
     \\input{glyphtounicode}
@@ -250,8 +251,9 @@ function generateCertifications(certifications: ResumeData['certifications']): s
   const items = certifications
     .map((cert) => {
       const issuerStr = cert.issuer ? ` \\emph{$|$ ${escapeLatex(cert.issuer)}}` : ''
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
       return `\\resumeProjectHeading
-{\\titleItem{${escapeLatex(cert.name)}}${issuerStr}}{${escapeLatex(cert.date || '')}}`
+{\\titleItem{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}}{${escapeLatex(cert.date || '')}}`
     })
     .join('\n')
 
@@ -286,8 +288,9 @@ function generatePublications(publications: ResumeData['publications']): string 
       const descStr = pub.description 
         ? `\n\\resumeItemListStart\n\\resumeItem{${escapeLatex(pub.description)}}\n\\resumeItemListEnd`
         : ''
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
       return `\\resumeProjectHeading
-{\\titleItem{${escapeLatex(pub.title)}} \\emph{-- ${escapeLatex(pub.publisher)}}}{${escapeLatex(pub.date || '')}}${descStr}`
+{\\titleItem{${escapeLatex(pub.title)}}${urlIcon} \\emph{-- ${escapeLatex(pub.publisher)}}}{${escapeLatex(pub.date || '')}}${descStr}`
     })
     .join('\n')
 

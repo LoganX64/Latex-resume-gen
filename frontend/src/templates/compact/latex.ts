@@ -28,7 +28,7 @@ function buildCompactDocument(
     ? `\\ \\textit{\\textbar\\ ${escapeLatex(personalInfo.professionalTitle)}}`
     : ''
 
-  const contactParts = getContactParts(personalInfo, false)
+  const contactParts = getContactParts(personalInfo, true)
   const contactLine = contactParts.length > 0
     ? `\\\\[1pt]{\\small ${contactParts.join(' $\\cdot$ ')}}`
     : ''
@@ -46,6 +46,7 @@ function buildCompactDocument(
 \\usepackage{titlesec}
 \\usepackage{xcolor}
 \\usepackage{tabularx}
+\\usepackage{fontawesome}
 
 \\pagestyle{empty}
 \\setlength{\\parindent}{0pt}
@@ -209,7 +210,8 @@ function generateCertifications(certifications: ResumeData['certifications']): s
     .map((cert) => {
       const dateStr = cert.date ? ` \\hfill ${escapeLatex(cert.date)}` : ''
       const issuerStr = cert.issuer ? `, ${escapeLatex(cert.issuer)}` : ''
-      return `\\textbf{${escapeLatex(cert.name)}}${issuerStr}${dateStr}`
+      const urlIcon = cert.url ? ` \\href{${cert.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(cert.name)}}${urlIcon}${issuerStr}${dateStr}`
     })
     .join(' \\\\\n')
 
@@ -238,7 +240,8 @@ function generatePublications(publications: ResumeData['publications']): string 
   const items = publications
     .map((pub) => {
       const dateStr = pub.date ? ` \\hfill ${escapeLatex(pub.date)}` : ''
-      return `\\textbf{${escapeLatex(pub.title)}} -- \\textit{${escapeLatex(pub.publisher)}}${dateStr} \\\\
+      const urlIcon = pub.url ? ` \\href{${pub.url}}{\\faExternalLink}` : ''
+      return `\\textbf{${escapeLatex(pub.title)}}${urlIcon} -- \\textit{${escapeLatex(pub.publisher)}}${dateStr} \\\\
 ${escapeLatex(pub.description || '')}`
     })
     .join(' \\\\\n')
