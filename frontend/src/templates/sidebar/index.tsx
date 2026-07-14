@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateSidebarLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -35,37 +36,37 @@ function Preview({
         <div className="space-y-1 text-[12px]">
           {personalInfo.email && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">@</span>
+              <ContactIcon type="email" className="w-3 h-3 opacity-70" />
               <span className="truncate">{personalInfo.email}</span>
             </div>
           )}
           {personalInfo.phone && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">#</span>
+              <ContactIcon type="phone" className="w-3 h-3 opacity-70" />
               <span>{personalInfo.phone}</span>
             </div>
           )}
           {personalInfo.location && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">*</span>
+              <ContactIcon type="location" className="w-3 h-3 opacity-70" />
               <span>{personalInfo.location}</span>
             </div>
           )}
           {personalInfo.linkedin && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">in</span>
+              <ContactIcon type="linkedin" className="w-3 h-3 opacity-70" />
               <span className="truncate">{personalInfo.linkedin}</span>
             </div>
           )}
           {personalInfo.github && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">gh</span>
+              <ContactIcon type="github" className="w-3 h-3 opacity-70" />
               <span className="truncate">{personalInfo.github}</span>
             </div>
           )}
           {personalInfo.website && (
             <div className="flex items-center gap-1">
-              <span className="opacity-70">www</span>
+              <ContactIcon type="website" className="w-3 h-3 opacity-70" />
               <span className="truncate">{personalInfo.website}</span>
             </div>
           )}

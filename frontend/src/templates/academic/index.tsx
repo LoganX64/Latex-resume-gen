@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateAcademicLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -25,11 +26,11 @@ function Preview({
             </p>
           )}
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-0.5 mt-1 text-[11px] text-gray-600">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>| {personalInfo.phone}</span>}
-            {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
-            {personalInfo.github && <span>| {personalInfo.github}</span>}
-            {personalInfo.website && <span>| {personalInfo.website}</span>}
+            {personalInfo.email && <span className="inline-flex items-center gap-1"><ContactIcon type="email" className="w-3 h-3" />{personalInfo.email}</span>}
+            {personalInfo.phone && <span className="inline-flex items-center gap-1">| <ContactIcon type="phone" className="w-3 h-3" />{personalInfo.phone}</span>}
+            {personalInfo.linkedin && <span className="inline-flex items-center gap-1">| <ContactIcon type="linkedin" className="w-3 h-3" />{personalInfo.linkedin}</span>}
+            {personalInfo.github && <span className="inline-flex items-center gap-1">| <ContactIcon type="github" className="w-3 h-3" />{personalInfo.github}</span>}
+            {personalInfo.website && <span className="inline-flex items-center gap-1">| <ContactIcon type="website" className="w-3 h-3" />{personalInfo.website}</span>}
           </div>
         </header>
       )}

@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generatePlushLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 const titleColor = '#1d76e2'
 const subheadingsColor = '#333333'
@@ -48,11 +49,11 @@ function Preview({
           <div style={{ marginTop: '2px' }}>
             <div style={{ fontSize: '13px', lineHeight: 1.3, color: titleColor }}>
               {[
-                personalInfo.website && <a key="web" href={`https://${personalInfo.website}`} style={{ color: titleColor }}>{personalInfo.website}</a>,
-                personalInfo.github && <a key="gh" href={`https://${personalInfo.github}`} style={{ color: titleColor }}>{personalInfo.github}</a>,
-                personalInfo.linkedin && <a key="li" href={`https://${personalInfo.linkedin}`} style={{ color: titleColor }}>{personalInfo.linkedin}</a>,
-                personalInfo.email && <a key="em" href={`mailto:${personalInfo.email}`} style={{ color: titleColor }}>{personalInfo.email}</a>,
-                personalInfo.phone && <a key="ph" href={`tel:${personalInfo.phone}`} style={{ color: titleColor }}>{personalInfo.phone}</a>,
+                personalInfo.website && <a key="web" href={`https://${personalInfo.website}`} style={{ color: titleColor, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="website" className="w-3.5 h-3.5" />{personalInfo.website}</a>,
+                personalInfo.github && <a key="gh" href={`https://${personalInfo.github}`} style={{ color: titleColor, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="github" className="w-3.5 h-3.5" />{personalInfo.github}</a>,
+                personalInfo.linkedin && <a key="li" href={`https://${personalInfo.linkedin}`} style={{ color: titleColor, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="linkedin" className="w-3.5 h-3.5" />{personalInfo.linkedin}</a>,
+                personalInfo.email && <a key="em" href={`mailto:${personalInfo.email}`} style={{ color: titleColor, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="email" className="w-3.5 h-3.5" />{personalInfo.email}</a>,
+                personalInfo.phone && <a key="ph" href={`tel:${personalInfo.phone}`} style={{ color: titleColor, display: 'inline-flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="phone" className="w-3.5 h-3.5" />{personalInfo.phone}</a>,
               ].filter(Boolean).map((item, i, arr) => (
                 <span key={i}>
                   {item}

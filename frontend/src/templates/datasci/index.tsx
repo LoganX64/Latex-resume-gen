@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateDatasciLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 const highlight = '#3d5a80'
 
@@ -21,10 +22,10 @@ function Preview({
         <div style={{ display: 'flex' }}>
           {/* Left column - Phone, City, Email */}
           <div style={{ width: '120px', flexShrink: 0, fontSize: '10px', color: '#4b5563', lineHeight: '1.3' }}>
-            {personalInfo.phone && <div>{personalInfo.phone}</div>}
-            {personalInfo.location && <div>{personalInfo.location}</div>}
+            {personalInfo.phone && <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="phone" className="w-3 h-3" />{personalInfo.phone}</div>}
+            {personalInfo.location && <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="location" className="w-3 h-3" />{personalInfo.location}</div>}
             {personalInfo.email && (
-              <div><a href={`mailto:${personalInfo.email}`} style={{ textDecoration: 'underline', color: highlight }}>{personalInfo.email}</a></div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><ContactIcon type="email" className="w-3 h-3" /><a href={`mailto:${personalInfo.email}`} style={{ textDecoration: 'underline', color: highlight }}>{personalInfo.email}</a></div>
             )}
           </div>
 
@@ -41,13 +42,13 @@ function Preview({
           {/* Right column - Portfolio, GitHub, LinkedIn */}
           <div style={{ width: '150px', flexShrink: 0, fontSize: '10px', color: '#4b5563', lineHeight: '1.3', textAlign: 'right' }}>
             {personalInfo.website && (
-              <div>Portfolio: <a href={`https://${personalInfo.website}`} style={{ textDecoration: 'underline', color: highlight }}>{personalInfo.website}</a></div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}>Portfolio: <a href={`https://${personalInfo.website}`} style={{ textDecoration: 'underline', color: highlight }}>{personalInfo.website}</a><ContactIcon type="website" className="w-3 h-3" /></div>
             )}
             {personalInfo.github && (
-              <div><a href={`https://${personalInfo.github}`} style={{ textDecoration: 'underline', color: highlight }}>github.com/{personalInfo.github}</a></div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}><a href={`https://${personalInfo.github}`} style={{ textDecoration: 'underline', color: highlight }}>github.com/{personalInfo.github}</a><ContactIcon type="github" className="w-3 h-3" /></div>
             )}
             {personalInfo.linkedin && (
-              <div><a href={`https://${personalInfo.linkedin}`} style={{ textDecoration: 'underline', color: highlight }}>linkedin.com/in/{personalInfo.linkedin}</a></div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '4px' }}><a href={`https://${personalInfo.linkedin}`} style={{ textDecoration: 'underline', color: highlight }}>linkedin.com/in/{personalInfo.linkedin}</a><ContactIcon type="linkedin" className="w-3 h-3" /></div>
             )}
           </div>
         </div>

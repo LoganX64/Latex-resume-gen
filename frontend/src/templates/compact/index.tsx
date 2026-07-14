@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateCompactLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -23,12 +24,12 @@ function Preview({
             )}
           </h1>
           <div className="flex flex-wrap justify-center gap-x-1.5 gap-y-0 mt-0.5 text-[8px] text-gray-500">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>· {personalInfo.phone}</span>}
-            {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span>· {personalInfo.linkedin}</span>}
-            {personalInfo.github && <span>· {personalInfo.github}</span>}
-            {personalInfo.website && <span>· {personalInfo.website}</span>}
+            {personalInfo.email && <span className="inline-flex items-center gap-0.5"><ContactIcon type="email" className="w-2.5 h-2.5" />{personalInfo.email}</span>}
+            {personalInfo.phone && <span className="inline-flex items-center gap-0.5">· <ContactIcon type="phone" className="w-2.5 h-2.5" />{personalInfo.phone}</span>}
+            {personalInfo.location && <span className="italic inline-flex items-center gap-0.5"><ContactIcon type="location" className="w-2.5 h-2.5" />{personalInfo.location}</span>}
+            {personalInfo.linkedin && <span className="inline-flex items-center gap-0.5">· <ContactIcon type="linkedin" className="w-2.5 h-2.5" />{personalInfo.linkedin}</span>}
+            {personalInfo.github && <span className="inline-flex items-center gap-0.5">· <ContactIcon type="github" className="w-2.5 h-2.5" />{personalInfo.github}</span>}
+            {personalInfo.website && <span className="inline-flex items-center gap-0.5">· <ContactIcon type="website" className="w-2.5 h-2.5" />{personalInfo.website}</span>}
           </div>
         </header>
       )}

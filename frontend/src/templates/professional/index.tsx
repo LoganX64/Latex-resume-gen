@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateProfessionalLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -24,22 +25,22 @@ function Preview({
             <p className="text-[13px] text-gray-700 italic mt-0">{personalInfo.professionalTitle}</p>
           )}
           <div className="flex flex-wrap justify-center gap-x-1 gap-y-0 mt-1 text-[14px] text-black">
-            {personalInfo.phone && <span>{personalInfo.phone}</span>}
+            {personalInfo.phone && <span className="inline-flex items-center gap-1"><ContactIcon type="phone" className="w-4 h-4" />{personalInfo.phone}</span>}
             {personalInfo.phone && (personalInfo.email || personalInfo.linkedin || personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.email && (
-              <a href={`mailto:${personalInfo.email}`} className="underline text-black">{personalInfo.email}</a>
+              <a href={`mailto:${personalInfo.email}`} className="underline text-black inline-flex items-center gap-1"><ContactIcon type="email" className="w-4 h-4" />{personalInfo.email}</a>
             )}
             {(personalInfo.email) && (personalInfo.linkedin || personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.linkedin && (
-              <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.linkedin}</a>
+              <a href={`https://${personalInfo.linkedin}`} target="_blank" rel="noopener noreferrer" className="underline text-black inline-flex items-center gap-1"><ContactIcon type="linkedin" className="w-4 h-4" />{personalInfo.linkedin}</a>
             )}
             {personalInfo.linkedin && (personalInfo.github || personalInfo.website) && <span> | </span>}
             {personalInfo.github && (
-              <a href={`https://${personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.github}</a>
+              <a href={`https://${personalInfo.github}`} target="_blank" rel="noopener noreferrer" className="underline text-black inline-flex items-center gap-1"><ContactIcon type="github" className="w-4 h-4" />{personalInfo.github}</a>
             )}
             {personalInfo.github && personalInfo.website && <span> | </span>}
             {personalInfo.website && (
-              <a href={`https://${personalInfo.website}`} target="_blank" rel="noopener noreferrer" className="underline text-black">{personalInfo.website}</a>
+              <a href={`https://${personalInfo.website}`} target="_blank" rel="noopener noreferrer" className="underline text-black inline-flex items-center gap-1"><ContactIcon type="website" className="w-4 h-4" />{personalInfo.website}</a>
             )}
           </div>
         </header>

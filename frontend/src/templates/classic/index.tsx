@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateClassicLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -24,12 +25,12 @@ function Preview({
             <p className="text-[16px] text-gray-900 italic mt-0">{personalInfo.professionalTitle}</p>
           )}
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-0 mt-1 text-[11px] text-gray-900">
-            {personalInfo.email && <span>{personalInfo.email}</span>}
-            {personalInfo.phone && <span>{personalInfo.phone}</span>}
-            {personalInfo.location && <span className="italic">{personalInfo.location}</span>}
-            {personalInfo.linkedin && <span className="text-blue-700">{personalInfo.linkedin}</span>}
-            {personalInfo.github && <span className="text-blue-700">{personalInfo.github}</span>}
-            {personalInfo.website && <span className="text-blue-700">{personalInfo.website}</span>}
+            {personalInfo.email && <span className="inline-flex items-center gap-1"><ContactIcon type="email" className="w-3 h-3" />{personalInfo.email}</span>}
+            {personalInfo.phone && <span className="inline-flex items-center gap-1"><ContactIcon type="phone" className="w-3 h-3" />{personalInfo.phone}</span>}
+            {personalInfo.location && <span className="italic inline-flex items-center gap-1"><ContactIcon type="location" className="w-3 h-3" />{personalInfo.location}</span>}
+            {personalInfo.linkedin && <span className="text-blue-700 inline-flex items-center gap-1"><ContactIcon type="linkedin" className="w-3 h-3" />{personalInfo.linkedin}</span>}
+            {personalInfo.github && <span className="text-blue-700 inline-flex items-center gap-1"><ContactIcon type="github" className="w-3 h-3" />{personalInfo.github}</span>}
+            {personalInfo.website && <span className="text-blue-700 inline-flex items-center gap-1"><ContactIcon type="website" className="w-3 h-3" />{personalInfo.website}</span>}
           </div>
         </header>
       )}

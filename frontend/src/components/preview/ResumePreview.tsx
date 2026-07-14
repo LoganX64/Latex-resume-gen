@@ -265,6 +265,7 @@ export function ResumePreview() {
         <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
           <div className="flex items-center gap-2 min-w-0">
             <span className="text-[10px] text-muted-foreground">A4 Page Preview</span>
+            <span className="text-[9px] text-muted-foreground italic">(approximate)</span>
             {isOverflowing && (
               <span className="inline-flex items-center gap-1 text-[10px] text-amber-600">
                 <AlertTriangle className="h-3 w-3" />

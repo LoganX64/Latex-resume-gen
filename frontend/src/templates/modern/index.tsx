@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import { generateModernLatex } from './latex'
 import config from './config'
+import { ContactIcon } from '../icons'
 
 const styles = {
   sectionTitle: {
@@ -57,15 +58,19 @@ function Preview({
       {personalInfo.fullName && (
         <div style={{ textAlign: 'left', marginBottom: '4px' }}>
           <div style={{ fontSize: '16px', fontWeight: 700 }}>{personalInfo.fullName}</div>
-          <div style={{ fontSize: '11px', color: '#555', marginTop: '1px' }}>
+          <div style={{ fontSize: '11px', color: '#555', marginTop: '1px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
             {[
-              personalInfo.email,
-              personalInfo.phone,
-              personalInfo.location,
-              personalInfo.linkedin && personalInfo.linkedin.replace(/^https?:\/\//, '').replace(/\/$/, ''),
-              personalInfo.github && personalInfo.github.replace(/^https?:\/\//, '').replace(/\/$/, ''),
-              personalInfo.website,
-            ].filter(Boolean).join(' | ')}
+              personalInfo.email && <span key="email" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="email" className="w-3 h-3" />{personalInfo.email}</span>,
+              personalInfo.phone && <span key="phone" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="phone" className="w-3 h-3" />{personalInfo.phone}</span>,
+              personalInfo.location && <span key="location" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="location" className="w-3 h-3" />{personalInfo.location}</span>,
+              personalInfo.linkedin && <span key="linkedin" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="linkedin" className="w-3 h-3" />{personalInfo.linkedin.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>,
+              personalInfo.github && <span key="github" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="github" className="w-3 h-3" />{personalInfo.github.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>,
+              personalInfo.website && <span key="website" style={{ display: 'inline-flex', alignItems: 'center', gap: '2px' }}><ContactIcon type="website" className="w-3 h-3" />{personalInfo.website}</span>,
+            ].filter(Boolean).reduce((acc, el, i) => {
+              if (i > 0) acc.push(<span key={`sep-${i}`} style={{ color: '#555' }}> | </span>)
+              acc.push(el)
+              return acc
+            }, [] as ReactNode[])}
           </div>
         </div>
       )}

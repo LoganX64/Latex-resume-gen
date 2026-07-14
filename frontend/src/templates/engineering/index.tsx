@@ -2,6 +2,7 @@ import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
 import { generateEngineeringLatex } from './latex'
+import { ContactIcon } from '../icons'
 
 function Preview({
   resume,
@@ -25,12 +26,12 @@ function Preview({
               <p className="text-[15px] italic mt-0" style={{ color: '#1e3a5f' }}>{personalInfo.professionalTitle}</p>
             )}
             <div className={`flex flex-wrap gap-x-2 gap-y-0.5 mt-1 text-[12px] text-gray-600 ${personalInfo.profileImage ? 'justify-start' : 'justify-center'}`}>
-              {personalInfo.email && <span>{personalInfo.email}</span>}
-              {personalInfo.phone && <span>| {personalInfo.phone}</span>}
-              {personalInfo.location && <span className="italic">| {personalInfo.location}</span>}
-              {personalInfo.linkedin && <span>| {personalInfo.linkedin}</span>}
-              {personalInfo.github && <span>| {personalInfo.github}</span>}
-              {personalInfo.website && <span>| {personalInfo.website}</span>}
+              {personalInfo.email && <span className="inline-flex items-center gap-1"><ContactIcon type="email" className="w-3 h-3" />{personalInfo.email}</span>}
+              {personalInfo.phone && <span className="inline-flex items-center gap-1">| <ContactIcon type="phone" className="w-3 h-3" />{personalInfo.phone}</span>}
+              {personalInfo.location && <span className="italic inline-flex items-center gap-1">| <ContactIcon type="location" className="w-3 h-3" />{personalInfo.location}</span>}
+              {personalInfo.linkedin && <span className="inline-flex items-center gap-1">| <ContactIcon type="linkedin" className="w-3 h-3" />{personalInfo.linkedin}</span>}
+              {personalInfo.github && <span className="inline-flex items-center gap-1">| <ContactIcon type="github" className="w-3 h-3" />{personalInfo.github}</span>}
+              {personalInfo.website && <span className="inline-flex items-center gap-1">| <ContactIcon type="website" className="w-3 h-3" />{personalInfo.website}</span>}
             </div>
           </div>
           {personalInfo.profileImage && (
