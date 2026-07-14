@@ -1,7 +1,7 @@
 import type { ResumeData } from '@/types/resume'
 import type { ReactNode } from 'react'
 import config from './config'
-import { generatePlushLatex } from './latex'
+import { generateTwocolumnLatex } from './latex'
 import { ContactIcon } from '../icons'
 
 const titleColor = '#1d76e2'
@@ -318,5 +318,5 @@ function SectionTitle({ title }: { title: string }) {
 export default {
   config,
   Preview,
-  generateLatex: generatePlushLatex,
+  generateLatex: generateTwocolumnLatex,
 }

@@ -2,7 +2,7 @@ import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume
 import { escapeLatex } from '@/lib/utils'
 import { formatDateRange, generateBulletPoints } from '../shared'
 
-export function generatePlushLatex(
+export function generateTwocolumnLatex(
   resume: ResumeData,
   sectionOrder: SectionOrder[],
   sectionVisibility: SectionVisibility
@@ -30,10 +30,10 @@ export function generatePlushLatex(
 
   const summary = summarySection ? generateSummary(resume.summary) : ''
 
-  return buildPlushDocument(resume.personalInfo, summary, left, right)
+  return buildTwocolumnDocument(resume.personalInfo, summary, left, right)
 }
 
-function buildPlushDocument(
+function buildTwocolumnDocument(
   personalInfo: ResumeData['personalInfo'],
   summary: string,
   left: string,
