@@ -7,16 +7,26 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
 
 const (
-	CompileTimeout = 120 * time.Second
-	TempDirPrefix  = "latex-resume-"
-	TexFile        = "resume.tex"
-	PdfFile        = "resume.pdf"
+	TempDirPrefix = "latex-resume-"
+	TexFile       = "resume.tex"
+	PdfFile       = "resume.pdf"
 )
+
+func getCompileTimeout() time.Duration {
+	defaultTimeout := 120 * time.Second
+	if val := os.Getenv("COMPILE_TIMEOUT_SECONDS"); val != "" {
+		if seconds, err := strconv.Atoi(val); err == nil {
+			return time.Duration(seconds) * time.Second
+		}
+	}
+	return defaultTimeout
+}
 
 type CompileResult struct {
 	Success bool
@@ -66,7 +76,7 @@ func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
 		return nil, fmt.Errorf("failed to write tex file: %w", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), CompileTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), getCompileTimeout())
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "tectonic", "-X", "compile", "--untrusted", texPath)

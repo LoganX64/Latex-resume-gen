@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -13,15 +14,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	MaxRequestSize = 5 << 20 // 5 MB
-	ServerPort     = ":8080"
-)
+func getEnv(key, fallback string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return fallback
+}
+
+func getEnvInt(key string, fallback int) int {
+	if val := os.Getenv(key); val != "" {
+		if i, err := strconv.Atoi(val); err == nil {
+			return i
+		}
+	}
+	return fallback
+}
 
 func main() {
 	r := gin.Default()
 	r.Use(gin.Recovery())
 
+	// Server config
+	serverPort := getEnv("SERVER_PORT", "8080")
+	maxRequestSize := getEnvInt("MAX_REQUEST_SIZE_BYTES", 5<<20)
+
+	// CORS config
 	allowedOrigins := []string{
 		"http://localhost:5173",
 		"http://127.0.0.1:5173",
@@ -35,22 +52,32 @@ func main() {
 		}
 	}
 
+	corsMaxAge := 12 * time.Hour
+	if maxAge := os.Getenv("CORS_MAX_AGE"); maxAge != "" {
+		if d, err := time.ParseDuration(maxAge); err == nil {
+			corsMaxAge = d
+		}
+	}
+
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     allowedOrigins,
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		AllowCredentials: false,
-		MaxAge:           12 * time.Hour,
+		MaxAge:           corsMaxAge,
 	}))
 
 	r.Use(func(c *gin.Context) {
-		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, MaxRequestSize)
+		c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, int64(maxRequestSize))
 		c.Next()
 	})
 
-	r.MaxMultipartMemory = MaxRequestSize
+	r.MaxMultipartMemory = int64(maxRequestSize)
 
-	compileLimiter := middleware.NewRateLimiter(5, 10)
+	// Rate limiting config
+	rateLimitRPS := getEnvInt("RATE_LIMIT_RPS", 5)
+	rateLimitBurst := getEnvInt("RATE_LIMIT_BURST", 10)
+	compileLimiter := middleware.NewRateLimiter(float64(rateLimitRPS), rateLimitBurst)
 
 	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
@@ -58,5 +85,5 @@ func main() {
 
 	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)
 
-	r.Run(ServerPort)
+	r.Run(":" + serverPort)
 }
