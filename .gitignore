@@ -30,3 +30,22 @@ template.md
 template-prompt.md
 current-issues.md
 code-analysis.md
+
+# Vite
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+
+# Build cache
+.cache/
+
+# Environment variants
+.env.development
+.env.production
+
+# Docker overrides
+docker-compose.override.yml

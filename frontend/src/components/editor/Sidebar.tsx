@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react'
 import { useResumeStore } from '@/stores/resume-store'
+import { getStats, recordVisit } from '@/utils/stats'
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +26,8 @@ import {
   Globe,
   Puzzle,
   PanelLeftClose,
+  Eye,
+  Download,
 } from 'lucide-react'
 
 const navItems = [
@@ -46,7 +50,13 @@ interface AppSidebarProps {
 
 export function AppSidebar({ activeSection, onSectionClick }: AppSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
-  const { toggleSidebar } = useSidebar()
+  const { toggleSidebar, state } = useSidebar()
+  const [stats, setStats] = useState({ visits: 0, downloads: 0 })
+
+  useEffect(() => {
+    recordVisit()
+    setStats(getStats())
+  }, [])
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
@@ -96,6 +106,34 @@ export function AppSidebar({ activeSection, onSectionClick }: AppSidebarProps) {
       </SidebarContent>
       <SidebarSeparator />
       <SidebarFooter className="p-2">
+        {state === 'collapsed' ? (
+          <div className="flex flex-col items-center gap-1 py-1">
+            <span
+              className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
+              title={`${stats.visits.toLocaleString()} visit${stats.visits !== 1 ? 's' : ''}`}
+            >
+              <Eye className="h-4 w-4 text-sidebar-foreground/60" />
+            </span>
+            <span
+              className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
+              title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? 's' : ''}`}
+            >
+              <Download className="h-4 w-4 text-sidebar-foreground/60" />
+            </span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-1 px-2 py-1.5 text-xs text-sidebar-foreground/60">
+            <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
+              <Eye className="h-3.5 w-3.5" />
+              <span>{stats.visits.toLocaleString()} visit{stats.visits !== 1 ? 's' : ''}</span>
+            </span>
+            <span className="text-sidebar-foreground/30">·</span>
+            <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
+              <Download className="h-3.5 w-3.5" />
+              <span>{stats.downloads.toLocaleString()} download{stats.downloads !== 1 ? 's' : ''}</span>
+            </span>
+          </div>
+        )}
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={toggleSidebar} tooltip="Toggle sidebar">
