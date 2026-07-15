@@ -69,7 +69,7 @@ func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), CompileTimeout)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "tectonic", "-X", "compile", texPath)
+	cmd := exec.CommandContext(ctx, "tectonic", "-X", "compile", "--untrusted", texPath)
 	cmd.Dir = tempDir
 
 	output, err := cmd.CombinedOutput()

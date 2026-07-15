@@ -30,6 +30,7 @@ export function escapeLatex(text: string): string {
 export function formatDate(date: string): string {
   if (!date) return ''
   const [year, month] = date.split('-')
+  if (!month) return year
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   return `${months[parseInt(month, 10) - 1]} ${year}`
 }

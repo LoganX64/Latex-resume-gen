@@ -14,8 +14,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - backend-temp:/app/temp
+      - tectonic-cache:/root/.cache/Tectonic
     restart: unless-stopped
 
 volumes:
-  backend-temp:
+  tectonic-cache:
