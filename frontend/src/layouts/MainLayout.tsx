@@ -20,6 +20,7 @@ import {
   Trash2,
   Search,
   TriangleAlert,
+  ImageOff,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -34,13 +35,21 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useTheme } from '@/components/theme-provider'
-import { loadTemplate, getAllTemplateConfigs } from '@/templates'
+import { loadTemplate, getAllTemplateConfigs, getTemplateConfig } from '@/templates'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandPalette } from '@/components/CommandPalette'
 import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
@@ -67,10 +76,23 @@ export function MainLayout() {
   const [showMultiPageDialog, setShowMultiPageDialog] = useState(false)
   const [multiPageCount, setMultiPageCount] = useState(0)
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
+  const [showNoPhotoDialog, setShowNoPhotoDialog] = useState(false)
+  const pendingNoPhotoRef = useRef<'pdf' | 'latex' | null>(null)
 
   const templateConfigs = getAllTemplateConfigs()
 
+  const checkPhotoWarning = useCallback((exportType: 'pdf' | 'latex') => {
+    const config = getTemplateConfig(templateId)
+    if (config?.supportsPhoto && !resume.personalInfo.profileImage) {
+      pendingNoPhotoRef.current = exportType
+      setShowNoPhotoDialog(true)
+      return true
+    }
+    return false
+  }, [templateId, resume.personalInfo.profileImage])
+
   const handleExportLatex = useCallback(async () => {
+    if (checkPhotoWarning('latex')) return
     const template = await loadTemplate(templateId)
     if (!template) return
     const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
@@ -80,10 +102,11 @@ export function MainLayout() {
     toast.success('LaTeX file exported', {
       description: `${filename} downloaded successfully.`,
     })
-  }, [resume, sectionOrder, sectionVisibility, templateId])
+  }, [resume, sectionOrder, sectionVisibility, templateId, checkPhotoWarning])
 
   const handleExportPdf = useCallback(async () => {
     if (isExportingPdf) return
+    if (checkPhotoWarning('pdf')) return
     setIsExportingPdf(true)
     const template = await loadTemplate(templateId)
     if (!template) {
@@ -132,7 +155,7 @@ export function MainLayout() {
     } finally {
       setIsExportingPdf(false)
     }
-  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf])
+  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf, checkPhotoWarning])
 
   const handleMultiPageDownload = useCallback(() => {
     const pending = pendingDownloadRef.current
@@ -144,6 +167,14 @@ export function MainLayout() {
     setShowMultiPageDialog(false)
     pendingDownloadRef.current = null
   }, [])
+
+  const handleNoPhotoContinue = useCallback(() => {
+    const exportType = pendingNoPhotoRef.current
+    setShowNoPhotoDialog(false)
+    pendingNoPhotoRef.current = null
+    if (exportType === 'pdf') handleExportPdf()
+    else if (exportType === 'latex') handleExportLatex()
+  }, [handleExportPdf, handleExportLatex])
 
   const handleLoadSample = useCallback(() => {
     resetResume()
@@ -288,6 +319,28 @@ export function MainLayout() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      <Dialog open={showNoPhotoDialog} onOpenChange={setShowNoPhotoDialog}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <div className="flex items-center gap-2">
+              <ImageOff className="h-5 w-5 text-muted-foreground shrink-0" />
+              <DialogTitle>No profile photo</DialogTitle>
+            </div>
+            <DialogDescription>
+              This template supports a profile photo but none has been uploaded.
+              Your resume will be exported without a photo.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" size="sm" onClick={() => setShowNoPhotoDialog(false)}>
+              Cancel
+            </Button>
+            <Button size="sm" onClick={handleNoPhotoContinue}>
+              Continue
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </TooltipProvider>
   )
 }
