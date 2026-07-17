@@ -9,6 +9,7 @@ import (
 
 	"latex-resume-backend/internal/handlers"
 	"latex-resume-backend/internal/middleware"
+	"latex-resume-backend/internal/stats"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -79,11 +80,22 @@ func main() {
 	rateLimitBurst := getEnvInt("RATE_LIMIT_BURST", 10)
 	compileLimiter := middleware.NewRateLimiter(float64(rateLimitRPS), rateLimitBurst)
 
+	// Stats DB
+	statsDBPath := getEnv("STATS_DB_PATH", "/data/stats.db")
+	stats.Init(statsDBPath)
+	defer stats.Close()
+
 	r.GET("/api/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
 	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)
+
+	// Stats routes
+	r.POST("/api/stats/visit", handlers.RecordVisit)
+	r.POST("/api/stats/download", handlers.RecordDownload)
+	r.GET("/api/stats", handlers.GetStats)
+	r.GET("/api/stats/dashboard", middleware.AdminKeyRequired(), handlers.GetStats)
 
 	r.Run(":" + serverPort)
 }

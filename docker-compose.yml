@@ -15,7 +15,9 @@ services:
       - "8080:8080"
     volumes:
       - tectonic-cache:/root/.cache/Tectonic
+      - stats-data:/data
     restart: unless-stopped
 
 volumes:
   tectonic-cache:
+  stats-data:
