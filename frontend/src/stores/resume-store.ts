@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
 import type {
   ResumeData,
+  ResumeVersion,
   SectionOrder,
   SectionVisibility,
   ZoomLevel,
@@ -79,6 +79,7 @@ interface ResumeStore {
 
   resetResume: () => void
   clearResume: () => void
+  loadFromVersion: (version: ResumeVersion) => void
 }
 
 const sampleResume: ResumeData = {
@@ -309,9 +310,8 @@ const defaultSectionVisibility: SectionVisibility = {
 }
 
 export const useResumeStore = create<ResumeStore>()(
-  persist(
-    (set) => ({
-      resume: sampleResume,
+  (set) => ({
+    resume: sampleResume,
       templateId: 'classic',
       sectionOrder: defaultSectionOrder,
       sectionVisibility: defaultSectionVisibility,
@@ -729,9 +729,20 @@ export const useResumeStore = create<ResumeStore>()(
           sectionVisibility: defaultSectionVisibility,
           zoom: state.zoom,
         })),
-    }),
-    {
-      name: 'latex-resume-storage',
-    }
-  )
+
+      loadFromVersion: (version) =>
+        set({
+          resume: {
+            ...version.resume,
+            personalInfo: {
+              ...version.resume.personalInfo,
+              profileImage: undefined,
+            },
+          },
+          templateId: version.templateId,
+          sectionOrder: version.sectionOrder,
+          sectionVisibility: version.sectionVisibility,
+          zoom: 100,
+        }),
+    })
 )

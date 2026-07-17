@@ -148,3 +148,13 @@ export interface AppState {
   zoom: ZoomLevel
   darkMode: boolean
 }
+
+export interface ResumeVersion {
+  id: string
+  name: string
+  resume: ResumeData
+  templateId: string
+  sectionOrder: SectionOrder[]
+  sectionVisibility: SectionVisibility
+  createdAt: string
+}

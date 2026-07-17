@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useResumeStore } from '@/stores/resume-store'
 import { getStats, recordVisit } from '@/utils/stats'
 import {
@@ -28,6 +29,8 @@ import {
   PanelLeftClose,
   Eye,
   Download,
+  Save,
+  Home,
 } from 'lucide-react'
 
 const navItems = [
@@ -46,12 +49,14 @@ const navItems = [
 interface AppSidebarProps {
   activeSection?: string
   onSectionClick?: (id: string) => void
+  onSaveClick?: () => void
 }
 
-export function AppSidebar({ activeSection, onSectionClick }: AppSidebarProps) {
+export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const { toggleSidebar, state } = useSidebar()
   const [stats, setStats] = useState({ visits: 0, downloads: 0 })
+  const navigate = useNavigate()
 
   useEffect(() => {
     recordVisit().then(() => {
@@ -136,6 +141,18 @@ export function AppSidebar({ activeSection, onSectionClick }: AppSidebarProps) {
           </div>
         )}
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={onSaveClick} tooltip="Save as version">
+              <Save className="h-3.5 w-3.5" />
+              <span>Save Version</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={() => navigate('/')} tooltip="Back to home">
+              <Home className="h-3.5 w-3.5" />
+              <span>Home</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={toggleSidebar} tooltip="Toggle sidebar">
               <PanelLeftClose className="h-3.5 w-3.5 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />

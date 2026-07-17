@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import {
   SidebarProvider,
@@ -9,6 +10,8 @@ import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
 import { MobilePreviewButton } from '@/components/preview/MobilePreviewButton'
+import { StorageWarning } from '@/components/StorageWarning'
+import { SaveVersionDialog } from '@/components/SaveVersionDialog'
 import { useResumeStore } from '@/stores/resume-store'
 import { downloadFile, downloadPdf } from '@/utils/download'
 import {
@@ -21,6 +24,8 @@ import {
   Search,
   TriangleAlert,
   ImageOff,
+  Save,
+  Home,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -78,6 +83,7 @@ export function MainLayout() {
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
   const [showNoPhotoDialog, setShowNoPhotoDialog] = useState(false)
   const pendingNoPhotoRef = useRef<'pdf' | 'latex' | null>(null)
+  const [showSaveDialog, setShowSaveDialog] = useState(false)
 
   const templateConfigs = getAllTemplateConfigs()
 
@@ -201,13 +207,27 @@ export function MainLayout() {
   return (
     <TooltipProvider delay={400}>
       <SidebarProvider>
-        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} />
+        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
         <SidebarInset className="h-screen overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex flex-wrap items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
                 <div className="flex items-center gap-1">
+                <Tooltip>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => setShowSaveDialog(true)} aria-label="Save as version" />}>
+                    <Save className="h-3.5 w-3.5" />
+                  </TooltipTrigger>
+                  <TooltipContent>Save as version</TooltipContent>
+                </Tooltip>
+                <Link to="/">
+                  <Tooltip>
+                    <TooltipTrigger render={<Button variant="ghost" size="icon-xs" aria-label="Back to home" />}>
+                      <Home className="h-3.5 w-3.5" />
+                    </TooltipTrigger>
+                    <TooltipContent>Home</TooltipContent>
+                  </Tooltip>
+                </Link>
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleClearResume} aria-label="Clear resume" />}>
                     <Trash2 className="h-3.5 w-3.5" />
@@ -238,6 +258,7 @@ export function MainLayout() {
             <div className="flex-1 overflow-y-auto">
               <EditorPanel activeSection={activeSection} />
             </div>
+            <StorageWarning className="mx-2 mb-2" />
           </div>
           <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -341,6 +362,7 @@ export function MainLayout() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <SaveVersionDialog open={showSaveDialog} onOpenChange={setShowSaveDialog} />
     </TooltipProvider>
   )
 }
