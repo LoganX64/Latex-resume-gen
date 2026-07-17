@@ -1,16 +1,17 @@
-const STORAGE_KEY = 'resume-stats'
-const VISIT_SESSION_KEY = 'resume-stats-session'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
+
+const STATS_SESSION_KEY = 'resume-stats-session'
 
 interface Stats {
   visits: number
   downloads: number
 }
 
-function read(): Stats {
+export async function getStats(): Promise<Stats> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) {
-      const data = JSON.parse(raw)
+    const res = await fetch(`${API_BASE}/stats`)
+    if (res.ok) {
+      const data = await res.json()
       return {
         visits: typeof data.visits === 'number' ? data.visits : 0,
         downloads: typeof data.downloads === 'number' ? data.downloads : 0,
@@ -20,28 +21,45 @@ function read(): Stats {
   return { visits: 0, downloads: 0 }
 }
 
-function write(stats: Stats) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(stats))
-}
-
-export function getStats(): Stats {
-  return read()
-}
-
-export function recordVisit(): number {
-  if (sessionStorage.getItem(VISIT_SESSION_KEY)) {
-    return read().visits
+export async function recordVisit(): Promise<number> {
+  if (sessionStorage.getItem(STATS_SESSION_KEY)) {
+    const stats = await getStats()
+    return stats.visits
   }
-  sessionStorage.setItem(VISIT_SESSION_KEY, '1')
-  const stats = read()
-  stats.visits += 1
-  write(stats)
-  return stats.visits
+  sessionStorage.setItem(STATS_SESSION_KEY, '1')
+  try {
+    const res = await fetch(`${API_BASE}/stats/visit`, { method: 'POST' })
+    if (res.ok) {
+      const data = await res.json()
+      return typeof data.visits === 'number' ? data.visits : 0
+    }
+  } catch {}
+  return 0
 }
 
-export function recordDownload(): number {
-  const stats = read()
-  stats.downloads += 1
-  write(stats)
-  return stats.downloads
+export async function recordDownload(): Promise<number> {
+  try {
+    const res = await fetch(`${API_BASE}/stats/download`, { method: 'POST' })
+    if (res.ok) {
+      const data = await res.json()
+      return typeof data.downloads === 'number' ? data.downloads : 0
+    }
+  } catch {}
+  return 0
+}
+
+export async function getDashboardStats(adminKey: string): Promise<Stats | null> {
+  try {
+    const res = await fetch(`${API_BASE}/stats/dashboard`, {
+      headers: { 'X-Admin-Key': adminKey },
+    })
+    if (res.ok) {
+      const data = await res.json()
+      return {
+        visits: typeof data.visits === 'number' ? data.visits : 0,
+        downloads: typeof data.downloads === 'number' ? data.downloads : 0,
+      }
+    }
+  } catch {}
+  return null
 }

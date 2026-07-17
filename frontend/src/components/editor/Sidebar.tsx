@@ -54,8 +54,9 @@ export function AppSidebar({ activeSection, onSectionClick }: AppSidebarProps) {
   const [stats, setStats] = useState({ visits: 0, downloads: 0 })
 
   useEffect(() => {
-    recordVisit()
-    setStats(getStats())
+    recordVisit().then(() => {
+      getStats().then(setStats)
+    })
   }, [])
 
   return (
