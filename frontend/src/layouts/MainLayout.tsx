@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import {
   SidebarProvider,
@@ -68,6 +68,7 @@ import {
 
 export function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
+  const navigate = useNavigate()
   const resetResume = useResumeStore((s) => s.resetResume)
   const clearResume = useResumeStore((s) => s.clearResume)
   const resume = useResumeStore((s) => s.resume)
@@ -197,9 +198,11 @@ export function MainLayout() {
       p: handleExportPdf,
       l: handleExportLatex,
       d: toggleDarkMode,
+      s: () => setShowSaveDialog(true),
+      h: () => navigate('/'),
       '?': () => setShortcutsOpen(true),
     }),
-    [handleExportPdf, handleExportLatex, toggleDarkMode]
+    [handleExportPdf, handleExportLatex, toggleDarkMode, navigate]
   )
 
   useKeyboardShortcuts(shortcuts)

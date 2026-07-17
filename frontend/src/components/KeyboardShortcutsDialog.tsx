@@ -11,6 +11,8 @@ const shortcuts = [
   { keys: ["⌘", "K"], label: "Open command palette" },
   { keys: ["⌘", "P"], label: "Export PDF" },
   { keys: ["⌘", "L"], label: "Export LaTeX" },
+  { keys: ["⌘", "S"], label: "Save as version" },
+  { keys: ["⌘", "H"], label: "Go to homepage" },
   { keys: ["⌘", "D"], label: "Toggle dark/light mode" },
   { keys: ["⌘", "?"], label: "Show keyboard shortcuts" },
 ]
