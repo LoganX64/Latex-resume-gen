@@ -4,6 +4,7 @@ import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
 import { getTemplateConfig } from '@/templates'
 import { quickExportPdf, quickExportLatex } from '@/utils/quick-export'
+import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { FileText, Download, Trash2, Loader2 } from 'lucide-react'
@@ -47,12 +48,14 @@ export function VersionCard({ version }: VersionCardProps) {
   async function handleExportPdf() {
     setExportingPdf(true)
     await quickExportPdf(version)
+    recordDownload()
     setExportingPdf(false)
   }
 
   async function handleExportLatex() {
     setExportingLatex(true)
     await quickExportLatex(version)
+    recordDownload()
     setExportingLatex(false)
   }
 

@@ -14,6 +14,7 @@ import { StorageWarning } from '@/components/StorageWarning'
 import { SaveVersionDialog } from '@/components/SaveVersionDialog'
 import { useResumeStore } from '@/stores/resume-store'
 import { downloadFile, downloadPdf } from '@/utils/download'
+import { recordDownload } from '@/utils/stats'
 import {
   Sun,
   Moon,
@@ -106,6 +107,7 @@ export function MainLayout() {
     const name = resume.personalInfo.fullName || 'resume'
     const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
     downloadFile(latex, filename, 'application/x-latex')
+    recordDownload()
     toast.success('LaTeX file exported', {
       description: `${filename} downloaded successfully.`,
     })
@@ -150,6 +152,7 @@ export function MainLayout() {
         return
       }
       downloadPdf(blob, filename)
+      recordDownload()
       toast.success('PDF exported', {
         description: `${filename} downloaded successfully.`,
       })
@@ -168,6 +171,7 @@ export function MainLayout() {
     const pending = pendingDownloadRef.current
     if (!pending) return
     downloadPdf(pending.blob, pending.filename)
+    recordDownload()
     toast.success('PDF exported', {
       description: `${pending.filename} downloaded successfully.`,
     })
