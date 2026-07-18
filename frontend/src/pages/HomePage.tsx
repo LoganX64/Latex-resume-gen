@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useVersionsStore } from '@/stores/versions-store'
 import { VersionCard } from '@/components/VersionCard'
 import { StorageWarning } from '@/components/StorageWarning'
+import { Navbar } from '@/components/Navbar'
 import {
   FileText,
   Image,
@@ -41,6 +42,7 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Navbar />
       {/* Hero */}
       <section className="relative overflow-hidden border-b">
         <div className="mx-auto max-w-5xl px-6 py-20 text-center">

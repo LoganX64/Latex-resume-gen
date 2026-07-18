@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 import type {
   ResumeData,
   ResumeVersion,
@@ -310,7 +311,8 @@ const defaultSectionVisibility: SectionVisibility = {
 }
 
 export const useResumeStore = create<ResumeStore>()(
-  (set) => ({
+  persist(
+    (set) => ({
     resume: sampleResume,
       templateId: 'classic',
       sectionOrder: defaultSectionOrder,
@@ -744,5 +746,10 @@ export const useResumeStore = create<ResumeStore>()(
           sectionVisibility: version.sectionVisibility,
           zoom: 100,
         }),
-    })
+    }),
+    {
+      name: 'latex-resume-preferences',
+      partialize: (state) => ({ darkMode: state.darkMode }),
+    }
+  )
 )

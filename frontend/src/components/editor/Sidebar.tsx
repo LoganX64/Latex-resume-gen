@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useResumeStore } from '@/stores/resume-store'
 import { getStats, recordVisit } from '@/utils/stats'
 import {
@@ -69,7 +69,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
       <SidebarHeader className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" onClick={toggleSidebar}>
+            <SidebarMenuButton size="lg" render={<Link to="/" />}>
               <img src="/favicon.svg" alt="Logo" className="h-6 w-6 shrink-0" />
               <div className="flex flex-col leading-tight">
                 <span className="font-bold text-sidebar-foreground">

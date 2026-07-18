@@ -31,7 +31,7 @@ export function MobilePreviewButton() {
       <Button
         variant="default"
         size="icon"
-        className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full shadow-lg lg:hidden touch-manipulation"
+        className="fixed bottom-6 left-6 z-40 h-14 w-14 rounded-full shadow-lg lg:hidden touch-manipulation"
         onClick={() => setOpen(true)}
         aria-label="Preview resume"
       >
