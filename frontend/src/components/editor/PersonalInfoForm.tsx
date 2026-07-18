@@ -35,7 +35,7 @@ export function PersonalInfoForm() {
                   id="professionalTitle"
                   name="professionalTitle"
                   autoComplete="organization-title"
-                  value={personalInfo.professionalTitle}
+                  value={personalInfo.professionalTitle ?? ''}
                   onChange={(e) => updatePersonalInfo('professionalTitle', e.target.value)}
                   placeholder="Senior Software Engineer"
                   className="h-8 text-xs"
@@ -93,7 +93,7 @@ export function PersonalInfoForm() {
                   type="url"
                   inputMode="url"
                   autoComplete="url"
-                  value={personalInfo.linkedin}
+                  value={personalInfo.linkedin ?? ''}
                   onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
                   placeholder="linkedin.com/in/johndoe"
                   className="h-8 text-xs"
@@ -107,7 +107,7 @@ export function PersonalInfoForm() {
                   type="url"
                   inputMode="url"
                   autoComplete="url"
-                  value={personalInfo.github}
+                  value={personalInfo.github ?? ''}
                   onChange={(e) => updatePersonalInfo('github', e.target.value)}
                   placeholder="github.com/johndoe"
                   className="h-8 text-xs"
@@ -121,7 +121,7 @@ export function PersonalInfoForm() {
                   type="url"
                   inputMode="url"
                   autoComplete="url"
-                  value={personalInfo.website}
+                  value={personalInfo.website ?? ''}
                   onChange={(e) => updatePersonalInfo('website', e.target.value)}
                   placeholder="johndoe.dev"
                   className="h-8 text-xs"

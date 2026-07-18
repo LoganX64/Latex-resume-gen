@@ -7,7 +7,7 @@ export function downloadFile(content: string, filename: string, mimeType: string
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  setTimeout(() => URL.revokeObjectURL(url), 100)
 }
 
 export function downloadPdf(pdfBlob: Blob, filename: string) {
@@ -18,5 +18,5 @@ export function downloadPdf(pdfBlob: Blob, filename: string) {
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-  URL.revokeObjectURL(url)
+  setTimeout(() => URL.revokeObjectURL(url), 100)
 }

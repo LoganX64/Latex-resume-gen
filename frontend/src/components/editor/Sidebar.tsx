@@ -89,9 +89,9 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
-                const key = item.id as keyof typeof sectionVisibility
+                const sectionKey = item.id === 'personal' ? 'personalInfo' : item.id as keyof typeof sectionVisibility
                 const isVisible =
-                  item.id === 'personal' || (sectionVisibility[key] ?? false)
+                  item.id === 'personal' || (sectionVisibility[sectionKey] ?? false)
                 return (
                   <SidebarMenuItem key={item.id}>
                     <SidebarMenuButton

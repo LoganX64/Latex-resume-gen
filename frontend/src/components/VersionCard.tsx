@@ -47,15 +47,15 @@ export function VersionCard({ version }: VersionCardProps) {
 
   async function handleExportPdf() {
     setExportingPdf(true)
-    await quickExportPdf(version)
-    recordDownload()
+    const success = await quickExportPdf(version)
+    if (success) recordDownload()
     setExportingPdf(false)
   }
 
   async function handleExportLatex() {
     setExportingLatex(true)
-    await quickExportLatex(version)
-    recordDownload()
+    const success = await quickExportLatex(version)
+    if (success) recordDownload()
     setExportingLatex(false)
   }
 
@@ -73,7 +73,10 @@ export function VersionCard({ version }: VersionCardProps) {
           <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
             <span>{templateConfig?.name || version.templateId}</span>
             <span>{activeSections.length} sections</span>
-            <span>{format(new Date(version.createdAt), 'MMM d, yyyy')}</span>
+            <span>{(() => {
+              const date = new Date(version.createdAt)
+              return isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')
+            })()}</span>
           </div>
         </CardHeader>
         <CardContent>

@@ -191,10 +191,22 @@ export function ResumePreview() {
     setIsFullscreen((v) => !v)
   }
 
+  useEffect(() => {
+    if (!isFullscreen) return
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsFullscreen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isFullscreen])
+
   const totalScaledHeight = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
+  const fitScale = containerRef.current
+    ? Math.min((containerRef.current.clientWidth - 32) / A4_WIDTH_PX, (containerRef.current.clientHeight - 32) / totalScaledHeight, 1.5)
+    : 1
   const displayScale = isFullscreen
     ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / totalScaledHeight, 1.5)
-    : scale
+    : zoom === 'fit' ? fitScale : scale
 
   function cycleZoom(direction: 'in' | 'out') {
     const currentIdx = typeof zoom === 'number' ? zoomLevels.indexOf(zoom) : -1
@@ -302,13 +314,13 @@ export function ResumePreview() {
           <div className="flex items-start min-h-full">
             <div
               style={{
-                width: A4_WIDTH_PX * scale + 16 * scale,
-                marginLeft: scale <= 1 ? 'auto' : undefined,
-                marginRight: scale <= 1 ? 'auto' : undefined,
+                width: A4_WIDTH_PX * displayScale + 16 * displayScale,
+                marginLeft: displayScale <= 1 ? 'auto' : undefined,
+                marginRight: displayScale <= 1 ? 'auto' : undefined,
                 flexShrink: 0,
               }}
             >
-              <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', width: A4_WIDTH_PX }}>
+              <div style={{ transform: `scale(${displayScale})`, transformOrigin: 'top left', width: A4_WIDTH_PX }}>
                 {a4Content}
               </div>
             </div>

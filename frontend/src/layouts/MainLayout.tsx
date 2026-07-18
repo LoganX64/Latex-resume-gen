@@ -257,7 +257,7 @@ export function MainLayout() {
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))} aria-label="Command palette" />}>
                     <Search className="h-3.5 w-3.5" />
                   </TooltipTrigger>
-                  <TooltipContent>Command palette (⌘K)</TooltipContent>
+                  <TooltipContent>Command palette ({navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘K' : 'Ctrl+K'})</TooltipContent>
                 </Tooltip>
                 <KeyboardShortcutsButton open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
               </div>
