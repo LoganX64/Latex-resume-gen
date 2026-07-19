@@ -5,6 +5,7 @@ import (
 	"net/http"
 	_ "net/http/pprof"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -88,7 +89,30 @@ func main() {
 	defer stats.Close()
 
 	r.GET("/api/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
+		healthy := true
+
+		tectonicStatus := "available"
+		if _, err := exec.LookPath("tectonic"); err != nil {
+			tectonicStatus = "unavailable"
+			healthy = false
+		}
+
+		dbStatus := "connected"
+		if err := stats.Ping(); err != nil {
+			dbStatus = "disconnected"
+			healthy = false
+		}
+
+		status := http.StatusOK
+		if !healthy {
+			status = http.StatusServiceUnavailable
+		}
+
+		c.JSON(status, gin.H{
+			"status":   map[bool]string{true: "ok", false: "degraded"}[healthy],
+			"tectonic": tectonicStatus,
+			"database": dbStatus,
+		})
 	})
 
 	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)

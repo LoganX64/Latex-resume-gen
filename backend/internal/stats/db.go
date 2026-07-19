@@ -76,6 +76,10 @@ func GetAll() (visits, downloads int, err error) {
 	return visits, downloads, nil
 }
 
+func Ping() error {
+	return db.Ping()
+}
+
 func Close() {
 	if db != nil {
 		db.Close()
