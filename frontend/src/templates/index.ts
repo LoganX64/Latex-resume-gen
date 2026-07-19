@@ -1,5 +1,6 @@
 import type { ResumeData, SectionOrder, SectionVisibility, TemplateConfig } from '@/types/resume'
 import type { ReactNode } from 'react'
+import * as Sentry from '@sentry/react'
 
 export interface TemplatePreviewProps {
   resume: ResumeData
@@ -33,14 +34,29 @@ for (const [path, mod] of Object.entries(configModules)) {
 const templateCache = new Map<string, Template>()
 
 export async function loadTemplate(id: string): Promise<Template | undefined> {
-  if (templateCache.has(id)) return templateCache.get(id)!
-  const path = `./${id}/index.tsx`
-  if (!templateModules[path]) return undefined
-  const mod = await templateModules[path]()
-  const config = configs[id]
-  const template: Template = { ...mod.default, config }
-  templateCache.set(id, template)
-  return template
+  return Sentry.startSpan(
+    { name: `Load Template: ${id}`, op: 'template.load' },
+    async (span) => {
+      span.setData('template.id', id)
+      span.setData('cache.hit', templateCache.has(id))
+
+      if (templateCache.has(id)) {
+        span.setData('cache.hit', true)
+        return templateCache.get(id)!
+      }
+
+      const path = `./${id}/index.tsx`
+      if (!templateModules[path]) return undefined
+
+      const mod = await templateModules[path]()
+      const config = configs[id]
+      const template: Template = { ...mod.default, config }
+      templateCache.set(id, template)
+
+      span.setData('cache.hit', false)
+      return template
+    }
+  )
 }
 
 export function getTemplateConfig(id: string): TemplateConfig | undefined {
