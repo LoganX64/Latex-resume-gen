@@ -1,21 +1,32 @@
 import type { ResumeData, SectionOrder, SectionVisibility } from '@/types/resume'
 import { escapeLatex, formatDate } from '@/lib/utils'
+import * as Sentry from '@sentry/react'
 
 export function generateLatex(
   resume: ResumeData,
   sectionOrder: SectionOrder[],
   sectionVisibility: SectionVisibility
 ): string {
-  const sections = sectionOrder.filter(
-    (s) => sectionVisibility[s.type] ?? false
+  return Sentry.startSpan(
+    { name: 'Generate LaTeX', op: 'latex.generate' },
+    (span) => {
+      const sections = sectionOrder.filter(
+        (s) => sectionVisibility[s.type] ?? false
+      )
+
+      span.setData('section.count', sections.length)
+      span.setData('section.types', sections.map((s) => s.type).join(','))
+
+      const body = sections
+        .map((section) => generateSection(section.type, resume))
+        .filter(Boolean)
+        .join('\n\n')
+
+      span.setData('body.length', body.length)
+
+      return buildDocument(body)
+    }
   )
-
-  const body = sections
-    .map((section) => generateSection(section.type, resume))
-    .filter(Boolean)
-    .join('\n\n')
-
-  return buildDocument(body)
 }
 
 function buildDocument(body: string): string {
