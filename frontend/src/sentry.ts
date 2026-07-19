@@ -7,33 +7,35 @@ import {
   matchRoutes,
 } from "react-router-dom";
 
-Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DSN,
+if (import.meta.env.PROD) {
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
 
-  integrations: [
-    Sentry.reactRouterBrowserTracingIntegration({
-      useEffect: React.useEffect,
-      useLocation,
-      useNavigationType,
-      createRoutesFromChildren,
-      matchRoutes,
-    }),
+    integrations: [
+      Sentry.reactRouterBrowserTracingIntegration({
+        useEffect: React.useEffect,
+        useLocation,
+        useNavigationType,
+        createRoutesFromChildren,
+        matchRoutes,
+      }),
 
-    Sentry.replayIntegration(),
+      Sentry.replayIntegration(),
 
-    Sentry.feedbackIntegration({
-      colorScheme: "system",
-    }),
-  ],
+      Sentry.feedbackIntegration({
+        colorScheme: "system",
+      }),
+    ],
 
-  enableLogs: true,
+    enableLogs: true,
 
-  tracesSampleRate: 1.0,
+    tracesSampleRate: 1.0,
 
-  tracePropagationTargets: ["localhost", /^\//],
+    tracePropagationTargets: ["localhost", /^\//],
 
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
 
-  environment: import.meta.env.MODE,
-});
+    environment: import.meta.env.MODE,
+  });
+}
