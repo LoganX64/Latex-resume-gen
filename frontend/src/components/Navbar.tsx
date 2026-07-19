@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
-import { Sun, Moon } from 'lucide-react'
+import { Sun, Moon, Star } from 'lucide-react'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -15,6 +15,17 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2">
+          {import.meta.env.VITE_GITHUB_URL && (
+            <a
+              href={import.meta.env.VITE_GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon-sm" aria-label="Star on GitHub">
+                <Star className="h-3.5 w-3.5" />
+              </Button>
+            </a>
+          )}
           <Button
             variant="ghost"
             size="icon-sm"
