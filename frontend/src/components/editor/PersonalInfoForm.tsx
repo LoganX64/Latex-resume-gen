@@ -25,7 +25,7 @@ export function PersonalInfoForm() {
                   autoComplete="name"
                   value={personalInfo.fullName}
                   onChange={(e) => updatePersonalInfo('fullName', e.target.value)}
-                  placeholder="John Doe"
+                  placeholder="John Doe…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -37,7 +37,7 @@ export function PersonalInfoForm() {
                   autoComplete="organization-title"
                   value={personalInfo.professionalTitle ?? ''}
                   onChange={(e) => updatePersonalInfo('professionalTitle', e.target.value)}
-                  placeholder="Senior Software Engineer"
+                  placeholder="Senior Software Engineer…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -53,7 +53,7 @@ export function PersonalInfoForm() {
                   spellCheck={false}
                   value={personalInfo.email}
                   onChange={(e) => updatePersonalInfo('email', e.target.value)}
-                  placeholder="john@example.com"
+                  placeholder="john@example.com…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -67,7 +67,7 @@ export function PersonalInfoForm() {
                   autoComplete="tel"
                   value={personalInfo.phone}
                   onChange={(e) => updatePersonalInfo('phone', e.target.value)}
-                  placeholder="+1 234 567 890"
+                  placeholder="+1 234 567 890…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -80,7 +80,7 @@ export function PersonalInfoForm() {
                   autoComplete="address-level1"
                   value={personalInfo.location}
                   onChange={(e) => updatePersonalInfo('location', e.target.value)}
-                  placeholder="San Francisco, CA"
+                  placeholder="San Francisco, CA…"
                   className="h-8 text-xs"
                 />
             </div>
@@ -95,7 +95,7 @@ export function PersonalInfoForm() {
                   autoComplete="url"
                   value={personalInfo.linkedin ?? ''}
                   onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
-                  placeholder="linkedin.com/in/johndoe"
+                  placeholder="linkedin.com/in/johndoe…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -109,7 +109,7 @@ export function PersonalInfoForm() {
                   autoComplete="url"
                   value={personalInfo.github ?? ''}
                   onChange={(e) => updatePersonalInfo('github', e.target.value)}
-                  placeholder="github.com/johndoe"
+                  placeholder="github.com/johndoe…"
                   className="h-8 text-xs"
                 />
               </div>
@@ -123,7 +123,7 @@ export function PersonalInfoForm() {
                   autoComplete="url"
                   value={personalInfo.website ?? ''}
                   onChange={(e) => updatePersonalInfo('website', e.target.value)}
-                  placeholder="johndoe.dev"
+                  placeholder="johndoe.dev…"
                   className="h-8 text-xs"
                 />
               </div>
