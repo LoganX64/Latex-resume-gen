@@ -55,23 +55,29 @@ export function ProfileImageUpload() {
       const image = new Image()
       image.src = imageSrc
       image.onload = () => {
+        const MAX_SIZE = 400
+        const { width, height } = croppedAreaPixels
+        const scale = Math.min(MAX_SIZE / width, MAX_SIZE / height, 1)
+        const outputW = Math.round(width * scale)
+        const outputH = Math.round(height * scale)
+
         const canvas = document.createElement('canvas')
-        canvas.width = croppedAreaPixels.width
-        canvas.height = croppedAreaPixels.height
+        canvas.width = outputW
+        canvas.height = outputH
         const ctx = canvas.getContext('2d')
         if (!ctx) return
         ctx.drawImage(
           image,
           croppedAreaPixels.x,
           croppedAreaPixels.y,
-          croppedAreaPixels.width,
-          croppedAreaPixels.height,
+          width,
+          height,
           0,
           0,
-          croppedAreaPixels.width,
-          croppedAreaPixels.height
+          outputW,
+          outputH
         )
-        const croppedImage = canvas.toDataURL('image/png')
+        const croppedImage = canvas.toDataURL('image/jpeg', 0.8)
         span.setAttribute('output.size', croppedImage.length)
         updatePersonalInfo('profileImage', croppedImage)
         setCropDialogOpen(false)
