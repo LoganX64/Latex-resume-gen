@@ -4,6 +4,7 @@ import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
 import { Upload, X, User } from 'lucide-react'
 import Cropper from 'react-easy-crop'
+import * as Sentry from '@sentry/react'
 import {
   Dialog,
   DialogContent,
@@ -46,31 +47,37 @@ export function ProfileImageUpload() {
 
   async function getCroppedImg() {
     if (!imageSrc || !croppedAreaPixels) return
-    const image = new Image()
-    image.src = imageSrc
-    await new Promise((resolve) => {
-      image.onload = resolve
+
+    Sentry.startSpan({ name: 'Crop Profile Image', op: 'image.crop' }, (span) => {
+      span.setData('crop.width', croppedAreaPixels.width)
+      span.setData('crop.height', croppedAreaPixels.height)
+
+      const image = new Image()
+      image.src = imageSrc
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = croppedAreaPixels.width
+        canvas.height = croppedAreaPixels.height
+        const ctx = canvas.getContext('2d')
+        if (!ctx) return
+        ctx.drawImage(
+          image,
+          croppedAreaPixels.x,
+          croppedAreaPixels.y,
+          croppedAreaPixels.width,
+          croppedAreaPixels.height,
+          0,
+          0,
+          croppedAreaPixels.width,
+          croppedAreaPixels.height
+        )
+        const croppedImage = canvas.toDataURL('image/png')
+        span.setData('output.size', croppedImage.length)
+        updatePersonalInfo('profileImage', croppedImage)
+        setCropDialogOpen(false)
+        setImageSrc(null)
+      }
     })
-    const canvas = document.createElement('canvas')
-    canvas.width = croppedAreaPixels.width
-    canvas.height = croppedAreaPixels.height
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-    ctx.drawImage(
-      image,
-      croppedAreaPixels.x,
-      croppedAreaPixels.y,
-      croppedAreaPixels.width,
-      croppedAreaPixels.height,
-      0,
-      0,
-      croppedAreaPixels.width,
-      croppedAreaPixels.height
-    )
-    const croppedImage = canvas.toDataURL('image/png')
-    updatePersonalInfo('profileImage', croppedImage)
-    setCropDialogOpen(false)
-    setImageSrc(null)
   }
 
   function removeImage() {
