@@ -5,7 +5,7 @@ import { generateId } from '@/lib/utils'
 
 interface VersionsStore {
   versions: ResumeVersion[]
-  addVersion: (version: Omit<ResumeVersion, 'id' | 'createdAt'>) => void
+  addVersion: (version: Omit<ResumeVersion, 'id' | 'createdAt'>) => boolean
   removeVersion: (id: string) => void
   getVersion: (id: string) => ResumeVersion | undefined
 }
@@ -15,17 +15,24 @@ export const useVersionsStore = create<VersionsStore>()(
     (set, get) => ({
       versions: [],
 
-      addVersion: (version) =>
-        set((state) => ({
-          versions: [
-            ...state.versions,
-            {
-              ...version,
-              id: generateId(),
-              createdAt: new Date().toISOString(),
-            },
-          ],
-        })),
+      addVersion: (version) => {
+        const newVersion: ResumeVersion = {
+          ...version,
+          id: generateId(),
+          createdAt: new Date().toISOString(),
+        }
+        const newState = [...get().versions, newVersion]
+        try {
+          localStorage.setItem(
+            'latex-resume-versions',
+            JSON.stringify({ state: { versions: newState }, version: 0 })
+          )
+          set({ versions: newState })
+          return true
+        } catch {
+          return false
+        }
+      },
 
       removeVersion: (id) =>
         set((state) => ({

@@ -39,7 +39,7 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
     if (!name.trim()) return
 
     const { profileImage, ...personalInfoWithoutPhoto } = resume.personalInfo
-    addVersion({
+    const success = addVersion({
       name: name.trim(),
       resume: {
         ...resume,
@@ -49,6 +49,13 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
       sectionOrder,
       sectionVisibility,
     })
+
+    if (!success) {
+      toast.error('Storage full', {
+        description: 'Could not save version. Try deleting some old versions to free up space.',
+      })
+      return
+    }
 
     toast.success('Resume saved', {
       description: `"${name.trim()}" saved as a version.`,
