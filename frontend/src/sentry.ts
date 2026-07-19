@@ -18,6 +18,9 @@ if (import.meta.env.PROD) {
         useNavigationType,
         createRoutesFromChildren,
         matchRoutes,
+        enableInp: true,
+        enableLongTask: true,
+        interactionsSampleRate: 1.0,
       }),
 
       Sentry.replayIntegration(),
