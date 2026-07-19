@@ -239,6 +239,40 @@ The API server runs at `http://localhost:8080`.
 
 > **Note:** PDF export requires [Tectonic](https://tectonic-typesetting.github.io/book/latest/installation.html) installed and available in PATH.
 
+### Profiling (pprof)
+
+pprof is **disabled by default**. Enable it to profile CPU, memory, goroutines, and more.
+
+```bash
+# Start backend with pprof enabled
+PPROF_ENABLED=true go run ./cmd/server
+
+# Custom port (default: 6060)
+PPROF_ENABLED=true PPROF_PORT=7070 go run ./cmd/server
+```
+
+Once running, open `http://localhost:6060/debug/pprof/` in your browser to see all available profiles.
+
+**CLI usage:**
+
+```bash
+# CPU profile (30 seconds)
+go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+
+# Heap allocations
+go tool pprof http://localhost:6060/debug/pprof/heap
+
+# Goroutine dump
+go tool pprof http://localhost:6060/debug/pprof/goroutine
+```
+
+**Environment variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PPROF_ENABLED` | `false` | Set to `true` to start pprof server |
+| `PPROF_PORT` | `6060` | Port for pprof HTTP server |
+
 ---
 
 ## API

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"strconv"
 	"strings"
@@ -96,6 +98,17 @@ func main() {
 	r.POST("/api/stats/download", handlers.RecordDownload)
 	r.GET("/api/stats", handlers.GetStats)
 	r.GET("/api/stats/dashboard", middleware.AdminKeyRequired(), handlers.GetStats)
+
+	// pprof (opt-in via PPROF_ENABLED=true)
+	if os.Getenv("PPROF_ENABLED") == "true" {
+		pprofPort := getEnv("PPROF_PORT", "6060")
+		go func() {
+			log.Printf("pprof listening on localhost:%s", pprofPort)
+			if err := http.ListenAndServe("localhost:"+pprofPort, nil); err != nil {
+				log.Printf("pprof server failed: %v", err)
+			}
+		}()
+	}
 
 	r.Run(":" + serverPort)
 }
