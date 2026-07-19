@@ -49,8 +49,8 @@ export function ProfileImageUpload() {
     if (!imageSrc || !croppedAreaPixels) return
 
     Sentry.startSpan({ name: 'Crop Profile Image', op: 'image.crop' }, (span) => {
-      span.setData('crop.width', croppedAreaPixels.width)
-      span.setData('crop.height', croppedAreaPixels.height)
+      span.setAttribute('crop.width', croppedAreaPixels.width)
+      span.setAttribute('crop.height', croppedAreaPixels.height)
 
       const image = new Image()
       image.src = imageSrc
@@ -72,7 +72,7 @@ export function ProfileImageUpload() {
           croppedAreaPixels.height
         )
         const croppedImage = canvas.toDataURL('image/png')
-        span.setData('output.size', croppedImage.length)
+        span.setAttribute('output.size', croppedImage.length)
         updatePersonalInfo('profileImage', croppedImage)
         setCropDialogOpen(false)
         setImageSrc(null)

@@ -20,7 +20,6 @@ if (import.meta.env.PROD) {
         matchRoutes,
         enableInp: true,
         enableLongTask: true,
-        interactionsSampleRate: 1.0,
       }),
 
       Sentry.replayIntegration(),

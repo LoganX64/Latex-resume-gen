@@ -4,6 +4,7 @@ import { useResumeStore } from '@/stores/resume-store'
 import { loadTemplate, getTemplateConfig } from '@/templates'
 import { AlertTriangle, Maximize, X, ZoomIn, ZoomOut } from 'lucide-react'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
+import * as Sentry from '@sentry/react'
 import type { ZoomLevel, Margins } from '@/types/resume'
 import type { Template } from '@/templates'
 
@@ -162,18 +163,23 @@ export function ResumePreview() {
   })
 
   const measureContent = useCallback(() => {
-    if (!measureRef.current) return
-    const el = measureRef.current
-    setTotalContentHeight(el.scrollHeight)
+    Sentry.startSpan({ name: 'Measure Resume Content', op: 'dom.measure' }, (span) => {
+      if (!measureRef.current) return
+      const el = measureRef.current
+      const height = el.scrollHeight
+      setTotalContentHeight(height)
+      span.setAttribute('content.height', height)
 
-    const sections = el.querySelectorAll<HTMLElement>('[data-section]')
-    const sectionData: { top: number; height: number }[] = []
-    sections.forEach((s) => {
-      const top = (s as HTMLElement).offsetTop
-      const height = (s as HTMLElement).offsetHeight
-      if (height > 0) sectionData.push({ top, height })
+      const sections = el.querySelectorAll<HTMLElement>('[data-section]')
+      const sectionData: { top: number; height: number }[] = []
+      sections.forEach((s) => {
+        const top = (s as HTMLElement).offsetTop
+        const height = (s as HTMLElement).offsetHeight
+        if (height > 0) sectionData.push({ top, height })
+      })
+      setSectionBounds(sectionData)
+      span.setAttribute('section.count', sectionData.length)
     })
-    setSectionBounds(sectionData)
   }, [])
 
   useEffect(() => {

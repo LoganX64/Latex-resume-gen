@@ -120,18 +120,18 @@ export default function MainLayout() {
 
     Sentry.startSpan({ name: 'Export PDF', op: 'export.pdf' }, async (span) => {
       setIsExportingPdf(true)
-      span.setData('template', templateId)
+      span.setAttribute('template', templateId)
 
       try {
         const template = await loadTemplate(templateId)
         if (!template) {
-          span.setData('success', false)
-          span.setData('reason', 'template_not_found')
+          span.setAttribute('success', false)
+          span.setAttribute('reason', 'template_not_found')
           return
         }
 
         const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
-        span.setData('latex.length', latex.length)
+        span.setAttribute('latex.length', latex.length)
 
         const profileImage = resume.personalInfo.profileImage || ''
         const response = await fetch('/api/compile', {
@@ -140,7 +140,7 @@ export default function MainLayout() {
           body: JSON.stringify({ latex, profileImage }),
         })
 
-        span.setData('http.status_code', response.status)
+        span.setAttribute('http.status_code', response.status)
 
         if (!response.ok) {
           let message = 'Compilation failed'
@@ -150,17 +150,17 @@ export default function MainLayout() {
           } catch {
             message = `Server error: ${response.status}`
           }
-          span.setData('success', false)
-          span.setData('error', message)
+          span.setAttribute('success', false)
+          span.setAttribute('error', message)
           toast.error('PDF export failed', { description: message })
           return
         }
 
         const pageCount = parseInt(response.headers.get('X-PDF-Page-Count') || '1', 10)
-        span.setData('pdf.pages', pageCount)
+        span.setAttribute('pdf.pages', pageCount)
 
         const blob = await response.blob()
-        span.setData('pdf.size', blob.size)
+        span.setAttribute('pdf.size', blob.size)
 
         const name = resume.personalInfo.fullName || 'resume'
         const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
@@ -169,22 +169,22 @@ export default function MainLayout() {
           pendingDownloadRef.current = { blob, filename }
           setMultiPageCount(pageCount)
           setShowMultiPageDialog(true)
-          span.setData('success', true)
-          span.setData('multiPage', true)
+          span.setAttribute('success', true)
+          span.setAttribute('multiPage', true)
           return
         }
 
         downloadPdf(blob, filename)
         recordDownload()
-        span.setData('success', true)
+        span.setAttribute('success', true)
         toast.success('PDF exported', {
           description: `${filename} downloaded successfully.`,
         })
       } catch (err) {
         const message =
           err instanceof Error ? err.message : 'Could not connect to server'
-        span.setData('success', false)
-        span.setData('error', message)
+        span.setAttribute('success', false)
+        span.setAttribute('error', message)
         toast.error('PDF export failed', {
           description: `${message}. Make sure the backend is running.`,
         })

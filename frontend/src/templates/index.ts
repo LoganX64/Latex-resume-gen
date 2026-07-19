@@ -37,11 +37,11 @@ export async function loadTemplate(id: string): Promise<Template | undefined> {
   return Sentry.startSpan(
     { name: `Load Template: ${id}`, op: 'template.load' },
     async (span) => {
-      span.setData('template.id', id)
-      span.setData('cache.hit', templateCache.has(id))
+      span.setAttribute('template.id', id)
+      span.setAttribute('cache.hit', templateCache.has(id))
 
       if (templateCache.has(id)) {
-        span.setData('cache.hit', true)
+        span.setAttribute('cache.hit', true)
         return templateCache.get(id)!
       }
 
@@ -53,7 +53,7 @@ export async function loadTemplate(id: string): Promise<Template | undefined> {
       const template: Template = { ...mod.default, config }
       templateCache.set(id, template)
 
-      span.setData('cache.hit', false)
+      span.setAttribute('cache.hit', false)
       return template
     }
   )

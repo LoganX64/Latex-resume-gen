@@ -14,15 +14,15 @@ export function generateLatex(
         (s) => sectionVisibility[s.type] ?? false
       )
 
-      span.setData('section.count', sections.length)
-      span.setData('section.types', sections.map((s) => s.type).join(','))
+      span.setAttribute('section.count', sections.length)
+      span.setAttribute('section.types', sections.map((s) => s.type).join(','))
 
       const body = sections
         .map((section) => generateSection(section.type, resume))
         .filter(Boolean)
         .join('\n\n')
 
-      span.setData('body.length', body.length)
+      span.setAttribute('body.length', body.length)
 
       return buildDocument(body)
     }
