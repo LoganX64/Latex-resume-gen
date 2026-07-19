@@ -67,7 +67,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export function MainLayout() {
+export default function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
   const navigate = useNavigate()
   const resetResume = useResumeStore((s) => s.resetResume)

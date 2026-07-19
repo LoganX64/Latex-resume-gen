@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 
 const ADMIN_KEY_STORAGE = 'resume-admin-key'
 
-export function StatsDashboard() {
+export default function StatsDashboard() {
   const [adminKey, setAdminKey] = useState(() =>
     sessionStorage.getItem(ADMIN_KEY_STORAGE) || ''
   )

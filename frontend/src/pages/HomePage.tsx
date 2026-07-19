@@ -37,7 +37,7 @@ const features = [
   },
 ]
 
-export function HomePage() {
+export default function HomePage() {
   const versions = useVersionsStore((s) => s.versions)
 
   return (
