@@ -213,6 +213,12 @@ export default function MainLayout() {
 
   return (
     <TooltipProvider delay={400}>
+      <a
+        href="#editor-main"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-background focus:border focus:border-ring focus:rounded"
+      >
+        Skip to editor
+      </a>
       <SidebarProvider>
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
         <SidebarInset className="h-screen overflow-hidden">
@@ -262,7 +268,7 @@ export default function MainLayout() {
                 <KeyboardShortcutsButton open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
               </div>
             </header>
-            <div className="flex-1 overflow-y-auto">
+            <div id="editor-main" className="flex-1 overflow-y-auto">
               <EditorPanel activeSection={activeSection} />
             </div>
             <StorageWarning className="mx-2 mb-2" />
