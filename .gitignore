@@ -30,6 +30,7 @@ template.md
 template-prompt.md
 current-issues.md
 code-analysis.md
+grafana-prometheus-setup.md
 
 # Vite
 .vite/
