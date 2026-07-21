@@ -10,8 +10,10 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"latex-resume-backend/internal/compiler"
+	"latex-resume-backend/internal/metrics"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,6 +33,8 @@ type CompileErrorResponse struct {
 var pdfPagePattern = regexp.MustCompile(`/Type\s*/Page\b`)
 
 func CompileHandler(c *gin.Context) {
+	start := time.Now()
+
 	var req CompileRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
 		if strings.Contains(err.Error(), "http: request body too large") {
@@ -71,6 +75,8 @@ func CompileHandler(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("compile error: %v", err)
+		metrics.CompileRequests.WithLabelValues("error").Inc()
+		metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
 		c.JSON(http.StatusInternalServerError, CompileErrorResponse{
 			Success: false,
 			Message: "Internal compilation error",
@@ -81,6 +87,8 @@ func CompileHandler(c *gin.Context) {
 
 	if !result.Success {
 		log.Printf("latex compilation failed: %v", result.Errors)
+		metrics.CompileRequests.WithLabelValues("error").Inc()
+		metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
 		c.JSON(http.StatusUnprocessableEntity, CompileErrorResponse{
 			Success: false,
 			Message: "LaTeX compilation failed",
@@ -92,6 +100,8 @@ func CompileHandler(c *gin.Context) {
 	pdfData, err := os.ReadFile(result.PDFPath)
 	if err != nil {
 		log.Printf("failed to read PDF: %v", err)
+		metrics.CompileRequests.WithLabelValues("error").Inc()
+		metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
 		c.JSON(http.StatusInternalServerError, CompileErrorResponse{
 			Success: false,
 			Message: "Failed to read compiled PDF",
@@ -101,6 +111,9 @@ func CompileHandler(c *gin.Context) {
 	}
 
 	pageCount := countPDFPages(pdfData)
+
+	metrics.CompileRequests.WithLabelValues("success").Inc()
+	metrics.CompileDuration.WithLabelValues("success").Observe(time.Since(start).Seconds())
 
 	c.Header("Content-Type", "application/pdf")
 	c.Header("X-PDF-Page-Count", strconv.Itoa(pageCount))

@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"latex-resume-backend/internal/metrics"
 	"latex-resume-backend/internal/stats"
 
 	"github.com/gin-gonic/gin"
@@ -18,6 +19,8 @@ func RecordVisit(c *gin.Context) {
 		return
 	}
 
+	metrics.StatsVisits.Inc()
+
 	c.JSON(http.StatusOK, gin.H{
 		"visits": newCount,
 	})
@@ -32,6 +35,8 @@ func RecordDownload(c *gin.Context) {
 		})
 		return
 	}
+
+	metrics.StatsDownloads.Inc()
 
 	c.JSON(http.StatusOK, gin.H{
 		"downloads": newCount,
