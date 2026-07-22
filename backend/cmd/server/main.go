@@ -13,6 +13,7 @@ import (
 	"latex-resume-backend/internal/handlers"
 	"latex-resume-backend/internal/middleware"
 	"latex-resume-backend/internal/stats"
+	ws "latex-resume-backend/internal/websocket"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -119,6 +120,7 @@ func main() {
 	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
 
 	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)
+	r.GET("/api/compile/ws", compileLimiter.Middleware(), ws.HandleCompileWS)
 
 	// Stats routes
 	r.POST("/api/stats/visit", handlers.RecordVisit)
