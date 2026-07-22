@@ -131,7 +131,16 @@ func HandleCompileWS(c *gin.Context) {
 
 	go func() {
 		defer wg.Done()
-		result, err := compiler.CompileWithProgress(req.LaTeX, req.ProfileImage, events)
+		result, err := compiler.CompileWithProgress(c.Request.Context(), req.LaTeX, req.ProfileImage, events)
+
+		if c.Request.Context().Err() != nil {
+			log.Printf("compile cancelled: client disconnected")
+			if result != nil && result.TempDir != "" {
+				compiler.Cleanup(result.TempDir)
+			}
+			return
+		}
+
 		if err != nil {
 			log.Printf("compile error: %v", err)
 			metrics.CompileRequests.WithLabelValues("error").Inc()

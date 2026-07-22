@@ -125,14 +125,25 @@ func Cleanup(tempDir string) {
 	}
 }
 
-func CompileWithProgress(latex string, profileImageBase64 string, events chan<- CompileEvent) (*CompileResult, error) {
+func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 string, events chan<- CompileEvent) (*CompileResult, error) {
 	defer close(events)
 
 	if _, err := exec.LookPath("tectonic"); err != nil {
 		return nil, fmt.Errorf("tectonic is not installed or not in PATH")
 	}
 
-	events <- CompileEvent{Step: "validating", Message: "Validating LaTeX..."}
+	sendEvent := func(e CompileEvent) bool {
+		select {
+		case events <- e:
+			return true
+		case <-ctx.Done():
+			return false
+		}
+	}
+
+	if !sendEvent(CompileEvent{Step: "validating", Message: "Validating LaTeX..."}) {
+		return nil, ctx.Err()
+	}
 
 	tempDir, err := os.MkdirTemp("", TempDirPrefix)
 	if err != nil {
@@ -163,7 +174,10 @@ func CompileWithProgress(latex string, profileImageBase64 string, events chan<- 
 		}
 	}
 
-	events <- CompileEvent{Step: "writing", Message: "Writing files..."}
+	if !sendEvent(CompileEvent{Step: "writing", Message: "Writing files..."}) {
+		os.RemoveAll(tempDir)
+		return nil, ctx.Err()
+	}
 
 	texPath := filepath.Join(tempDir, TexFile)
 	if err := os.WriteFile(texPath, []byte(latex), 0644); err != nil {
@@ -171,34 +185,49 @@ func CompileWithProgress(latex string, profileImageBase64 string, events chan<- 
 		return nil, fmt.Errorf("failed to write tex file: %w", err)
 	}
 
-	events <- CompileEvent{Step: "compiling", Message: "Compiling with Tectonic..."}
+	if !sendEvent(CompileEvent{Step: "compiling", Message: "Compiling with Tectonic..."}) {
+		os.RemoveAll(tempDir)
+		return nil, ctx.Err()
+	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), getCompileTimeout())
+	timeoutCtx, cancel := context.WithTimeout(ctx, getCompileTimeout())
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, "tectonic", "-X", "compile", "--untrusted", texPath)
+	cmd := exec.CommandContext(timeoutCtx, "tectonic", "-X", "compile", "--untrusted", texPath)
 	cmd.Dir = tempDir
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
+		os.RemoveAll(tempDir)
 		return nil, fmt.Errorf("failed to create stdout pipe: %w", err)
 	}
 
 	if err := cmd.Start(); err != nil {
+		os.RemoveAll(tempDir)
 		return nil, fmt.Errorf("failed to start tectonic: %w", err)
 	}
 
 	scanner := bufio.NewScanner(stdout)
 	for scanner.Scan() {
+		if ctx.Err() != nil {
+			cmd.Process.Kill()
+			cmd.Wait()
+			os.RemoveAll(tempDir)
+			return nil, ctx.Err()
+		}
 		line := scanner.Text()
 		if line != "" {
-			events <- CompileEvent{Step: "compiling", Message: "Compiling...", Output: line}
+			sendEvent(CompileEvent{Step: "compiling", Message: "Compiling...", Output: line})
 		}
 	}
 
 	if err := cmd.Wait(); err != nil {
+		if ctx.Err() != nil {
+			os.RemoveAll(tempDir)
+			return nil, ctx.Err()
+		}
 		errMsg := fmt.Sprintf("compilation failed: %v", err)
-		events <- CompileEvent{Step: "error", Message: errMsg}
+		sendEvent(CompileEvent{Step: "error", Message: errMsg})
 		return &CompileResult{
 			Success: false,
 			TempDir: tempDir,
@@ -206,7 +235,10 @@ func CompileWithProgress(latex string, profileImageBase64 string, events chan<- 
 		}, nil
 	}
 
-	events <- CompileEvent{Step: "reading", Message: "Reading PDF..."}
+	if !sendEvent(CompileEvent{Step: "reading", Message: "Reading PDF..."}) {
+		os.RemoveAll(tempDir)
+		return nil, ctx.Err()
+	}
 
 	pdfPath := filepath.Join(tempDir, PdfFile)
 	if _, err := os.Stat(pdfPath); os.IsNotExist(err) {
