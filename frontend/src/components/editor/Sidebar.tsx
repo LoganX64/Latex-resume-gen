@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useResumeStore } from '@/stores/resume-store'
-import { getStats, recordVisit } from '@/utils/stats'
+import { useStatsStore } from '@/stores/stats-store'
+import { recordVisit } from '@/utils/stats'
 import {
   Sidebar,
   SidebarContent,
@@ -55,13 +56,12 @@ interface AppSidebarProps {
 export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const { toggleSidebar, state } = useSidebar()
-  const [stats, setStats] = useState({ visits: 0, downloads: 0 })
+  const stats = useStatsStore()
+  const refresh = useStatsStore((s) => s.refresh)
   const navigate = useNavigate()
 
   useEffect(() => {
-    recordVisit().then(() => {
-      getStats().then(setStats)
-    })
+    recordVisit().then(() => refresh())
   }, [])
 
   return (
