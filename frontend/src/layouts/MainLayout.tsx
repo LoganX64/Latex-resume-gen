@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import * as Sentry from '@sentry/react'
@@ -59,6 +59,8 @@ import { useTheme } from '@/components/theme-provider'
 import { loadTemplate, getAllTemplateConfigs, getTemplateConfig } from '@/templates'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandPalette } from '@/components/CommandPalette'
+import { CompileProgressDialog } from '@/components/CompileProgressDialog'
+import { useWebSocketCompile } from '@/hooks/useWebSocketCompile'
 import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
 import {
   Select,
@@ -87,6 +89,16 @@ export default function MainLayout() {
   const [showNoPhotoDialog, setShowNoPhotoDialog] = useState(false)
   const pendingNoPhotoRef = useRef<'pdf' | 'latex' | null>(null)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const [compileDialogOpen, setCompileDialogOpen] = useState(false)
+  const {
+    progress,
+    status: compileStatus,
+    error: compileWsError,
+    result: compileResult,
+    startCompile,
+    cancel: cancelCompile,
+    reset: resetCompile,
+  } = useWebSocketCompile()
 
   const templateConfigs = getAllTemplateConfigs()
 
@@ -120,6 +132,8 @@ export default function MainLayout() {
 
     Sentry.startSpan({ name: 'Export PDF', op: 'export.pdf' }, async (span) => {
       setIsExportingPdf(true)
+      setCompileDialogOpen(true)
+      resetCompile()
       span.setAttribute('template', templateId)
 
       try {
@@ -127,6 +141,7 @@ export default function MainLayout() {
         if (!template) {
           span.setAttribute('success', false)
           span.setAttribute('reason', 'template_not_found')
+          setCompileDialogOpen(false)
           return
         }
 
@@ -134,65 +149,20 @@ export default function MainLayout() {
         span.setAttribute('latex.length', latex.length)
 
         const profileImage = resume.personalInfo.profileImage || ''
-        const response = await fetch('/api/compile', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ latex, profileImage }),
-        })
-
-        span.setAttribute('http.status_code', response.status)
-
-        if (!response.ok) {
-          let message = 'Compilation failed'
-          try {
-            const error = await response.json()
-            message = error.message || message
-          } catch {
-            message = `Server error: ${response.status}`
-          }
-          span.setAttribute('success', false)
-          span.setAttribute('error', message)
-          toast.error('PDF export failed', { description: message })
-          return
-        }
-
-        const pageCount = parseInt(response.headers.get('X-PDF-Page-Count') || '1', 10)
-        span.setAttribute('pdf.pages', pageCount)
-
-        const blob = await response.blob()
-        span.setAttribute('pdf.size', blob.size)
-
-        const name = resume.personalInfo.fullName || 'resume'
-        const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
-
-        if (pageCount > 1) {
-          pendingDownloadRef.current = { blob, filename }
-          setMultiPageCount(pageCount)
-          setShowMultiPageDialog(true)
-          span.setAttribute('success', true)
-          span.setAttribute('multiPage', true)
-          return
-        }
-
-        downloadPdf(blob, filename)
-        recordDownload()
-        span.setAttribute('success', true)
-        toast.success('PDF exported', {
-          description: `${filename} downloaded successfully.`,
-        })
+        startCompile(latex, profileImage)
       } catch (err) {
         const message =
           err instanceof Error ? err.message : 'Could not connect to server'
         span.setAttribute('success', false)
         span.setAttribute('error', message)
+        setCompileDialogOpen(false)
         toast.error('PDF export failed', {
           description: `${message}. Make sure the backend is running.`,
         })
-      } finally {
         setIsExportingPdf(false)
       }
     })
-  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf, checkPhotoWarning])
+  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf, checkPhotoWarning, startCompile, resetCompile])
 
   const handleMultiPageDownload = useCallback(() => {
     const pending = pendingDownloadRef.current
@@ -213,6 +183,54 @@ export default function MainLayout() {
     if (exportType === 'pdf') handleExportPdf()
     else if (exportType === 'latex') handleExportLatex()
   }, [handleExportPdf, handleExportLatex])
+
+  const handleCompileCancel = useCallback(() => {
+    cancelCompile()
+  }, [cancelCompile])
+
+  useEffect(() => {
+    if (compileStatus === 'done' && compileResult?.pdfBlob) {
+      const name = resume.personalInfo.fullName || 'resume'
+      const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
+      const blob = compileResult.pdfBlob
+
+      Sentry.startSpan({ name: 'Export PDF - handle result', op: 'export.pdf' }, (span) => {
+        span.setAttribute('pdf.size', blob.size)
+
+        const pageCount = parseInt(
+          progress.find((p) => p.step === 'reading')?.message?.match(/\d+/)?.[0] || '1',
+          10
+        )
+        span.setAttribute('pdf.pages', pageCount)
+
+        if (pageCount > 1) {
+          pendingDownloadRef.current = { blob, filename }
+          setMultiPageCount(pageCount)
+          setTimeout(() => {
+            setCompileDialogOpen(false)
+            setShowMultiPageDialog(true)
+          }, 500)
+          span.setAttribute('success', true)
+          span.setAttribute('multiPage', true)
+          return
+        }
+
+        setTimeout(() => {
+          downloadPdf(blob, filename)
+          recordDownload()
+          setCompileDialogOpen(false)
+          resetCompile()
+        }, 500)
+        span.setAttribute('success', true)
+        toast.success('PDF exported', {
+          description: `${filename} downloaded successfully.`,
+        })
+      })
+      setIsExportingPdf(false)
+    } else if (compileStatus === 'error') {
+      setIsExportingPdf(false)
+    }
+  }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
 
   const handleLoadSample = useCallback(() => {
     resetResume()
@@ -403,6 +421,14 @@ export default function MainLayout() {
         </DialogContent>
       </Dialog>
       <SaveVersionDialog open={showSaveDialog} onOpenChange={setShowSaveDialog} />
+      <CompileProgressDialog
+        open={compileDialogOpen}
+        onOpenChange={setCompileDialogOpen}
+        onCancel={handleCompileCancel}
+        status={compileStatus}
+        progress={progress}
+        errorMessage={compileWsError}
+      />
     </TooltipProvider>
   )
 }
