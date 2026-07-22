@@ -186,6 +186,7 @@ export default function MainLayout() {
 
   const handleCompileCancel = useCallback(() => {
     cancelCompile()
+    setIsExportingPdf(false)
   }, [cancelCompile])
 
   useEffect(() => {

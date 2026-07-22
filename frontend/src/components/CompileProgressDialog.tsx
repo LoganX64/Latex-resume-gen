@@ -143,7 +143,7 @@ export function CompileProgressDialog({
 
         {(status === 'compiling' || status === 'connecting') && (
           <div className="flex justify-end pt-1">
-            <Button variant="outline" size="sm" onClick={onCancel}>
+            <Button variant="outline" size="sm" onClick={() => { onCancel(); onOpenChange(false); }}>
               Cancel
             </Button>
           </div>
