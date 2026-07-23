@@ -230,6 +230,7 @@ export default function MainLayout() {
       setIsExportingPdf(false)
     } else if (compileStatus === 'error') {
       setIsExportingPdf(false)
+      setCompileDialogOpen(false)
     }
   }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
 

@@ -14,6 +14,7 @@ export interface CompileResult {
 type CompileStatus = 'idle' | 'connecting' | 'compiling' | 'done' | 'error'
 
 const WS_URL = `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/api/compile/ws`
+const CONNECT_TIMEOUT_MS = 15_000
 
 export function useWebSocketCompile() {
   const [progress, setProgress] = useState<CompileStep[]>([])
@@ -21,8 +22,21 @@ export function useWebSocketCompile() {
   const [error, setError] = useState<string>('')
   const [result, setResult] = useState<CompileResult | null>(null)
   const wsRef = useRef<WebSocket | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const cleanup = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    if (wsRef.current) {
+      wsRef.current.close()
+      wsRef.current = null
+    }
+  }, [])
 
   const startCompile = useCallback((latex: string, profileImage: string) => {
+    cleanup()
     setProgress([])
     setStatus('connecting')
     setError('')
@@ -32,7 +46,19 @@ export function useWebSocketCompile() {
     const ws = new WebSocket(WS_URL)
     wsRef.current = ws
 
+    timeoutRef.current = setTimeout(() => {
+      console.error('[WS] Connection timed out')
+      ws.close()
+      setError('Connection timed out. Is the backend running?')
+      setStatus('error')
+      wsRef.current = null
+    }, CONNECT_TIMEOUT_MS)
+
     ws.onopen = () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
       console.log('[WS] Connected, sending compile request')
       setStatus('compiling')
       ws.send(JSON.stringify({ latex, profileImage }))
@@ -87,26 +113,32 @@ export function useWebSocketCompile() {
     }
 
     ws.onclose = (e) => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+      if (status === 'compiling' || status === 'connecting') {
+        setError('Connection lost during compilation')
+        setStatus('error')
+      }
       console.log('[WS] Closed:', e.code, e.reason)
       wsRef.current = null
     }
-  }, [])
+  }, [cleanup])
 
   const cancel = useCallback(() => {
-    if (wsRef.current) {
-      wsRef.current.close()
-      wsRef.current = null
-    }
+    cleanup()
     setStatus('idle')
     setProgress([])
-  }, [])
+  }, [cleanup])
 
   const reset = useCallback(() => {
+    cleanup()
     setStatus('idle')
     setProgress([])
     setError('')
     setResult(null)
-  }, [])
+  }, [cleanup])
 
   return { progress, status, error, result, startCompile, cancel, reset }
 }

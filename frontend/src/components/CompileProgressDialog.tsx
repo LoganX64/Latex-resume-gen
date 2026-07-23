@@ -43,7 +43,10 @@ export function CompileProgressDialog({
   const activeStep = progress.length > 0 ? progress[progress.length - 1].step : null
   const hasOutput = progress.some((p) => p.output)
 
-  const handleClose = () => {
+  const handleClose = (_open: boolean, eventDetails?: { reason?: string }) => {
+    if (eventDetails?.reason === 'escape-key' && (status === 'compiling' || status === 'connecting')) {
+      return
+    }
     if (status === 'compiling' || status === 'connecting') {
       onCancel()
     }
@@ -51,7 +54,7 @@ export function CompileProgressDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
+    <Dialog open={open} onOpenChange={handleClose} disablePointerDismissal={status === 'compiling' || status === 'connecting'}>
       <DialogContent className="sm:max-w-sm" showCloseButton={status !== 'compiling' && status !== 'connecting'}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -141,13 +144,6 @@ export function CompileProgressDialog({
           <p className="text-xs text-destructive mt-1">{errorMessage}</p>
         )}
 
-        {(status === 'compiling' || status === 'connecting') && (
-          <div className="flex justify-end pt-1">
-            <Button variant="outline" size="sm" onClick={() => { onCancel(); onOpenChange(false); }}>
-              Cancel
-            </Button>
-          </div>
-        )}
       </DialogContent>
     </Dialog>
   )

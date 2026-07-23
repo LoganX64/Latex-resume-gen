@@ -178,6 +178,7 @@ func HandleCompileWS(c *gin.Context) {
 
 		sendWSMessage(conn, wsMessage{Type: "complete", PageCount: pageCount})
 
+		conn.SetWriteDeadline(time.Now().Add(60 * time.Second))
 		if err := conn.WriteMessage(websocket.BinaryMessage, pdfData); err != nil {
 			log.Printf("websocket write PDF error: %v", err)
 		}
