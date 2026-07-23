@@ -40,6 +40,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | @dnd-kit | latest | Drag-and-drop |
 | Lucide React | latest | Icons |
 | react-easy-crop | 6.x | Image cropping |
+| Sentry React | 10.x | Error tracking & monitoring |
 
 ### Backend
 
@@ -57,35 +58,14 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 |------------|---------|
 | Docker | Containerization |
 | Docker Compose | Multi-service orchestration |
-| Nginx | Frontend serving & API proxy |
+| Prometheus | Metrics collection & querying |
+| Grafana | Monitoring dashboard & visualization |
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        User (Browser)                           │
-│                          :3000                                   │
-└─────────────────────┬───────────────────────────────────────────┘
-                      │
-                      ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    Frontend Container                            │
-│                  (nginx:alpine)                                  │
-│                                                                 │
-│   ┌─────────────────┐     ┌──────────────────────────────────┐  │
-│   │   React SPA     │     │        Nginx Proxy               │  │
-│   │   (static)      │     │                                  │  │
-│   │                 │     │  /api/* ──► http://backend:8080   │  │
-│   │  fetch('/api/   │     │                                  │  │
-│   │   compile')     │────►│  client_max_body_size 5M         │  │
-│   │                 │     │  proxy_read_timeout 30s          │  │
-│   └─────────────────┘     └──────────────┬───────────────────┘  │
-│                                          │                      │
-└──────────────────────────────────────────┼──────────────────────┘
-                                           │ Docker Network
-                                           ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Backend Container                             │
 │                (golang:1.23-alpine)                             │
@@ -98,7 +78,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 │   │  ┌──────────────────────────────────────────────────┐    │  │
 │   │  │           Tectonic (LaTeX compiler)              │    │  │
 │   │  │                                                  │    │  │
-│   │  │  .tex ──► .pdf  (30s timeout)                    │    │  │
+│   │  │  .tex ──► .pdf  (120s timeout)                   │    │  │
 │   │  └──────────────────────────────────────────────────┘    │  │
 │   │                                                          │  │
 │   │  Response: application/pdf (binary)                      │  │
@@ -109,22 +89,19 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 
 **Request flow:**
 
-1. User clicks **PDF Download** in the browser
-2. React sends `POST /api/compile` with `{ "latex": "..." }`
-3. Nginx proxies to backend container (`http://backend:8080`)
-4. Go server writes `.tex` to temp directory
-5. Tectonic compiles LaTeX to PDF (max 30s)
-6. Go server returns PDF binary response
-7. Nginx forwards PDF back to browser
-8. Browser triggers file download
+1. Client sends `POST /api/compile` with `{ "latex": "..." }`
+2. Go server writes `.tex` to temp directory
+3. Tectonic compiles LaTeX to PDF (max 120s)
+4. Go server returns PDF binary response
 
 **Key details:**
 
 | Component | Port | Note |
 |-----------|------|------|
-| Frontend (Nginx) | 3000 (host) → 80 (container) | Serves React SPA + proxies API |
 | Backend (Go) | 8080 (host) → 8080 (container) | Gin server + Tectonic compiler |
 | Tectonic | -- | Installed in backend image only |
+| Prometheus | 9090 (host) → 9090 (container) | Metrics collection |
+| Grafana | 3001 (host) → 3000 (container) | Monitoring dashboards |
 | Docker Network | -- | Containers communicate via service names |
 
 ---
@@ -170,8 +147,6 @@ latex-resume-gen/
 │   │   ├── App.tsx
 │   │   ├── main.tsx
 │   │   └── index.css
-│   ├── Dockerfile
-│   ├── nginx.conf
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vite.config.ts
@@ -201,7 +176,6 @@ latex-resume-gen/
 ### Prerequisites
 
 - **Docker** (recommended) — tectonic is included in the backend image
-- **Node.js** 20+ (only for local dev without Docker)
 - **Go** 1.23+ (only for local dev without Docker)
 - **Tectonic** (only for local dev without Docker)
 
@@ -211,8 +185,9 @@ latex-resume-gen/
 docker compose up --build
 ```
 
-- Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:8080`
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3001` (admin/admin)
 - PDF download works out of the box (tectonic is included in the backend image)
 
 ### Local Development (requires tectonic installed on host)
@@ -272,6 +247,15 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 |----------|---------|-------------|
 | `PPROF_ENABLED` | `false` | Set to `true` to start pprof server |
 | `PPROF_PORT` | `6060` | Port for pprof HTTP server |
+| `SERVER_PORT` | `8080` | Backend HTTP server port |
+| `ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173,...` | Comma-separated CORS allowed origins |
+| `CORS_MAX_AGE` | `12h` | Max age for CORS preflight cache |
+| `MAX_REQUEST_SIZE_BYTES` | `5242880` | Max request body size in bytes (5 MB) |
+| `RATE_LIMIT_RPS` | `5` | Rate limit: requests per second per IP |
+| `RATE_LIMIT_BURST` | `10` | Rate limit: maximum burst size |
+| `STATS_DB_PATH` | `/data/stats.db` | Path to SQLite stats database |
+| `ADMIN_KEY` | `""` | Required header for `/api/stats/dashboard` endpoint |
+| `COMPILE_TIMEOUT_SECONDS` | `120` | LaTeX compilation timeout in seconds |
 
 ---
 
@@ -312,7 +296,53 @@ Compile LaTeX source to PDF.
 **Constraints:**
 
 - Max request size: 5 MB
-- Timeout: 30 seconds
+- Timeout: 120 seconds (configurable via `COMPILE_TIMEOUT_SECONDS`)
+
+### GET /api/health
+
+Health check endpoint.
+
+**Response:**
+
+```json
+{
+  "status": "ok",
+  "tectonic": "available",
+  "database": "connected"
+}
+```
+
+Returns `503 Service Unavailable` if tectonic or the stats database is unavailable.
+
+### GET /metrics
+
+Prometheus metrics endpoint. Exposes request counts, duration histograms, and compilation metrics for monitoring.
+
+### GET /api/compile/ws
+
+WebSocket endpoint for real-time LaTeX compilation. Sends compilation progress and PDF binary frames to connected clients.
+
+### Stats Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/api/stats/visit` | Record a page visit |
+| `POST` | `/api/stats/download` | Record a PDF download |
+| `GET` | `/api/stats` | Retrieve aggregate stats |
+| `GET` | `/api/stats/dashboard` | Dashboard stats (requires `ADMIN_KEY` header) |
+
+---
+
+## Rate Limiting
+
+The `/api/compile` and `/api/compile/ws` endpoints are rate-limited per IP address.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `RATE_LIMIT_RPS` | `5` | Requests per second per IP |
+| `RATE_LIMIT_BURST` | `10` | Maximum burst size |
+
+Exceeding the limit returns `429 Too Many Requests`.
 
 ---
 
