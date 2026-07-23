@@ -115,12 +115,16 @@ func HandleCompileWS(c *gin.Context) {
 
 	var req wsCompileRequest
 	if err := json.Unmarshal(msgBytes, &req); err != nil {
-		sendWSMessage(conn, wsMessage{Type: "error", Message: "Invalid request format"})
+		if err := sendWSMessage(conn, wsMessage{Type: "error", Message: "Invalid request format"}); err != nil {
+			log.Printf("websocket send error: %v", err)
+		}
 		return
 	}
 
 	if req.LaTeX == "" {
-		sendWSMessage(conn, wsMessage{Type: "error", Message: "LaTeX content is empty"})
+		if err := sendWSMessage(conn, wsMessage{Type: "error", Message: "LaTeX content is empty"}); err != nil {
+			log.Printf("websocket send error: %v", err)
+		}
 		return
 	}
 
@@ -145,7 +149,9 @@ func HandleCompileWS(c *gin.Context) {
 			log.Printf("compile error: %v", err)
 			metrics.CompileRequests.WithLabelValues("error").Inc()
 			metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
-			sendWSMessage(conn, wsMessage{Type: "error", Message: "Internal compilation error"})
+			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: "Internal compilation error"}); err != nil {
+				log.Printf("websocket send error: %v", err)
+			}
 			return
 		}
 		if result != nil && result.TempDir != "" {
@@ -158,7 +164,9 @@ func HandleCompileWS(c *gin.Context) {
 			}
 			metrics.CompileRequests.WithLabelValues("error").Inc()
 			metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
-			sendWSMessage(conn, wsMessage{Type: "error", Message: errMsg})
+			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: errMsg}); err != nil {
+				log.Printf("websocket send error: %v", err)
+			}
 			return
 		}
 
@@ -167,7 +175,9 @@ func HandleCompileWS(c *gin.Context) {
 			log.Printf("failed to read PDF: %v", err)
 			metrics.CompileRequests.WithLabelValues("error").Inc()
 			metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
-			sendWSMessage(conn, wsMessage{Type: "error", Message: "Failed to read compiled PDF"})
+			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: "Failed to read compiled PDF"}); err != nil {
+				log.Printf("websocket send error: %v", err)
+			}
 			return
 		}
 
@@ -176,18 +186,24 @@ func HandleCompileWS(c *gin.Context) {
 		metrics.CompileRequests.WithLabelValues("success").Inc()
 		metrics.CompileDuration.WithLabelValues("success").Observe(time.Since(start).Seconds())
 
-		sendWSMessage(conn, wsMessage{Type: "complete", PageCount: pageCount})
+		if err := sendWSMessage(conn, wsMessage{Type: "complete", PageCount: pageCount}); err != nil {
+			log.Printf("websocket send error: %v", err)
+			return
+		}
 
 		conn.SetWriteDeadline(time.Now().Add(60 * time.Second))
 		if err := conn.WriteMessage(websocket.BinaryMessage, pdfData); err != nil {
 			log.Printf("websocket write PDF error: %v", err)
+			return
 		}
 	}()
 
 	for event := range events {
 		if event.Step == "error" {
-			sendWSMessage(conn, wsMessage{Type: "error", Message: event.Message})
-			return
+			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: event.Message}); err != nil {
+				log.Printf("websocket send error: %v", err)
+			}
+			break
 		}
 		msg := wsMessage{
 			Type:    "progress",
@@ -195,14 +211,17 @@ func HandleCompileWS(c *gin.Context) {
 			Message: event.Message,
 			Output:  event.Output,
 		}
-		sendWSMessage(conn, msg)
+		if err := sendWSMessage(conn, msg); err != nil {
+			log.Printf("websocket send error: %v", err)
+			break
+		}
 	}
 	wg.Wait()
 }
 
-func sendWSMessage(conn *websocket.Conn, msg wsMessage) {
+func sendWSMessage(conn *websocket.Conn, msg wsMessage) error {
 	conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
-	conn.WriteJSON(msg)
+	return conn.WriteJSON(msg)
 }
 
 func countPDFPages(pdfData []byte) int {
