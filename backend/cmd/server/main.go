@@ -17,6 +17,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -37,6 +38,10 @@ func getEnvInt(key string, fallback int) int {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not found: %v", err)
+	}
+
 	r := gin.Default()
 	r.Use(gin.Recovery())
 
@@ -45,17 +50,10 @@ func main() {
 	maxRequestSize := getEnvInt("MAX_REQUEST_SIZE_BYTES", 5<<20)
 
 	// CORS config
-	allowedOrigins := []string{
-		"http://localhost:5173",
-		"http://127.0.0.1:5173",
-		"http://localhost:4173",
-		"http://127.0.0.1:4173",
-	}
-	if origins := os.Getenv("ALLOWED_ORIGINS"); origins != "" {
-		allowedOrigins = strings.Split(origins, ",")
-		for i := range allowedOrigins {
-			allowedOrigins[i] = strings.TrimSpace(allowedOrigins[i])
-		}
+	originsStr := getEnv("ALLOWED_ORIGINS", "")
+	allowedOrigins := strings.Split(originsStr, ",")
+	for i := range allowedOrigins {
+		allowedOrigins[i] = strings.TrimSpace(allowedOrigins[i])
 	}
 
 	corsMaxAge := 12 * time.Hour
@@ -83,7 +81,10 @@ func main() {
 	// Rate limiting config
 	rateLimitRPS := getEnvInt("RATE_LIMIT_RPS", 5)
 	rateLimitBurst := getEnvInt("RATE_LIMIT_BURST", 10)
-	compileLimiter := middleware.NewRateLimiter(float64(rateLimitRPS), rateLimitBurst)
+	rateLimitCleanup := getEnvInt("RATE_LIMITER_CLEANUP_SECONDS", 60)
+	rateLimitVisitorTTL := getEnvInt("RATE_LIMITER_VISITOR_TTL_SECONDS", 180)
+	rateLimitMsg := getEnv("RATE_LIMITER_MSG", "Rate limit exceeded. Try again later.")
+	compileLimiter := middleware.NewRateLimiter(float64(rateLimitRPS), rateLimitBurst, rateLimitCleanup, rateLimitVisitorTTL, rateLimitMsg)
 
 	// Stats DB
 	statsDBPath := getEnv("STATS_DB_PATH", "/data/stats.db")

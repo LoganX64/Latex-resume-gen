@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -23,49 +24,15 @@ var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
 	CheckOrigin: func(r *http.Request) bool {
-		allowed := map[string]bool{
-			"http://localhost:5173":  true,
-			"http://127.0.0.1:5173": true,
-			"http://localhost:4173":  true,
-			"http://127.0.0.1:4173": true,
-		}
-		if origins := os.Getenv("ALLOWED_ORIGINS"); origins != "" {
-			for _, o := range splitOrigins(origins) {
-				allowed[o] = true
+		origins := os.Getenv("ALLOWED_ORIGINS")
+		origin := r.Header.Get("Origin")
+		for _, o := range strings.Split(origins, ",") {
+			if strings.TrimSpace(o) == origin {
+				return true
 			}
 		}
-		return allowed[r.Header.Get("Origin")]
+		return false
 	},
-}
-
-func splitOrigins(s string) []string {
-	result := make([]string, 0)
-	start := 0
-	for i := 0; i <= len(s)-1; i++ {
-		if s[i] == ',' {
-			trimmed := trimSpace(s[start:i])
-			if trimmed != "" {
-				result = append(result, trimmed)
-			}
-			start = i + 1
-		}
-	}
-	trimmed := trimSpace(s[start:])
-	if trimmed != "" {
-		result = append(result, trimmed)
-	}
-	return result
-}
-
-func trimSpace(s string) string {
-	start, end := 0, len(s)
-	for start < end && s[start] == ' ' {
-		start++
-	}
-	for end > start && s[end-1] == ' ' {
-		end--
-	}
-	return s[start:end]
 }
 
 type wsCompileRequest struct {

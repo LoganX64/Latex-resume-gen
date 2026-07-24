@@ -15,17 +15,23 @@ type visitor struct {
 }
 
 type RateLimiter struct {
-	visitors map[string]*visitor
-	mu       sync.Mutex
-	rate     rate.Limit
-	burst    int
+	visitors        map[string]*visitor
+	mu              sync.Mutex
+	rate            rate.Limit
+	burst           int
+	cleanupInterval time.Duration
+	visitorTTL      time.Duration
+	errorMsg        string
 }
 
-func NewRateLimiter(rps float64, burst int) *RateLimiter {
+func NewRateLimiter(rps float64, burst int, cleanupSeconds int, visitorTTLSeconds int, msg string) *RateLimiter {
 	rl := &RateLimiter{
-		visitors: make(map[string]*visitor),
-		rate:     rate.Limit(rps),
-		burst:    burst,
+		visitors:        make(map[string]*visitor),
+		rate:            rate.Limit(rps),
+		burst:           burst,
+		cleanupInterval: time.Duration(cleanupSeconds) * time.Second,
+		visitorTTL:      time.Duration(visitorTTLSeconds) * time.Second,
+		errorMsg:        msg,
 	}
 	go rl.cleanup()
 	return rl
@@ -47,10 +53,10 @@ func (rl *RateLimiter) getVisitor(ip string) *rate.Limiter {
 
 func (rl *RateLimiter) cleanup() {
 	for {
-		time.Sleep(time.Minute)
+		time.Sleep(rl.cleanupInterval)
 		rl.mu.Lock()
 		for ip, v := range rl.visitors {
-			if time.Since(v.lastSeen) > 3*time.Minute {
+			if time.Since(v.lastSeen) > rl.visitorTTL {
 				delete(rl.visitors, ip)
 			}
 		}
@@ -65,7 +71,7 @@ func (rl *RateLimiter) Middleware() gin.HandlerFunc {
 		if !limiter.Allow() {
 			c.JSON(http.StatusTooManyRequests, gin.H{
 				"success": false,
-				"message": "Rate limit exceeded. Try again later.",
+				"message": rl.errorMsg,
 			})
 			c.Abort()
 			return
