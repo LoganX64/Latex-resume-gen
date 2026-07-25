@@ -9,9 +9,6 @@ import (
 
 func AdminKeyRequired() gin.HandlerFunc {
 	adminKey := os.Getenv("ADMIN_KEY")
-	if adminKey == "" {
-		adminKey = "changeme"
-	}
 
 	return func(c *gin.Context) {
 		key := c.GetHeader("X-Admin-Key")
