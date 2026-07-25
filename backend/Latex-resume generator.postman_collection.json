@@ -1,0 +1,176 @@
+{
+  "info": {
+    "_postman_id": "6d3e350a-dc4b-4b70-b6be-f2b5f0067e48",
+    "name": "Latex-resume generator",
+    "description": "## Latex Resume Generator API\n\nThis collection covers the API endpoints for a **LaTeX-based resume generation service** running locally at `http://localhost:8080`. The service compiles LaTeX source into PDF resumes and exposes supporting endpoints for usage tracking, monitoring, and real-time compilation via WebSockets.\n\n### Endpoints Overview\n\n| Request | Method | Description |\n| --- | --- | --- |\n| **Health** | GET | Check the health/availability of the service |\n| **pdf binary** | POST | Submit LaTeX source to `/api/compile` and receive a compiled PDF binary |\n| **Websockets** | GET | Connect to `/api/compile/ws` for real-time, streaming LaTeX compilation |\n| **Visiters** | POST | Record a visitor event for usage tracking |\n| **Download** | GET | Log or retrieve download statistics |\n| **Stats** | GET | Retrieve overall usage statistics |\n| **Dashboard** | GET | Fetch aggregated stats for a monitoring dashboard |\n| **Prometheos** | GET | Expose Prometheus-compatible metrics at `/metrics` for observability |\n\n### Base URL\n\n```\nhttp://localhost:8080\n\n ```",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37687945"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "pdf binary",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"latex\": \"\\\\documentclass{article}\\\\begin{document}Hello World\\\\end{document}\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/compile",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "compile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Visiters",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/stats/visit",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stats",
+            "visit"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Downloads",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/stats/download",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stats",
+            "download"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/stats",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stats"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Admin-Key",
+            "value": "changeme",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/stats/dashboard",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "stats",
+            "dashboard"
+          ],
+          "query": [
+            {
+              "key": "X-Admin-Key",
+              "value": "changeme",
+              "type": "text",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Prometheos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/metrics",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "metrics"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
