@@ -155,7 +155,6 @@ export default function MainLayout() {
           err instanceof Error ? err.message : 'Could not connect to server'
         span.setAttribute('success', false)
         span.setAttribute('error', message)
-        setCompileDialogOpen(false)
         toast.error('PDF export failed', {
           description: `${message}. Make sure the backend is running.`,
         })
@@ -230,7 +229,6 @@ export default function MainLayout() {
       setIsExportingPdf(false)
     } else if (compileStatus === 'error') {
       setIsExportingPdf(false)
-      setCompileDialogOpen(false)
     }
   }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
 
