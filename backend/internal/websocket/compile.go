@@ -124,16 +124,15 @@ func HandleCompileWS(c *gin.Context) {
 		if result != nil && result.TempDir != "" {
 			defer compiler.Cleanup(result.TempDir)
 		}
-		if result == nil || !result.Success {
-			errMsg := "Compilation failed"
-			if result != nil && len(result.Errors) > 0 {
-				errMsg = result.Errors[0]
-			}
+		if result == nil {
 			metrics.CompileRequests.WithLabelValues("error").Inc()
 			metrics.CompileDuration.WithLabelValues("error").Observe(time.Since(start).Seconds())
-			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: errMsg}); err != nil {
+			if err := sendWSMessage(conn, wsMessage{Type: "error", Message: "Compilation failed"}); err != nil {
 				log.Printf("websocket send error: %v", err)
 			}
+			return
+		}
+		if !result.Success {
 			return
 		}
 

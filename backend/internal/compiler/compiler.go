@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -202,10 +203,33 @@ func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 s
 		return nil, fmt.Errorf("failed to create stdout pipe: %w", err)
 	}
 
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		os.RemoveAll(tempDir)
+		return nil, fmt.Errorf("failed to create stderr pipe: %w", err)
+	}
+
 	if err := cmd.Start(); err != nil {
 		os.RemoveAll(tempDir)
 		return nil, fmt.Errorf("failed to start tectonic: %w", err)
 	}
+
+	var stderrOutput strings.Builder
+	var stderrWg sync.WaitGroup
+	stderrWg.Add(1)
+	go func() {
+		defer stderrWg.Done()
+		scanner := bufio.NewScanner(stderr)
+		for scanner.Scan() {
+			line := scanner.Text()
+			if line != "" {
+				if stderrOutput.Len() > 0 {
+					stderrOutput.WriteString("\n")
+				}
+				stderrOutput.WriteString(line)
+			}
+		}
+	}()
 
 	scanner := bufio.NewScanner(stdout)
 	for scanner.Scan() {
@@ -226,7 +250,11 @@ func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 s
 			os.RemoveAll(tempDir)
 			return nil, ctx.Err()
 		}
+		stderrWg.Wait()
 		errMsg := fmt.Sprintf("compilation failed: %v", err)
+		if stderrOutput.Len() > 0 {
+			errMsg = fmt.Sprintf("%s\n%s", errMsg, stderrOutput.String())
+		}
 		sendEvent(CompileEvent{Step: "error", Message: errMsg})
 		return &CompileResult{
 			Success: false,
