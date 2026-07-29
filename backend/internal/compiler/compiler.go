@@ -43,7 +43,7 @@ type CompileResult struct {
 	Errors  []string
 }
 
-func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
+func Compile(ctx context.Context, latex string, profileImageBase64 string) (*CompileResult, error) {
 	if _, err := exec.LookPath("tectonic"); err != nil {
 		return nil, fmt.Errorf("tectonic is not installed or not in PATH. Install it via: choco install tectonic")
 	}
@@ -84,7 +84,7 @@ func Compile(latex string, profileImageBase64 string) (*CompileResult, error) {
 		return nil, fmt.Errorf("failed to write tex file: %w", err)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), getCompileTimeout())
+	ctx, cancel := context.WithTimeout(ctx, getCompileTimeout())
 	defer cancel()
 
 	cmd := exec.CommandContext(ctx, "tectonic", "-X", "compile", "--untrusted", texPath)

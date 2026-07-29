@@ -63,7 +63,7 @@ func CompileHandler(c *gin.Context) {
 		return
 	}
 
-	result, err := compiler.Compile(req.LaTeX, req.ProfileImage)
+	result, err := compiler.Compile(c.Request.Context(), req.LaTeX, req.ProfileImage)
 
 	// Set up deferred cleanup of the temporary directory (if it was created)
 	// to avoid resource leaks under all circumstances.

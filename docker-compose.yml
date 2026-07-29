@@ -8,6 +8,11 @@ services:
     volumes:
       - tectonic-cache:/root/.cache/Tectonic
       - stats-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "1.0"
     restart: unless-stopped
 
   prometheus:

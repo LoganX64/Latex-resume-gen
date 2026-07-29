@@ -6,10 +6,10 @@ RUN go mod download
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -o server ./cmd/server
 
-FROM alpine:3.19
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories
-RUN apk add --no-cache curl && \
-    curl -sL https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.16.9/tectonic-0.16.9-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin tectonic
+FROM alpine:3.21
+RUN apk add --no-cache curl fontconfig && \
+    curl -sL https://github.com/tectonic-typesetting/tectonic/releases/download/tectonic%400.16.9/tectonic-0.16.9-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin tectonic && \
+    apk del curl
 WORKDIR /app
 COPY --from=builder /app/server .
 RUN mkdir -p /app/temp
