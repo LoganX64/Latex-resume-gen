@@ -112,8 +112,8 @@ export default function MainLayout() {
     return false
   }, [templateId, resume.personalInfo.profileImage])
 
-  const handleExportLatex = useCallback(async () => {
-    if (checkPhotoWarning('latex')) return
+  const handleExportLatex = useCallback(async (skipPhotoWarning = false) => {
+    if (!skipPhotoWarning && checkPhotoWarning('latex')) return
     const template = await loadTemplate(templateId)
     if (!template) return
     const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
@@ -126,9 +126,9 @@ export default function MainLayout() {
     })
   }, [resume, sectionOrder, sectionVisibility, templateId, checkPhotoWarning])
 
-  const handleExportPdf = useCallback(async () => {
+  const handleExportPdf = useCallback(async (skipPhotoWarning = false) => {
     if (isExportingPdf) return
-    if (checkPhotoWarning('pdf')) return
+    if (!skipPhotoWarning && checkPhotoWarning('pdf')) return
 
     Sentry.startSpan({ name: 'Export PDF', op: 'export.pdf' }, async (span) => {
       setIsExportingPdf(true)
@@ -179,8 +179,8 @@ export default function MainLayout() {
     const exportType = pendingNoPhotoRef.current
     setShowNoPhotoDialog(false)
     pendingNoPhotoRef.current = null
-    if (exportType === 'pdf') handleExportPdf()
-    else if (exportType === 'latex') handleExportLatex()
+    if (exportType === 'pdf') handleExportPdf(true)
+    else if (exportType === 'latex') handleExportLatex(true)
   }, [handleExportPdf, handleExportLatex])
 
   const handleCompileCancel = useCallback(() => {
@@ -337,13 +337,13 @@ export default function MainLayout() {
               </div>
               <div className="flex items-center gap-1">
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleExportLatex} aria-label="Export LaTeX file" />}>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => handleExportLatex()} aria-label="Export LaTeX file" />}>
                     <FileText className="h-3.5 w-3.5" />
                   </TooltipTrigger>
                   <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleExportPdf} disabled={isExportingPdf} aria-label="Export PDF file" />}>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => handleExportPdf()} disabled={isExportingPdf} aria-label="Export PDF file" />}>
                     {isExportingPdf ? (
                       <Spinner className="h-3.5 w-3.5" />
                     ) : (
