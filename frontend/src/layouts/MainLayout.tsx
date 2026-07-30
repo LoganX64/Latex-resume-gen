@@ -266,10 +266,10 @@ export default function MainLayout() {
       </a>
       <SidebarProvider>
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
-        <SidebarInset className="h-screen overflow-hidden">
+        <SidebarInset className="h-dvh overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
-              <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <header className="flex flex-wrap lg:flex-nowrap items-center justify-between px-4 py-2 lg:h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
                 <div className="flex items-center gap-1">
                 <Tooltip>
