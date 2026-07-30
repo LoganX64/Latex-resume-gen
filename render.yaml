@@ -2,17 +2,19 @@ services:
   - type: web
     name: latex-resume-backend
     runtime: docker
+    plan: free
     dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    healthCheckPath: /api/health
+
     envVars:
       - key: ALLOWED_ORIGINS
         sync: false
+      - key: ADMIN_KEY
+        sync: false
       - key: SERVER_PORT
-        value: "8080"
+        value: "10000"
       - key: COMPILE_TIMEOUT_SECONDS
         value: "120"
       - key: STATS_DB_PATH
         value: /data/stats.db
-    disk:
-      name: data
-      mountPath: /data
-      sizeGB: 1
