@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/react'
 import './index.css'
 import App from './App'
 import { ThemeProvider } from '@/components/theme-provider'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const root = createRoot(document.getElementById('root')!, {
   onUncaughtError: Sentry.reactErrorHandler((error, errorInfo) => {
@@ -19,9 +20,11 @@ root.render(
   <StrictMode>
     <BrowserRouter>
       <ThemeProvider>
-        <Sentry.ErrorBoundary fallback={<p>Something went wrong.</p>}>
-          <App />
-        </Sentry.ErrorBoundary>
+        <TooltipProvider>
+          <Sentry.ErrorBoundary fallback={<p>Something went wrong.</p>}>
+            <App />
+          </Sentry.ErrorBoundary>
+        </TooltipProvider>
       </ThemeProvider>
     </BrowserRouter>
   </StrictMode>,

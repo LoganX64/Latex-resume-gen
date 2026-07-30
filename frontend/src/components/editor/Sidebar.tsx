@@ -70,7 +70,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" render={<Link to="/" />}>
-              <img src="/favicon.svg" alt="Logo" className="h-6 w-6 shrink-0" />
+              <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6 shrink-0" />
               <div className="flex flex-col leading-tight">
                 <span className="font-bold text-sidebar-foreground">
                   LaTeX Resume

@@ -10,7 +10,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
         <Link to="/" className="flex items-center gap-2">
-          <img src="/favicon.svg" alt="Logo" className="h-6 w-6" />
+          <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6" />
           <span className="font-bold text-sm">LaTeX Resume</span>
         </Link>
 
