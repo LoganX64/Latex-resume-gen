@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Spinner } from '@/components/ui/spinner'
-import { Button } from '@/components/ui/button'
 import type { CompileStep } from '@/hooks/useWebSocketCompile'
 
 interface CompileProgressDialogProps {
