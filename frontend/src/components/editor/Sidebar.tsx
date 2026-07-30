@@ -84,7 +84,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
         </SidebarMenu>
       </SidebarHeader>
       <SidebarSeparator />
-      <SidebarContent className="py-2 overflow-hidden">
+      <SidebarContent className="py-2 overflow-y-auto">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

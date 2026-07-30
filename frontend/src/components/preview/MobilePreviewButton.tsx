@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { Eye, X, User, FileText, Briefcase, Puzzle, FolderGit2, GraduationCap, Award, Trophy, BookOpen, Globe } from 'lucide-react'
+import { Eye, X, ChevronLeft, User, FileText, Briefcase, Puzzle, FolderGit2, GraduationCap, Award, Trophy, BookOpen, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -78,9 +79,9 @@ export function MobilePreviewButton({ activeSection, onSectionClick }: MobilePre
                     ))}
                   </SelectContent>
                 </Select>
-                <Button variant="ghost" size="icon" aria-label="Close preview" onClick={() => setOpen(false)}>
+                <SheetClose className="flex items-center justify-center h-9 w-9 rounded-md hover:bg-muted" aria-label="Close preview">
                   <X className="h-4 w-4" />
-                </Button>
+                </SheetClose>
               </div>
             </div>
           </SheetHeader>
@@ -114,6 +115,16 @@ export function MobilePreviewButton({ activeSection, onSectionClick }: MobilePre
           </div>
           <div className="shrink-0">
             <OverflowIndicator />
+          </div>
+          <div className="shrink-0 border-t border-border p-3">
+            <Button
+              variant="ghost"
+              className="w-full justify-center gap-2"
+              onClick={() => setOpen(false)}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Back to Editor
+            </Button>
           </div>
         </SheetContent>
       </Sheet>
