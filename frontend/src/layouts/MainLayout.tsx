@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/react'
 import {
   SidebarProvider,
   SidebarInset,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
@@ -28,6 +29,7 @@ import {
   ImageOff,
   Save,
   Home,
+  PanelLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -69,6 +71,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+
+function MobileSidebarTrigger() {
+  const { toggleSidebar } = useSidebar()
+  return (
+    <Button variant="ghost" size="icon-sm" className="lg:hidden" onClick={toggleSidebar} aria-label="Open sidebar">
+      <PanelLeft className="h-4 w-4" />
+    </Button>
+  )
+}
 
 export default function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -270,7 +281,10 @@ export default function MainLayout() {
           <div className="flex flex-1 overflow-hidden">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex flex-wrap lg:flex-nowrap items-center justify-between px-4 py-2 lg:h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
+                <div className="flex items-center gap-2">
+                  <MobileSidebarTrigger />
+                  <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
+                </div>
                 <div className="flex items-center gap-1">
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => setShowSaveDialog(true)} aria-label="Save as version" />}>
@@ -371,8 +385,8 @@ export default function MainLayout() {
           isDarkMode={darkMode}
         />
         </SidebarInset>
+      <MobilePreviewButton activeSection={activeSection} onSectionClick={setActiveSection} />
       </SidebarProvider>
-      <MobilePreviewButton />
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>

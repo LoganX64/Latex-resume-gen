@@ -84,7 +84,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
         </SidebarMenu>
       </SidebarHeader>
       <SidebarSeparator />
-      <SidebarContent className="py-2">
+      <SidebarContent className="py-2 overflow-hidden">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -142,20 +142,20 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
         )}
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={onSaveClick} tooltip="Save as version">
-              <Save className="h-3.5 w-3.5" />
+            <SidebarMenuButton size="sm" onClick={onSaveClick} tooltip="Save as version">
+              <Save className="h-3 w-3" />
               <span>Save Version</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => navigate('/')} tooltip="Back to home">
-              <Home className="h-3.5 w-3.5" />
+            <SidebarMenuButton size="sm" onClick={() => navigate('/')} tooltip="Back to home">
+              <Home className="h-3 w-3" />
               <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={toggleSidebar} tooltip="Toggle sidebar">
-              <PanelLeftClose className="h-3.5 w-3.5 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
+            <SidebarMenuButton size="sm" onClick={toggleSidebar} tooltip="Toggle sidebar">
+              <PanelLeftClose className="h-3 w-3 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
               <span>Collapse</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
