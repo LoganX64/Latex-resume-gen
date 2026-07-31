@@ -79,7 +79,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
       )}
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" showCloseButton={false} className="h-[90dvh] p-0 flex flex-col gap-0 overflow-hidden">
+        <SheetContent side="bottom" showCloseButton={false} className="p-0 flex flex-col gap-0 overflow-hidden" style={{ height: '90dvh' }}>
           <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
             <SheetTitle className="text-sm">Live Preview</SheetTitle>
             <div className="flex items-center gap-2">

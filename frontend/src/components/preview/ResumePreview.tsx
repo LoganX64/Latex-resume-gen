@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useResumeStore } from '@/stores/resume-store'
 import { loadTemplate, getTemplateConfig } from '@/templates'
@@ -289,12 +289,19 @@ export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, on
   const totalScaledHeight = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
   const [fitScale, setFitScale] = useState(1)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = containerRef.current
     if (!el) return
-    const tsh = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
-    setFitScale(Math.min(Math.max((el.clientWidth - 32) / A4_WIDTH_PX, 0), Math.max((el.clientHeight - 32) / tsh, 0), 1.5))
-  }, [numberOfPages, viewport])
+    const recompute = () => {
+      const tsh = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
+      const fs = Math.min(Math.max((el.clientWidth - 32) / A4_WIDTH_PX, 0), Math.max((el.clientHeight - 32) / tsh, 0), 1.5)
+      setFitScale(fs || 1)
+    }
+    const raf = requestAnimationFrame(recompute)
+    const observer = new ResizeObserver(recompute)
+    observer.observe(el)
+    return () => { cancelAnimationFrame(raf); observer.disconnect() }
+  }, [numberOfPages])
   const baseScale = isFullscreen
     ? zoom === 'fit'
       ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / totalScaledHeight, 1.5)
