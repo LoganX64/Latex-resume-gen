@@ -15,11 +15,17 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 - **Multiple Entries** -- Support multiple experience, education, project, certification, and achievement entries
 - **LaTeX Export** -- Generate clean, editable `.tex` files compatible with Overleaf, TeX Live, MiKTeX
 - **PDF Export** -- Compile LaTeX to PDF via a Go backend using Tectonic
-- **8 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, Google, Compact, Academic, Elegant
+- **WebSocket Compilation** -- Real-time streaming progress events during LaTeX-to-PDF compilation
+- **9 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, Google, Compact, Academic, Elegant, Data Science, Two Column
 - **Live HTML/CSS Preview** -- Real-time preview renders resume content directly in the browser with no backend dependency for preview
+- **Version Management** -- Save, load, and delete resume versions with localStorage persistence
+- **Command Palette** -- Ctrl+K power-user interface for quick actions (export, template switch, theme toggle)
+- **Keyboard Shortcuts** -- Ctrl+P (PDF), Ctrl+L (LaTeX), Ctrl+D (dark mode), Ctrl+S (save), Ctrl+H (home)
 - **Dark/Light Mode** -- Toggle between themes
 - **Auto-Save** -- All changes persist to localStorage automatically
 - **Responsive UI** -- Modern interface built with shadcn/ui and Tailwind CSS v4
+- **Error Tracking** -- Sentry integration with session replay and performance monitoring
+- **Multi-Page Warning** -- Alerts when resume exceeds single-page limit with download-anyway option
 
 ---
 
@@ -46,8 +52,13 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 
 | Technology | Purpose |
 |------------|---------|
-| Go 1.23+ | Runtime |
+| Go 1.25+ | Runtime |
 | Gin Framework | HTTP router |
+| Gorilla WebSocket | Real-time compilation streaming |
+| modernc.org/sqlite | Pure-Go SQLite driver (stats database) |
+| golang.org/x/time/rate | Per-IP token bucket rate limiting |
+| prometheus/client_golang | Prometheus metrics collection |
+| joho/godotenv | Environment variable loading |
 | Tectonic | LaTeX to PDF compiler |
 | gin-contrib/cors | CORS middleware |
 | savetrees (LaTeX) | Automatic single-page compression |
@@ -60,6 +71,8 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | Docker Compose | Multi-service orchestration |
 | Prometheus | Metrics collection & querying |
 | Grafana | Monitoring dashboard & visualization |
+| Sentry | Error tracking & performance monitoring |
+| Render | Cloud deployment (render.yaml blueprint) |
 
 ---
 
@@ -68,7 +81,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    Backend Container                             │
-│                (golang:1.23-alpine)                             │
+│                (golang:1.25-alpine)                             │
 │                                                                 │
 │   ┌──────────────────────────────────────────────────────────┐  │
 │   │                  Gin HTTP Server (:8080)                 │  │
@@ -130,20 +143,44 @@ latex-resume-gen/
 │   │   │   │   ├── PublicationsForm.tsx
 │   │   │   │   ├── LanguagesForm.tsx
 │   │   │   │   └── CustomSectionsForm.tsx
-│   │   │   ├── preview/         # Preview components (Phase 4)
+│   │   │   ├── preview/         # Live resume preview
 │   │   │   ├── theme-provider.tsx
 │   │   │   └── ui/              # shadcn/ui components
-│   │   ├── hooks/              # Custom React hooks
-│   │   │   └── useKeyboardShortcuts.ts
+│   │   ├── hooks/               # Custom React hooks
+│   │   │   ├── useKeyboardShortcuts.ts
+│   │   │   ├── useWebSocketCompile.ts
+│   │   │   └── use-mobile.ts
 │   │   ├── layouts/
 │   │   │   └── MainLayout.tsx   # Split-screen layout
-│   │   ├── stores/
-│   │   │   └── resume-store.ts  # Zustand global state
+│   │   ├── pages/
+│   │   │   ├── HomePage.tsx
+│   │   │   └── StatsDashboard.tsx
+│   │   ├── stores/              # Zustand global state
+│   │   │   ├── resume-store.ts
+│   │   │   ├── stats-store.ts
+│   │   │   └── versions-store.ts
 │   │   ├── types/
 │   │   │   └── resume.ts        # TypeScript interfaces
-│   │   ├── templates/           # 8 template directories
+│   │   ├── utils/               # Download, export, stats helpers
+│   │   │   ├── download.ts
+│   │   │   ├── quick-export.ts
+│   │   │   └── stats.ts
+│   │   ├── templates/           # 9 template directories
+│   │   │   ├── academic/
+│   │   │   ├── classic/
+│   │   │   ├── compact/
+│   │   │   ├── datasci/
+│   │   │   ├── engineering/
+│   │   │   ├── modern/
+│   │   │   ├── professional/
+│   │   │   ├── sidebar/
+│   │   │   ├── twocolumn/
+│   │   │   ├── shared.ts
+│   │   │   ├── icons.tsx
+│   │   │   └── index.ts
 │   │   ├── lib/
 │   │   │   └── utils.ts         # cn(), generateId(), escapeLatex()
+│   │   ├── sentry.ts           # Sentry initialization
 │   │   ├── App.tsx
 │   │   ├── main.tsx
 │   │   └── index.css
@@ -156,16 +193,21 @@ latex-resume-gen/
 │   │       └── main.go          # Entry point
 │   ├── internal/
 │   │   ├── compiler/            # LaTeX compilation logic
-│   │   ├── handlers/            # HTTP handlers
-│   │   ├── middleware/           # CORS, etc.
-│   │   └── utils/               # Helpers
+│   │   ├── handlers/            # HTTP handlers (compile, stats)
+│   │   ├── metrics/             # Prometheus metrics
+│   │   ├── middleware/           # Rate limiting, admin auth
+│   │   ├── stats/               # SQLite database
+│   │   └── websocket/           # WebSocket compile streaming
 │   ├── Dockerfile
+│   ├── .env
+│   ├── .dockerignore
 │   ├── go.mod
 │   └── go.sum
+├── prometheus/                   # Prometheus config
+├── grafana/                      # Grafana provisioning
+├── render.yaml                   # Render deployment blueprint
 ├── docker-compose.yml
 ├── .gitignore
-├── plan.md
-├── tracker.md
 └── README.md
 ```
 
@@ -176,7 +218,7 @@ latex-resume-gen/
 ### Prerequisites
 
 - **Docker** (recommended) — tectonic is included in the backend image
-- **Go** 1.23+ (only for local dev without Docker)
+- **Go** 1.25+ (only for local dev without Docker)
 - **Tectonic** (only for local dev without Docker)
 
 ### Docker Deployment (Recommended)
@@ -283,6 +325,7 @@ Compile LaTeX source to PDF.
 **Response:**
 
 - `200 OK` -- `application/pdf` (binary)
+  - `X-PDF-Page-Count` header: number of pages in the compiled PDF
 - `400 Bad Request`:
 
 ```json
@@ -321,6 +364,12 @@ Prometheus metrics endpoint. Exposes request counts, duration histograms, and co
 ### GET /api/compile/ws
 
 WebSocket endpoint for real-time LaTeX compilation. Sends compilation progress and PDF binary frames to connected clients.
+
+**Protocol:**
+- Client sends JSON: `{ "latex": "...", "profileImage": "..." }`
+- Server sends JSON progress messages: `{ "step": "compiling", "message": "Compiling with Tectonic..." }`
+- Server sends final PDF as binary WebSocket frame
+- Ping/pong heartbeat every 30 seconds for keepalive
 
 ### Stats Endpoints
 
@@ -368,18 +417,19 @@ The editor supports these sections (all drag-and-drop reorderable):
 
 ## Templates
 
-8 ATS-friendly templates designed for IT professionals:
+9 ATS-friendly templates designed for IT professionals:
 
 | # | Template | Description |
 |---|----------|-------------|
-| 1 | Classic Professional | Traditional clean layout |
-| 2 | Minimal ATS | Ultra-clean, no section rules, em-dash bullets |
+| 1 | Professional ATS | Clean, ATS-optimized layout |
+| 2 | Classic | Traditional clean layout |
 | 3 | Modern Sidebar | Two-column with sidebar |
 | 4 | Engineering Resume | Technical-focused with photo support |
-| 5 | Google Style | Blue accent color |
+| 5 | Minimal | Ultra-clean, no section rules |
 | 6 | Compact One Page | Dense, two-column skills grid |
 | 7 | Academic Technical CV | Research-oriented with fancyhdr |
-| 8 | Elegant Professional | EB Garamond font, refined styling |
+| 8 | Data Science | Analytics-focused layout |
+| 9 | Two Column | Standard two-column design |
 
 Each template includes a React preview component, LaTeX template, and configuration file. All templates use the `savetrees` package for automatic single-page compression.
 

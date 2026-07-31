@@ -23,14 +23,9 @@ Thumbs.db
 .agents/
 skills-lock.json
 
-prompt.md
-plan.md
-tracker.md
 template.md
-template-prompt.md
-current-issues.md
-code-analysis.md
 grafana-prometheus-setup.md
+resume-desp.md
 
 # Vite
 .vite/
