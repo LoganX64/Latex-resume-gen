@@ -1,16 +1,14 @@
-import { useState } from 'react'
-import { Eye, X, ChevronLeft, User, FileText, Briefcase, Puzzle, FolderGit2, GraduationCap, Award, Trophy, BookOpen, Globe } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Eye, X, ChevronLeft, Maximize, ZoomIn, ZoomOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
 import { useSidebar } from '@/components/ui/sidebar'
 import { ResumePreview } from './ResumePreview'
-import { OverflowIndicator } from './OverflowIndicator'
 import { useResumeStore } from '@/stores/resume-store'
 import { getAllTemplateConfigs } from '@/templates'
 import {
@@ -20,32 +18,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import type { ZoomLevel } from '@/types/resume'
 
-const navItems = [
-  { id: 'personal', icon: User, label: 'Personal Info' },
-  { id: 'summary', icon: FileText, label: 'Summary' },
-  { id: 'experience', icon: Briefcase, label: 'Experience' },
-  { id: 'skills', icon: Puzzle, label: 'Skills' },
-  { id: 'projects', icon: FolderGit2, label: 'Projects' },
-  { id: 'education', icon: GraduationCap, label: 'Education' },
-  { id: 'certifications', icon: Award, label: 'Certifications' },
-  { id: 'achievements', icon: Trophy, label: 'Achievements' },
-  { id: 'publications', icon: BookOpen, label: 'Publications' },
-  { id: 'languages', icon: Globe, label: 'Languages' },
-] as const
+const zoomLevels: ZoomLevel[] = [50, 75, 100, 125, 150]
 
 interface MobilePreviewButtonProps {
   activeSection?: string
   onSectionClick?: (id: string) => void
 }
 
-export function MobilePreviewButton({ activeSection, onSectionClick }: MobilePreviewButtonProps) {
+export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
   const [open, setOpen] = useState(false)
+  const [fullscreen, setFullscreen] = useState(false)
+  const [zoom, setZoom] = useState<ZoomLevel>('fit')
   const { openMobile } = useSidebar()
   const templateId = useResumeStore((s) => s.templateId)
   const setTemplateId = useResumeStore((s) => s.setTemplateId)
-  const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const templateConfigs = getAllTemplateConfigs()
+
+  useEffect(() => {
+    if (!open) {
+      setZoom('fit')
+      setFullscreen(false)
+    }
+  }, [open])
+
+  const cycleZoom = (direction: 'in' | 'out') => {
+    if (direction === 'in') {
+      if (zoom === 'fit') {
+        setZoom(100)
+      } else {
+        const currentIdx = zoomLevels.indexOf(zoom)
+        if (currentIdx < zoomLevels.length - 1) {
+          setZoom(zoomLevels[currentIdx + 1])
+        }
+      }
+    } else {
+      if (zoom === 'fit') return
+      const currentIdx = zoomLevels.indexOf(zoom)
+      if (currentIdx > 0) {
+        setZoom(zoomLevels[currentIdx - 1])
+      } else {
+        setZoom('fit')
+      }
+    }
+  }
 
   return (
     <>
@@ -62,59 +79,38 @@ export function MobilePreviewButton({ activeSection, onSectionClick }: MobilePre
       )}
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" showCloseButton={false} className="h-[90dvh] p-0 flex flex-col overflow-hidden gap-0">
-          <SheetHeader className="px-4 py-2 border-b border-border shrink-0">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-sm">Live Preview</SheetTitle>
-              <div className="flex items-center gap-2">
-                <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
-                  <SelectTrigger className="text-[10px] h-6 px-2 py-1 gap-1 cursor-pointer w-32" aria-label="Select resume template">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="min-w-32 text-[10px]">
-                    {templateConfigs.map((tc) => (
-                      <SelectItem key={tc.id} value={tc.id} className="py-0.5 pr-6 pl-1.5 text-[10px]">
-                        {tc.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <SheetClose className="flex items-center justify-center h-9 w-9 rounded-md hover:bg-muted" aria-label="Close preview">
-                  <X className="h-4 w-4" />
-                </SheetClose>
-              </div>
+        <SheetContent side="bottom" showCloseButton={false} className="h-[90dvh] p-0 flex flex-col gap-0 overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+            <SheetTitle className="text-sm">Live Preview</SheetTitle>
+            <div className="flex items-center gap-2">
+              <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
+                <SelectTrigger className="text-[10px] h-6 px-2 py-1 gap-1 cursor-pointer w-32" aria-label="Select resume template">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="min-w-32 text-[10px]">
+                  {templateConfigs.map((tc) => (
+                    <SelectItem key={tc.id} value={tc.id} className="py-0.5 pr-6 pl-1.5 text-[10px]">
+                      {tc.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setFullscreen(true)}
+                aria-label="Fullscreen preview"
+              >
+                <Maximize className="h-4 w-4" />
+              </Button>
+              <SheetClose className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted" aria-label="Close preview">
+                <X className="h-4 w-4" />
+              </SheetClose>
             </div>
-          </SheetHeader>
-          <div className="flex overflow-x-auto gap-1 px-3 py-1.5 shrink-0 border-b border-border">
-            {navItems.map((item) => {
-              const sectionKey = item.id === 'personal' ? 'personalInfo' : item.id as keyof typeof sectionVisibility
-              const isVisible = item.id === 'personal' || (sectionVisibility[sectionKey] ?? false)
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    onSectionClick?.(item.id)
-                    setOpen(false)
-                  }}
-                  className={`flex items-center gap-1 px-2 py-1 rounded text-[10px] whitespace-nowrap shrink-0 transition-colors ${
-                    activeSection === item.id
-                      ? 'bg-primary text-primary-foreground'
-                      : isVisible
-                        ? 'bg-muted text-muted-foreground hover:bg-muted/80'
-                        : 'bg-muted/30 text-muted-foreground/50'
-                  }`}
-                >
-                  <item.icon className="h-3 w-3" />
-                  {item.label}
-                </button>
-              )
-            })}
           </div>
-          <div className="flex-1 overflow-y-auto min-h-0">
-            <ResumePreview />
-          </div>
-          <div className="shrink-0">
-            <OverflowIndicator />
+          <div className="flex-1 min-h-0">
+            <ResumePreview hideToolbar zoom={zoom} onZoomChange={setZoom} fullscreen={fullscreen} onToggleFullscreen={() => { setFullscreen(false); setZoom('fit') }} />
           </div>
           <div className="shrink-0 border-t border-border p-3">
             <Button
@@ -128,6 +124,50 @@ export function MobilePreviewButton({ activeSection, onSectionClick }: MobilePre
           </div>
         </SheetContent>
       </Sheet>
+
+      {fullscreen && (
+        <div className="fixed inset-0 z-[200] bg-gray-900 overflow-auto" style={{ overscrollBehavior: 'contain' }}>
+          <ResumePreview hideToolbar zoom={zoom} onZoomChange={setZoom} fullscreen={fullscreen} onToggleFullscreen={() => setFullscreen(false)} />
+          <div className="fixed bottom-6 right-6 z-[200] flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => cycleZoom('in')}
+              disabled={zoom === 150}
+              aria-label="Zoom in"
+            >
+              <ZoomIn className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => cycleZoom('out')}
+              disabled={zoom === 'fit'}
+              aria-label="Zoom out"
+            >
+              <ZoomOut className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => setZoom('fit')}
+              aria-label="Fit to screen"
+            >
+              <Maximize className="h-5 w-5" />
+            </Button>
+          </div>
+          <button
+            onClick={() => { setFullscreen(false); setZoom('fit') }}
+            className="fixed top-4 right-4 z-[200] flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
+            aria-label="Close fullscreen"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+      )}
     </>
   )
 }

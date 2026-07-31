@@ -17,9 +17,29 @@ const DEFAULT_MARGINS: Margins = { top: 7.62, bottom: 7.62, left: 7.62, right: 7
 
 const zoomLevels: ZoomLevel[] = [50, 75, 100, 125, 150]
 
-export function ResumePreview() {
-  const zoom = useResumeStore((s) => s.zoom)
-  const setZoom = useResumeStore((s) => s.setZoom)
+interface ResumePreviewProps {
+  initialZoom?: ZoomLevel
+  hideToolbar?: boolean
+  zoom?: ZoomLevel
+  onZoomChange?: (zoom: ZoomLevel) => void
+  fullscreen?: boolean
+  onToggleFullscreen?: () => void
+}
+
+export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, onZoomChange, fullscreen: externalFullscreen, onToggleFullscreen }: ResumePreviewProps) {
+  const storeZoom = useResumeStore((s) => s.zoom)
+  const setStoreZoom = useResumeStore((s) => s.setZoom)
+  const [overrideZoom, setOverrideZoom] = useState<ZoomLevel | null>(initialZoom ?? null)
+  const zoom = externalZoom ?? (overrideZoom ?? storeZoom)
+  const setZoom = (z: ZoomLevel) => {
+    if (onZoomChange) {
+      onZoomChange(z)
+    } else if (overrideZoom != null) {
+      setOverrideZoom(z)
+    } else {
+      setStoreZoom(z)
+    }
+  }
   const resume = useResumeStore((s) => s.resume)
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
@@ -29,11 +49,15 @@ export function ResumePreview() {
   const measureRef = useRef<HTMLDivElement>(null)
   const [totalContentHeight, setTotalContentHeight] = useState(0)
   const [sectionBounds, setSectionBounds] = useState<{ top: number; height: number }[]>([])
-  const [isFullscreen, setIsFullscreen] = useState(false)
+  const [internalFullscreen, setInternalFullscreen] = useState(false)
+  const isFullscreen = externalFullscreen ?? internalFullscreen
   const [viewport, setViewport] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const isDragging = useRef(false)
   const [showGrabbing, setShowGrabbing] = useState(false)
   const dragStart = useRef({ x: 0, y: 0, scrollLeft: 0, scrollTop: 0, active: false })
+  const pinchStart = useRef<{ distance: number; scale: number } | null>(null)
+  const [pinchScale, setPinchScale] = useState(1)
+  const pinchScaleRef = useRef(1)
 
   const scale = zoom === 'fit' ? 1 : zoom / 100
   const [template, setTemplate] = useState<Template | null>(null)
@@ -150,6 +174,58 @@ export function ResumePreview() {
   }, [])
 
   useEffect(() => {
+    pinchScaleRef.current = pinchScale
+  }, [pinchScale])
+
+  useEffect(() => {
+    setPinchScale(1)
+  }, [zoom])
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+
+    const getDistance = (t: TouchList) =>
+      Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY)
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 2) {
+        pinchStart.current = null
+        return
+      }
+      const distance = getDistance(e.touches)
+      if (distance === 0) return
+      pinchStart.current = { distance, scale: pinchScaleRef.current }
+      e.preventDefault()
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!pinchStart.current || e.touches.length !== 2) return
+      const distance = getDistance(e.touches)
+      if (distance === 0) return
+      const next = Math.min(Math.max(pinchStart.current.scale * (distance / pinchStart.current.distance), 0.25), 4)
+      setPinchScale(next)
+      e.preventDefault()
+    }
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinchStart.current = null
+    }
+
+    el.addEventListener('touchstart', onTouchStart, { passive: false })
+    el.addEventListener('touchmove', onTouchMove, { passive: false })
+    el.addEventListener('touchend', onTouchEnd)
+    el.addEventListener('touchcancel', onTouchEnd)
+
+    return () => {
+      el.removeEventListener('touchstart', onTouchStart)
+      el.removeEventListener('touchmove', onTouchMove)
+      el.removeEventListener('touchend', onTouchEnd)
+      el.removeEventListener('touchcancel', onTouchEnd)
+    }
+  }, [])
+
+  useEffect(() => {
     let cancelled = false
     loadTemplate(templateId).then((t) => {
       if (!cancelled) setTemplate(t ?? null)
@@ -194,36 +270,51 @@ export function ResumePreview() {
   }, [])
 
   function toggleFullscreen() {
-    setIsFullscreen((v) => !v)
+    if (onToggleFullscreen) {
+      onToggleFullscreen()
+    } else {
+      setInternalFullscreen((v) => !v)
+    }
   }
 
   useEffect(() => {
     if (!isFullscreen) return
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsFullscreen(false)
+      if (e.key === 'Escape') toggleFullscreen()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isFullscreen])
+  }, [isFullscreen, onToggleFullscreen])
 
   const totalScaledHeight = numberOfPages * A4_HEIGHT_PX + (numberOfPages - 1) * 16
   const fitScale = containerRef.current
-    ? Math.min((containerRef.current.clientWidth - 32) / A4_WIDTH_PX, (containerRef.current.clientHeight - 32) / totalScaledHeight, 1.5)
+    ? Math.min(Math.max((containerRef.current.clientWidth - 32) / A4_WIDTH_PX, 0), Math.max((containerRef.current.clientHeight - 32) / totalScaledHeight, 0), 1.5)
     : 1
-  const displayScale = isFullscreen
-    ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / totalScaledHeight, 1.5)
+  const baseScale = isFullscreen
+    ? zoom === 'fit'
+      ? Math.min((viewport.w - 40) / A4_WIDTH_PX, (viewport.h - 40) / totalScaledHeight, 1.5)
+      : scale
     : zoom === 'fit' ? fitScale : scale
+  const displayScale = Math.min(Math.max(baseScale * pinchScale, 0.25), 4)
 
   function cycleZoom(direction: 'in' | 'out') {
-    const currentIdx = typeof zoom === 'number' ? zoomLevels.indexOf(zoom) : -1
-    if (currentIdx === -1) {
-      setZoom(direction === 'in' ? 100 : 75)
-      return
-    }
-    if (direction === 'in' && currentIdx < zoomLevels.length - 1) {
-      setZoom(zoomLevels[currentIdx + 1])
-    } else if (direction === 'out' && currentIdx > 0) {
-      setZoom(zoomLevels[currentIdx - 1])
+    if (direction === 'in') {
+      if (zoom === 'fit') {
+        setZoom(100)
+      } else {
+        const currentIdx = zoomLevels.indexOf(zoom)
+        if (currentIdx < zoomLevels.length - 1) {
+          setZoom(zoomLevels[currentIdx + 1])
+        }
+      }
+    } else {
+      if (zoom === 'fit') return
+      const currentIdx = zoomLevels.indexOf(zoom)
+      if (currentIdx > 0) {
+        setZoom(zoomLevels[currentIdx - 1])
+      } else {
+        setZoom('fit')
+      }
     }
   }
 
@@ -280,49 +371,48 @@ export function ResumePreview() {
   return (
     <>
       <div className="flex flex-col h-full">
-        <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
-          <div className="flex items-center gap-2 min-w-0">
-            <span className="text-[10px] text-muted-foreground">A4 Page Preview</span>
-            <span className="text-[9px] text-muted-foreground italic">(approximate)</span>
-            {isOverflowing && (
-              <span className="inline-flex items-center gap-1 text-[10px] text-amber-600">
-                <AlertTriangle className="h-3 w-3" />
-                {numberOfPages} pages
-              </span>
-            )}
+        {!hideToolbar && (
+          <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="text-[10px] text-muted-foreground">A4 Page Preview</span>
+              <span className="text-[9px] text-muted-foreground italic">(approximate)</span>
+              {isOverflowing && (
+                <span className="inline-flex items-center gap-1 text-[10px] text-amber-600">
+                  <AlertTriangle className="h-3 w-3" />
+                  {numberOfPages} pages
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-0.5">
+              <Button variant="ghost" size="icon-xs" className="size-7 sm:size-5" onClick={() => cycleZoom('out')} disabled={zoom === 50} aria-label="Zoom out">
+                <ZoomOut className="h-3 w-3" />
+              </Button>
+              <Select value={String(zoom)} onValueChange={(v) => setZoom(v === 'fit' ? 'fit' : Number(v) as ZoomLevel)}>
+                <SelectTrigger className="text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0" aria-label="Zoom level">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="min-w-16 text-[10px]">
+                  {zoomLevels.map((z) => (<SelectItem key={z} value={String(z)} className="py-0.5 pr-6 pl-1.5 text-[10px]">{z}%</SelectItem>))}
+                  <SelectItem key="fit" value="fit" className="py-0.5 pr-6 pl-1.5 text-[10px]">Fit</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button variant="ghost" size="icon-xs" className="size-7 sm:size-5" onClick={() => cycleZoom('in')} disabled={zoom === 150} aria-label="Zoom in">
+                <ZoomIn className="h-3 w-3" />
+              </Button>
+              <Button variant="ghost" size="icon-xs" className="size-7 sm:size-5" onClick={toggleFullscreen} aria-label="Full screen">
+                <Maximize className="h-3 w-3" />
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-0.5">
-            <Button variant="ghost" size="icon-xs" onClick={() => cycleZoom('out')} disabled={zoom === 50} aria-label="Zoom out">
-              <ZoomOut className="h-3 w-3" />
-            </Button>
-            <Select value={String(zoom)} onValueChange={(v) => setZoom(v === 'fit' ? 'fit' : Number(v) as ZoomLevel)}>
-              <SelectTrigger className="text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0" aria-label="Zoom level">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="min-w-16 text-[10px]">
-                {zoomLevels.map((z) => (<SelectItem key={z} value={String(z)} className="py-0.5 pr-6 pl-1.5 text-[10px]">{z}%</SelectItem>))}
-                <SelectItem key="fit" value="fit" className="py-0.5 pr-6 pl-1.5 text-[10px]">Fit</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="ghost" size="icon-xs" onClick={() => cycleZoom('in')} disabled={zoom === 150} aria-label="Zoom in">
-              <ZoomIn className="h-3 w-3" />
-            </Button>
-            <Button variant="ghost" size="icon-xs" onClick={toggleFullscreen} aria-label="Full screen">
-              <Maximize className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
+        )}
         <div
           ref={containerRef}
-          className={`flex-1 overflow-auto p-4 ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ touchAction: 'manipulation' }}
+          className={`flex-1 min-h-0 overflow-auto p-4 ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
         >
-          <div className="flex items-start min-h-full">
             <div
               style={{
                 width: A4_WIDTH_PX * displayScale + 16 * displayScale,
-                marginLeft: displayScale <= 1 ? 'auto' : undefined,
-                marginRight: displayScale <= 1 ? 'auto' : undefined,
+                height: totalScaledHeight * displayScale,
                 flexShrink: 0,
               }}
             >
@@ -330,7 +420,6 @@ export function ResumePreview() {
                 {a4Content}
               </div>
             </div>
-          </div>
         </div>
       </div>
 
@@ -348,22 +437,59 @@ export function ResumePreview() {
         {renderPageContent()}
       </div>
 
-      {isFullscreen && (
-        <div className="fixed inset-0 z-50 bg-gray-900 flex items-center justify-center overflow-auto" style={{ overscrollBehavior: 'contain' }}>
-          <div className="py-4">
+      {isFullscreen && externalFullscreen === undefined && (
+        <div className="fixed inset-0 z-[100] bg-gray-900 overflow-auto p-4" style={{ overscrollBehavior: 'contain' }}>
             <div
               style={{
-                transform: `scale(${displayScale})`,
-                transformOrigin: 'top center',
-                width: A4_WIDTH_PX,
+                width: A4_WIDTH_PX * displayScale,
+                height: totalScaledHeight * displayScale,
+                flexShrink: 0,
               }}
             >
-              {a4Content}
+              <div
+                style={{
+                  transform: `scale(${displayScale})`,
+                  transformOrigin: 'top left',
+                  width: A4_WIDTH_PX,
+                }}
+              >
+                {a4Content}
+              </div>
             </div>
+          <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-2">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => cycleZoom('in')}
+              disabled={zoom === 150}
+              aria-label="Zoom in"
+            >
+              <ZoomIn className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => cycleZoom('out')}
+              disabled={zoom === 50}
+              aria-label="Zoom out"
+            >
+              <ZoomOut className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
+              onClick={() => setZoom('fit')}
+              aria-label="Fit to screen"
+            >
+              <Maximize className="h-5 w-5" />
+            </Button>
           </div>
           <button
             onClick={toggleFullscreen}
-            className="fixed top-4 right-4 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="fixed top-4 right-4 z-[100] flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Back"
           >
             <X className="h-5 w-5" />
