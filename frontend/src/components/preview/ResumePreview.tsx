@@ -419,13 +419,14 @@ export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, on
         )}
         <div
           ref={containerRef}
-          className={`flex-1 min-h-0 overflow-auto p-4 flex items-start justify-center ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
+          className={`flex-1 min-h-0 overflow-auto p-4 ${showGrabbing ? 'cursor-grabbing' : 'cursor-grab'}`}
         >
             <div
               style={{
                 width: A4_WIDTH_PX * displayScale + 16 * displayScale,
                 height: totalScaledHeight * displayScale,
                 flexShrink: 0,
+                margin: '0 auto',
               }}
             >
               <div style={{ transform: `scale(${displayScale})`, transformOrigin: 'top left', width: A4_WIDTH_PX }}>
