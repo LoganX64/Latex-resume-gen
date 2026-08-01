@@ -91,6 +91,8 @@ func main() {
 	stats.Init(statsDBPath)
 	defer stats.Close()
 
+	r.GET("/metrics", middleware.BasicAuthRequired(), gin.WrapH(promhttp.Handler()))
+
 	r.GET("/api/health", func(c *gin.Context) {
 		healthy := true
 
@@ -118,15 +120,13 @@ func main() {
 		})
 	})
 
-	r.GET("/metrics", gin.WrapH(promhttp.Handler()))
-
-	r.POST("/api/compile", compileLimiter.Middleware(), handlers.CompileHandler)
-	r.GET("/api/compile/ws", compileLimiter.Middleware(), ws.HandleCompileWS)
+	r.POST("/api/compile", middleware.APIKeyRequired(), compileLimiter.Middleware(), handlers.CompileHandler)
+	r.GET("/api/compile/ws", middleware.APIKeyRequired(), compileLimiter.Middleware(), ws.HandleCompileWS)
 
 	// Stats routes
 	r.POST("/api/stats/visit", handlers.RecordVisit)
 	r.POST("/api/stats/download", handlers.RecordDownload)
-	r.GET("/api/stats", handlers.GetStats)
+	r.GET("/api/stats", middleware.BasicAuthRequired(), handlers.GetStats)
 	r.GET("/api/stats/dashboard", middleware.AdminKeyRequired(), handlers.GetStats)
 
 	// pprof (opt-in via PPROF_ENABLED=true)

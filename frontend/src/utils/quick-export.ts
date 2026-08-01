@@ -15,7 +15,10 @@ export async function quickExportPdf(version: ResumeVersion): Promise<boolean> {
   try {
     const response = await fetch('/api/compile', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': import.meta.env.VITE_COMPILE_API_KEY || '',
+      },
       body: JSON.stringify({ latex, profileImage: '' }),
     })
 

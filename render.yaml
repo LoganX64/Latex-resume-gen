@@ -12,6 +12,12 @@ services:
         sync: false
       - key: ADMIN_KEY
         sync: false
+      - key: COMPILE_API_KEY
+        generateValue: true
+      - key: METRICS_USER
+        value: admin
+      - key: METRICS_PASS
+        generateValue: true
       - key: SERVER_PORT
         value: "10000"
       - key: COMPILE_TIMEOUT_SECONDS

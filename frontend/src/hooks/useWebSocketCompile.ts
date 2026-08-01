@@ -14,7 +14,8 @@ export interface CompileResult {
 type CompileStatus = 'idle' | 'connecting' | 'compiling' | 'done' | 'error'
 
 const WS_BASE = import.meta.env.VITE_WS_URL || `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}`
-const WS_URL = `${WS_BASE}/api/compile/ws`
+const WS_API_KEY = import.meta.env.VITE_COMPILE_API_KEY || ''
+const WS_URL = `${WS_BASE}/api/compile/ws?key=${encodeURIComponent(WS_API_KEY)}`
 const CONNECT_TIMEOUT_MS = 15_000
 
 export function useWebSocketCompile() {
