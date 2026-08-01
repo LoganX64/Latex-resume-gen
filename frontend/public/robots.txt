@@ -3,4 +3,4 @@ Allow: /
 Disallow: /editor
 Disallow: /admin
 
-Sitemap: https://YOUR-VERCEL-URL.vercel.app/sitemap.xml
+Sitemap: https://latex-resume-gen.vercel.app/sitemap.xml
