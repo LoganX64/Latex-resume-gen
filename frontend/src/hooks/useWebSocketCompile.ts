@@ -13,7 +13,8 @@ export interface CompileResult {
 
 type CompileStatus = 'idle' | 'connecting' | 'compiling' | 'done' | 'error'
 
-const WS_URL = `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/api/compile/ws`
+const WS_BASE = import.meta.env.VITE_WS_URL || `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}`
+const WS_URL = `${WS_BASE}/api/compile/ws`
 const CONNECT_TIMEOUT_MS = 15_000
 
 export function useWebSocketCompile() {

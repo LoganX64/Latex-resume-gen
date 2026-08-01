@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /editor
+Disallow: /admin
+
+Sitemap: https://YOUR-VERCEL-URL.vercel.app/sitemap.xml
