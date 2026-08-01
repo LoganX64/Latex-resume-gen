@@ -44,12 +44,10 @@ export function useWebSocketCompile() {
     setError('')
     setResult(null)
 
-    console.log('[WS] Connecting to', WS_URL)
     const ws = new WebSocket(WS_URL)
     wsRef.current = ws
 
     timeoutRef.current = setTimeout(() => {
-      console.error('[WS] Connection timed out')
       ws.close()
       setError('Connection timed out. Is the backend running?')
       setStatus('error')
@@ -61,16 +59,13 @@ export function useWebSocketCompile() {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
-      console.log('[WS] Connected, sending compile request')
       setStatus('compiling')
       ws.send(JSON.stringify({ latex, profileImage }))
     }
 
     ws.onmessage = (event) => {
-      console.log('[WS] Message:', typeof event.data, event.data instanceof Blob ? 'blob' : event.data)
       if (typeof event.data === 'string') {
         const msg = JSON.parse(event.data)
-        console.log('[WS] Parsed:', msg)
 
         if (msg.type === 'progress') {
           setProgress((prev) => {
@@ -88,28 +83,24 @@ export function useWebSocketCompile() {
             return [...prev, step]
           })
         } else if (msg.type === 'complete') {
-          console.log('[WS] Complete, pageCount:', msg.pageCount)
           setProgress((prev) => [
             ...prev,
             { step: 'done', message: 'Done' },
           ])
           setStatus('done')
         } else if (msg.type === 'error') {
-          console.log('[WS] Error:', msg.message)
           setError(msg.message)
           setStatus('error')
           ws.close()
         }
       } else {
-        console.log('[WS] Received PDF blob')
         const blob = new Blob([event.data], { type: 'application/pdf' })
         setResult({ pdfBlob: blob, pageCount: 0 })
         ws.close()
       }
     }
 
-    ws.onerror = (e) => {
-      console.error('[WS] Error event:', e)
+    ws.onerror = () => {
       setError('WebSocket connection failed')
       setStatus('error')
     }
@@ -123,7 +114,6 @@ export function useWebSocketCompile() {
         setError('Connection lost during compilation')
         setStatus('error')
       }
-      console.log('[WS] Closed:', e.code, e.reason)
       wsRef.current = null
     }
   }, [cleanup])
