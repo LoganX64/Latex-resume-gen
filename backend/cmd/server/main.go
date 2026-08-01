@@ -126,7 +126,7 @@ func main() {
 	// Stats routes
 	r.POST("/api/stats/visit", handlers.RecordVisit)
 	r.POST("/api/stats/download", handlers.RecordDownload)
-	r.GET("/api/stats", middleware.BasicAuthRequired(), handlers.GetStats)
+	r.GET("/api/stats", handlers.GetStats)
 	r.GET("/api/stats/dashboard", middleware.AdminKeyRequired(), handlers.GetStats)
 
 	// pprof (opt-in via PPROF_ENABLED=true)
