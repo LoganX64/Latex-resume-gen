@@ -2,6 +2,8 @@
 
 A production-quality, frontend-first resume builder for IT professionals. Create ATS-friendly, single-page A4 resumes with live preview, drag-and-drop section ordering, and LaTeX/PDF export.
 
+**[Live Demo](https://latex-resume-gen.vercel.app/)**
+
 ---
 
 ## Features
