@@ -4,7 +4,7 @@ import { VersionCard } from '@/components/VersionCard'
 import { StorageWarning } from '@/components/StorageWarning'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { ArrowRight, Plus, Sparkles } from 'lucide-react'
+import { ArrowRight, Plus, Sparkles, FileText, Image, Zap, Code2, ShieldCheck, Palette, type LucideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // ─── Inline SVG illustrations ────────────────────────────────────────────────
@@ -52,34 +52,46 @@ function DocIllustration() {
 
 // ─── Feature cards ────────────────────────────────────────────────────────────
 
-const features = [
+const features: { icon: LucideIcon; color: string; bg: string; title: string; desc: string }[] = [
   {
-    emoji: '📄',
+    icon: FileText,
+    color: 'text-rose-500',
+    bg: 'bg-rose-500/12',
     title: 'Single-Page Design',
     desc: 'Smart compression keeps your resume on one professional page automatically.',
   },
   {
-    emoji: '🖼️',
+    icon: Image,
+    color: 'text-violet-500',
+    bg: 'bg-violet-500/12',
     title: 'Photo Support',
     desc: 'Upload and crop a profile photo. Works with sidebar and engineering templates.',
   },
   {
-    emoji: '⚡',
+    icon: Zap,
+    color: 'text-amber-500',
+    bg: 'bg-amber-500/12',
     title: 'Instant PDF Export',
     desc: 'Compile LaTeX via Tectonic for publication-quality PDF output in seconds.',
   },
   {
-    emoji: '🔧',
+    icon: Code2,
+    color: 'text-sky-500',
+    bg: 'bg-sky-500/12',
     title: 'LaTeX Source',
     desc: 'Download the raw .tex file. Edit in Overleaf or any LaTeX editor you prefer.',
   },
   {
-    emoji: '🔒',
+    icon: ShieldCheck,
+    color: 'text-emerald-500',
+    bg: 'bg-emerald-500/12',
     title: 'Fully Private',
     desc: 'All data stays in your browser. Nothing is sent to any server, ever.',
   },
   {
-    emoji: '🎨',
+    icon: Palette,
+    color: 'text-orange-500',
+    bg: 'bg-orange-500/12',
     title: 'Multiple Templates',
     desc: 'Choose from professional LaTeX templates designed for different industries.',
   },
@@ -203,13 +215,13 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {features.map(({ emoji, title, desc }) => (
+          {features.map(({ icon: Icon, color, bg, title, desc }) => (
             <div
               key={title}
               className="group relative rounded-2xl border border-border bg-card p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/8 text-2xl mb-4 leading-none">
-                {emoji}
+              <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${bg} mb-4`}>
+                <Icon className={`h-5 w-5 ${color}`} strokeWidth={2} />
               </div>
               <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">{title}</h3>
               <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{desc}</p>
