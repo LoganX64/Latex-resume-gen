@@ -100,9 +100,11 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
                       isActive={activeSection === item.id}
                       onClick={() => onSectionClick?.(item.id)}
                       tooltip={item.label}
-                      className={!isVisible ? 'opacity-40' : ''}
+                      className={`${!isVisible ? 'opacity-40' : ''} ${
+                        activeSection === item.id ? '!bg-primary/10 !text-primary font-semibold border-l-2 border-primary' : ''
+                      }`}
                     >
-                      <item.icon className="h-3.5 w-3.5" />
+                      <item.icon className={`h-3.5 w-3.5 ${activeSection === item.id ? 'text-primary' : ''}`} />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

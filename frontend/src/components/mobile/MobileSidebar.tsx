@@ -99,17 +99,18 @@ export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClic
             {navItems.map((item) => {
               const sectionKey = item.id === 'personal' ? 'personalInfo' : item.id as keyof typeof sectionVisibility
               const isVisible = item.id === 'personal' || (sectionVisibility[sectionKey] ?? false)
+              const isActive = activeSection === item.id
               return (
                 <button
                   key={item.id}
                   onClick={() => onSectionClick?.(item.id)}
-                  className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm transition-colors ${
-                    activeSection === item.id
-                      ? 'bg-primary/10 text-primary font-medium'
-                      : 'hover:bg-muted text-foreground'
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-xs font-medium transition-all ${
+                    isActive
+                      ? 'bg-primary/10 text-primary font-semibold border-l-2 border-primary'
+                      : 'hover:bg-accent text-foreground/80 hover:text-foreground'
                   } ${!isVisible ? 'opacity-40' : ''}`}
                 >
-                  <item.icon className="h-4 w-4 shrink-0" />
+                  <item.icon className={`h-3.5 w-3.5 shrink-0 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
                   <span>{item.label}</span>
                 </button>
               )

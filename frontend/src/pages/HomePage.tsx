@@ -458,18 +458,45 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {steps.map(({ n, label, desc }, i) => {
                 const Graphic = stepGraphics[i]
+                const stepConfigs = [
+                  {
+                    gradient: 'from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent',
+                    hoverBorder: 'hover:border-rose-300 dark:hover:border-rose-500 dark:hover:shadow-rose-950/30',
+                    pillBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+                  },
+                  {
+                    gradient: 'from-violet-500/12 via-violet-500/4 to-transparent dark:from-violet-500/20 dark:via-violet-950/15 dark:to-transparent',
+                    hoverBorder: 'hover:border-violet-300 dark:hover:border-violet-500 dark:hover:shadow-violet-950/30',
+                    pillBg: 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20',
+                  },
+                  {
+                    gradient: 'from-emerald-500/12 via-emerald-500/4 to-transparent dark:from-emerald-500/20 dark:via-emerald-950/15 dark:to-transparent',
+                    hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-500 dark:hover:shadow-emerald-950/30',
+                    pillBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+                  },
+                ]
+                const cfg = stepConfigs[i]
+
                 return (
-                  <div key={n} className="relative flex flex-col items-center text-center p-4 rounded-2xl bg-card/50 border border-border/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
-                    {/* Step pill */}
-                    <div className="inline-flex items-center rounded-full bg-primary/10 text-primary border border-primary/20 px-3 py-0.5 text-xs font-bold mb-3">
-                      Step 0{n}
+                  <div
+                    key={n}
+                    className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${cfg.hoverBorder}`}
+                  >
+                    {/* Background gradient overlay */}
+                    <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${cfg.gradient} opacity-70 group-hover:opacity-100 transition-opacity duration-300`} />
+                    
+                    <div className="relative z-10 flex flex-col items-center">
+                      {/* Step pill */}
+                      <div className={`inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-bold mb-4 ${cfg.pillBg}`}>
+                        Step 0{n}
+                      </div>
+                      {/* SVG Graphic */}
+                      <div className="mb-4 group-hover:scale-105 transition-transform duration-300">
+                        <Graphic />
+                      </div>
+                      <h3 className="font-bold text-base mb-1.5 text-foreground">{label}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-[220px]">{desc}</p>
                     </div>
-                    {/* SVG Graphic */}
-                    <div className="mb-4">
-                      <Graphic />
-                    </div>
-                    <h3 className="font-bold text-base mb-1.5 text-foreground">{label}</h3>
-                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-[220px]">{desc}</p>
                   </div>
                 )
               })}

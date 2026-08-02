@@ -56,18 +56,18 @@ export function SectionWrapper({
       style={style}
       className={`${isDragging ? 'opacity-50 z-50' : ''}`}
     >
-      <Card className="relative">
-        <CardHeader className="py-2 px-3">
+      <Card className="relative bg-card border border-border/80 hover:border-primary/40 shadow-sm transition-all duration-200 overflow-hidden">
+        <CardHeader className="py-2.5 px-3">
           <div className="flex items-center gap-2">
             <button
               aria-label={`Drag to reorder ${label}`}
-              className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              className="cursor-grab active:cursor-grabbing text-muted-foreground/70 hover:text-primary transition-colors touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
               {...attributes}
               {...listeners}
             >
               <GripVertical className="h-4 w-4" aria-hidden="true" />
             </button>
-            <CardTitle className="text-xs sm:text-sm font-medium flex-1">{label}</CardTitle>
+            <CardTitle className="text-xs sm:text-sm font-semibold flex-1 text-foreground">{label}</CardTitle>
             <Button
               variant="ghost"
               size="icon-xs"
@@ -75,9 +75,9 @@ export function SectionWrapper({
               aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
-                <Eye className="h-3.5 w-3.5" />
+                <Eye className="h-3.5 w-3.5 text-primary" />
               ) : (
-                <EyeOff className="h-3.5 w-3.5 text-muted-foreground" />
+                <EyeOff className="h-3.5 w-3.5 text-muted-foreground/60" />
               )}
             </Button>
             <Button
@@ -87,14 +87,14 @@ export function SectionWrapper({
               aria-label={collapsed ? `Expand ${label}` : `Collapse ${label}`}
             >
               {collapsed ? (
-                <ChevronDown className="h-3.5 w-3.5" />
+                <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
               ) : (
-                <ChevronUp className="h-3.5 w-3.5" />
+                <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
               )}
             </Button>
           </div>
         </CardHeader>
-        {!collapsed && <CardContent className="px-3 pb-3 pt-0">{children}</CardContent>}
+        {!collapsed && <CardContent className="px-3 pb-3 pt-3">{children}</CardContent>}
       </Card>
     </div>
   )

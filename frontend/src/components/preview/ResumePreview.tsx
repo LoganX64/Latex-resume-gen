@@ -352,7 +352,7 @@ export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, on
         style={{
           width: A4_WIDTH_PX,
           height: A4_HEIGHT_PX,
-          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          boxShadow: '0 15px 35px -10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.08)',
           overflow: 'hidden',
         }}
       >

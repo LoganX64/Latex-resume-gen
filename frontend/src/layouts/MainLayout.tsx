@@ -133,7 +133,7 @@ export default function MainLayout() {
       </a>
       <SidebarProvider>
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
-        <SidebarInset className="h-dvh overflow-hidden flex flex-col">
+        <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-gradient-to-br from-background via-background to-rose-50/20 dark:to-rose-950/10">
           <div className="flex flex-1 overflow-hidden min-h-0">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -182,14 +182,18 @@ export default function MainLayout() {
                 <KeyboardShortcutsButton open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
               </div>
             </header>
-            <div id="editor-main" className="flex-1 overflow-y-auto">
+            <div id="editor-main" className="flex-1 overflow-y-auto bg-gradient-to-b from-background via-background/95 to-rose-50/30 dark:to-rose-950/20">
               <EditorPanel activeSection={activeSection} />
             </div>
             <StorageWarning className="mx-2 mb-2" />
             <CompactFooter />
           </div>
-          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
-            <div className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-gradient-to-br from-muted/40 via-background to-rose-950/10 dark:from-muted/20 dark:via-background dark:to-rose-950/20">
+            {/* Ambient background glow behind live preview canvas */}
+            <div className="pointer-events-none absolute inset-0 overflow-hidden">
+              <div className="absolute top-[20%] right-[10%] w-[350px] h-[350px] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[100px]" />
+            </div>
+            <div className="relative z-10 flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
                 <h2 className="text-xs sm:text-sm font-semibold text-foreground">Live Preview</h2>
                 <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
@@ -208,7 +212,7 @@ export default function MainLayout() {
               <div className="flex items-center gap-1">
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={() => handleExportLatex()} aria-label="Export LaTeX file" />}>
-                    <FileText className="h-3.5 w-3.5" />
+                    <FileText className="h-3.5 w-3.5 text-sky-500" />
                   </TooltipTrigger>
                   <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
                 </Tooltip>
@@ -217,14 +221,14 @@ export default function MainLayout() {
                     {isExportingPdf ? (
                       <Spinner className="h-3.5 w-3.5" />
                     ) : (
-                      <Download className="h-3.5 w-3.5" />
+                      <Download className="h-3.5 w-3.5 text-rose-500" />
                     )}
                   </TooltipTrigger>
                   <TooltipContent>Export PDF (⌘P)</TooltipContent>
                 </Tooltip>
               </div>
             </div>
-            <div className="flex-1 overflow-hidden">
+            <div className="relative z-10 flex-1 overflow-hidden">
               <ResumePreview />
             </div>
             <OverflowIndicator />

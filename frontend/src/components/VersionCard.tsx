@@ -69,34 +69,49 @@ export function VersionCard({ version }: VersionCardProps) {
 
   return (
     <>
-      <Card size="sm" className="group transition-colors hover:border-foreground/20 cursor-pointer py-2 sm:py-3" onClick={handleLoad}>
-        <CardHeader className="pb-0 pt-2 px-3 sm:px-4">
-          <CardTitle className="text-base">{version.name}</CardTitle>
-          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
-            <span>{templateConfig?.name || version.templateId}</span>
-            <span>{activeSections.length} sections</span>
-            <span>{(() => {
-              const date = new Date(version.createdAt)
-              return isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')
-            })()}</span>
+      <Card
+        size="sm"
+        className="group relative overflow-hidden bg-card/90 border border-border/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3"
+        onClick={handleLoad}
+      >
+        {/* Ambient background gradient overlay for light & dark mode */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+
+        <CardHeader className="relative pb-0 pt-2 px-3 sm:px-4">
+          <div className="flex items-start justify-between gap-2">
+            <div className="space-y-1">
+              <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                {version.name}
+              </CardTitle>
+              <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground/90">{templateConfig?.name || version.templateId}</span>
+                <span className="text-muted-foreground/60">•</span>
+                <span>{activeSections.length} sections</span>
+                <span className="text-muted-foreground/60">•</span>
+                <span>{(() => {
+                  const date = new Date(version.createdAt)
+                  return isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')
+                })()}</span>
+              </div>
+            </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-1 pb-3 px-3 sm:px-4">
-          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-            <Button size="sm" className="h-10 px-3 sm:h-9 sm:px-3" onClick={handleLoad}>
+        <CardContent className="relative pt-3 pb-3 px-3 sm:px-4">
+          <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+            <Button size="sm" className="h-8 px-3 text-xs shadow-sm hover:shadow" onClick={handleLoad}>
               Load
             </Button>
             <Button
               variant="outline"
               size="sm"
-              className="h-10 px-3 sm:h-9 sm:px-3"
+              className="h-8 px-2.5 text-xs gap-1.5 border-border/80 hover:border-primary/40"
               onClick={handleExportPdf}
               disabled={exportingPdf}
             >
               {exportingPdf ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Download className="h-3.5 w-3.5" />
+                <Download className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
               )}
               PDF
             </Button>
@@ -104,14 +119,14 @@ export function VersionCard({ version }: VersionCardProps) {
               <Button
                 variant="outline"
                 size="sm"
-                className="h-10 px-3 sm:h-9 sm:px-3"
+                className="h-8 px-2.5 text-xs gap-1.5 border-border/80 hover:border-sky-500/40"
                 onClick={handleExportLatex}
                 disabled={exportingLatex}
               >
                 {exportingLatex ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <FileText className="h-3.5 w-3.5" />
+                  <FileText className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400" />
                 )}
                 LaTeX
               </Button>
@@ -119,8 +134,9 @@ export function VersionCard({ version }: VersionCardProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="h-10 w-10 sm:h-9 sm:w-9 ml-auto text-destructive hover:text-destructive"
+              className="h-8 w-8 ml-auto text-muted-foreground hover:text-destructive hover:bg-destructive/10"
               onClick={() => setShowDeleteDialog(true)}
+              title="Delete version"
             >
               <Trash2 className="h-3.5 w-3.5" />
             </Button>

@@ -9,11 +9,11 @@ export function PersonalInfoForm() {
   const updatePersonalInfo = useResumeStore((s) => s.updatePersonalInfo)
 
   return (
-    <Card>
-      <CardHeader className="py-2 px-3">
-        <CardTitle className="text-sm font-medium">Personal Information</CardTitle>
+    <Card className="relative bg-card border border-border/80 hover:border-primary/40 shadow-sm transition-all duration-200 overflow-hidden">
+      <CardHeader className="py-2.5 px-3">
+        <CardTitle className="text-xs sm:text-sm font-semibold text-foreground">Personal Information</CardTitle>
       </CardHeader>
-      <CardContent className="px-3 pb-3 pt-0">
+      <CardContent className="px-3 pb-3 pt-3">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
