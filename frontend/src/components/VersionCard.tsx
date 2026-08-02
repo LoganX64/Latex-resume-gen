@@ -136,7 +136,7 @@ export function VersionCard({ version }: VersionCardProps) {
               This will permanently delete &quot;{version.name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="flex-row gap-2 sm:flex-row-reverse">
+          <AlertDialogFooter className="flex-row gap-2 sm:flex-row sm:justify-end">
             <AlertDialogAction
               onClick={handleDelete}
               className="flex-1 sm:flex-none h-11 sm:h-9 bg-destructive text-destructive-foreground hover:bg-destructive/90"
