@@ -18,7 +18,7 @@ export function PersonalInfoForm() {
           <div className="flex-1 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="fullName" className="text-xs">Full Name *</Label>
+                <Label htmlFor="fullName" className="text-[11px] sm:text-xs">Full Name *</Label>
                 <Input
                   id="fullName"
                   name="fullName"
@@ -30,7 +30,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="professionalTitle" className="text-xs">Professional Title</Label>
+                <Label htmlFor="professionalTitle" className="text-[11px] sm:text-xs">Professional Title</Label>
                 <Input
                   id="professionalTitle"
                   name="professionalTitle"
@@ -44,7 +44,7 @@ export function PersonalInfoForm() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-xs">Email *</Label>
+                <Label htmlFor="email" className="text-[11px] sm:text-xs">Email *</Label>
                 <Input
                   id="email"
                   name="email"
@@ -58,7 +58,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="phone" className="text-xs">Phone *</Label>
+                <Label htmlFor="phone" className="text-[11px] sm:text-xs">Phone *</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -73,7 +73,7 @@ export function PersonalInfoForm() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="location" className="text-xs">Location *</Label>
+              <Label htmlFor="location" className="text-[11px] sm:text-xs">Location *</Label>
                 <Input
                   id="location"
                   name="location"
@@ -86,7 +86,7 @@ export function PersonalInfoForm() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="linkedin" className="text-xs">LinkedIn</Label>
+                <Label htmlFor="linkedin" className="text-[11px] sm:text-xs">LinkedIn</Label>
                 <Input
                   id="linkedin"
                   name="linkedin"
@@ -100,7 +100,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="github" className="text-xs">GitHub</Label>
+                <Label htmlFor="github" className="text-[11px] sm:text-xs">GitHub</Label>
                 <Input
                   id="github"
                   name="github"
@@ -114,7 +114,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="website" className="text-xs">Website</Label>
+                <Label htmlFor="website" className="text-[11px] sm:text-xs">Website</Label>
                 <Input
                   id="website"
                   name="website"

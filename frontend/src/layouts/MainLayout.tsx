@@ -137,7 +137,7 @@ export default function MainLayout() {
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
+                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">Resume Editor</h2>
                 </div>
                 <div className="flex items-center gap-1">
                 <Tooltip>
@@ -189,7 +189,7 @@ export default function MainLayout() {
           <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
-                <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
+                <h2 className="text-xs sm:text-sm font-semibold text-foreground">Live Preview</h2>
                 <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
                   <SelectTrigger className="text-[10px] h-6 px-2 py-1 gap-1 cursor-pointer" aria-label="Select resume template">
                     <SelectValue />

@@ -87,7 +87,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">Your Resumes</h2>
           <Link to="/editor">
-            <Button size="sm">
+            <Button size="default">
               <Plus className="mr-1.5 h-3.5 w-3.5" />
               New Resume
             </Button>
@@ -104,7 +104,7 @@ export default function HomePage() {
               Build a resume and save it as a version to see it here.
             </p>
             <Link to="/editor" className="mt-4 inline-block">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="default">
                 Build Your First Resume
                 <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
               </Button>

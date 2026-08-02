@@ -386,10 +386,10 @@ export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, on
         {!hideToolbar && (
           <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
             <div className="flex items-center gap-2 min-w-0">
-              <span className="text-[10px] text-muted-foreground">A4 Page Preview</span>
-              <span className="text-[9px] text-muted-foreground italic">(approximate)</span>
+              <span className="text-[9px] sm:text-[10px] text-muted-foreground">A4 Page Preview</span>
+              <span className="text-[8px] sm:text-[9px] text-muted-foreground italic">(approximate)</span>
               {isOverflowing && (
-                <span className="inline-flex items-center gap-1 text-[10px] text-amber-600">
+                <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-amber-600">
                   <AlertTriangle className="h-3 w-3" />
                   {numberOfPages} pages
                 </span>
@@ -400,12 +400,12 @@ export function ResumePreview({ initialZoom, hideToolbar, zoom: externalZoom, on
                 <ZoomOut className="h-3 w-3" />
               </Button>
               <Select value={String(zoom)} onValueChange={(v) => setZoom(v === 'fit' ? 'fit' : Number(v) as ZoomLevel)}>
-                <SelectTrigger className="text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0" aria-label="Zoom level">
+                <SelectTrigger className="text-[9px] sm:text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0" aria-label="Zoom level">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="min-w-16 text-[10px]">
-                  {zoomLevels.map((z) => (<SelectItem key={z} value={String(z)} className="py-0.5 pr-6 pl-1.5 text-[10px]">{z}%</SelectItem>))}
-                  <SelectItem key="fit" value="fit" className="py-0.5 pr-6 pl-1.5 text-[10px]">Fit</SelectItem>
+                <SelectContent className="min-w-16 text-[9px] sm:text-[10px]">
+                  {zoomLevels.map((z) => (<SelectItem key={z} value={String(z)} className="py-0.5 pr-6 pl-1.5 text-[9px] sm:text-[10px]">{z}%</SelectItem>))}
+                  <SelectItem key="fit" value="fit" className="py-0.5 pr-6 pl-1.5 text-[9px] sm:text-[10px]">Fit</SelectItem>
                 </SelectContent>
               </Select>
               <Button variant="ghost" size="icon-xs" className="size-7 sm:size-5" onClick={() => cycleZoom('in')} disabled={zoom === 150} aria-label="Zoom in">

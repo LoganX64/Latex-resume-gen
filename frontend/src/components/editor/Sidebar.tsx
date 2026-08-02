@@ -77,7 +77,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
                 <span className="font-bold text-sidebar-foreground">
                   LaTeX Resume
                 </span>
-                <span className="text-[10px] text-sidebar-foreground/60">
+                <span className="text-[9px] sm:text-[10px] text-sidebar-foreground/60">
                   IT Professional Resume Builder
                 </span>
               </div>

@@ -74,7 +74,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`edu-institution-${education.id}`} className="text-[10px]">Institution *</Label>
+          <Label htmlFor={`edu-institution-${education.id}`} className="text-[9px] sm:text-[10px]">Institution *</Label>
           <Input
             id={`edu-institution-${education.id}`}
             name="institution"
@@ -86,7 +86,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`edu-degree-${education.id}`} className="text-[10px]">Degree *</Label>
+          <Label htmlFor={`edu-degree-${education.id}`} className="text-[9px] sm:text-[10px]">Degree *</Label>
           <Input
             id={`edu-degree-${education.id}`}
             name="degree"
@@ -100,7 +100,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`edu-spec-${education.id}`} className="text-[10px]">Specialization</Label>
+          <Label htmlFor={`edu-spec-${education.id}`} className="text-[9px] sm:text-[10px]">Specialization</Label>
           <Input
             id={`edu-spec-${education.id}`}
             name="specialization"
@@ -111,7 +111,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`edu-cgpa-${education.id}`} className="text-[10px]">CGPA</Label>
+          <Label htmlFor={`edu-cgpa-${education.id}`} className="text-[9px] sm:text-[10px]">CGPA</Label>
           <Input
             id={`edu-cgpa-${education.id}`}
             name="cgpa"
@@ -123,7 +123,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label className="text-[10px]">Dates</Label>
+          <Label className="text-[9px] sm:text-[10px]">Dates</Label>
           <div className="flex gap-1">
             <div className="flex-1">
               <Label htmlFor={`edu-start-${education.id}`} className="sr-only">Start date</Label>

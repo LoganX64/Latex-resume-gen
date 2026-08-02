@@ -77,7 +77,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`exp-company-${experience.id}`} className="text-[10px]">Company *</Label>
+          <Label htmlFor={`exp-company-${experience.id}`} className="text-[9px] sm:text-[10px]">Company *</Label>
           <Input
             id={`exp-company-${experience.id}`}
             name="company"
@@ -89,7 +89,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-position-${experience.id}`} className="text-[10px]">Position *</Label>
+          <Label htmlFor={`exp-position-${experience.id}`} className="text-[9px] sm:text-[10px]">Position *</Label>
           <Input
             id={`exp-position-${experience.id}`}
             name="position"
@@ -103,7 +103,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`exp-location-${experience.id}`} className="text-[10px]">Location</Label>
+          <Label htmlFor={`exp-location-${experience.id}`} className="text-[9px] sm:text-[10px]">Location</Label>
           <Input
             id={`exp-location-${experience.id}`}
             name="expLocation"
@@ -115,7 +115,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-start-${experience.id}`} className="text-[10px]">Start Date *</Label>
+          <Label htmlFor={`exp-start-${experience.id}`} className="text-[9px] sm:text-[10px]">Start Date *</Label>
           <MonthPicker
             id={`exp-start-${experience.id}`}
             value={experience.startDate}
@@ -124,7 +124,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-end-${experience.id}`} className="text-[10px]">End Date</Label>
+          <Label htmlFor={`exp-end-${experience.id}`} className="text-[9px] sm:text-[10px]">End Date</Label>
           <MonthPicker
             id={`exp-end-${experience.id}`}
             value={experience.endDate}
