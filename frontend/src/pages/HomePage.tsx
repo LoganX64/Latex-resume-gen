@@ -3,6 +3,7 @@ import { useVersionsStore } from '@/stores/versions-store'
 import { VersionCard } from '@/components/VersionCard'
 import { StorageWarning } from '@/components/StorageWarning'
 import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 import {
   FileText,
   Image,
@@ -119,10 +120,7 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-        Data stored locally in your browser. Not sent to any server.
-      </footer>
+      <Footer />
     </div>
   )
 }
