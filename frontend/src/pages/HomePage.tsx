@@ -4,7 +4,7 @@ import { VersionCard } from '@/components/VersionCard'
 import { StorageWarning } from '@/components/StorageWarning'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
-import { ArrowRight, Plus, Sparkles, FileText, Image, Zap, Code2, ShieldCheck, Palette, type LucideIcon } from 'lucide-react'
+import { ArrowRight, Plus, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 // ─── Inline SVG illustrations ────────────────────────────────────────────────
@@ -50,52 +50,189 @@ function DocIllustration() {
   )
 }
 
-// ─── Feature cards ────────────────────────────────────────────────────────────
+// ─── Feature SVG icons ────────────────────────────────────────────────────────
 
-const features: { icon: LucideIcon; color: string; bg: string; title: string; desc: string }[] = [
+function IconSinglePage() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gSinglePage" x1="4" y1="2" x2="24" y2="26">
+          <stop stopColor="#f43f5e" /><stop offset="1" stopColor="#e11d48" />
+        </linearGradient>
+      </defs>
+      <rect x="5" y="2" width="18" height="24" rx="3" stroke="url(#gSinglePage)" strokeWidth="2" />
+      <rect x="9" y="7" width="10" height="1.8" rx="0.9" fill="url(#gSinglePage)" />
+      <rect x="9" y="11" width="7" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.6" />
+      <rect x="9" y="15" width="10" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.4" />
+      <rect x="9" y="19" width="5" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.3" />
+    </svg>
+  )
+}
+
+function IconPhoto() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gPhoto" x1="2" y1="4" x2="26" y2="24">
+          <stop stopColor="#8b5cf6" /><stop offset="1" stopColor="#7c3aed" />
+        </linearGradient>
+      </defs>
+      <rect x="3" y="5" width="22" height="18" rx="3" stroke="url(#gPhoto)" strokeWidth="2" />
+      <circle cx="10" cy="12" r="3" fill="url(#gPhoto)" opacity="0.7" />
+      <path d="M3 20l6-5 4 3 5-6 7 8H3z" fill="url(#gPhoto)" opacity="0.4" />
+    </svg>
+  )
+}
+
+function IconPdf() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gPdf" x1="4" y1="2" x2="24" y2="26">
+          <stop stopColor="#f59e0b" /><stop offset="1" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+      <path d="M7 3h10l7 7v15a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="url(#gPdf)" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M17 3v7h7" stroke="url(#gPdf)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 14v7m-3-3l3 3 3-3" stroke="url(#gPdf)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function IconLatex() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gLatex" x1="2" y1="4" x2="26" y2="24">
+          <stop stopColor="#0ea5e9" /><stop offset="1" stopColor="#0284c7" />
+        </linearGradient>
+      </defs>
+      <rect x="3" y="4" width="22" height="20" rx="3" stroke="url(#gLatex)" strokeWidth="2" />
+      <path d="M8 10l4 4-4 4" stroke="url(#gLatex)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="14" y="17" width="6" height="2" rx="1" fill="url(#gLatex)" opacity="0.7" />
+    </svg>
+  )
+}
+
+function IconPrivate() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gPrivate" x1="6" y1="2" x2="22" y2="26">
+          <stop stopColor="#10b981" /><stop offset="1" stopColor="#059669" />
+        </linearGradient>
+      </defs>
+      <rect x="5" y="12" width="18" height="14" rx="3" stroke="url(#gPrivate)" strokeWidth="2" />
+      <path d="M9 12V8a5 5 0 0110 0v4" stroke="url(#gPrivate)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="14" cy="19" r="2" fill="url(#gPrivate)" />
+    </svg>
+  )
+}
+
+function IconTemplates() {
+  return (
+    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
+      <defs>
+        <linearGradient id="gTemplates" x1="2" y1="2" x2="26" y2="26">
+          <stop stopColor="#f97316" /><stop offset="1" stopColor="#ea580c" />
+        </linearGradient>
+      </defs>
+      <rect x="3" y="3" width="10" height="10" rx="2.5" fill="url(#gTemplates)" opacity="0.8" />
+      <rect x="15" y="3" width="10" height="10" rx="2.5" stroke="url(#gTemplates)" strokeWidth="2" />
+      <rect x="3" y="15" width="10" height="10" rx="2.5" stroke="url(#gTemplates)" strokeWidth="2" />
+      <rect x="15" y="15" width="10" height="10" rx="2.5" fill="url(#gTemplates)" opacity="0.4" />
+    </svg>
+  )
+}
+
+function IconEmptyDoc() {
+  return (
+    <svg viewBox="0 0 48 48" fill="none" className="w-14 h-14 mx-auto" aria-hidden="true">
+      <defs>
+        <linearGradient id="gEmpty" x1="8" y1="4" x2="40" y2="44">
+          <stop stopColor="#e11d48" /><stop offset="1" stopColor="#f43f5e" />
+        </linearGradient>
+      </defs>
+      <rect x="10" y="4" width="28" height="40" rx="4" stroke="url(#gEmpty)" strokeWidth="2.5" />
+      <rect x="16" y="14" width="16" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.5" />
+      <rect x="16" y="20" width="12" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.3" />
+      <rect x="16" y="26" width="14" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.2" />
+      <path d="M24 32v6m-3-3h6" stroke="url(#gEmpty)" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// ─── Feature cards data ───────────────────────────────────────────────────────
+
+const features = [
   {
-    icon: FileText,
-    color: 'text-rose-500',
-    bg: 'bg-rose-500/12',
+    icon: IconSinglePage,
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'Single-Page Design',
     desc: 'Smart compression keeps your resume on one professional page automatically.',
   },
   {
-    icon: Image,
-    color: 'text-violet-500',
-    bg: 'bg-violet-500/12',
+    icon: IconPhoto,
+    gradient: 'from-violet-500/10 via-violet-500/5 to-transparent dark:from-violet-500/15 dark:via-violet-500/5',
+    borderHover: 'hover:border-violet-300 dark:hover:border-violet-700',
     title: 'Photo Support',
     desc: 'Upload and crop a profile photo. Works with sidebar and engineering templates.',
   },
   {
-    icon: Zap,
-    color: 'text-amber-500',
-    bg: 'bg-amber-500/12',
+    icon: IconPdf,
+    gradient: 'from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-500/15 dark:via-amber-500/5',
+    borderHover: 'hover:border-amber-300 dark:hover:border-amber-700',
     title: 'Instant PDF Export',
     desc: 'Compile LaTeX via Tectonic for publication-quality PDF output in seconds.',
   },
   {
-    icon: Code2,
-    color: 'text-sky-500',
-    bg: 'bg-sky-500/12',
+    icon: IconLatex,
+    gradient: 'from-sky-500/10 via-sky-500/5 to-transparent dark:from-sky-500/15 dark:via-sky-500/5',
+    borderHover: 'hover:border-sky-300 dark:hover:border-sky-700',
     title: 'LaTeX Source',
     desc: 'Download the raw .tex file. Edit in Overleaf or any LaTeX editor you prefer.',
   },
   {
-    icon: ShieldCheck,
-    color: 'text-emerald-500',
-    bg: 'bg-emerald-500/12',
+    icon: IconPrivate,
+    gradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-500/15 dark:via-emerald-500/5',
+    borderHover: 'hover:border-emerald-300 dark:hover:border-emerald-700',
     title: 'Fully Private',
     desc: 'All data stays in your browser. Nothing is sent to any server, ever.',
   },
   {
-    icon: Palette,
-    color: 'text-orange-500',
-    bg: 'bg-orange-500/12',
+    icon: IconTemplates,
+    gradient: 'from-orange-500/10 via-orange-500/5 to-transparent dark:from-orange-500/15 dark:via-orange-500/5',
+    borderHover: 'hover:border-orange-300 dark:hover:border-orange-700',
     title: 'Multiple Templates',
     desc: 'Choose from professional LaTeX templates designed for different industries.',
   },
 ]
+
+// ─── Trust badge SVG icons (inline) ──────────────────────────────────────────
+
+function TrustBadges() {
+  return (
+    <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-muted-foreground">
+      <span className="flex items-center gap-1.5">
+        <svg viewBox="0 0 16 16" className="w-4 h-4" aria-hidden="true"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none"/><rect x="5" y="5" width="6" height="1.2" rx="0.6" fill="currentColor" opacity="0.5"/><rect x="5" y="8" width="4" height="1.2" rx="0.6" fill="currentColor" opacity="0.3"/></svg>
+        LaTeX quality
+      </span>
+      <span className="flex items-center gap-1.5">
+        <svg viewBox="0 0 16 16" className="w-4 h-4" aria-hidden="true"><path d="M8 2l1.5 3.5H13l-3 2.5 1 3.5L8 9l-3 2.5 1-3.5-3-2.5h3.5z" fill="currentColor" opacity="0.6"/></svg>
+        Instant PDF
+      </span>
+      <span className="flex items-center gap-1.5">
+        <svg viewBox="0 0 16 16" className="w-4 h-4" aria-hidden="true"><rect x="3" y="7" width="10" height="8" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round"/></svg>
+        100% private
+      </span>
+      <span className="flex items-center gap-1.5">
+        <svg viewBox="0 0 16 16" className="w-4 h-4" aria-hidden="true"><circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.5" fill="none"/><path d="M5 8.5l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
+        Always free
+      </span>
+    </div>
+  )
+}
 
 // ─── Steps ────────────────────────────────────────────────────────────────────
 
@@ -105,23 +242,95 @@ const steps = [
   { n: '3', label: 'Export to PDF', desc: 'Compile instantly with Tectonic or download the .tex source for Overleaf.' },
 ]
 
+// ─── Steps SVG graphics ────────────────────────────────────────────────────────
+
+function StepGraphic1() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 drop-shadow-md" aria-hidden="true">
+      <rect x="12" y="10" width="56" height="60" rx="8" fill="#ffffff" stroke="#e2e8f0" strokeWidth="2" />
+      {/* Header bar */}
+      <rect x="18" y="18" width="24" height="6" rx="3" fill="#e11d48" />
+      <rect x="46" y="18" width="16" height="6" rx="3" fill="#cbd5e1" />
+      {/* Input lines */}
+      <rect x="18" y="32" width="44" height="8" rx="4" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
+      <rect x="22" y="35" width="20" height="2" rx="1" fill="#64748b" />
+      
+      <rect x="18" y="46" width="44" height="8" rx="4" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1" />
+      <rect x="22" y="49" width="28" height="2" rx="1" fill="#64748b" />
+      {/* Floating pencil badge */}
+      <circle cx="58" cy="56" r="14" fill="#e11d48" />
+      <path d="M52 60.5l1.5-5.5 8 8-5.5 1.5zM62.5 56.5l3-3a2.12 2.12 0 00-3-3l-3 3 6 6z" fill="#ffffff" />
+    </svg>
+  )
+}
+
+function StepGraphic2() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 drop-shadow-md" aria-hidden="true">
+      {/* Template card 1 (background) */}
+      <rect x="10" y="18" width="38" height="50" rx="6" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1.5" />
+      <rect x="16" y="24" width="26" height="5" rx="2.5" fill="#94a3b8" />
+      <rect x="16" y="33" width="20" height="2" fill="#cbd5e1" />
+      <rect x="16" y="38" width="24" height="2" fill="#cbd5e1" />
+      
+      {/* Template card 2 (selected foreground) */}
+      <rect x="30" y="10" width="40" height="54" rx="6" fill="#ffffff" stroke="#e11d48" strokeWidth="2" />
+      <rect x="36" y="16" width="28" height="6" rx="3" fill="#e11d48" />
+      <rect x="36" y="26" width="22" height="2.5" rx="1.25" fill="#64748b" />
+      <rect x="36" y="32" width="28" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="36" y="37" width="24" height="2" rx="1" fill="#cbd5e1" />
+      <rect x="36" y="42" width="18" height="2" rx="1" fill="#cbd5e1" />
+
+      {/* Selected check badge */}
+      <circle cx="64" cy="58" r="12" fill="#10b981" />
+      <path d="M59 58l3.5 3.5 6-6" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function StepGraphic3() {
+  return (
+    <svg viewBox="0 0 80 80" fill="none" className="w-20 h-20 drop-shadow-md" aria-hidden="true">
+      {/* Document */}
+      <rect x="18" y="10" width="44" height="58" rx="6" fill="#ffffff" stroke="#e2e8f0" strokeWidth="2" />
+      <rect x="24" y="16" width="32" height="6" rx="3" fill="#e11d48" />
+      <rect x="24" y="26" width="28" height="2" fill="#94a3b8" />
+      <rect x="24" y="31" width="24" height="2" fill="#cbd5e1" />
+      <rect x="24" y="36" width="20" height="2" fill="#cbd5e1" />
+
+      {/* Floating Download PDF badge */}
+      <circle cx="40" cy="54" r="16" fill="#059669" />
+      <path d="M40 44v14M33 51l7 7 7-7" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+const stepGraphics = [StepGraphic1, StepGraphic2, StepGraphic3]
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HomePage() {
   const versions = useVersionsStore((s) => s.versions)
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      {/* ── Full-page gradient background ──────────────────────────────── */}
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        {/* Main page gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-rose-100/90 via-background via-35% to-violet-100/70 dark:from-rose-950/60 dark:via-background dark:via-35% dark:to-violet-950/50" />
+        
+        {/* Rich glowing mesh blobs */}
+        <div className="absolute -top-24 -left-20 w-[500px] h-[500px] rounded-full bg-rose-400/25 dark:bg-rose-600/20 blur-[100px]" />
+        <div className="absolute top-[35%] -right-20 w-[450px] h-[450px] rounded-full bg-violet-400/25 dark:bg-violet-600/20 blur-[100px]" />
+        <div className="absolute top-[70%] left-[10%] w-[500px] h-[500px] rounded-full bg-amber-300/25 dark:bg-rose-500/15 blur-[110px]" />
+      </div>
+      <div className="relative z-10">
+        <Navbar />
 
       {/* ══ HERO ══════════════════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden border-b">
-        {/* Layered gradient background */}
+        {/* Hero-specific dot grid accent (sits on top of page gradient) */}
         <div className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-rose-50 via-background to-background dark:from-rose-950/20 dark:via-background dark:to-background" />
-          <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-primary/6 blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-56 h-56 rounded-full bg-pink-400/8 blur-2xl" />
-          {/* Subtle dot grid */}
           <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
@@ -177,12 +386,8 @@ export default function HomePage() {
                 )}
               </div>
 
-              {/* Trust badges */}
-              <div className="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-muted-foreground">
-                {['📄 LaTeX quality', '⚡ Instant PDF', '🔒 100% private', '🆓 Always free'].map((b) => (
-                  <span key={b} className="flex items-center gap-1">{b}</span>
-                ))}
-              </div>
+              {/* Trust badges — all SVG */}
+              <TrustBadges />
             </div>
 
             {/* Right: document illustration */}
@@ -198,7 +403,8 @@ export default function HomePage() {
                 PDF Ready
               </div>
               <div className="absolute bottom-0 left-0 -translate-x-2 translate-y-3 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
-                ✨ LaTeX quality
+                <svg viewBox="0 0 14 14" className="w-3.5 h-3.5" aria-hidden="true"><path d="M7 1l1.5 3.5H12l-3 2.5 1 3.5L7 8l-3 2.5 1-3.5-3-2.5h3.5z" fill="currentColor" className="text-amber-500"/></svg>
+                LaTeX quality
               </div>
             </div>
           </div>
@@ -206,32 +412,39 @@ export default function HomePage() {
       </section>
 
       {/* ══ FEATURES ══════════════════════════════════════════════════════════ */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Everything you need</h2>
-          <p className="mt-2 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
-            Powerful tools packed into a clean, fast interface — no account needed.
-          </p>
-        </div>
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Everything you need</h2>
+            <p className="mt-2 text-muted-foreground max-w-lg mx-auto text-sm sm:text-base">
+              Powerful tools packed into a clean, fast interface — no account needed.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {features.map(({ icon: Icon, color, bg, title, desc }) => (
-            <div
-              key={title}
-              className="group relative rounded-2xl border border-border bg-card p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${bg} mb-4`}>
-                <Icon className={`h-5 w-5 ${color}`} strokeWidth={2} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map(({ icon: Icon, gradient, borderHover, title, desc }) => (
+              <div
+                key={title}
+                className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${borderHover}`}
+              >
+                {/* Gradient overlay */}
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} />
+                {/* Content */}
+                <div className="relative">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-border/50 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
+                    <Icon />
+                  </div>
+                  <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">{title}</h3>
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                </div>
               </div>
-              <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">{title}</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ══ HOW IT WORKS ══════════════════════════════════════════════════════ */}
-      <section className="border-t bg-muted/30">
+      <section className="border-t">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Ready in 3 steps</h2>
@@ -243,16 +456,23 @@ export default function HomePage() {
             <div className="hidden sm:block absolute top-8 left-[16.67%] right-[16.67%] h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-              {steps.map(({ n, label, desc }) => (
-                <div key={n} className="relative flex flex-col items-center text-center">
-                  {/* Number bubble */}
-                  <div className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary text-primary-foreground font-bold text-xl shadow-lg shadow-primary/25 mb-4">
-                    {n}
+              {steps.map(({ n, label, desc }, i) => {
+                const Graphic = stepGraphics[i]
+                return (
+                  <div key={n} className="relative flex flex-col items-center text-center p-4 rounded-2xl bg-card/50 border border-border/60 backdrop-blur-sm shadow-sm hover:shadow-md transition-all">
+                    {/* Step pill */}
+                    <div className="inline-flex items-center rounded-full bg-primary/10 text-primary border border-primary/20 px-3 py-0.5 text-xs font-bold mb-3">
+                      Step 0{n}
+                    </div>
+                    {/* SVG Graphic */}
+                    <div className="mb-4">
+                      <Graphic />
+                    </div>
+                    <h3 className="font-bold text-base mb-1.5 text-foreground">{label}</h3>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-[220px]">{desc}</p>
                   </div>
-                  <h3 className="font-semibold text-sm sm:text-base mb-1.5">{label}</h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-[220px]">{desc}</p>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
@@ -284,8 +504,8 @@ export default function HomePage() {
 
         {versions.length === 0 ? (
           <div className="text-center py-16 border-2 border-dashed border-border rounded-2xl">
-            <div className="text-5xl mb-4">📄</div>
-            <p className="font-semibold text-base mb-1">No saved resumes yet</p>
+            <IconEmptyDoc />
+            <p className="font-semibold text-base mb-1 mt-4">No saved resumes yet</p>
             <p className="text-sm text-muted-foreground mb-5 max-w-xs mx-auto">
               Build a resume and save it as a version to see it here.
             </p>
@@ -306,6 +526,7 @@ export default function HomePage() {
       </section>
 
       <Footer />
+      </div>
     </div>
   )
 }
