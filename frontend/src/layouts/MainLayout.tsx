@@ -156,7 +156,7 @@ export default function MainLayout() {
                 </Link>
                 <Tooltip>
                   <TooltipTrigger render={<Button variant="ghost" size="icon-xs" onClick={handleClearResume} aria-label="Clear resume" />}>
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-3.5 w-3.5 text-destructive" />
                   </TooltipTrigger>
                   <TooltipContent>Clear resume</TooltipContent>
                 </Tooltip>

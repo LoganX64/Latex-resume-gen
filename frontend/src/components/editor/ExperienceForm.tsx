@@ -174,7 +174,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               }}
               aria-label={`Remove bullet point ${bIndex + 1}`}
             >
-              <Trash2 className="h-3 w-3" />
+              <Trash2 className="h-3 w-3 text-destructive" />
             </Button>
           </div>
         ))}
