@@ -33,7 +33,7 @@ export function AchievementsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`ach-title-${ach.id}`} className="text-[10px]">Title *</Label>
+              <Label htmlFor={`ach-title-${ach.id}`} className="text-xs sm:text-[10px]">Title *</Label>
               <Input
                 id={`ach-title-${ach.id}`}
                 name="achTitle"
@@ -45,7 +45,7 @@ export function AchievementsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`ach-date-${ach.id}`} className="text-[10px]">Date</Label>
+              <Label htmlFor={`ach-date-${ach.id}`} className="text-xs sm:text-[10px]">Date</Label>
               <MonthPicker
                 id={`ach-date-${ach.id}`}
                 value={ach.date}
@@ -55,14 +55,14 @@ export function AchievementsForm() {
             </div>
           </div>
           <div className="space-y-1">
-            <Label htmlFor={`ach-desc-${ach.id}`} className="text-[10px]">Description</Label>
+            <Label htmlFor={`ach-desc-${ach.id}`} className="text-xs sm:text-[10px]">Description</Label>
             <Textarea
               id={`ach-desc-${ach.id}`}
               name="achDescription"
               value={ach.description}
               onChange={(e) => updateAchievement(ach.id, 'description', e.target.value)}
               placeholder="Brief description of the achievement…"
-              className="min-h-[60px] text-xs resize-y"
+              className="min-h-[60px] text-base sm:text-xs resize-y py-2"
             />
           </div>
           </CardContent>

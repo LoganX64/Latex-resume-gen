@@ -31,7 +31,7 @@ export function CustomSectionsForm() {
             </Button>
           </div>
           <div className="space-y-1">
-            <Label htmlFor={`custom-title-${section.id}`} className="text-[10px]">Section Title *</Label>
+            <Label htmlFor={`custom-title-${section.id}`} className="text-xs sm:text-[10px]">Section Title *</Label>
             <Input
               id={`custom-title-${section.id}`}
               name="customSectionTitle"
@@ -43,14 +43,14 @@ export function CustomSectionsForm() {
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor={`custom-content-${section.id}`} className="text-[10px]">Content *</Label>
+            <Label htmlFor={`custom-content-${section.id}`} className="text-xs sm:text-[10px]">Content *</Label>
             <Textarea
               id={`custom-content-${section.id}`}
               name="customSectionContent"
               value={section.content}
               onChange={(e) => updateCustomSection(section.id, 'content', e.target.value)}
               placeholder="Enter content for this section…"
-              className="min-h-[80px] text-xs resize-y"
+              className="min-h-[80px] text-base sm:text-xs resize-y py-2"
             />
           </div>
           </CardContent>

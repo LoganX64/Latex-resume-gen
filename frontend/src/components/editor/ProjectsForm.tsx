@@ -89,7 +89,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`proj-name-${project.id}`} className="text-[10px]">Project Name *</Label>
+          <Label htmlFor={`proj-name-${project.id}`} className="text-xs sm:text-[10px]">Project Name *</Label>
           <Input
             id={`proj-name-${project.id}`}
             name="projectName"
@@ -101,7 +101,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`proj-duration-${project.id}`} className="text-[10px]">Duration</Label>
+          <Label htmlFor={`proj-duration-${project.id}`} className="text-xs sm:text-[10px]">Duration</Label>
           <Input
             id={`proj-duration-${project.id}`}
             name="projectDuration"
@@ -115,7 +115,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`proj-role-${project.id}`} className="text-[10px]">Role</Label>
+          <Label htmlFor={`proj-role-${project.id}`} className="text-xs sm:text-[10px]">Role</Label>
           <Input
             id={`proj-role-${project.id}`}
             name="projectRole"
@@ -126,22 +126,22 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`proj-desc-${project.id}`} className="text-[10px]">Description</Label>
+          <Label htmlFor={`proj-desc-${project.id}`} className="text-xs sm:text-[10px]">Description</Label>
           <Textarea
             id={`proj-desc-${project.id}`}
             name="projectDescription"
             value={project.description}
             onChange={(e) => updateProject(project.id, 'description', e.target.value)}
             placeholder="Brief description of the project…"
-            className="min-h-[60px] text-xs resize-y"
+            className="min-h-[60px] text-base sm:text-xs resize-y py-2"
           />
         </div>
       </div>
       <div className="space-y-1">
-        <Label className="text-[10px]">Bullet Points</Label>
+        <Label className="text-xs sm:text-[10px]">Bullet Points</Label>
         {(project.bulletPoints || []).map((bullet, bIndex) => (
           <div key={bIndex} className="flex gap-1">
-            <Input
+            <Textarea
               name="projectBulletPoint"
               autoComplete="off"
               value={bullet}
@@ -152,7 +152,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               }}
               placeholder="• Describe a feature or achievement…"
               aria-label={`Bullet point ${bIndex + 1}`}
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="min-h-[60px] text-base sm:text-xs resize-y py-2"
             />
             <Button
               variant="ghost"
@@ -179,19 +179,19 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           Add Bullet
         </Button>
       </div>
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1.5">
         {(project.technologies || []).map((tech, i) => (
           <span
             key={i}
-            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded px-2 py-0.5 text-[10px] max-w-[200px] truncate"
+            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-[10px] max-w-[200px] truncate"
           >
             {tech}
             <button
               onClick={() => removeTech(i)}
               aria-label={`Remove ${tech}`}
-              className="hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+              className="flex items-center justify-center min-w-[20px] min-h-[20px] sm:min-w-0 sm:min-h-0 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
             >
-              <X className="h-2.5 w-2.5" />
+              <X className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
             </button>
           </span>
         ))}
@@ -218,7 +218,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`proj-github-${project.id}`} className="text-[10px]">GitHub URL</Label>
+          <Label htmlFor={`proj-github-${project.id}`} className="text-xs sm:text-[10px]">GitHub URL</Label>
           <Input
             id={`proj-github-${project.id}`}
             name="projectGitHubUrl"
@@ -232,7 +232,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`proj-demo-${project.id}`} className="text-[10px]">Live Demo URL</Label>
+          <Label htmlFor={`proj-demo-${project.id}`} className="text-xs sm:text-[10px]">Live Demo URL</Label>
           <Input
             id={`proj-demo-${project.id}`}
             name="projectDemoUrl"

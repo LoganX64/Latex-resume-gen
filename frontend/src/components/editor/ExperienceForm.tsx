@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
 import { Plus, Trash2 } from 'lucide-react'
@@ -77,7 +78,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`exp-company-${experience.id}`} className="text-[9px] sm:text-[10px]">Company *</Label>
+          <Label htmlFor={`exp-company-${experience.id}`} className="text-xs sm:text-[10px]">Company *</Label>
           <Input
             id={`exp-company-${experience.id}`}
             name="company"
@@ -89,7 +90,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-position-${experience.id}`} className="text-[9px] sm:text-[10px]">Position *</Label>
+          <Label htmlFor={`exp-position-${experience.id}`} className="text-xs sm:text-[10px]">Position *</Label>
           <Input
             id={`exp-position-${experience.id}`}
             name="position"
@@ -103,7 +104,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         <div className="space-y-1">
-          <Label htmlFor={`exp-location-${experience.id}`} className="text-[9px] sm:text-[10px]">Location</Label>
+          <Label htmlFor={`exp-location-${experience.id}`} className="text-xs sm:text-[10px]">Location</Label>
           <Input
             id={`exp-location-${experience.id}`}
             name="expLocation"
@@ -115,7 +116,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-start-${experience.id}`} className="text-[9px] sm:text-[10px]">Start Date *</Label>
+          <Label htmlFor={`exp-start-${experience.id}`} className="text-xs sm:text-[10px]">Start Date *</Label>
           <MonthPicker
             id={`exp-start-${experience.id}`}
             value={experience.startDate}
@@ -124,7 +125,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor={`exp-end-${experience.id}`} className="text-[9px] sm:text-[10px]">End Date</Label>
+          <Label htmlFor={`exp-end-${experience.id}`} className="text-xs sm:text-[10px]">End Date</Label>
           <MonthPicker
             id={`exp-end-${experience.id}`}
             value={experience.endDate}
@@ -141,17 +142,17 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             checked={experience.current}
             onCheckedChange={(checked) => updateExperience(experience.id, 'current', checked === true)}
           />
-          <Label htmlFor={`current-${experience.id}`} className="text-[10px]">
+          <Label htmlFor={`current-${experience.id}`} className="text-xs sm:text-[10px]">
             Currently working here
           </Label>
         </div>
       </div>
       <div className="space-y-1">
-        <Label className="text-[10px]">Bullet Points</Label>
+        <Label className="text-xs sm:text-[10px]">Bullet Points</Label>
         {experience.bulletPoints.length === 0 && <p className="text-[10px] text-muted-foreground">No bullet points yet</p>}
         {experience.bulletPoints.map((bullet, bIndex) => (
           <div key={bIndex} className="flex gap-1">
-    <Input
+    <Textarea
       name="expBulletPoint"
       autoComplete="off"
       value={bullet}
@@ -162,7 +163,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       }}
       placeholder="• Describe your achievement…"
       aria-label={`Bullet point ${bIndex + 1}`}
-      className="h-10 text-base sm:h-7 sm:text-xs"
+      className="min-h-[60px] text-base sm:text-xs resize-y py-2"
     />
             <Button
               variant="ghost"

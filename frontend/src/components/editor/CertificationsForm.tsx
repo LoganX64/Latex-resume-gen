@@ -32,7 +32,7 @@ export function CertificationsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`cert-name-${cert.id}`} className="text-[10px]">Name *</Label>
+              <Label htmlFor={`cert-name-${cert.id}`} className="text-xs sm:text-[10px]">Name *</Label>
               <Input
                 id={`cert-name-${cert.id}`}
                 name="certName"
@@ -44,7 +44,7 @@ export function CertificationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`cert-issuer-${cert.id}`} className="text-[10px]">Issuer *</Label>
+              <Label htmlFor={`cert-issuer-${cert.id}`} className="text-xs sm:text-[10px]">Issuer *</Label>
               <Input
                 id={`cert-issuer-${cert.id}`}
                 name="certIssuer"
@@ -58,7 +58,7 @@ export function CertificationsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`cert-date-${cert.id}`} className="text-[10px]">Date *</Label>
+              <Label htmlFor={`cert-date-${cert.id}`} className="text-xs sm:text-[10px]">Date *</Label>
               <MonthPicker
                 id={`cert-date-${cert.id}`}
                 value={cert.date}
@@ -67,7 +67,7 @@ export function CertificationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`cert-url-${cert.id}`} className="text-[10px]">URL</Label>
+              <Label htmlFor={`cert-url-${cert.id}`} className="text-xs sm:text-[10px]">URL</Label>
               <Input
                 id={`cert-url-${cert.id}`}
                 name="certUrl"

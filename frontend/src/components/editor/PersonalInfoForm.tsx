@@ -18,7 +18,7 @@ export function PersonalInfoForm() {
           <div className="flex-1 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="fullName" className="text-[11px] sm:text-xs">Full Name *</Label>
+                <Label htmlFor="fullName" className="text-sm sm:text-[11px]">Full Name *</Label>
                 <Input
                   id="fullName"
                   name="fullName"
@@ -26,11 +26,11 @@ export function PersonalInfoForm() {
                   value={personalInfo.fullName}
                   onChange={(e) => updatePersonalInfo('fullName', e.target.value)}
                   placeholder="John Doe…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="professionalTitle" className="text-[11px] sm:text-xs">Professional Title</Label>
+                <Label htmlFor="professionalTitle" className="text-sm sm:text-[11px]">Professional Title</Label>
                 <Input
                   id="professionalTitle"
                   name="professionalTitle"
@@ -38,13 +38,13 @@ export function PersonalInfoForm() {
                   value={personalInfo.professionalTitle ?? ''}
                   onChange={(e) => updatePersonalInfo('professionalTitle', e.target.value)}
                   placeholder="Senior Software Engineer…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-[11px] sm:text-xs">Email *</Label>
+                <Label htmlFor="email" className="text-sm sm:text-[11px]">Email *</Label>
                 <Input
                   id="email"
                   name="email"
@@ -54,11 +54,11 @@ export function PersonalInfoForm() {
                   value={personalInfo.email}
                   onChange={(e) => updatePersonalInfo('email', e.target.value)}
                   placeholder="john@example.com…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="phone" className="text-[11px] sm:text-xs">Phone *</Label>
+                <Label htmlFor="phone" className="text-sm sm:text-[11px]">Phone *</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -68,12 +68,12 @@ export function PersonalInfoForm() {
                   value={personalInfo.phone}
                   onChange={(e) => updatePersonalInfo('phone', e.target.value)}
                   placeholder="+1 234 567 890…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="location" className="text-[11px] sm:text-xs">Location *</Label>
+              <Label htmlFor="location" className="text-sm sm:text-[11px]">Location *</Label>
                 <Input
                   id="location"
                   name="location"
@@ -81,12 +81,12 @@ export function PersonalInfoForm() {
                   value={personalInfo.location}
                   onChange={(e) => updatePersonalInfo('location', e.target.value)}
                   placeholder="San Francisco, CA…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="linkedin" className="text-[11px] sm:text-xs">LinkedIn</Label>
+                <Label htmlFor="linkedin" className="text-sm sm:text-[11px]">LinkedIn</Label>
                 <Input
                   id="linkedin"
                   name="linkedin"
@@ -96,11 +96,11 @@ export function PersonalInfoForm() {
                   value={personalInfo.linkedin ?? ''}
                   onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
                   placeholder="linkedin.com/in/johndoe…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="github" className="text-[11px] sm:text-xs">GitHub</Label>
+                <Label htmlFor="github" className="text-sm sm:text-[11px]">GitHub</Label>
                 <Input
                   id="github"
                   name="github"
@@ -110,11 +110,11 @@ export function PersonalInfoForm() {
                   value={personalInfo.github ?? ''}
                   onChange={(e) => updatePersonalInfo('github', e.target.value)}
                   placeholder="github.com/johndoe…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="website" className="text-[11px] sm:text-xs">Website</Label>
+                <Label htmlFor="website" className="text-sm sm:text-[11px]">Website</Label>
                 <Input
                   id="website"
                   name="website"
@@ -124,7 +124,7 @@ export function PersonalInfoForm() {
                   value={personalInfo.website ?? ''}
                   onChange={(e) => updatePersonalInfo('website', e.target.value)}
                   placeholder="johndoe.dev…"
-                  className="h-8 text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-xs"
                 />
               </div>
             </div>

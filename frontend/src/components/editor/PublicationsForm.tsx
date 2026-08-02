@@ -32,7 +32,7 @@ export function PublicationsForm() {
             </Button>
           </div>
           <div className="space-y-1">
-            <Label htmlFor={`pub-title-${pub.id}`} className="text-[10px]">Title *</Label>
+            <Label htmlFor={`pub-title-${pub.id}`} className="text-xs sm:text-[10px]">Title *</Label>
             <Input
               id={`pub-title-${pub.id}`}
               name="pubTitle"
@@ -45,7 +45,7 @@ export function PublicationsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`pub-publisher-${pub.id}`} className="text-[10px]">Publisher *</Label>
+              <Label htmlFor={`pub-publisher-${pub.id}`} className="text-xs sm:text-[10px]">Publisher *</Label>
               <Input
                 id={`pub-publisher-${pub.id}`}
                 name="pubPublisher"
@@ -57,7 +57,7 @@ export function PublicationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`pub-date-${pub.id}`} className="text-[10px]">Date *</Label>
+              <Label htmlFor={`pub-date-${pub.id}`} className="text-xs sm:text-[10px]">Date *</Label>
               <MonthPicker
                 id={`pub-date-${pub.id}`}
                 value={pub.date}
@@ -68,7 +68,7 @@ export function PublicationsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`pub-url-${pub.id}`} className="text-[10px]">URL</Label>
+              <Label htmlFor={`pub-url-${pub.id}`} className="text-xs sm:text-[10px]">URL</Label>
               <Input
                 id={`pub-url-${pub.id}`}
                 name="pubUrl"
@@ -82,14 +82,14 @@ export function PublicationsForm() {
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`pub-desc-${pub.id}`} className="text-[10px]">Description</Label>
+              <Label htmlFor={`pub-desc-${pub.id}`} className="text-xs sm:text-[10px]">Description</Label>
               <Textarea
                 id={`pub-desc-${pub.id}`}
                 name="pubDescription"
                 value={pub.description}
                 onChange={(e) => updatePublication(pub.id, 'description', e.target.value)}
                 placeholder="Brief description…"
-                className="min-h-[40px] text-xs resize-y"
+                className="min-h-[40px] text-base sm:text-xs resize-y py-2"
               />
             </div>
           </div>

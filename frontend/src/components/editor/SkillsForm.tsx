@@ -91,19 +91,19 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           <Trash2 className="h-3 w-3 text-destructive" />
         </Button>
       </div>
-      <div className="flex flex-wrap gap-1">
+      <div className="flex flex-wrap gap-1.5">
         {category.skills.map((skill, sIndex) => (
           <span
             key={sIndex}
-            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded px-2 py-0.5 text-[10px] max-w-[200px] truncate"
+            className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-[10px] max-w-[200px] truncate"
           >
             {skill}
             <button
               onClick={() => removeSkill(sIndex)}
               aria-label={`Remove ${skill}`}
-              className="hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+              className="flex items-center justify-center min-w-[20px] min-h-[20px] sm:min-w-0 sm:min-h-0 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
             >
-              <X className="h-2.5 w-2.5" />
+              <X className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
             </button>
           </span>
         ))}

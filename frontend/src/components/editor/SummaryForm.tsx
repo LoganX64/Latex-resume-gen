@@ -8,7 +8,7 @@ export function SummaryForm() {
 
   return (
     <div className="space-y-1.5">
-      <Label htmlFor="summary" className="text-xs">
+      <Label htmlFor="summary" className="text-sm sm:text-xs">
         Professional Summary
       </Label>
       <Textarea
@@ -18,7 +18,7 @@ export function SummaryForm() {
         value={summary}
         onChange={(e) => updateSummary(e.target.value)}
         placeholder="Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud infrastructure…"
-        className="min-h-[100px] text-xs resize-y"
+        className="min-h-[100px] text-base sm:text-xs resize-y py-2"
       />
       <p className="text-[10px] text-muted-foreground">
         {summary.length}/500 characters recommended
