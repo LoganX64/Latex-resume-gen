@@ -1,10 +1,5 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  SidebarProvider,
-  SidebarInset,
-} from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
 import { StorageWarning } from '@/components/StorageWarning'
 import { SaveVersionDialog } from '@/components/SaveVersionDialog'
@@ -13,6 +8,7 @@ import { MobileBottomNavbar } from '@/components/mobile/MobileBottomNavbar'
 import { MobileSavedSheet } from '@/components/mobile/MobileSavedSheet'
 import { MobilePreviewSheet } from '@/components/mobile/MobilePreviewSheet'
 import { useExportActions } from '@/hooks/useExportActions'
+import { MobileSidebar } from '@/components/mobile/MobileSidebar'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,6 +34,7 @@ import { CompileProgressDialog } from '@/components/CompileProgressDialog'
 export default function MobileLayout() {
   const navigate = useNavigate()
   const [activeSection, setActiveSection] = useState<string>('personal')
+  const [showSidebar, setShowSidebar] = useState(false)
 
   const [showSaveDialog, setShowSaveDialog] = useState(false)
   const [showSavedSheet, setShowSavedSheet] = useState(false)
@@ -66,23 +63,27 @@ export default function MobileLayout() {
   }, [navigate])
 
   return (
-    <SidebarProvider>
-      <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
-      <SidebarInset className="h-dvh overflow-hidden flex flex-col">
-        <MobileTopNavbar onSave={() => setShowSaveDialog(true)} />
-        <main id="editor-main" className="flex-1 overflow-y-auto">
-          <EditorPanel activeSection={activeSection} />
-          <StorageWarning className="mx-2 mb-2" />
-        </main>
-        <MobileBottomNavbar
-          onHome={handleHome}
-          onSaved={() => setShowSavedSheet(true)}
-          onPreview={() => setShowPreviewSheet(true)}
-          onDownload={() => handleExportPdf()}
-          isExportingPdf={isExportingPdf}
-        />
-      </SidebarInset>
+    <div className="h-dvh overflow-hidden flex flex-col w-full">
+      <MobileTopNavbar onSave={() => setShowSaveDialog(true)} onMenuToggle={() => setShowSidebar(true)} />
+      <main id="editor-main" className="flex-1 overflow-y-auto">
+        <EditorPanel activeSection={activeSection} />
+        <StorageWarning className="mx-2 mb-2" />
+      </main>
+      <MobileBottomNavbar
+        onHome={handleHome}
+        onSaved={() => setShowSavedSheet(true)}
+        onPreview={() => setShowPreviewSheet(true)}
+        onDownload={() => handleExportPdf()}
+        isExportingPdf={isExportingPdf}
+      />
 
+      <MobileSidebar
+        open={showSidebar}
+        onOpenChange={setShowSidebar}
+        activeSection={activeSection}
+        onSectionClick={(id) => { setActiveSection(id); setShowSidebar(false) }}
+        onSaveClick={() => { setShowSaveDialog(true); setShowSidebar(false) }}
+      />
       <MobileSavedSheet open={showSavedSheet} onOpenChange={setShowSavedSheet} />
       <MobilePreviewSheet open={showPreviewSheet} onOpenChange={setShowPreviewSheet} />
 
@@ -145,6 +146,6 @@ export default function MobileLayout() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </SidebarProvider>
+    </div>
   )
 }

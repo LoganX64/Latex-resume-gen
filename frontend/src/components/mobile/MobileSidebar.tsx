@@ -1,0 +1,129 @@
+import { useResumeStore } from '@/stores/resume-store'
+import { useStatsStore } from '@/stores/stats-store'
+import { useNavigate } from 'react-router-dom'
+import { recordVisit } from '@/utils/stats'
+import { useEffect } from 'react'
+import {
+  User,
+  FileText,
+  Briefcase,
+  FolderGit2,
+  GraduationCap,
+  Award,
+  Trophy,
+  BookOpen,
+  Globe,
+  Puzzle,
+  Layers,
+  Save,
+  Home,
+  Eye,
+  Download,
+} from 'lucide-react'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from '@/components/ui/sheet'
+
+const navItems = [
+  { id: 'personal', icon: User, label: 'Personal Info' },
+  { id: 'summary', icon: FileText, label: 'Summary' },
+  { id: 'experience', icon: Briefcase, label: 'Experience' },
+  { id: 'skills', icon: Puzzle, label: 'Skills' },
+  { id: 'projects', icon: FolderGit2, label: 'Projects' },
+  { id: 'education', icon: GraduationCap, label: 'Education' },
+  { id: 'certifications', icon: Award, label: 'Certifications' },
+  { id: 'achievements', icon: Trophy, label: 'Achievements' },
+  { id: 'publications', icon: BookOpen, label: 'Publications' },
+  { id: 'languages', icon: Globe, label: 'Languages' },
+  { id: 'customSections', icon: Layers, label: 'Custom Sections' },
+] as const
+
+interface MobileSidebarProps {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  activeSection?: string
+  onSectionClick?: (id: string) => void
+  onSaveClick?: () => void
+}
+
+export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClick, onSaveClick }: MobileSidebarProps) {
+  const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
+  const stats = useStatsStore()
+  const refresh = useStatsStore((s) => s.refresh)
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    recordVisit().then(() => refresh())
+  }, [])
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="left" className="w-64 p-0">
+        <SheetHeader className="p-3 border-b border-border">
+          <div className="flex items-center gap-2">
+            <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6" />
+            <div>
+              <SheetTitle className="text-sm font-bold">LaTeX Resume</SheetTitle>
+              <SheetDescription className="text-[10px]">IT Professional Resume Builder</SheetDescription>
+            </div>
+          </div>
+        </SheetHeader>
+
+        <nav className="flex-1 overflow-y-auto p-2">
+          <div className="space-y-0.5">
+            {navItems.map((item) => {
+              const sectionKey = item.id === 'personal' ? 'personalInfo' : item.id as keyof typeof sectionVisibility
+              const isVisible = item.id === 'personal' || (sectionVisibility[sectionKey] ?? false)
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onSectionClick?.(item.id)}
+                  className={`w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm transition-colors ${
+                    activeSection === item.id
+                      ? 'bg-primary/10 text-primary font-medium'
+                      : 'hover:bg-muted text-foreground'
+                  } ${!isVisible ? 'opacity-40' : ''}`}
+                >
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        </nav>
+
+        <div className="border-t border-border p-2 space-y-0.5">
+          <div className="flex items-center justify-center gap-3 px-3 py-2 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              <Eye className="h-3.5 w-3.5" />
+              {stats.visits.toLocaleString()} visits
+            </span>
+            <span>·</span>
+            <span className="inline-flex items-center gap-1">
+              <Download className="h-3.5 w-3.5" />
+              {stats.downloads.toLocaleString()} downloads
+            </span>
+          </div>
+          <button
+            onClick={() => onSaveClick?.()}
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm hover:bg-muted transition-colors"
+          >
+            <Save className="h-4 w-4" />
+            <span>Save Version</span>
+          </button>
+          <button
+            onClick={() => { navigate('/') }}
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm hover:bg-muted transition-colors"
+          >
+            <Home className="h-4 w-4" />
+            <span>Home</span>
+          </button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  )
+}

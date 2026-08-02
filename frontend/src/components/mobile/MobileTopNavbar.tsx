@@ -1,14 +1,13 @@
 import { PanelLeft, Save, Sun, Moon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useSidebar } from '@/components/ui/sidebar'
 import { useTheme } from '@/components/theme-provider'
 
 interface MobileTopNavbarProps {
   onSave: () => void
+  onMenuToggle: () => void
 }
 
-export function MobileTopNavbar({ onSave }: MobileTopNavbarProps) {
-  const { toggleSidebar } = useSidebar()
+export function MobileTopNavbar({ onSave, onMenuToggle }: MobileTopNavbarProps) {
   const { darkMode, toggleDarkMode } = useTheme()
 
   return (
@@ -17,7 +16,7 @@ export function MobileTopNavbar({ onSave }: MobileTopNavbarProps) {
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={toggleSidebar}
+          onClick={onMenuToggle}
           aria-label="Open sidebar"
           className="h-11 w-11"
         >
