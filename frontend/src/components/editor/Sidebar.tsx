@@ -68,10 +68,10 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
-      <SidebarHeader className="h-10 p-1">
+      <SidebarHeader className="h-10 sm:h-12 p-1 flex items-center justify-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="h-9 p-1.5" render={<Link to="/" />}>
+            <SidebarMenuButton className="h-9 sm:h-10 p-1.5" render={<Link to="/" />}>
               <img src="/logo.svg" alt="Logo" className="h-7 w-7 shrink-0 rounded-md" />
               <div className="flex flex-col leading-tight">
                 <span className="font-bold text-sm">
