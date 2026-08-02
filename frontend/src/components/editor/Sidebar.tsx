@@ -27,6 +27,7 @@ import {
   BookOpen,
   Globe,
   Puzzle,
+  Layers,
   PanelLeftClose,
   Eye,
   Download,
@@ -45,6 +46,7 @@ const navItems = [
   { id: 'achievements', icon: Trophy, label: 'Achievements' },
   { id: 'publications', icon: BookOpen, label: 'Publications' },
   { id: 'languages', icon: Globe, label: 'Languages' },
+  { id: 'customSections', icon: Layers, label: 'Custom Sections' },
 ] as const
 
 interface AppSidebarProps {

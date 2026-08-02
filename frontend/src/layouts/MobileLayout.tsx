@@ -37,6 +37,7 @@ import { CompileProgressDialog } from '@/components/CompileProgressDialog'
 
 export default function MobileLayout() {
   const navigate = useNavigate()
+  const [activeSection, setActiveSection] = useState<string>('personal')
 
   const [showSaveDialog, setShowSaveDialog] = useState(false)
   const [showSavedSheet, setShowSavedSheet] = useState(false)
@@ -66,11 +67,11 @@ export default function MobileLayout() {
 
   return (
     <SidebarProvider>
-      <AppSidebar activeSection="personal" onSectionClick={() => {}} onSaveClick={() => setShowSaveDialog(true)} />
+      <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
       <SidebarInset className="h-dvh overflow-hidden flex flex-col">
         <MobileTopNavbar onSave={() => setShowSaveDialog(true)} />
         <main id="editor-main" className="flex-1 overflow-y-auto">
-          <EditorPanel />
+          <EditorPanel activeSection={activeSection} />
           <StorageWarning className="mx-2 mb-2" />
         </main>
         <MobileBottomNavbar

@@ -75,6 +75,7 @@ export default function MainLayout() {
   const setTemplateId = useResumeStore((s) => s.setTemplateId)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('personal')
 
   const {
     handleExportPdf,
@@ -130,7 +131,7 @@ export default function MainLayout() {
         Skip to editor
       </a>
       <SidebarProvider>
-        <AppSidebar activeSection="personal" onSectionClick={() => {}} onSaveClick={() => setShowSaveDialog(true)} />
+        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
         <SidebarInset className="h-dvh overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
             <div className="flex flex-col w-full min-w-0 border-r border-border">
@@ -181,7 +182,7 @@ export default function MainLayout() {
               </div>
             </header>
             <div id="editor-main" className="flex-1 overflow-y-auto">
-              <EditorPanel />
+              <EditorPanel activeSection={activeSection} />
             </div>
             <StorageWarning className="mx-2 mb-2" />
           </div>
