@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import * as Sentry from '@sentry/react'
 import { Toaster } from '@/components/ui/sonner'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { SentryFeedbackButton } from '@/components/SentryFeedbackButton'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const MainLayout = lazy(() => import('@/layouts/MainLayout'))
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading…</div>}>
+        <SentryFeedbackButton />
         <SentryRoutes>
           <Route path="/" element={<HomePage />} />
           <Route path="/editor" element={<EditorRoute />} />

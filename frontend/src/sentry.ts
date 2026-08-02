@@ -26,6 +26,7 @@ if (import.meta.env.PROD) {
 
       Sentry.feedbackIntegration({
         colorScheme: "system",
+        autoInject: false,
       }),
     ],
 
