@@ -105,7 +105,7 @@ export function useWebSocketCompile() {
       setStatus('error')
     }
 
-    ws.onclose = (e) => {
+    ws.onclose = () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null

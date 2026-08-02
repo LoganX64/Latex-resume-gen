@@ -1,22 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import * as Sentry from '@sentry/react'
 import {
   SidebarProvider,
   SidebarInset,
-  useSidebar,
 } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/editor/Sidebar'
 import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
-import { MobilePreviewButton } from '@/components/preview/MobilePreviewButton'
 import { StorageWarning } from '@/components/StorageWarning'
 import { SaveVersionDialog } from '@/components/SaveVersionDialog'
 import { useResumeStore } from '@/stores/resume-store'
-import { downloadFile, downloadPdf } from '@/utils/download'
-import { recordDownload } from '@/utils/stats'
+import { useExportActions } from '@/hooks/useExportActions'
 import {
   Sun,
   Moon,
@@ -29,7 +25,6 @@ import {
   ImageOff,
   Save,
   Home,
-  PanelLeft,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
@@ -58,11 +53,10 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useTheme } from '@/components/theme-provider'
-import { loadTemplate, getAllTemplateConfigs, getTemplateConfig } from '@/templates'
+import { getAllTemplateConfigs } from '@/templates'
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { CommandPalette } from '@/components/CommandPalette'
 import { CompileProgressDialog } from '@/components/CompileProgressDialog'
-import { useWebSocketCompile } from '@/hooks/useWebSocketCompile'
 import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
 import {
   Select,
@@ -72,176 +66,36 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-function MobileSidebarTrigger() {
-  const { toggleSidebar } = useSidebar()
-  return (
-    <Button variant="ghost" size="icon-sm" className="lg:hidden" onClick={toggleSidebar} aria-label="Open sidebar">
-      <PanelLeft className="h-4 w-4" />
-    </Button>
-  )
-}
-
 export default function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme()
   const navigate = useNavigate()
   const resetResume = useResumeStore((s) => s.resetResume)
   const clearResume = useResumeStore((s) => s.clearResume)
-  const resume = useResumeStore((s) => s.resume)
-  const sectionOrder = useResumeStore((s) => s.sectionOrder)
-  const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const templateId = useResumeStore((s) => s.templateId)
   const setTemplateId = useResumeStore((s) => s.setTemplateId)
-  const [isExportingPdf, setIsExportingPdf] = useState(false)
   const [shortcutsOpen, setShortcutsOpen] = useState(false)
-  const [activeSection, setActiveSection] = useState<string>('personal')
-  const [showMultiPageDialog, setShowMultiPageDialog] = useState(false)
-  const [multiPageCount, setMultiPageCount] = useState(0)
-  const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
-  const [showNoPhotoDialog, setShowNoPhotoDialog] = useState(false)
-  const pendingNoPhotoRef = useRef<'pdf' | 'latex' | null>(null)
   const [showSaveDialog, setShowSaveDialog] = useState(false)
-  const [compileDialogOpen, setCompileDialogOpen] = useState(false)
+
   const {
+    handleExportPdf,
+    handleExportLatex,
+    handleMultiPageDownload,
+    handleNoPhotoContinue,
+    handleCompileCancel,
+    isExportingPdf,
+    compileDialogOpen,
+    setCompileDialogOpen,
+    showMultiPageDialog,
+    setShowMultiPageDialog,
+    multiPageCount,
+    showNoPhotoDialog,
+    setShowNoPhotoDialog,
     progress,
-    status: compileStatus,
-    error: compileWsError,
-    result: compileResult,
-    startCompile,
-    cancel: cancelCompile,
-    reset: resetCompile,
-  } = useWebSocketCompile()
+    compileStatus,
+    compileWsError,
+  } = useExportActions()
 
   const templateConfigs = getAllTemplateConfigs()
-
-  const checkPhotoWarning = useCallback((exportType: 'pdf' | 'latex') => {
-    const config = getTemplateConfig(templateId)
-    if (config?.supportsPhoto && !resume.personalInfo.profileImage) {
-      pendingNoPhotoRef.current = exportType
-      setShowNoPhotoDialog(true)
-      return true
-    }
-    return false
-  }, [templateId, resume.personalInfo.profileImage])
-
-  const handleExportLatex = useCallback(async (skipPhotoWarning = false) => {
-    if (!skipPhotoWarning && checkPhotoWarning('latex')) return
-    const template = await loadTemplate(templateId)
-    if (!template) return
-    const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
-    const name = resume.personalInfo.fullName || 'resume'
-    const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
-    downloadFile(latex, filename, 'application/x-latex')
-    recordDownload()
-    toast.success('LaTeX file exported', {
-      description: `${filename} downloaded successfully.`,
-    })
-  }, [resume, sectionOrder, sectionVisibility, templateId, checkPhotoWarning])
-
-  const handleExportPdf = useCallback(async (skipPhotoWarning = false) => {
-    if (isExportingPdf) return
-    if (!skipPhotoWarning && checkPhotoWarning('pdf')) return
-
-    Sentry.startSpan({ name: 'Export PDF', op: 'export.pdf' }, async (span) => {
-      setIsExportingPdf(true)
-      setCompileDialogOpen(true)
-      resetCompile()
-      span.setAttribute('template', templateId)
-
-      try {
-        const template = await loadTemplate(templateId)
-        if (!template) {
-          span.setAttribute('success', false)
-          span.setAttribute('reason', 'template_not_found')
-          setCompileDialogOpen(false)
-          return
-        }
-
-        const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
-        span.setAttribute('latex.length', latex.length)
-
-        const profileImage = resume.personalInfo.profileImage || ''
-        startCompile(latex, profileImage)
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : 'Could not connect to server'
-        span.setAttribute('success', false)
-        span.setAttribute('error', message)
-        toast.error('PDF export failed', {
-          description: `${message}. Make sure the backend is running.`,
-        })
-        setIsExportingPdf(false)
-      }
-    })
-  }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf, checkPhotoWarning, startCompile, resetCompile])
-
-  const handleMultiPageDownload = useCallback(() => {
-    const pending = pendingDownloadRef.current
-    if (!pending) return
-    downloadPdf(pending.blob, pending.filename)
-    recordDownload()
-    toast.success('PDF exported', {
-      description: `${pending.filename} downloaded successfully.`,
-    })
-    setShowMultiPageDialog(false)
-    pendingDownloadRef.current = null
-  }, [])
-
-  const handleNoPhotoContinue = useCallback(() => {
-    const exportType = pendingNoPhotoRef.current
-    setShowNoPhotoDialog(false)
-    pendingNoPhotoRef.current = null
-    if (exportType === 'pdf') handleExportPdf(true)
-    else if (exportType === 'latex') handleExportLatex(true)
-  }, [handleExportPdf, handleExportLatex])
-
-  const handleCompileCancel = useCallback(() => {
-    cancelCompile()
-    setIsExportingPdf(false)
-  }, [cancelCompile])
-
-  useEffect(() => {
-    if (compileStatus === 'done' && compileResult?.pdfBlob) {
-      const name = resume.personalInfo.fullName || 'resume'
-      const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
-      const blob = compileResult.pdfBlob
-
-      Sentry.startSpan({ name: 'Export PDF - handle result', op: 'export.pdf' }, (span) => {
-        span.setAttribute('pdf.size', blob.size)
-
-        const pageCount = parseInt(
-          progress.find((p) => p.step === 'reading')?.message?.match(/\d+/)?.[0] || '1',
-          10
-        )
-        span.setAttribute('pdf.pages', pageCount)
-
-        if (pageCount > 1) {
-          pendingDownloadRef.current = { blob, filename }
-          setMultiPageCount(pageCount)
-          setTimeout(() => {
-            setCompileDialogOpen(false)
-            setShowMultiPageDialog(true)
-          }, 500)
-          span.setAttribute('success', true)
-          span.setAttribute('multiPage', true)
-          return
-        }
-
-        setTimeout(() => {
-          downloadPdf(blob, filename)
-          recordDownload()
-          setCompileDialogOpen(false)
-          resetCompile()
-        }, 500)
-        span.setAttribute('success', true)
-        toast.success('PDF exported', {
-          description: `${filename} downloaded successfully.`,
-        })
-      })
-      setIsExportingPdf(false)
-    } else if (compileStatus === 'error') {
-      setIsExportingPdf(false)
-    }
-  }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
 
   const handleLoadSample = useCallback(() => {
     resetResume()
@@ -276,13 +130,12 @@ export default function MainLayout() {
         Skip to editor
       </a>
       <SidebarProvider>
-        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
+        <AppSidebar activeSection="personal" onSectionClick={() => {}} onSaveClick={() => setShowSaveDialog(true)} />
         <SidebarInset className="h-dvh overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
-            <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
-              <header className="flex flex-wrap lg:flex-nowrap items-center justify-between px-4 py-2 lg:h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="flex flex-col w-full min-w-0 border-r border-border">
+              <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-2">
-                  <MobileSidebarTrigger />
                   <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
                 </div>
                 <div className="flex items-center gap-1">
@@ -328,11 +181,11 @@ export default function MainLayout() {
               </div>
             </header>
             <div id="editor-main" className="flex-1 overflow-y-auto">
-              <EditorPanel activeSection={activeSection} />
+              <EditorPanel />
             </div>
             <StorageWarning className="mx-2 mb-2" />
           </div>
-          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
+          <div className="flex flex-col flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
@@ -385,7 +238,6 @@ export default function MainLayout() {
           isDarkMode={darkMode}
         />
         </SidebarInset>
-      <MobilePreviewButton activeSection={activeSection} onSectionClick={setActiveSection} />
       </SidebarProvider>
       <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
         <AlertDialogContent className="sm:max-w-sm">
