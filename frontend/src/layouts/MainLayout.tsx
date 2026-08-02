@@ -134,7 +134,7 @@ export default function MainLayout() {
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
         <SidebarInset className="h-dvh overflow-hidden">
           <div className="flex flex-1 overflow-hidden">
-            <div className="flex flex-col w-full min-w-0 border-r border-border">
+            <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-2">
                   <h2 className="text-sm font-semibold text-foreground">Resume Editor</h2>
@@ -186,7 +186,7 @@ export default function MainLayout() {
             </div>
             <StorageWarning className="mx-2 mb-2" />
           </div>
-          <div className="flex flex-col flex-1 min-w-0 bg-muted/30">
+          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-foreground">Live Preview</h2>
