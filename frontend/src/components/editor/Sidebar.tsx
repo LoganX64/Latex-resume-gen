@@ -71,13 +71,13 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
       <SidebarHeader className="h-10 p-1">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton className="h-8 p-1.5" render={<Link to="/" />}>
-              <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6 shrink-0" />
+            <SidebarMenuButton className="h-9 p-1.5" render={<Link to="/" />}>
+              <img src="/logo.svg" alt="Logo" className="h-7 w-7 shrink-0 rounded-md" />
               <div className="flex flex-col leading-tight">
-                <span className="font-bold text-sidebar-foreground">
-                  LaTeX Resume
+                <span className="font-bold text-sm">
+                  <span className="text-primary">LaTeX</span> Resume
                 </span>
-                <span className="text-[9px] sm:text-[10px] text-sidebar-foreground/60">
+                <span className="text-[10px] text-muted-foreground">
                   IT Professional Resume Builder
                 </span>
               </div>

@@ -82,10 +82,14 @@ export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClic
       <SheetContent side="left" className="w-64 p-0">
         <SheetHeader className="p-3 border-b border-border">
           <div className="flex items-center gap-2">
-            <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6" />
-            <div>
-              <SheetTitle className="text-sm font-bold">LaTeX Resume</SheetTitle>
-              <SheetDescription className="text-[10px]">IT Professional Resume Builder</SheetDescription>
+            <img src="/logo.svg" alt="Logo" className="h-7 w-7 shrink-0 rounded-md" />
+            <div className="flex flex-col leading-tight text-left">
+              <SheetTitle className="text-sm font-bold">
+                <span className="text-primary">LaTeX</span> Resume
+              </SheetTitle>
+              <SheetDescription className="text-[10px] text-muted-foreground">
+                IT Professional Resume Builder
+              </SheetDescription>
             </div>
           </div>
         </SheetHeader>

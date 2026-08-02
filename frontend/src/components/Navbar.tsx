@@ -1,20 +1,25 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
-import { Sun, Moon, Star } from 'lucide-react'
+import { Sun, Moon, Star, FileText } from 'lucide-react'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
 
   return (
     <nav className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2">
-          <img src="/favicon.svg?v=2" alt="Logo" className="h-6 w-6" />
-          <span className="font-bold text-sm">LaTeX Resume</span>
+      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4 sm:px-6">
+        {/* Logo + Brand */}
+        <Link to="/" className="flex items-center gap-2.5 shrink-0">
+          <img src="/logo.svg" alt="LaTeX Resume Logo" className="h-7 w-7 rounded-md" />
+          <span className="font-bold text-sm sm:text-base tracking-tight">
+            <span className="text-primary">LaTeX</span>
+            <span className="text-foreground"> Resume</span>
+          </span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        {/* Right actions */}
+        <div className="flex items-center gap-1 sm:gap-2">
           {import.meta.env.VITE_GITHUB_URL && (
             <a
               href={import.meta.env.VITE_GITHUB_URL}
@@ -35,7 +40,11 @@ export function Navbar() {
             {darkMode ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
           </Button>
           <Link to="/editor">
-            <Button size="sm">Build Resume</Button>
+            <Button size="sm" className="gap-1.5">
+              <FileText className="h-3.5 w-3.5 sm:hidden" aria-hidden="true" />
+              <span className="hidden sm:inline">Build Resume</span>
+              <span className="sm:hidden">Build</span>
+            </Button>
           </Link>
         </div>
       </div>
