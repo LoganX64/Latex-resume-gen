@@ -80,7 +80,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           onChange={(e) => updateSkillCategory(category.id, e.target.value)}
           placeholder="Category name (e.g., Programming Languages)"
           aria-label="Skill category name"
-          className="h-7 text-xs flex-1"
+          className="h-10 text-base sm:h-7 sm:text-xs flex-1"
         />
         <Button
           variant="ghost"
@@ -122,9 +122,9 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           }}
           placeholder="Type a skill and press Enter…"
           aria-label="New skill name"
-          className="h-7 text-xs"
+          className="h-10 text-base sm:h-7 sm:text-xs"
         />
-        <Button variant="outline" size="sm" className="h-7 text-[10px] px-2" onClick={addSkill}>
+        <Button variant="outline" size="sm" className="h-10 text-sm sm:h-7 sm:text-[10px] px-2" onClick={addSkill}>
           Add
         </Button>
       </div>
@@ -172,7 +172,7 @@ export function SkillsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addSkillCategory}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

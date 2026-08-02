@@ -65,7 +65,7 @@ export default function MobileLayout() {
   return (
     <div className="h-dvh overflow-hidden flex flex-col w-full">
       <MobileTopNavbar onSave={() => setShowSaveDialog(true)} onMenuToggle={() => setShowSidebar(true)} />
-      <main id="editor-main" className="flex-1 overflow-y-auto min-h-0">
+      <main id="editor-main" className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
         <EditorPanel activeSection={activeSection} />
         <StorageWarning className="mx-2 mb-2" />
       </main>

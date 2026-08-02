@@ -40,7 +40,7 @@ export function PublicationsForm() {
               value={pub.title}
               onChange={(e) => updatePublication(pub.id, 'title', e.target.value)}
               placeholder="Research paper or article title"
-              className="h-7 text-xs"
+              className="h-10 text-base sm:h-7 sm:text-xs"
             />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -53,7 +53,7 @@ export function PublicationsForm() {
                 value={pub.publisher}
                 onChange={(e) => updatePublication(pub.id, 'publisher', e.target.value)}
                 placeholder="IEEE / ACM"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="space-y-1">
@@ -62,7 +62,7 @@ export function PublicationsForm() {
                 id={`pub-date-${pub.id}`}
                 value={pub.date}
                 onValueChange={(val) => updatePublication(pub.id, 'date', val)}
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
           </div>
@@ -78,7 +78,7 @@ export function PublicationsForm() {
                 placeholder="https://…"
                 type="url"
                 inputMode="url"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="space-y-1">
@@ -99,7 +99,7 @@ export function PublicationsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addPublication}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

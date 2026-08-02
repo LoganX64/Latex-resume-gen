@@ -54,12 +54,12 @@ export function MonthPicker({
         disabled={disabled}
         id={id}
         aria-label={ariaLabel}
-        className={`flex h-7 w-full items-center gap-1 rounded-md border border-input bg-background px-2 text-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className ?? ''}`}
+        className={`flex h-10 sm:h-7 w-full items-center gap-1 rounded-md border border-input bg-background px-3 sm:px-2 text-base sm:text-xs ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className ?? ''}`}
       >
         <span className="flex-1 text-left truncate">
           {selectedDate ? formatDisplay(value) : 'Pick a month'}
         </span>
-        <CalendarIcon className="size-3.5 shrink-0 opacity-50" />
+        <CalendarIcon className="size-4 sm:size-3.5 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar

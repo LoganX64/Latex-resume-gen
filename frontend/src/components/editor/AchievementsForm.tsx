@@ -41,7 +41,7 @@ export function AchievementsForm() {
                 value={ach.title}
                 onChange={(e) => updateAchievement(ach.id, 'title', e.target.value)}
                 placeholder="Best Innovation Award"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="space-y-1">
@@ -50,7 +50,7 @@ export function AchievementsForm() {
                 id={`ach-date-${ach.id}`}
                 value={ach.date}
                 onValueChange={(val) => updateAchievement(ach.id, 'date', val)}
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
           </div>
@@ -71,7 +71,7 @@ export function AchievementsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addAchievement}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

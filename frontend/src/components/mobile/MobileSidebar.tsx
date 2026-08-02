@@ -3,6 +3,7 @@ import { useStatsStore } from '@/stores/stats-store'
 import { useNavigate } from 'react-router-dom'
 import { recordVisit } from '@/utils/stats'
 import { useEffect } from 'react'
+import { toast } from 'sonner'
 import {
   User,
   FileText,
@@ -19,6 +20,8 @@ import {
   Home,
   Eye,
   Download,
+  Trash2,
+  RotateCcw,
 } from 'lucide-react'
 import {
   Sheet,
@@ -52,6 +55,8 @@ interface MobileSidebarProps {
 
 export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClick, onSaveClick }: MobileSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
+  const resetResume = useResumeStore((s) => s.resetResume)
+  const clearResume = useResumeStore((s) => s.clearResume)
   const stats = useStatsStore()
   const refresh = useStatsStore((s) => s.refresh)
   const navigate = useNavigate()
@@ -59,6 +64,18 @@ export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClic
   useEffect(() => {
     recordVisit().then(() => refresh())
   }, [])
+
+  const handleLoadSample = () => {
+    resetResume()
+    toast.success('Sample data loaded', { description: 'Resume populated with sample data.' })
+    onOpenChange(false)
+  }
+
+  const handleClearResume = () => {
+    clearResume()
+    toast.success('Resume cleared', { description: 'All fields have been cleared.' })
+    onOpenChange(false)
+  }
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -114,6 +131,20 @@ export function MobileSidebar({ open, onOpenChange, activeSection, onSectionClic
           >
             <Save className="h-4 w-4" />
             <span>Save Version</span>
+          </button>
+          <button
+            onClick={handleLoadSample}
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm hover:bg-muted transition-colors"
+          >
+            <RotateCcw className="h-4 w-4" />
+            <span>Load Sample Data</span>
+          </button>
+          <button
+            onClick={handleClearResume}
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-md text-sm hover:bg-muted transition-colors text-destructive"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span>Clear Resume</span>
           </button>
           <button
             onClick={() => { navigate('/') }}

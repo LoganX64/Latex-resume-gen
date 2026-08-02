@@ -85,7 +85,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             value={experience.company}
             onChange={(e) => updateExperience(experience.id, 'company', e.target.value)}
             placeholder="Google"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -97,7 +97,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             value={experience.position}
             onChange={(e) => updateExperience(experience.id, 'position', e.target.value)}
             placeholder="Senior Software Engineer"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
       </div>
@@ -111,7 +111,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             value={experience.location}
             onChange={(e) => updateExperience(experience.id, 'location', e.target.value)}
             placeholder="Mountain View, CA"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -120,7 +120,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             id={`exp-start-${experience.id}`}
             value={experience.startDate}
             onValueChange={(val) => updateExperience(experience.id, 'startDate', val)}
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -130,7 +130,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             value={experience.endDate}
             onValueChange={(val) => updateExperience(experience.id, 'endDate', val)}
             disabled={experience.current}
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
       </div>
@@ -162,7 +162,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       }}
       placeholder="• Describe your achievement…"
       aria-label={`Bullet point ${bIndex + 1}`}
-      className="h-7 text-xs"
+      className="h-10 text-base sm:h-7 sm:text-xs"
     />
             <Button
               variant="ghost"
@@ -180,7 +180,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
         <Button
           variant="ghost"
           size="sm"
-          className="h-6 text-[10px]"
+          className="h-9 text-sm sm:h-6 sm:text-[10px]"
           onClick={() =>
             updateExperienceBulletPoints(experience.id, [...experience.bulletPoints, ''])
           }
@@ -233,7 +233,7 @@ export function ExperienceForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addExperience}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

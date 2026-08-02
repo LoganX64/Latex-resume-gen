@@ -40,7 +40,7 @@ export function CertificationsForm() {
                 value={cert.name}
                 onChange={(e) => updateCertification(cert.id, 'name', e.target.value)}
                 placeholder="AWS Solutions Architect"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="space-y-1">
@@ -52,7 +52,7 @@ export function CertificationsForm() {
                 value={cert.issuer}
                 onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
                 placeholder="Amazon Web Services"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
           </div>
@@ -63,7 +63,7 @@ export function CertificationsForm() {
                 id={`cert-date-${cert.id}`}
                 value={cert.date}
                 onValueChange={(val) => updateCertification(cert.id, 'date', val)}
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="space-y-1">
@@ -77,7 +77,7 @@ export function CertificationsForm() {
                 placeholder="https://…"
                 type="url"
                 inputMode="url"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
           </div>
@@ -87,7 +87,7 @@ export function CertificationsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addCertification}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

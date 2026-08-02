@@ -82,7 +82,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
             value={education.institution}
             onChange={(e) => updateEducation(education.id, 'institution', e.target.value)}
             placeholder="MIT"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -94,7 +94,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
             value={education.degree}
             onChange={(e) => updateEducation(education.id, 'degree', e.target.value)}
             placeholder="B.S. Computer Science"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
       </div>
@@ -107,7 +107,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
             value={education.specialization}
             onChange={(e) => updateEducation(education.id, 'specialization', e.target.value)}
             placeholder="AI/ML"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -119,7 +119,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
             value={education.cgpa}
             onChange={(e) => updateEducation(education.id, 'cgpa', e.target.value)}
             placeholder="3.9/4.0"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -132,7 +132,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
                 value={education.startDate}
                 onValueChange={(val) => updateEducation(education.id, 'startDate', val)}
                 aria-label="Start date"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
             <div className="flex-1">
@@ -142,7 +142,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
                 value={education.endDate}
                 onValueChange={(val) => updateEducation(education.id, 'endDate', val)}
                 aria-label="End date"
-                className="h-7 text-xs"
+                className="h-10 text-base sm:h-7 sm:text-xs"
               />
             </div>
           </div>
@@ -192,7 +192,7 @@ export function EducationForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addEducation}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

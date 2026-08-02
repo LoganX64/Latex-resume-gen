@@ -97,7 +97,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             value={project.name}
             onChange={(e) => updateProject(project.id, 'name', e.target.value)}
             placeholder="E-Commerce Platform"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -109,7 +109,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             value={project.duration}
             onChange={(e) => updateProject(project.id, 'duration', e.target.value)}
             placeholder="2023 - Present"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
       </div>
@@ -122,7 +122,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             value={project.role}
             onChange={(e) => updateProject(project.id, 'role', e.target.value)}
             placeholder="Lead Developer"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -152,7 +152,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               }}
               placeholder="• Describe a feature or achievement…"
               aria-label={`Bullet point ${bIndex + 1}`}
-              className="h-7 text-xs"
+              className="h-10 text-base sm:h-7 sm:text-xs"
             />
             <Button
               variant="ghost"
@@ -170,7 +170,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
         <Button
           variant="ghost"
           size="sm"
-          className="h-6 text-[10px]"
+          className="h-9 text-sm sm:h-6 sm:text-[10px]"
           onClick={() =>
             updateProject(project.id, 'bulletPoints', [...(project.bulletPoints || []), ''])
           }
@@ -210,9 +210,9 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           }}
           placeholder="Add technology and press Enter"
           aria-label="New technology name"
-          className="h-7 text-xs"
+          className="h-10 text-base sm:h-7 sm:text-xs"
         />
-        <Button variant="outline" size="sm" className="h-7 text-[10px] px-2" onClick={addTech}>
+        <Button variant="outline" size="sm" className="h-10 text-sm sm:h-7 sm:text-[10px] px-2" onClick={addTech}>
           Add
         </Button>
       </div>
@@ -228,7 +228,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             placeholder="github.com/user/project"
             type="url"
             inputMode="url"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
         <div className="space-y-1">
@@ -242,7 +242,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             placeholder="project.example.com"
             type="url"
             inputMode="url"
-            className="h-7 text-xs"
+            className="h-10 text-base sm:h-7 sm:text-xs"
           />
         </div>
       </div>
@@ -290,7 +290,7 @@ export function ProjectsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-xs w-full"
+        className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addProject}
       >
         <Plus className="h-3 w-3 mr-1" aria-hidden="true" />

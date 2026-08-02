@@ -121,7 +121,7 @@ export function ProfileImageUpload() {
       <Button
         variant="outline"
         size="sm"
-        className="h-7 text-[10px]"
+        className="h-10 text-sm sm:h-7 sm:text-[10px]"
         onClick={() => fileInputRef.current?.click()}
       >
         <Upload className="h-3 w-3 mr-1" aria-hidden="true" />
