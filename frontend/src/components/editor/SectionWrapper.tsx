@@ -65,7 +65,7 @@ export function SectionWrapper({
               {...attributes}
               {...listeners}
             >
-              <GripVertical className="h-4 w-4" aria-hidden="true" />
+              <GripVertical className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden="true" />
             </button>
             <CardTitle className="text-xs sm:text-sm font-semibold flex-1 text-foreground">{label}</CardTitle>
             <Button
@@ -75,9 +75,9 @@ export function SectionWrapper({
               aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
-                <Eye className="h-3.5 w-3.5 text-primary" />
+                <Eye className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
               ) : (
-                <EyeOff className="h-3.5 w-3.5 text-muted-foreground/60" />
+                <EyeOff className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
               )}
             </Button>
             <Button
@@ -87,9 +87,9 @@ export function SectionWrapper({
               aria-label={collapsed ? `Expand ${label}` : `Collapse ${label}`}
             >
               {collapsed ? (
-                <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+                <ChevronDown className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               ) : (
-                <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />
+                <ChevronUp className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               )}
             </Button>
           </div>

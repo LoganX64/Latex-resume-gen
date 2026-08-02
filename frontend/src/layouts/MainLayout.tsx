@@ -142,40 +142,40 @@ export default function MainLayout() {
                 </div>
                 <div className="flex items-center gap-1">
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={() => setShowSaveDialog(true)} aria-label="Save as version" />}>
-                    <Save className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => setShowSaveDialog(true)} aria-label="Save as version" />}>
+                    <Save className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                   </TooltipTrigger>
                   <TooltipContent>Save as version</TooltipContent>
                 </Tooltip>
                 <Link to="/">
                   <Tooltip>
-                    <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" aria-label="Back to home" />}>
-                      <Home className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />
+                    <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" aria-label="Back to home" />}>
+                      <Home className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Home</TooltipContent>
                   </Tooltip>
                 </Link>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={handleClearResume} aria-label="Clear resume" />}>
-                    <Trash2 className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px] text-destructive" />
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={handleClearResume} aria-label="Clear resume" />}>
+                    <Trash2 className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-destructive" />
                   </TooltipTrigger>
                   <TooltipContent>Clear resume</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={handleLoadSample} aria-label="Load sample data" />}>
-                    <RotateCcw className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={handleLoadSample} aria-label="Load sample data" />}>
+                    <RotateCcw className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                   </TooltipTrigger>
                   <TooltipContent>Load sample data</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={toggleDarkMode} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} />}>
-                    {darkMode ? <Sun className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" /> : <Moon className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />}
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={toggleDarkMode} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} />}>
+                    {darkMode ? <Sun className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" /> : <Moon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />}
                   </TooltipTrigger>
                   <TooltipContent>{darkMode ? 'Light mode' : 'Dark mode'}</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))} aria-label="Command palette" />}>
-                    <Search className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))} aria-label="Command palette" />}>
+                    <Search className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                   </TooltipTrigger>
                   <TooltipContent>Command palette ({navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘K' : 'Ctrl+K'})</TooltipContent>
                 </Tooltip>
@@ -211,17 +211,17 @@ export default function MainLayout() {
               </div>
               <div className="flex items-center gap-1">
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={() => handleExportLatex()} aria-label="Export LaTeX file" />}>
-                    <FileText className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px] text-sky-500" />
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => handleExportLatex()} aria-label="Export LaTeX file" />}>
+                    <FileText className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-sky-500" />
                   </TooltipTrigger>
                   <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-8 sm:w-8" onClick={() => handleExportPdf()} disabled={isExportingPdf} aria-label="Export PDF file" />}>
+                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => handleExportPdf()} disabled={isExportingPdf} aria-label="Export PDF file" />}>
                     {isExportingPdf ? (
-                      <Spinner className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px]" />
+                      <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     ) : (
-                      <Download className="h-3.5 w-3.5 sm:h-[18px] sm:w-[18px] text-rose-500" />
+                      <Download className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-rose-500" />
                     )}
                   </TooltipTrigger>
                   <TooltipContent>Export PDF (⌘P)</TooltipContent>

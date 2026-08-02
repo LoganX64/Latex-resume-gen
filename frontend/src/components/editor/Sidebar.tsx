@@ -104,7 +104,7 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
                         activeSection === item.id ? '!bg-primary/10 !text-primary font-semibold border-l-2 border-primary' : ''
                       }`}
                     >
-                      <item.icon className={`h-3.5 w-3.5 ${activeSection === item.id ? 'text-primary' : ''}`} />
+                      <item.icon className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? 'text-primary' : ''}`} />
                       <span>{item.label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -122,24 +122,24 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.visits.toLocaleString()} visit${stats.visits !== 1 ? 's' : ''}`}
             >
-              <Eye className="h-4 w-4 text-sidebar-foreground/60" />
+              <Eye className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
             <span
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? 's' : ''}`}
             >
-              <Download className="h-4 w-4 text-sidebar-foreground/60" />
+              <Download className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-1 px-2 py-1.5 text-xs text-sidebar-foreground/60">
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Eye className="h-3.5 w-3.5" />
+              <Eye className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>{stats.visits.toLocaleString()} visit{stats.visits !== 1 ? 's' : ''}</span>
             </span>
             <span className="text-sidebar-foreground/30">·</span>
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Download className="h-3.5 w-3.5" />
+              <Download className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>{stats.downloads.toLocaleString()} download{stats.downloads !== 1 ? 's' : ''}</span>
             </span>
           </div>
@@ -147,19 +147,19 @@ export function AppSidebar({ activeSection, onSectionClick, onSaveClick }: AppSi
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="sm" onClick={onSaveClick} tooltip="Save as version">
-              <Save className="h-3 w-3" />
+              <Save className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Save Version</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton size="sm" onClick={() => navigate('/')} tooltip="Back to home">
-              <Home className="h-3 w-3" />
+              <Home className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton size="sm" onClick={toggleSidebar} tooltip="Toggle sidebar">
-              <PanelLeftClose className="h-3 w-3 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
+              <PanelLeftClose className="h-3 w-3 lg:h-4 lg:w-4 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
               <span>Collapse</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
