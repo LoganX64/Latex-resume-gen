@@ -10,6 +10,7 @@ import { EditorPanel } from '@/components/editor/EditorPanel'
 import { ResumePreview } from '@/components/preview/ResumePreview'
 import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
 import { StorageWarning } from '@/components/StorageWarning'
+import { CompactFooter } from '@/components/CompactFooter'
 import { SaveVersionDialog } from '@/components/SaveVersionDialog'
 import { useResumeStore } from '@/stores/resume-store'
 import { useExportActions } from '@/hooks/useExportActions'
@@ -185,6 +186,7 @@ export default function MainLayout() {
               <EditorPanel activeSection={activeSection} />
             </div>
             <StorageWarning className="mx-2 mb-2" />
+            <CompactFooter />
           </div>
           <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 bg-muted/30">
             <div className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
