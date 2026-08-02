@@ -63,9 +63,9 @@ export default function MobileLayout() {
   }, [navigate])
 
   return (
-    <div className="h-dvh overflow-hidden flex flex-col w-full bg-gradient-to-br from-background via-background to-rose-50/20 dark:to-rose-950/10">
+    <div className="h-dvh overflow-hidden flex flex-col w-full bg-gradient-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
       <MobileTopNavbar onSave={() => setShowSaveDialog(true)} onMenuToggle={() => setShowSidebar(true)} />
-      <main id="editor-main" className="flex-1 overflow-y-auto overflow-x-hidden min-h-0 bg-gradient-to-b from-background via-background/95 to-rose-50/30 dark:to-rose-950/20">
+      <main id="editor-main" className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
         <EditorPanel activeSection={activeSection} />
         <StorageWarning className="mx-2 mb-2" />
       </main>

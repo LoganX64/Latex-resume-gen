@@ -133,7 +133,7 @@ export default function MainLayout() {
       </a>
       <SidebarProvider>
         <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
-        <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-gradient-to-br from-background via-background to-rose-50/20 dark:to-rose-950/10">
+        <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-gradient-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
           <div className="flex flex-1 overflow-hidden min-h-0">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -182,7 +182,7 @@ export default function MainLayout() {
                 <KeyboardShortcutsButton open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
               </div>
             </header>
-            <div id="editor-main" className="flex-1 overflow-y-auto bg-gradient-to-b from-background via-background/95 to-rose-50/30 dark:to-rose-950/20">
+            <div id="editor-main" className="flex-1 overflow-y-auto relative">
               <EditorPanel activeSection={activeSection} />
             </div>
             <StorageWarning className="mx-2 mb-2" />

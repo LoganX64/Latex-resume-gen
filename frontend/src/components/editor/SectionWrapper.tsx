@@ -56,7 +56,7 @@ export function SectionWrapper({
       style={style}
       className={`${isDragging ? 'opacity-50 z-50' : ''}`}
     >
-      <Card className="relative bg-card border border-border/80 hover:border-primary/40 shadow-sm transition-all duration-200 overflow-hidden">
+      <Card className="relative bg-background/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm transition-all duration-200 overflow-hidden">
         <CardHeader className="py-2.5 px-3">
           <div className="flex items-center gap-2">
             <button

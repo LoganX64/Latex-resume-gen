@@ -52,19 +52,21 @@ function DocIllustration() {
 
 // ─── Feature SVG icons ────────────────────────────────────────────────────────
 
+// ─── Feature SVG icons ────────────────────────────────────────────────────────
+
 function IconSinglePage() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
       <defs>
-        <linearGradient id="gSinglePage" x1="4" y1="2" x2="24" y2="26">
+        <linearGradient id="gRose" x1="4" y1="2" x2="24" y2="26">
           <stop stopColor="#f43f5e" /><stop offset="1" stopColor="#e11d48" />
         </linearGradient>
       </defs>
-      <rect x="5" y="2" width="18" height="24" rx="3" stroke="url(#gSinglePage)" strokeWidth="2" />
-      <rect x="9" y="7" width="10" height="1.8" rx="0.9" fill="url(#gSinglePage)" />
-      <rect x="9" y="11" width="7" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.6" />
-      <rect x="9" y="15" width="10" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.4" />
-      <rect x="9" y="19" width="5" height="1.8" rx="0.9" fill="url(#gSinglePage)" opacity="0.3" />
+      <rect x="5" y="2" width="18" height="24" rx="3" stroke="url(#gRose)" strokeWidth="2" />
+      <rect x="9" y="7" width="10" height="1.8" rx="0.9" fill="url(#gRose)" />
+      <rect x="9" y="11" width="7" height="1.8" rx="0.9" fill="url(#gRose)" opacity="0.6" />
+      <rect x="9" y="15" width="10" height="1.8" rx="0.9" fill="url(#gRose)" opacity="0.4" />
+      <rect x="9" y="19" width="5" height="1.8" rx="0.9" fill="url(#gRose)" opacity="0.3" />
     </svg>
   )
 }
@@ -72,14 +74,9 @@ function IconSinglePage() {
 function IconPhoto() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gPhoto" x1="2" y1="4" x2="26" y2="24">
-          <stop stopColor="#8b5cf6" /><stop offset="1" stopColor="#7c3aed" />
-        </linearGradient>
-      </defs>
-      <rect x="3" y="5" width="22" height="18" rx="3" stroke="url(#gPhoto)" strokeWidth="2" />
-      <circle cx="10" cy="12" r="3" fill="url(#gPhoto)" opacity="0.7" />
-      <path d="M3 20l6-5 4 3 5-6 7 8H3z" fill="url(#gPhoto)" opacity="0.4" />
+      <rect x="3" y="5" width="22" height="18" rx="3" stroke="url(#gRose)" strokeWidth="2" />
+      <circle cx="10" cy="12" r="3" fill="url(#gRose)" opacity="0.7" />
+      <path d="M3 20l6-5 4 3 5-6 7 8H3z" fill="url(#gRose)" opacity="0.4" />
     </svg>
   )
 }
@@ -87,14 +84,9 @@ function IconPhoto() {
 function IconPdf() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gPdf" x1="4" y1="2" x2="24" y2="26">
-          <stop stopColor="#f59e0b" /><stop offset="1" stopColor="#d97706" />
-        </linearGradient>
-      </defs>
-      <path d="M7 3h10l7 7v15a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="url(#gPdf)" strokeWidth="2" strokeLinejoin="round" />
-      <path d="M17 3v7h7" stroke="url(#gPdf)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M14 14v7m-3-3l3 3 3-3" stroke="url(#gPdf)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7 3h10l7 7v15a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z" stroke="url(#gRose)" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M17 3v7h7" stroke="url(#gRose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 14v7m-3-3l3 3 3-3" stroke="url(#gRose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
@@ -102,14 +94,9 @@ function IconPdf() {
 function IconLatex() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gLatex" x1="2" y1="4" x2="26" y2="24">
-          <stop stopColor="#0ea5e9" /><stop offset="1" stopColor="#0284c7" />
-        </linearGradient>
-      </defs>
-      <rect x="3" y="4" width="22" height="20" rx="3" stroke="url(#gLatex)" strokeWidth="2" />
-      <path d="M8 10l4 4-4 4" stroke="url(#gLatex)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <rect x="14" y="17" width="6" height="2" rx="1" fill="url(#gLatex)" opacity="0.7" />
+      <rect x="3" y="4" width="22" height="20" rx="3" stroke="url(#gRose)" strokeWidth="2" />
+      <path d="M8 10l4 4-4 4" stroke="url(#gRose)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <rect x="14" y="17" width="6" height="2" rx="1" fill="url(#gRose)" opacity="0.7" />
     </svg>
   )
 }
@@ -117,14 +104,9 @@ function IconLatex() {
 function IconPrivate() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gPrivate" x1="6" y1="2" x2="22" y2="26">
-          <stop stopColor="#10b981" /><stop offset="1" stopColor="#059669" />
-        </linearGradient>
-      </defs>
-      <rect x="5" y="12" width="18" height="14" rx="3" stroke="url(#gPrivate)" strokeWidth="2" />
-      <path d="M9 12V8a5 5 0 0110 0v4" stroke="url(#gPrivate)" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="14" cy="19" r="2" fill="url(#gPrivate)" />
+      <rect x="5" y="12" width="18" height="14" rx="3" stroke="url(#gRose)" strokeWidth="2" />
+      <path d="M9 12V8a5 5 0 0110 0v4" stroke="url(#gRose)" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="14" cy="19" r="2" fill="url(#gRose)" />
     </svg>
   )
 }
@@ -132,15 +114,10 @@ function IconPrivate() {
 function IconTemplates() {
   return (
     <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gTemplates" x1="2" y1="2" x2="26" y2="26">
-          <stop stopColor="#f97316" /><stop offset="1" stopColor="#ea580c" />
-        </linearGradient>
-      </defs>
-      <rect x="3" y="3" width="10" height="10" rx="2.5" fill="url(#gTemplates)" opacity="0.8" />
-      <rect x="15" y="3" width="10" height="10" rx="2.5" stroke="url(#gTemplates)" strokeWidth="2" />
-      <rect x="3" y="15" width="10" height="10" rx="2.5" stroke="url(#gTemplates)" strokeWidth="2" />
-      <rect x="15" y="15" width="10" height="10" rx="2.5" fill="url(#gTemplates)" opacity="0.4" />
+      <rect x="3" y="3" width="10" height="10" rx="2.5" fill="url(#gRose)" opacity="0.8" />
+      <rect x="15" y="3" width="10" height="10" rx="2.5" stroke="url(#gRose)" strokeWidth="2" />
+      <rect x="3" y="15" width="10" height="10" rx="2.5" stroke="url(#gRose)" strokeWidth="2" />
+      <rect x="15" y="15" width="10" height="10" rx="2.5" fill="url(#gRose)" opacity="0.4" />
     </svg>
   )
 }
@@ -148,16 +125,11 @@ function IconTemplates() {
 function IconEmptyDoc() {
   return (
     <svg viewBox="0 0 48 48" fill="none" className="w-14 h-14 mx-auto" aria-hidden="true">
-      <defs>
-        <linearGradient id="gEmpty" x1="8" y1="4" x2="40" y2="44">
-          <stop stopColor="#e11d48" /><stop offset="1" stopColor="#f43f5e" />
-        </linearGradient>
-      </defs>
-      <rect x="10" y="4" width="28" height="40" rx="4" stroke="url(#gEmpty)" strokeWidth="2.5" />
-      <rect x="16" y="14" width="16" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.5" />
-      <rect x="16" y="20" width="12" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.3" />
-      <rect x="16" y="26" width="14" height="2.5" rx="1.25" fill="url(#gEmpty)" opacity="0.2" />
-      <path d="M24 32v6m-3-3h6" stroke="url(#gEmpty)" strokeWidth="2" strokeLinecap="round" />
+      <rect x="10" y="4" width="28" height="40" rx="4" stroke="url(#gRose)" strokeWidth="2.5" />
+      <rect x="16" y="14" width="16" height="2.5" rx="1.25" fill="url(#gRose)" opacity="0.5" />
+      <rect x="16" y="20" width="12" height="2.5" rx="1.25" fill="url(#gRose)" opacity="0.3" />
+      <rect x="16" y="26" width="14" height="2.5" rx="1.25" fill="url(#gRose)" opacity="0.2" />
+      <path d="M24 32v6m-3-3h6" stroke="url(#gRose)" strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }
@@ -174,36 +146,36 @@ const features = [
   },
   {
     icon: IconPhoto,
-    gradient: 'from-violet-500/10 via-violet-500/5 to-transparent dark:from-violet-500/15 dark:via-violet-500/5',
-    borderHover: 'hover:border-violet-300 dark:hover:border-violet-700',
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'Photo Support',
     desc: 'Upload and crop a profile photo. Works with sidebar and engineering templates.',
   },
   {
     icon: IconPdf,
-    gradient: 'from-amber-500/10 via-amber-500/5 to-transparent dark:from-amber-500/15 dark:via-amber-500/5',
-    borderHover: 'hover:border-amber-300 dark:hover:border-amber-700',
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'Instant PDF Export',
     desc: 'Compile LaTeX via Tectonic for publication-quality PDF output in seconds.',
   },
   {
     icon: IconLatex,
-    gradient: 'from-sky-500/10 via-sky-500/5 to-transparent dark:from-sky-500/15 dark:via-sky-500/5',
-    borderHover: 'hover:border-sky-300 dark:hover:border-sky-700',
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'LaTeX Source',
     desc: 'Download the raw .tex file. Edit in Overleaf or any LaTeX editor you prefer.',
   },
   {
     icon: IconPrivate,
-    gradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent dark:from-emerald-500/15 dark:via-emerald-500/5',
-    borderHover: 'hover:border-emerald-300 dark:hover:border-emerald-700',
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'Fully Private',
     desc: 'All data stays in your browser. Nothing is sent to any server, ever.',
   },
   {
     icon: IconTemplates,
-    gradient: 'from-orange-500/10 via-orange-500/5 to-transparent dark:from-orange-500/15 dark:via-orange-500/5',
-    borderHover: 'hover:border-orange-300 dark:hover:border-orange-700',
+    gradient: 'from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5',
+    borderHover: 'hover:border-rose-300 dark:hover:border-rose-700',
     title: 'Multiple Templates',
     desc: 'Choose from professional LaTeX templates designed for different industries.',
   },
@@ -317,12 +289,12 @@ export default function HomePage() {
       {/* ── Full-page gradient background ──────────────────────────────── */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* Main page gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-rose-100/90 via-background via-35% to-violet-100/70 dark:from-rose-950/60 dark:via-background dark:via-35% dark:to-violet-950/50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-rose-100/90 via-background via-35% to-rose-50/60 dark:from-rose-950/60 dark:via-background dark:via-35% dark:to-rose-950/40" />
         
         {/* Rich glowing mesh blobs */}
         <div className="absolute -top-24 -left-20 w-[500px] h-[500px] rounded-full bg-rose-400/25 dark:bg-rose-600/20 blur-[100px]" />
-        <div className="absolute top-[35%] -right-20 w-[450px] h-[450px] rounded-full bg-violet-400/25 dark:bg-violet-600/20 blur-[100px]" />
-        <div className="absolute top-[70%] left-[10%] w-[500px] h-[500px] rounded-full bg-amber-300/25 dark:bg-rose-500/15 blur-[110px]" />
+        <div className="absolute top-[35%] -right-20 w-[450px] h-[450px] rounded-full bg-pink-400/20 dark:bg-rose-700/15 blur-[100px]" />
+        <div className="absolute top-[70%] left-[10%] w-[500px] h-[500px] rounded-full bg-rose-300/20 dark:bg-rose-500/15 blur-[110px]" />
       </div>
       <div className="relative z-10">
         <Navbar />
@@ -399,11 +371,11 @@ export default function HomePage() {
               </div>
               {/* Floating chips - kept inside container with positive positioning */}
               <div className="absolute top-0 right-0 translate-x-2 -translate-y-3 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
-                <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
                 PDF Ready
               </div>
               <div className="absolute bottom-0 left-0 -translate-x-2 translate-y-3 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
-                <svg viewBox="0 0 14 14" className="w-3.5 h-3.5" aria-hidden="true"><path d="M7 1l1.5 3.5H12l-3 2.5 1 3.5L7 8l-3 2.5 1-3.5-3-2.5h3.5z" fill="currentColor" className="text-amber-500"/></svg>
+                <svg viewBox="0 0 14 14" className="w-3.5 h-3.5" aria-hidden="true"><path d="M7 1l1.5 3.5H12l-3 2.5 1 3.5L7 8l-3 2.5 1-3.5-3-2.5h3.5z" fill="currentColor" className="text-rose-500"/></svg>
                 LaTeX quality
               </div>
             </div>
@@ -458,24 +430,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
               {steps.map(({ n, label, desc }, i) => {
                 const Graphic = stepGraphics[i]
-                const stepConfigs = [
-                  {
-                    gradient: 'from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent',
-                    hoverBorder: 'hover:border-rose-300 dark:hover:border-rose-500 dark:hover:shadow-rose-950/30',
-                    pillBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
-                  },
-                  {
-                    gradient: 'from-violet-500/12 via-violet-500/4 to-transparent dark:from-violet-500/20 dark:via-violet-950/15 dark:to-transparent',
-                    hoverBorder: 'hover:border-violet-300 dark:hover:border-violet-500 dark:hover:shadow-violet-950/30',
-                    pillBg: 'bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20',
-                  },
-                  {
-                    gradient: 'from-emerald-500/12 via-emerald-500/4 to-transparent dark:from-emerald-500/20 dark:via-emerald-950/15 dark:to-transparent',
-                    hoverBorder: 'hover:border-emerald-300 dark:hover:border-emerald-500 dark:hover:shadow-emerald-950/30',
-                    pillBg: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
-                  },
-                ]
-                const cfg = stepConfigs[i]
+                const cfg = {
+                  gradient: 'from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent',
+                  hoverBorder: 'hover:border-rose-300 dark:hover:border-rose-500 dark:hover:shadow-rose-950/30',
+                  pillBg: 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20',
+                }
 
                 return (
                   <div
