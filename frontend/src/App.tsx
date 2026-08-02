@@ -28,7 +28,7 @@ function App() {
           <Route path="/admin/stats" element={<StatsDashboard />} />
         </SentryRoutes>
       </Suspense>
-      <Toaster position="bottom-right" richColors />
+      <Toaster position="top-center" richColors />
     </>
   )
 }

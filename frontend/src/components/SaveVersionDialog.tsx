@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
 import { getTemplateConfig } from '@/templates'
@@ -13,7 +13,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from '@/components/ui/dialog'
 
 interface SaveVersionDialogProps {
@@ -28,6 +27,8 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility)
   const addVersion = useVersionsStore((s) => s.addVersion)
+  const updateVersion = useVersionsStore((s) => s.updateVersion)
+  const findMatchingVersion = useVersionsStore((s) => s.findMatchingVersion)
 
   const templateConfig = getTemplateConfig(templateId)
   const activeSections = sectionOrder.filter((s) => {
@@ -35,7 +36,27 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
     return sectionVisibility[s.type]
   })
 
-  function handleSave() {
+  const currentData = useMemo(() => ({
+    resume,
+    templateId,
+    sectionOrder,
+    sectionVisibility,
+  }), [resume, templateId, sectionOrder, sectionVisibility])
+
+  const matchedVersion = useMemo(() => {
+    if (!open) return null
+    return findMatchingVersion(currentData)
+  }, [open, currentData, findMatchingVersion])
+
+  useEffect(() => {
+    if (open && matchedVersion) {
+      setName(matchedVersion.name)
+    } else if (open) {
+      setName('')
+    }
+  }, [open, matchedVersion])
+
+  function handleSaveAsNew() {
     if (!name.trim()) return
 
     const { profileImage, ...personalInfoWithoutPhoto } = resume.personalInfo
@@ -58,7 +79,36 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
     }
 
     toast.success('Resume saved', {
-      description: `"${name.trim()}" saved as a version.`,
+      description: `"${name.trim()}" saved as a new version.`,
+    })
+    setName('')
+    onOpenChange(false)
+  }
+
+  function handleUpdate() {
+    if (!matchedVersion) return
+
+    const { profileImage, ...personalInfoWithoutPhoto } = resume.personalInfo
+    const success = updateVersion(matchedVersion.id, {
+      name: name.trim() || matchedVersion.name,
+      resume: {
+        ...resume,
+        personalInfo: personalInfoWithoutPhoto,
+      },
+      templateId,
+      sectionOrder,
+      sectionVisibility,
+    })
+
+    if (!success) {
+      toast.error('Update failed', {
+        description: 'Could not update version. Please try again.',
+      })
+      return
+    }
+
+    toast.success('Version updated', {
+      description: `"${name.trim() || matchedVersion.name}" has been updated.`,
     })
     setName('')
     onOpenChange(false)
@@ -81,7 +131,12 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
               placeholder="e.g. Frontend Developer"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSave()}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (matchedVersion) handleUpdate()
+                  else handleSaveAsNew()
+                }
+              }}
               autoFocus
             />
           </div>
@@ -98,14 +153,44 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
             <span>Profile photo will NOT be saved with this version.</span>
           </div>
         </div>
-        <DialogFooter>
-          <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
-            Cancel
-          </Button>
-          <Button size="sm" onClick={handleSave} disabled={!name.trim()}>
-            Save Version
-          </Button>
-        </DialogFooter>
+        {matchedVersion ? (
+          <div className="space-y-2 pt-2">
+            <div className="flex gap-2">
+              <Button
+                className="flex-1 h-11 sm:h-7"
+                onClick={handleUpdate}
+                disabled={!name.trim()}
+              >
+                Update
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 h-11 sm:h-7"
+                onClick={handleSaveAsNew}
+                disabled={!name.trim()}
+              >
+                Save as New
+              </Button>
+            </div>
+            <Button
+              variant="ghost"
+              className="w-full h-11 sm:h-7"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        ) : (
+          <div className="pt-2">
+            <Button
+              className="w-full h-11 sm:h-7"
+              onClick={handleSaveAsNew}
+              disabled={!name.trim()}
+            >
+              Save Version
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   )

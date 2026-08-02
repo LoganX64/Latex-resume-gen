@@ -69,7 +69,8 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                 return (
                   <div
                     key={version.id}
-                    className="flex items-center justify-between p-3 rounded-lg border border-border bg-card"
+                    className="flex items-center justify-between p-3 rounded-lg border border-border bg-card cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => handleLoad(version)}
                   >
                     <div className="flex-1 min-w-0 mr-3">
                       <p className="text-sm font-medium truncate">{version.name}</p>
@@ -79,20 +80,11 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                         {isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')}
                       </p>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                       <Button
                         variant="ghost"
                         size="icon-sm"
-                        className="h-9 w-9"
-                        onClick={() => handleLoad(version)}
-                        aria-label="Load version"
-                      >
-                        <span className="text-xs font-medium">Load</span>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        className="h-9 w-9"
+                        className="h-11 w-11 sm:h-9 sm:w-9"
                         onClick={() => handleExportPdf(version)}
                         aria-label="Download PDF"
                       >
@@ -101,7 +93,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                       <Button
                         variant="ghost"
                         size="icon-sm"
-                        className="h-9 w-9 text-destructive hover:text-destructive"
+                        className="h-11 w-11 sm:h-9 sm:w-9 text-destructive hover:text-destructive"
                         onClick={() => handleDelete(version)}
                         aria-label="Delete version"
                       >
@@ -117,7 +109,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
         <div className="p-3 border-t border-border">
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full h-11 sm:h-7"
             onClick={() => onOpenChange(false)}
           >
             Close

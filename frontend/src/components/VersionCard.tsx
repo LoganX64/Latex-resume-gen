@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
+import { useIsMobile } from '@/hooks/use-mobile'
 import { getTemplateConfig } from '@/templates'
 import { quickExportPdf, quickExportLatex } from '@/utils/quick-export'
 import { recordDownload } from '@/utils/stats'
@@ -28,6 +29,7 @@ interface VersionCardProps {
 
 export function VersionCard({ version }: VersionCardProps) {
   const navigate = useNavigate()
+  const isMobile = useIsMobile()
   const loadFromVersion = useResumeStore((s) => s.loadFromVersion)
   const removeVersion = useVersionsStore((s) => s.removeVersion)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -67,10 +69,10 @@ export function VersionCard({ version }: VersionCardProps) {
 
   return (
     <>
-      <Card className="group transition-colors hover:border-foreground/20">
-        <CardHeader className="pb-2">
+      <Card size="sm" className="group transition-colors hover:border-foreground/20 cursor-pointer py-2 sm:py-3" onClick={handleLoad}>
+        <CardHeader className="pb-0 pt-2 px-3 sm:px-4">
           <CardTitle className="text-base">{version.name}</CardTitle>
-          <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs text-muted-foreground">
             <span>{templateConfig?.name || version.templateId}</span>
             <span>{activeSections.length} sections</span>
             <span>{(() => {
@@ -79,14 +81,15 @@ export function VersionCard({ version }: VersionCardProps) {
             })()}</span>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-1.5">
-            <Button size="sm" onClick={handleLoad}>
+        <CardContent className="pt-1 pb-3 px-3 sm:px-4">
+          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+            <Button size="sm" className="h-10 px-3 sm:h-9 sm:px-3" onClick={handleLoad}>
               Load
             </Button>
             <Button
               variant="outline"
               size="sm"
+              className="h-10 px-3 sm:h-9 sm:px-3"
               onClick={handleExportPdf}
               disabled={exportingPdf}
             >
@@ -97,23 +100,26 @@ export function VersionCard({ version }: VersionCardProps) {
               )}
               PDF
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleExportLatex}
-              disabled={exportingLatex}
-            >
-              {exportingLatex ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-              ) : (
-                <FileText className="h-3.5 w-3.5" />
-              )}
-              LaTeX
-            </Button>
+            {!isMobile && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 px-3 sm:h-9 sm:px-3"
+                onClick={handleExportLatex}
+                disabled={exportingLatex}
+              >
+                {exportingLatex ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <FileText className="h-3.5 w-3.5" />
+                )}
+                LaTeX
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"
-              className="ml-auto text-destructive hover:text-destructive"
+              className="h-10 w-10 sm:h-9 sm:w-9 ml-auto text-destructive hover:text-destructive"
               onClick={() => setShowDeleteDialog(true)}
             >
               <Trash2 className="h-3.5 w-3.5" />
@@ -130,14 +136,16 @@ export function VersionCard({ version }: VersionCardProps) {
               This will permanently delete &quot;{version.name}&quot;. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="flex-row gap-2 sm:flex-row-reverse">
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="flex-1 sm:flex-none h-11 sm:h-9 bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Delete
             </AlertDialogAction>
+            <AlertDialogCancel className="flex-1 sm:flex-none h-11 sm:h-9">
+              Cancel
+            </AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
