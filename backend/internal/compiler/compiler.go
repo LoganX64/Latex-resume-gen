@@ -53,7 +53,6 @@ func Compile(ctx context.Context, latex string, profileImageBase64 string) (*Com
 		return nil, fmt.Errorf("failed to create temp directory: %w", err)
 	}
 
-	// Write base64 profile image if provided
 	if len(profileImageBase64) > 0 {
 		base64Data := profileImageBase64
 		if strings.Contains(base64Data, ",") {
@@ -215,6 +214,7 @@ func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 s
 	}
 
 	var stderrOutput strings.Builder
+	var stderrScanErr error
 	var stderrWg sync.WaitGroup
 	stderrWg.Add(1)
 	go func() {
@@ -229,6 +229,7 @@ func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 s
 				stderrOutput.WriteString(line)
 			}
 		}
+		stderrScanErr = scanner.Err()
 	}()
 
 	scanner := bufio.NewScanner(stdout)
@@ -244,13 +245,22 @@ func CompileWithProgress(ctx context.Context, latex string, profileImageBase64 s
 			sendEvent(CompileEvent{Step: "compiling", Message: "Compiling...", Output: line})
 		}
 	}
+	if err := scanner.Err(); err != nil {
+		cmd.Process.Kill()
+		cmd.Wait()
+		os.RemoveAll(tempDir)
+		return nil, fmt.Errorf("failed to read tectonic stdout: %w", err)
+	}
 
 	if err := cmd.Wait(); err != nil {
+		stderrWg.Wait()
+		if stderrScanErr != nil {
+			err = fmt.Errorf("%w: %v", err, stderrScanErr)
+		}
 		if ctx.Err() != nil {
 			os.RemoveAll(tempDir)
 			return nil, ctx.Err()
 		}
-		stderrWg.Wait()
 		errMsg := fmt.Sprintf("compilation failed: %v", err)
 		if stderrOutput.Len() > 0 {
 			errMsg = fmt.Sprintf("%s\n%s", errMsg, stderrOutput.String())

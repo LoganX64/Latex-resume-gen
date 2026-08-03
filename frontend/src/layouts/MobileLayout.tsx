@@ -1,14 +1,14 @@
-import { useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { EditorPanel } from '@/components/editor/EditorPanel'
-import { StorageWarning } from '@/components/StorageWarning'
-import { SaveVersionDialog } from '@/components/SaveVersionDialog'
-import { MobileTopNavbar } from '@/components/mobile/MobileTopNavbar'
-import { MobileBottomNavbar } from '@/components/mobile/MobileBottomNavbar'
-import { MobileSavedSheet } from '@/components/mobile/MobileSavedSheet'
-import { MobilePreviewSheet } from '@/components/mobile/MobilePreviewSheet'
-import { useExportActions } from '@/hooks/useExportActions'
-import { MobileSidebar } from '@/components/mobile/MobileSidebar'
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { EditorPanel } from "@/components/editor/EditorPanel";
+import { StorageWarning } from "@/components/StorageWarning";
+import { SaveVersionDialog } from "@/components/SaveVersionDialog";
+import { MobileTopNavbar } from "@/components/mobile/MobileTopNavbar";
+import { MobileBottomNavbar } from "@/components/mobile/MobileBottomNavbar";
+import { MobileSavedSheet } from "@/components/mobile/MobileSavedSheet";
+import { MobilePreviewSheet } from "@/components/mobile/MobilePreviewSheet";
+import { useExportActions } from "@/hooks/useExportActions";
+import { MobileSidebar } from "@/components/mobile/MobileSidebar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,7 +18,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -26,19 +26,19 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { TriangleAlert, ImageOff } from 'lucide-react'
-import { CompileProgressDialog } from '@/components/CompileProgressDialog'
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { TriangleAlert, ImageOff } from "lucide-react";
+import { CompileProgressDialog } from "@/components/CompileProgressDialog";
 
 export default function MobileLayout() {
-  const navigate = useNavigate()
-  const [activeSection, setActiveSection] = useState<string>('personal')
-  const [showSidebar, setShowSidebar] = useState(false)
+  const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState<string>("personal");
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  const [showSaveDialog, setShowSaveDialog] = useState(false)
-  const [showSavedSheet, setShowSavedSheet] = useState(false)
-  const [showPreviewSheet, setShowPreviewSheet] = useState(false)
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [showSavedSheet, setShowSavedSheet] = useState(false);
+  const [showPreviewSheet, setShowPreviewSheet] = useState(false);
 
   const {
     handleExportPdf,
@@ -56,16 +56,22 @@ export default function MobileLayout() {
     progress,
     compileStatus,
     compileWsError,
-  } = useExportActions()
+  } = useExportActions();
 
   const handleHome = useCallback(() => {
-    navigate('/')
-  }, [navigate])
+    navigate("/");
+  }, [navigate]);
 
   return (
-    <div className="h-dvh overflow-hidden flex flex-col w-full bg-gradient-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
-      <MobileTopNavbar onSave={() => setShowSaveDialog(true)} onMenuToggle={() => setShowSidebar(true)} />
-      <main id="editor-main" className="flex-1 overflow-y-auto overflow-x-hidden min-h-0">
+    <div className="h-dvh overflow-hidden flex flex-col w-full bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
+      <MobileTopNavbar
+        onSave={() => setShowSaveDialog(true)}
+        onMenuToggle={() => setShowSidebar(true)}
+      />
+      <main
+        id="editor-main"
+        className="flex-1 overflow-y-auto overflow-x-hidden min-h-0"
+      >
         <EditorPanel activeSection={activeSection} />
         <StorageWarning className="mx-2 mb-2" />
       </main>
@@ -81,13 +87,28 @@ export default function MobileLayout() {
         open={showSidebar}
         onOpenChange={setShowSidebar}
         activeSection={activeSection}
-        onSectionClick={(id) => { setActiveSection(id); setShowSidebar(false) }}
-        onSaveClick={() => { setShowSaveDialog(true); setShowSidebar(false) }}
+        onSectionClick={(id) => {
+          setActiveSection(id);
+          setShowSidebar(false);
+        }}
+        onSaveClick={() => {
+          setShowSaveDialog(true);
+          setShowSidebar(false);
+        }}
       />
-      <MobileSavedSheet open={showSavedSheet} onOpenChange={setShowSavedSheet} />
-      <MobilePreviewSheet open={showPreviewSheet} onOpenChange={setShowPreviewSheet} />
+      <MobileSavedSheet
+        open={showSavedSheet}
+        onOpenChange={setShowSavedSheet}
+      />
+      <MobilePreviewSheet
+        open={showPreviewSheet}
+        onOpenChange={setShowPreviewSheet}
+      />
 
-      <SaveVersionDialog open={showSaveDialog} onOpenChange={setShowSaveDialog} />
+      <SaveVersionDialog
+        open={showSaveDialog}
+        onOpenChange={setShowSaveDialog}
+      />
 
       <CompileProgressDialog
         open={compileDialogOpen}
@@ -98,7 +119,10 @@ export default function MobileLayout() {
         errorMessage={compileWsError}
       />
 
-      <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
+      <AlertDialog
+        open={showMultiPageDialog}
+        onOpenChange={setShowMultiPageDialog}
+      >
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
             <div className="flex items-center gap-2">
@@ -106,12 +130,13 @@ export default function MobileLayout() {
               <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
             </div>
             <AlertDialogDescription>
-              Your resume is <strong>{multiPageCount} pages</strong> long.
-              Most ATS systems and recruiters prefer single-page resumes.
+              Your resume is <strong>{multiPageCount} pages</strong> long. Most
+              ATS systems and recruiters prefer single-page resumes.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <p className="text-xs text-muted-foreground">
-            Try hiding less important sections or shortening bullet points to fit on one page.
+            Try hiding less important sections or shortening bullet points to
+            fit on one page.
           </p>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowMultiPageDialog(false)}>
@@ -137,7 +162,11 @@ export default function MobileLayout() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" size="sm" onClick={() => setShowNoPhotoDialog(false)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowNoPhotoDialog(false)}
+            >
               Cancel
             </Button>
             <Button size="sm" onClick={handleNoPhotoContinue}>
@@ -147,5 +176,5 @@ export default function MobileLayout() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

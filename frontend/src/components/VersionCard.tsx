@@ -75,7 +75,7 @@ export function VersionCard({ version }: VersionCardProps) {
         onClick={handleLoad}
       >
         {/* Ambient background gradient overlay for light & dark mode */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
 
         <CardHeader className="relative pb-0 pt-2 px-3 sm:px-4">
           <div className="flex items-start justify-between gap-2">

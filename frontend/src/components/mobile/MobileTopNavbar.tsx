@@ -1,17 +1,20 @@
-import { PanelLeft, Save, Sun, Moon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { useTheme } from '@/components/theme-provider'
+import { PanelLeft, Save, Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTheme } from "@/components/theme-provider";
 
 interface MobileTopNavbarProps {
-  onSave: () => void
-  onMenuToggle: () => void
+  onSave: () => void;
+  onMenuToggle: () => void;
 }
 
-export function MobileTopNavbar({ onSave, onMenuToggle }: MobileTopNavbarProps) {
-  const { darkMode, toggleDarkMode } = useTheme()
+export function MobileTopNavbar({
+  onSave,
+  onMenuToggle,
+}: MobileTopNavbarProps) {
+  const { darkMode, toggleDarkMode } = useTheme();
 
   return (
-    <header className="flex items-center justify-between px-3 py-2 h-12 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shrink-0">
+    <header className="flex items-center justify-between px-3 py-2 h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60 shrink-0">
       <div className="flex items-center gap-2">
         <Button
           variant="ghost"
@@ -34,10 +37,14 @@ export function MobileTopNavbar({ onSave, onMenuToggle }: MobileTopNavbarProps) 
           variant="ghost"
           size="icon-sm"
           onClick={toggleDarkMode}
-          aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           className="h-8 w-8"
         >
-          {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          {darkMode ? (
+            <Sun className="h-4 w-4" />
+          ) : (
+            <Moon className="h-4 w-4" />
+          )}
         </Button>
         <Button
           variant="ghost"
@@ -50,5 +57,5 @@ export function MobileTopNavbar({ onSave, onMenuToggle }: MobileTopNavbarProps) 
         </Button>
       </div>
     </header>
-  )
+  );
 }

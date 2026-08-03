@@ -1,19 +1,16 @@
-import { useCallback, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'sonner'
-import {
-  SidebarProvider,
-  SidebarInset,
-} from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/editor/Sidebar'
-import { EditorPanel } from '@/components/editor/EditorPanel'
-import { ResumePreview } from '@/components/preview/ResumePreview'
-import { OverflowIndicator } from '@/components/preview/OverflowIndicator'
-import { StorageWarning } from '@/components/StorageWarning'
-import { CompactFooter } from '@/components/CompactFooter'
-import { SaveVersionDialog } from '@/components/SaveVersionDialog'
-import { useResumeStore } from '@/stores/resume-store'
-import { useExportActions } from '@/hooks/useExportActions'
+import { useCallback, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/editor/Sidebar";
+import { EditorPanel } from "@/components/editor/EditorPanel";
+import { ResumePreview } from "@/components/preview/ResumePreview";
+import { OverflowIndicator } from "@/components/preview/OverflowIndicator";
+import { StorageWarning } from "@/components/StorageWarning";
+import { CompactFooter } from "@/components/CompactFooter";
+import { SaveVersionDialog } from "@/components/SaveVersionDialog";
+import { useResumeStore } from "@/stores/resume-store";
+import { useExportActions } from "@/hooks/useExportActions";
 import {
   Sun,
   Moon,
@@ -26,9 +23,9 @@ import {
   ImageOff,
   Save,
   Home,
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Spinner } from '@/components/ui/spinner'
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,7 +35,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
+} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -46,37 +43,37 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip'
-import { useTheme } from '@/components/theme-provider'
-import { getAllTemplateConfigs } from '@/templates'
-import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
-import { CommandPalette } from '@/components/CommandPalette'
-import { CompileProgressDialog } from '@/components/CompileProgressDialog'
-import { KeyboardShortcutsButton } from '@/components/KeyboardShortcutsButton'
+} from "@/components/ui/tooltip";
+import { useTheme } from "@/components/theme-provider";
+import { getAllTemplateConfigs } from "@/templates";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { CommandPalette } from "@/components/CommandPalette";
+import { CompileProgressDialog } from "@/components/CompileProgressDialog";
+import { KeyboardShortcutsButton } from "@/components/KeyboardShortcutsButton";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 
 export default function MainLayout() {
-  const { darkMode, toggleDarkMode } = useTheme()
-  const navigate = useNavigate()
-  const resetResume = useResumeStore((s) => s.resetResume)
-  const clearResume = useResumeStore((s) => s.clearResume)
-  const templateId = useResumeStore((s) => s.templateId)
-  const setTemplateId = useResumeStore((s) => s.setTemplateId)
-  const [shortcutsOpen, setShortcutsOpen] = useState(false)
-  const [showSaveDialog, setShowSaveDialog] = useState(false)
-  const [activeSection, setActiveSection] = useState<string>('personal')
+  const { darkMode, toggleDarkMode } = useTheme();
+  const navigate = useNavigate();
+  const resetResume = useResumeStore((s) => s.resetResume);
+  const clearResume = useResumeStore((s) => s.clearResume);
+  const templateId = useResumeStore((s) => s.templateId);
+  const setTemplateId = useResumeStore((s) => s.setTemplateId);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("personal");
 
   const {
     handleExportPdf,
@@ -95,19 +92,23 @@ export default function MainLayout() {
     progress,
     compileStatus,
     compileWsError,
-  } = useExportActions()
+  } = useExportActions();
 
-  const templateConfigs = getAllTemplateConfigs()
+  const templateConfigs = getAllTemplateConfigs();
 
   const handleLoadSample = useCallback(() => {
-    resetResume()
-    toast.success('Sample data loaded', { description: 'Resume populated with sample data.' })
-  }, [resetResume])
+    resetResume();
+    toast.success("Sample data loaded", {
+      description: "Resume populated with sample data.",
+    });
+  }, [resetResume]);
 
   const handleClearResume = useCallback(() => {
-    clearResume()
-    toast.success('Resume cleared', { description: 'All fields have been cleared.' })
-  }, [clearResume])
+    clearResume();
+    toast.success("Resume cleared", {
+      description: "All fields have been cleared.",
+    });
+  }, [clearResume]);
 
   const shortcuts = useMemo(
     () => ({
@@ -115,13 +116,13 @@ export default function MainLayout() {
       l: handleExportLatex,
       d: toggleDarkMode,
       s: () => setShowSaveDialog(true),
-      h: () => navigate('/'),
-      '?': () => setShortcutsOpen(true),
+      h: () => navigate("/"),
+      "?": () => setShortcutsOpen(true),
     }),
-    [handleExportPdf, handleExportLatex, toggleDarkMode, navigate]
-  )
+    [handleExportPdf, handleExportLatex, toggleDarkMode, navigate],
+  );
 
-  useKeyboardShortcuts(shortcuts)
+  useKeyboardShortcuts(shortcuts);
 
   return (
     <TooltipProvider delay={400}>
@@ -132,121 +133,251 @@ export default function MainLayout() {
         Skip to editor
       </a>
       <SidebarProvider>
-        <AppSidebar activeSection={activeSection} onSectionClick={setActiveSection} onSaveClick={() => setShowSaveDialog(true)} />
-        <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-gradient-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
+        <AppSidebar
+          activeSection={activeSection}
+          onSectionClick={setActiveSection}
+          onSaveClick={() => setShowSaveDialog(true)}
+        />
+        <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
           <div className="flex flex-1 overflow-hidden min-h-0">
             <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
-              <header className="flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              <header className="flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">Resume Editor</h2>
+                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">
+                    Resume Editor
+                  </h2>
                 </div>
                 <div className="flex items-center gap-1">
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => setShowSaveDialog(true)} aria-label="Save as version" />}>
-                    <Save className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>Save as version</TooltipContent>
-                </Tooltip>
-                <Link to="/">
                   <Tooltip>
-                    <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" aria-label="Back to home" />}>
-                      <Home className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={() => setShowSaveDialog(true)}
+                          aria-label="Save as version"
+                        />
+                      }
+                    >
+                      <Save className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
-                    <TooltipContent>Home</TooltipContent>
+                    <TooltipContent>Save as version</TooltipContent>
                   </Tooltip>
-                </Link>
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={handleClearResume} aria-label="Clear resume" />}>
-                    <Trash2 className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-destructive" />
-                  </TooltipTrigger>
-                  <TooltipContent>Clear resume</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={handleLoadSample} aria-label="Load sample data" />}>
-                    <RotateCcw className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>Load sample data</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={toggleDarkMode} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'} />}>
-                    {darkMode ? <Sun className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" /> : <Moon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />}
-                  </TooltipTrigger>
-                  <TooltipContent>{darkMode ? 'Light mode' : 'Dark mode'}</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))} aria-label="Command palette" />}>
-                    <Search className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>Command palette ({navigator.platform.toUpperCase().indexOf('MAC') >= 0 ? '⌘K' : 'Ctrl+K'})</TooltipContent>
-                </Tooltip>
-                <KeyboardShortcutsButton open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+                  <Link to="/">
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon-xs"
+                            className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                            aria-label="Back to home"
+                          />
+                        }
+                      >
+                        <Home className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>Home</TooltipContent>
+                    </Tooltip>
+                  </Link>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={handleClearResume}
+                          aria-label="Clear resume"
+                        />
+                      }
+                    >
+                      <Trash2 className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-destructive" />
+                    </TooltipTrigger>
+                    <TooltipContent>Clear resume</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={handleLoadSample}
+                          aria-label="Load sample data"
+                        />
+                      }
+                    >
+                      <RotateCcw className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>Load sample data</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={toggleDarkMode}
+                          aria-label={
+                            darkMode
+                              ? "Switch to light mode"
+                              : "Switch to dark mode"
+                          }
+                        />
+                      }
+                    >
+                      {darkMode ? (
+                        <Sun className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      ) : (
+                        <Moon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      )}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {darkMode ? "Light mode" : "Dark mode"}
+                    </TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={() =>
+                            document.dispatchEvent(
+                              new KeyboardEvent("keydown", {
+                                key: "k",
+                                metaKey: true,
+                              }),
+                            )
+                          }
+                          aria-label="Command palette"
+                        />
+                      }
+                    >
+                      <Search className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Command palette (
+                      {navigator.platform.toUpperCase().indexOf("MAC") >= 0
+                        ? "⌘K"
+                        : "Ctrl+K"}
+                      )
+                    </TooltipContent>
+                  </Tooltip>
+                  <KeyboardShortcutsButton
+                    open={shortcutsOpen}
+                    onOpenChange={setShortcutsOpen}
+                  />
+                </div>
+              </header>
+              <div id="editor-main" className="flex-1 overflow-y-auto relative">
+                <EditorPanel activeSection={activeSection} />
               </div>
-            </header>
-            <div id="editor-main" className="flex-1 overflow-y-auto relative">
-              <EditorPanel activeSection={activeSection} />
+              <StorageWarning className="mx-2 mb-2" />
+              <CompactFooter />
             </div>
-            <StorageWarning className="mx-2 mb-2" />
-            <CompactFooter />
-          </div>
-          <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-gradient-to-br from-muted/40 via-background to-rose-950/10 dark:from-muted/20 dark:via-background dark:to-rose-950/20">
-            {/* Ambient background glow behind live preview canvas */}
-            <div className="pointer-events-none absolute inset-0 overflow-hidden">
-              <div className="absolute top-[20%] right-[10%] w-[350px] h-[350px] rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[100px]" />
-            </div>
-            <div className="relative z-10 flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <div className="flex items-center gap-2">
-                <h2 className="text-xs sm:text-sm font-semibold text-foreground">Live Preview</h2>
-                <Select value={templateId} onValueChange={(v) => v && setTemplateId(v)}>
-                  <SelectTrigger className="text-[10px] sm:text-xs h-6 sm:h-7 px-2 py-1 gap-1 cursor-pointer" aria-label="Select resume template">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="min-w-32 text-[10px] sm:text-xs">
-                    {templateConfigs.map((tc) => (
-                      <SelectItem key={tc.id} value={tc.id} className="py-0.5 pr-6 pl-1.5 text-[10px] sm:text-xs">
-                        {tc.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+            <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-linear-to-br from-muted/40 via-background to-rose-950/10 dark:from-muted/20 dark:via-background dark:to-rose-950/20">
+              {/* Ambient background glow behind live preview canvas */}
+              <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute top-[20%] right-[10%] w-87.5 h-87.5 rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[100px]" />
               </div>
-              <div className="flex items-center gap-1">
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => handleExportLatex()} aria-label="Export LaTeX file" />}>
-                    <FileText className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-sky-500" />
-                  </TooltipTrigger>
-                  <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger render={<Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={() => handleExportPdf()} disabled={isExportingPdf} aria-label="Export PDF file" />}>
-                    {isExportingPdf ? (
-                      <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
-                    ) : (
-                      <Download className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-rose-500" />
-                    )}
-                  </TooltipTrigger>
-                  <TooltipContent>Export PDF (⌘P)</TooltipContent>
-                </Tooltip>
+              <div className="relative z-10 flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">
+                    Live Preview
+                  </h2>
+                  <Select
+                    value={templateId}
+                    onValueChange={(v) => v && setTemplateId(v)}
+                  >
+                    <SelectTrigger
+                      className="text-[10px] sm:text-xs h-6 sm:h-7 px-2 py-1 gap-1 cursor-pointer"
+                      aria-label="Select resume template"
+                    >
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="min-w-32 text-[10px] sm:text-xs">
+                      {templateConfigs.map((tc) => (
+                        <SelectItem
+                          key={tc.id}
+                          value={tc.id}
+                          className="py-0.5 pr-6 pl-1.5 text-[10px] sm:text-xs"
+                        >
+                          {tc.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={() => handleExportLatex()}
+                          aria-label="Export LaTeX file"
+                        />
+                      }
+                    >
+                      <FileText className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-sky-500" />
+                    </TooltipTrigger>
+                    <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                          onClick={() => handleExportPdf()}
+                          disabled={isExportingPdf}
+                          aria-label="Export PDF file"
+                        />
+                      }
+                    >
+                      {isExportingPdf ? (
+                        <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      ) : (
+                        <Download className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-rose-500" />
+                      )}
+                    </TooltipTrigger>
+                    <TooltipContent>Export PDF (⌘P)</TooltipContent>
+                  </Tooltip>
+                </div>
               </div>
+              <div className="relative z-10 flex-1 overflow-hidden">
+                <ResumePreview />
+              </div>
+              <OverflowIndicator />
             </div>
-            <div className="relative z-10 flex-1 overflow-hidden">
-              <ResumePreview />
-            </div>
-            <OverflowIndicator />
-          </div>
           </div>
           <CommandPalette
-          onExportLatex={handleExportLatex}
-          onExportPdf={handleExportPdf}
-          onToggleDarkMode={toggleDarkMode}
-          onResetResume={handleLoadSample}
-          onClearResume={handleClearResume}
-          onTemplateChange={setTemplateId}
-          templateOptions={templateConfigs.map((tc) => ({ id: tc.id, name: tc.name }))}
-          isDarkMode={darkMode}
-        />
+            onExportLatex={handleExportLatex}
+            onExportPdf={handleExportPdf}
+            onToggleDarkMode={toggleDarkMode}
+            onResetResume={handleLoadSample}
+            onClearResume={handleClearResume}
+            onTemplateChange={setTemplateId}
+            templateOptions={templateConfigs.map((tc) => ({
+              id: tc.id,
+              name: tc.name,
+            }))}
+            isDarkMode={darkMode}
+          />
         </SidebarInset>
       </SidebarProvider>
-      <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
+      <AlertDialog
+        open={showMultiPageDialog}
+        onOpenChange={setShowMultiPageDialog}
+      >
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
             <div className="flex items-center gap-2">
@@ -254,12 +385,13 @@ export default function MainLayout() {
               <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
             </div>
             <AlertDialogDescription>
-              Your resume is <strong>{multiPageCount} pages</strong> long.
-              Most ATS systems and recruiters prefer single-page resumes.
+              Your resume is <strong>{multiPageCount} pages</strong> long. Most
+              ATS systems and recruiters prefer single-page resumes.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <p className="text-xs text-muted-foreground">
-            Try hiding less important sections or shortening bullet points to fit on one page.
+            Try hiding less important sections or shortening bullet points to
+            fit on one page.
           </p>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowMultiPageDialog(false)}>
@@ -284,7 +416,11 @@ export default function MainLayout() {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" size="sm" onClick={() => setShowNoPhotoDialog(false)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setShowNoPhotoDialog(false)}
+            >
               Cancel
             </Button>
             <Button size="sm" onClick={handleNoPhotoContinue}>
@@ -293,7 +429,10 @@ export default function MainLayout() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <SaveVersionDialog open={showSaveDialog} onOpenChange={setShowSaveDialog} />
+      <SaveVersionDialog
+        open={showSaveDialog}
+        onOpenChange={setShowSaveDialog}
+      />
       <CompileProgressDialog
         open={compileDialogOpen}
         onOpenChange={setCompileDialogOpen}
@@ -303,5 +442,5 @@ export default function MainLayout() {
         errorMessage={compileWsError}
       />
     </TooltipProvider>
-  )
+  );
 }

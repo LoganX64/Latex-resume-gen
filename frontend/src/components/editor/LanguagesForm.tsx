@@ -1,20 +1,20 @@
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { useResumeStore } from '@/stores/resume-store'
-import { Plus, Trash2 } from 'lucide-react'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useResumeStore } from "@/stores/resume-store";
+import { Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 
 export function LanguagesForm() {
-  const languages = useResumeStore((s) => s.resume.languages)
-  const addLanguage = useResumeStore((s) => s.addLanguage)
-  const updateLanguage = useResumeStore((s) => s.updateLanguage)
-  const removeLanguage = useResumeStore((s) => s.removeLanguage)
+  const languages = useResumeStore((s) => s.resume.languages);
+  const addLanguage = useResumeStore((s) => s.addLanguage);
+  const updateLanguage = useResumeStore((s) => s.updateLanguage);
+  const removeLanguage = useResumeStore((s) => s.removeLanguage);
 
   return (
     <div className="space-y-1.5">
@@ -24,15 +24,20 @@ export function LanguagesForm() {
             name="langName"
             autoComplete="off"
             value={lang.name}
-            onChange={(e) => updateLanguage(lang.id, 'name', e.target.value)}
+            onChange={(e) => updateLanguage(lang.id, "name", e.target.value)}
             placeholder="Language"
             className="h-10 text-base sm:h-7 sm:text-xs flex-1 min-w-0"
           />
           <Select
             value={lang.proficiency}
-            onValueChange={(value) => { if (value) updateLanguage(lang.id, 'proficiency', value) }}
+            onValueChange={(value) => {
+              if (value) updateLanguage(lang.id, "proficiency", value);
+            }}
           >
-            <SelectTrigger className="h-10 text-base sm:h-7 sm:text-xs w-[120px]" aria-label="Proficiency level">
+            <SelectTrigger
+              className="h-10 text-base sm:h-7 sm:text-xs w-30"
+              aria-label="Proficiency level"
+            >
               <SelectValue placeholder="Level" />
             </SelectTrigger>
             <SelectContent>
@@ -63,5 +68,5 @@ export function LanguagesForm() {
         Add Language
       </Button>
     </div>
-  )
+  );
 }
