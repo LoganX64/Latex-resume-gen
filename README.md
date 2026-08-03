@@ -28,6 +28,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 - **Responsive UI** -- Modern interface built with shadcn/ui and Tailwind CSS v4
 - **Error Tracking** -- Sentry integration with session replay and performance monitoring
 - **Multi-Page Warning** -- Alerts when resume exceeds single-page limit with download-anyway option
+- **SEO Optimized** -- Open Graph, Twitter Cards, JSON-LD structured data, robots.txt, sitemap.xml
 
 ---
 
@@ -188,6 +189,7 @@ latex-resume-gen/
 │   │   ├── App.tsx
 │   │   ├── main.tsx
 │   │   └── index.css
+│   ├── public/                  # Static assets (favicon, og-image, robots.txt, sitemap.xml)
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── vite.config.ts
