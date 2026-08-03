@@ -307,6 +307,31 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 
 ---
 
+## Screenshots
+
+### Prometheus
+
+| Screenshot | Description |
+|------------|-------------|
+| ![Prometheus Targets](screenshots/prometheus-targets.png) | Targets page showing backend scraping |
+| ![Prometheus Query](screenshots/prometheus-query.png) | PromQL query for compile metrics |
+
+### Grafana
+
+| Screenshot | Description |
+|------------|-------------|
+| ![Grafana Dashboard](screenshots/grafana-dashboard.png) | Custom dashboard with Go runtime + LaTeX metrics |
+| ![Grafana Explore](screenshots/grafana-explore.png) | Explore view with custom metric queries |
+
+### pprof
+
+| Screenshot | Description |
+|------------|-------------|
+| ![pprof Web UI](screenshots/pprof-web.png) | Available profiles list |
+| ![pprof Heap](screenshots/pprof-heap.png) | Heap profile analysis in terminal |
+
+---
+
 ## API
 
 ### POST /api/compile
