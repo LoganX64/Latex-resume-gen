@@ -41,12 +41,12 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | TypeScript | 6.x | Type safety |
 | Vite | 8.x | Build tool & dev server |
 | Tailwind CSS | v4 | Utility-first styling |
-| shadcn/ui | v2 (Base UI) | Component library |
+| shadcn/ui | v4 (Base UI) | Component library |
 | Zustand | 5.x | State management |
 | React Hook Form | 7.x | Form handling |
 | Zod | 4.x | Schema validation |
-| @dnd-kit | latest | Drag-and-drop |
-| Lucide React | latest | Icons |
+| @dnd-kit | core 6.x, sortable 10.x | Drag-and-drop |
+| Lucide React | 1.x | Icons |
 | react-easy-crop | 6.x | Image cropping |
 | Sentry React | 10.x | Error tracking & monitoring |
 
@@ -61,7 +61,7 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | golang.org/x/time/rate | Per-IP token bucket rate limiting |
 | prometheus/client_golang | Prometheus metrics collection |
 | joho/godotenv | Environment variable loading |
-| Tectonic | LaTeX to PDF compiler |
+| Tectonic | LaTeX to PDF compiler (v0.16.9) |
 | gin-contrib/cors | CORS middleware |
 | savetrees (LaTeX) | Automatic single-page compression |
 
@@ -151,9 +151,11 @@ latex-resume-gen/
 │   │   ├── hooks/               # Custom React hooks
 │   │   │   ├── useKeyboardShortcuts.ts
 │   │   │   ├── useWebSocketCompile.ts
-│   │   │   └── use-mobile.ts
+│   │   │   ├── use-mobile.ts
+│   │   │   └── useExportActions.ts
 │   │   ├── layouts/
-│   │   │   └── MainLayout.tsx   # Split-screen layout
+│   │   │   ├── MainLayout.tsx   # Split-screen layout
+│   │   │   └── MobileLayout.tsx
 │   │   ├── pages/
 │   │   │   ├── HomePage.tsx
 │   │   │   └── StatsDashboard.tsx
