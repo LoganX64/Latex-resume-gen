@@ -3,5 +3,8 @@ global:
 
 scrape_configs:
   - job_name: "latex-backend"
+    basic_auth:
+      username: prom
+      password: prom
     static_configs:
       - targets: ["backend:8080"]
