@@ -133,8 +133,8 @@ func main() {
 	if os.Getenv("PPROF_ENABLED") == "true" {
 		pprofPort := getEnv("PPROF_PORT", "6060")
 		go func() {
-			log.Printf("pprof listening on localhost:%s", pprofPort)
-			if err := http.ListenAndServe("localhost:"+pprofPort, nil); err != nil {
+			log.Printf("pprof listening on :%s", pprofPort)
+			if err := http.ListenAndServe(":"+pprofPort, nil); err != nil {
 				log.Printf("pprof server failed: %v", err)
 			}
 		}()
