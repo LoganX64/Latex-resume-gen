@@ -7,6 +7,7 @@ import './index.css'
 import App from './App'
 import { ThemeProvider } from '@/components/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider'
 
 const root = createRoot(document.getElementById('root')!, {
   onUncaughtError: Sentry.reactErrorHandler((error, errorInfo) => {
@@ -21,9 +22,11 @@ root.render(
     <BrowserRouter>
       <ThemeProvider>
         <TooltipProvider>
-          <Sentry.ErrorBoundary fallback={<p>Something went wrong.</p>}>
-            <App />
-          </Sentry.ErrorBoundary>
+          <LazyMotionProvider>
+            <Sentry.ErrorBoundary fallback={<p>Something went wrong.</p>}>
+              <App />
+            </Sentry.ErrorBoundary>
+          </LazyMotionProvider>
         </TooltipProvider>
       </ThemeProvider>
     </BrowserRouter>

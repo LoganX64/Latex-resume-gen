@@ -45,3 +45,7 @@ coverage/
 
 # Docker overrides
 docker-compose.override.yml
+
+latex-project-details.md
+
+tracker.md
