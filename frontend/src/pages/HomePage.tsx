@@ -687,42 +687,42 @@ export default function HomePage() {
 
         {/* Rich glowing mesh blobs */}
         <m.div
-          className="absolute -top-24 -left-20 w-125 h-125 rounded-full bg-rose-400/25 dark:bg-rose-600/20 blur-[100px]"
+          className="absolute -top-24 -left-20 w-125 h-125 rounded-full bg-rose-400/25 dark:bg-rose-600/20 blur-[100px] will-change-transform"
           animate={
             reduce
               ? undefined
-              : { x: [0, 30, -10, 0], y: [0, -20, 15, 0] }
+              : { x: [0, 12, -6, 0], y: [0, -8, 6, 0] }
           }
           transition={
             reduce
               ? undefined
-              : { duration: 18, ease: "easeInOut", repeat: Infinity }
+              : { duration: 24, ease: "easeInOut", repeat: Infinity }
           }
         />
         <m.div
-          className="absolute top-[35%] -right-20 w-112.5 h-112.5 rounded-full bg-pink-400/20 dark:bg-rose-700/15 blur-[100px]"
+          className="absolute top-[35%] -right-20 w-112.5 h-112.5 rounded-full bg-pink-400/20 dark:bg-rose-700/15 blur-[100px] will-change-transform"
           animate={
             reduce
               ? undefined
-              : { x: [0, -25, 15, 0], y: [0, 18, -12, 0] }
+              : { x: [0, -10, 6, 0], y: [0, 8, -5, 0] }
           }
           transition={
             reduce
               ? undefined
-              : { duration: 22, ease: "easeInOut", repeat: Infinity, delay: 2 }
+              : { duration: 28, ease: "easeInOut", repeat: Infinity, delay: 3 }
           }
         />
         <m.div
-          className="absolute top-[70%] left-[10%] w-125 h-125 rounded-full bg-rose-300/20 dark:bg-rose-500/15 blur-[110px]"
+          className="absolute top-[70%] left-[10%] w-125 h-125 rounded-full bg-rose-300/20 dark:bg-rose-500/15 blur-[110px] will-change-transform"
           animate={
             reduce
               ? undefined
-              : { x: [0, 20, -18, 0], y: [0, -14, 22, 0] }
+              : { x: [0, 8, -7, 0], y: [0, -6, 9, 0] }
           }
           transition={
             reduce
               ? undefined
-              : { duration: 26, ease: "easeInOut", repeat: Infinity, delay: 4 }
+              : { duration: 32, ease: "easeInOut", repeat: Infinity, delay: 6 }
           }
         />
       </div>
@@ -759,7 +759,7 @@ export default function HomePage() {
           </div>
 
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <Stagger className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 py-16 sm:py-20 lg:py-24">
+            <Stagger alwaysAnimate className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 py-16 sm:py-20 lg:py-24">
               {/* Left: text */}
               <StaggerItem className="flex-1 text-center lg:text-left">
                 {/* Badge */}
@@ -818,7 +818,7 @@ export default function HomePage() {
                 {/* Glow ring */}
                 <div className="absolute inset-6 rounded-2xl bg-primary/10 blur-2xl" />
                 <m.div
-                  className="relative"
+                  className="relative will-change-transform"
                   animate={
                     reduce
                       ? undefined
@@ -827,7 +827,7 @@ export default function HomePage() {
                   transition={
                     reduce
                       ? undefined
-                      : { duration: 5, ease: "easeInOut", repeat: Infinity }
+                      : { duration: 6, ease: "easeInOut", repeat: Infinity }
                   }
                 >
                   <DocIllustration />
@@ -876,7 +876,7 @@ export default function HomePage() {
                     <HoverCard
                       lift={4}
                       scale={1.01}
-                      className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 transition-all duration-300 hover:shadow-lg ${borderHover} h-full`}
+                      className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 hover:shadow-lg ${borderHover} h-full`}
                     >
                       {/* Gradient overlay */}
                       <div
@@ -941,7 +941,7 @@ export default function HomePage() {
                       <HoverCard
                         lift={4}
                         scale={1.01}
-                        className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg transition-all duration-300 ${cfg.hoverBorder} h-full`}
+                        className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
                       >
                         {/* Background gradient overlay */}
                         <div

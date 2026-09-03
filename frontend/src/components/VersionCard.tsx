@@ -82,7 +82,7 @@ export function VersionCard({ version }: VersionCardProps) {
       <m.div {...motionProps} className="h-full">
         <Card
           size="sm"
-          className="group relative overflow-hidden bg-card/90 border border-border/80 transition-all duration-300 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3 h-full"
+          className="group relative overflow-hidden bg-card/90 border border-border/80 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3 h-full"
           onClick={handleLoad}
         >
         {/* Ambient background gradient overlay for light & dark mode */}

@@ -12,7 +12,7 @@ import {
 } from 'lucide-react'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
-import { AnimatePresence, m } from 'framer-motion'
+import { m } from 'framer-motion'
 import { DURATION, EASE_OUT } from '@/lib/motion'
 
 interface SectionWrapperProps {
@@ -58,7 +58,7 @@ export function SectionWrapper({
       style={style}
       className={`${isDragging ? 'opacity-50 z-50' : ''}`}
     >
-      <Card className="relative bg-background/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm transition-all duration-200 overflow-hidden">
+      <Card className="relative bg-background/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm overflow-hidden">
         <CardHeader className="py-2.5 px-3">
           <div className="flex items-center gap-2">
             <button
@@ -96,19 +96,19 @@ export function SectionWrapper({
             </Button>
           </div>
         </CardHeader>
-        <AnimatePresence initial={false}>
-          {!collapsed && (
-            <m.div
-              key="content"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto", transition: { duration: DURATION.base, ease: EASE_OUT } }}
-              exit={{ opacity: 0, height: 0, transition: { duration: DURATION.fast, ease: EASE_OUT } }}
-              style={{ overflow: "hidden" }}
-            >
-              <CardContent className="px-3 pb-3 pt-3">{children}</CardContent>
-            </m.div>
-          )}
-        </AnimatePresence>
+        <m.div
+          initial={false}
+          animate={{
+            gridTemplateRows: collapsed ? "0fr" : "1fr",
+            opacity: collapsed ? 0 : 1,
+          }}
+          transition={{ duration: DURATION.base, ease: EASE_OUT }}
+          style={{ display: "grid" }}
+        >
+          <div style={{ overflow: "hidden" }}>
+            <CardContent className="px-3 pb-3 pt-3">{children}</CardContent>
+          </div>
+        </m.div>
       </Card>
     </div>
   )
