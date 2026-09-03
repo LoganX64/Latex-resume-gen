@@ -30,6 +30,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { TriangleAlert, ImageOff } from "lucide-react";
 import { CompileProgressDialog } from "@/components/CompileProgressDialog";
+import { m, useReducedMotion } from "framer-motion";
+import { DURATION, EASE_OUT } from "@/lib/motion";
 
 export default function MobileLayout() {
   const navigate = useNavigate();
@@ -63,7 +65,12 @@ export default function MobileLayout() {
   }, [navigate]);
 
   return (
-    <div className="h-dvh overflow-hidden flex flex-col w-full bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
+    <m.div
+      initial={useReducedMotion() ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: DURATION.base, ease: EASE_OUT }}
+      className="h-dvh overflow-hidden flex flex-col w-full bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20"
+    >
       <MobileTopNavbar
         onSave={() => setShowSaveDialog(true)}
         onMenuToggle={() => setShowSidebar(true)}
@@ -175,6 +182,6 @@ export default function MobileLayout() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </m.div>
   );
 }

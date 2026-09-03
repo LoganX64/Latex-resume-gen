@@ -11,6 +11,8 @@ import { format } from 'date-fns'
 import { FileText, Download, Trash2, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { m, useReducedMotion } from 'framer-motion'
+import { DURATION, EASE_OUT } from '@/lib/motion'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,13 +69,22 @@ export function VersionCard({ version }: VersionCardProps) {
     toast.success('Version deleted', { description: `"${version.name}" has been removed.` })
   }
 
+  const reduce = useReducedMotion();
+  const motionProps = reduce
+    ? {}
+    : {
+        whileHover: { y: -4, transition: { duration: DURATION.fast, ease: EASE_OUT } },
+        whileTap: { scale: 0.99, transition: { duration: DURATION.fast, ease: EASE_OUT } },
+      };
+
   return (
     <>
-      <Card
-        size="sm"
-        className="group relative overflow-hidden bg-card/90 border border-border/80 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3"
-        onClick={handleLoad}
-      >
+      <m.div {...motionProps} className="h-full">
+        <Card
+          size="sm"
+          className="group relative overflow-hidden bg-card/90 border border-border/80 transition-all duration-300 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3 h-full"
+          onClick={handleLoad}
+        >
         {/* Ambient background gradient overlay for light & dark mode */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -143,6 +154,7 @@ export function VersionCard({ version }: VersionCardProps) {
           </div>
         </CardContent>
       </Card>
+      </m.div>
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent className="sm:max-w-sm">

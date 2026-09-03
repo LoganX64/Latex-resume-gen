@@ -12,6 +12,8 @@ import {
 } from 'lucide-react'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
+import { AnimatePresence, m } from 'framer-motion'
+import { DURATION, EASE_OUT } from '@/lib/motion'
 
 interface SectionWrapperProps {
   id: string
@@ -94,7 +96,19 @@ export function SectionWrapper({
             </Button>
           </div>
         </CardHeader>
-        {!collapsed && <CardContent className="px-3 pb-3 pt-3">{children}</CardContent>}
+        <AnimatePresence initial={false}>
+          {!collapsed && (
+            <m.div
+              key="content"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto", transition: { duration: DURATION.base, ease: EASE_OUT } }}
+              exit={{ opacity: 0, height: 0, transition: { duration: DURATION.fast, ease: EASE_OUT } }}
+              style={{ overflow: "hidden" }}
+            >
+              <CardContent className="px-3 pb-3 pt-3">{children}</CardContent>
+            </m.div>
+          )}
+        </AnimatePresence>
       </Card>
     </div>
   )

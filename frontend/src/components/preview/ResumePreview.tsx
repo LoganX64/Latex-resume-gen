@@ -10,6 +10,8 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { DURATION, EASE_OUT } from "@/lib/motion";
 import * as Sentry from "@sentry/react";
 import type { ZoomLevel, Margins } from "@/types/resume";
 import type { Template } from "@/templates";
@@ -446,6 +448,22 @@ export function ResumePreview({
     </div>
   );
 
+  const reduce = useReducedMotion();
+  const crossFadedContent = reduce ? (
+    a4Content
+  ) : (
+    <AnimatePresence mode="wait" initial={false}>
+      <m.div
+        key={templateId}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1, transition: { duration: DURATION.fast, ease: EASE_OUT } }}
+        exit={{ opacity: 0, transition: { duration: DURATION.fast, ease: EASE_OUT } }}
+      >
+        {a4Content}
+      </m.div>
+    </AnimatePresence>
+  );
+
   return (
     <>
       <div className="flex flex-col h-full">
@@ -548,7 +566,7 @@ export function ResumePreview({
                 width: A4_WIDTH_PX,
               }}
             >
-              {a4Content}
+              {crossFadedContent}
             </div>
           </div>
         </div>

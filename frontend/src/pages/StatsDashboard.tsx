@@ -5,6 +5,9 @@ import { Eye, Download, ArrowLeft, BarChart3, Lock } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { m, useReducedMotion } from 'framer-motion'
+import { DURATION, EASE_OUT } from '@/lib/motion'
+import { CountUp } from '@/components/motion/CountUp'
 
 const ADMIN_KEY_STORAGE = 'resume-admin-key'
 
@@ -50,7 +53,12 @@ export default function StatsDashboard() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <m.div
+        initial={useReducedMotion() ? false : { opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: DURATION.base, ease: EASE_OUT }}
+        className="min-h-screen bg-background flex items-center justify-center p-4"
+      >
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
@@ -88,12 +96,17 @@ export default function StatsDashboard() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </m.div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <m.div
+      initial={useReducedMotion() ? false : { opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: DURATION.base, ease: EASE_OUT }}
+      className="min-h-screen bg-background p-8"
+    >
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
@@ -112,31 +125,47 @@ export default function StatsDashboard() {
           <div className="text-center py-12 text-muted-foreground">Loading...</div>
         ) : stats ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Visits
-                </CardTitle>
-                <Eye className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold">{stats.visits.toLocaleString()}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Downloads
-                </CardTitle>
-                <Download className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-4xl font-bold">{stats.downloads.toLocaleString()}</div>
-              </CardContent>
-            </Card>
+            <m.div
+              initial={useReducedMotion() ? false : { opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DURATION.base, ease: EASE_OUT, delay: 0.05 }}
+            >
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Visits
+                  </CardTitle>
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-bold">
+                    <CountUp to={stats.visits} />
+                  </div>
+                </CardContent>
+              </Card>
+            </m.div>
+            <m.div
+              initial={useReducedMotion() ? false : { opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DURATION.base, ease: EASE_OUT, delay: 0.15 }}
+            >
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <CardTitle className="text-sm font-medium text-muted-foreground">
+                    Total Downloads
+                  </CardTitle>
+                  <Download className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-4xl font-bold">
+                    <CountUp to={stats.downloads} />
+                  </div>
+                </CardContent>
+              </Card>
+            </m.div>
           </div>
         ) : null}
       </div>
-    </div>
+    </m.div>
   )
 }

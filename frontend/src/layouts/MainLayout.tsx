@@ -63,6 +63,28 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { m, useReducedMotion } from 'framer-motion';
+import { splitPaneLeft, splitPaneRight } from '@/lib/motion';
+
+function EditorSplitPaneLeft({ className, children }: { className: string; children: React.ReactNode }) {
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <m.div className={className} variants={splitPaneLeft} initial="hidden" animate="show">
+      {children}
+    </m.div>
+  );
+}
+
+function EditorSplitPaneRight({ className, children }: { className: string; children: React.ReactNode }) {
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <m.div className={className} variants={splitPaneRight} initial="hidden" animate="show">
+      {children}
+    </m.div>
+  );
+}
 
 export default function MainLayout() {
   const { darkMode, toggleDarkMode } = useTheme();
@@ -140,7 +162,7 @@ export default function MainLayout() {
         />
         <SidebarInset className="h-dvh overflow-hidden flex flex-col bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20">
           <div className="flex flex-1 overflow-hidden min-h-0">
-            <div className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
+            <EditorSplitPaneLeft className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                 <div className="flex items-center gap-2">
                   <h2 className="text-xs sm:text-sm font-semibold text-foreground">
@@ -279,8 +301,8 @@ export default function MainLayout() {
               </div>
               <StorageWarning className="mx-2 mb-2" />
               <CompactFooter />
-            </div>
-            <div className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-linear-to-br from-muted/40 via-background to-rose-950/10 dark:from-muted/20 dark:via-background dark:to-rose-950/20">
+            </EditorSplitPaneLeft>
+            <EditorSplitPaneRight className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-linear-to-br from-muted/40 via-background to-rose-950/10 dark:from-muted/20 dark:via-background dark:to-rose-950/20">
               {/* Ambient background glow behind live preview canvas */}
               <div className="pointer-events-none absolute inset-0 overflow-hidden">
                 <div className="absolute top-[20%] right-[10%] w-87.5 h-87.5 rounded-full bg-rose-500/5 dark:bg-rose-500/10 blur-[100px]" />
@@ -357,7 +379,7 @@ export default function MainLayout() {
                 <ResumePreview />
               </div>
               <OverflowIndicator />
-            </div>
+            </EditorSplitPaneRight>
           </div>
           <CommandPalette
             onExportLatex={handleExportLatex}
