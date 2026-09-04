@@ -4,8 +4,8 @@ import { VersionCard } from "@/components/VersionCard";
 import { StorageWarning } from "@/components/StorageWarning";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowRight, Plus } from "lucide-react";
-import { SparklesIcon } from "@/components/Icons";
+import { ArrowRight } from "lucide-react";
+import { SparklesIcon, PlusIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -945,7 +945,7 @@ export default function HomePage() {
             <h2 className="text-xl sm:text-2xl font-bold">Your Resumes</h2>
             <Link to="/editor">
               <Button size="default" className="gap-1.5 shrink-0">
-                <Plus className="h-3.5 w-3.5" />
+                <PlusIcon className="h-3.5 w-3.5" />
                 <span className="hidden xs:inline">New Resume</span>
                 <span className="xs:hidden">New</span>
               </Button>

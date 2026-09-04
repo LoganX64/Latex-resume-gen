@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Heart } from 'lucide-react'
-import { MailIcon, ShieldCheckIcon } from '@/components/Icons'
+import { MailIcon, ShieldCheckIcon, HeartIcon } from '@/components/Icons'
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -37,7 +36,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} CVStack. Built with React & Tectonic.</p>
           <div className="flex items-center gap-3">
             <p className="flex items-center gap-1">
-              Built with <Heart className="h-3 w-3 text-rose-500 fill-rose-500 inline" /> by{' '}
+              Built with <HeartIcon className="h-3 w-3 text-rose-500 fill-rose-500 inline" /> by{' '}
               <a
                 href="https://github.com/LoganX64"
                 target="_blank"

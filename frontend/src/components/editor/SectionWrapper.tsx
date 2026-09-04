@@ -3,10 +3,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import {
-  EyeOff,
-} from 'lucide-react'
-import { EyeIcon, GripVerticalIcon, ChevronDownIcon, ChevronUpIcon } from '@/components/Icons'
+import { EyeIcon, EyeOffIcon, GripVerticalIcon, ChevronDownIcon, ChevronUpIcon } from '@/components/Icons'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
 import { m } from 'framer-motion'
@@ -76,7 +73,7 @@ export function SectionWrapper({
               {isVisible ? (
                 <EyeIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
               ) : (
-                <EyeOff className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
+                <EyeOffIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
               )}
             </Button>
             <Button
