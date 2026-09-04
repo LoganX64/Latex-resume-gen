@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { recordVisit } from "@/utils/stats";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { TrophyIcon, BookOpenIcon, SaveIcon } from "@/components/Icons";
+import { SaveIcon } from "@/components/Icons";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import userSvg from "@/assets/user.svg";
 import fileTextSvg from "@/assets/file-content-outline-18.svg";
@@ -20,6 +20,8 @@ import downloadSvg from "@/assets/download.svg";
 import homeSvg from "@/assets/home.svg";
 import trashSvg from "@/assets/trash-3-fill-24.svg";
 import arrowRefreshSvg from "@/assets/arrow-refresh.svg";
+import trophySvg from "@/assets/trophy.svg";
+import booksSvg from "@/assets/books.svg";
 
 const navItems = [
   { id: "personal", icon: userSvg, label: "Personal Info" },
@@ -29,8 +31,8 @@ const navItems = [
   { id: "projects", icon: folderGit2Svg, label: "Projects" },
   { id: "education", icon: graduationCapSvg, label: "Education" },
   { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: TrophyIcon, label: "Achievements" },
-  { id: "publications", icon: BookOpenIcon, label: "Publications" },
+  { id: "achievements", icon: trophySvg, label: "Achievements" },
+  { id: "publications", icon: booksSvg, label: "Publications" },
   { id: "languages", icon: globeSvg, label: "Languages" },
   { id: "customSections", icon: layersSvg, label: "Custom Sections" },
 ];

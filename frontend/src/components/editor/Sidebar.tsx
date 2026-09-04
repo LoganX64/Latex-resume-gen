@@ -16,9 +16,9 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
+import trophySvg from "@/assets/trophy.svg";
+import booksSvg from "@/assets/books.svg";
 import {
-  TrophyIcon,
-  BookOpenIcon,
   PanelLeftIcon,
   SaveIcon,
 } from "@/components/Icons";
@@ -44,8 +44,8 @@ const navItems = [
   { id: "projects", icon: folderGit2Svg, label: "Projects" },
   { id: "education", icon: graduationCapSvg, label: "Education" },
   { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: TrophyIcon, label: "Achievements" },
-  { id: "publications", icon: BookOpenIcon, label: "Publications" },
+  { id: "achievements", icon: trophySvg, label: "Achievements" },
+  { id: "publications", icon: booksSvg, label: "Publications" },
   { id: "languages", icon: globeSvg, label: "Languages" },
   { id: "customSections", icon: layersSvg, label: "Custom Sections" },
 ] as const;
