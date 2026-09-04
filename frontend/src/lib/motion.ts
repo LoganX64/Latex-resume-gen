@@ -90,6 +90,21 @@ export const splitPaneRight: Variants = {
   },
 };
 
+export const animatedGroupContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+};
+
+export const animatedGroupItem: Variants = {
+  hidden: { opacity: 0, y: 40, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 1.2, type: "spring", bounce: 0.3 },
+  },
+};
+
 export function useMotionVariants(variants: Variants): Variants {
   const reduce = useReducedMotion();
   if (!reduce) return variants;

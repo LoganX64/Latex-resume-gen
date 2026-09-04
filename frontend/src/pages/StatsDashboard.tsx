@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { m, useReducedMotion } from 'framer-motion'
-import { DURATION, EASE_OUT } from '@/lib/motion'
+import { DURATION, EASE_OUT, animatedGroupContainer, animatedGroupItem } from '@/lib/motion'
 import { CountUp } from '@/components/motion/CountUp'
+import { AnimatedGroup } from '@/components/motion/AnimatedGroup'
 
 const ADMIN_KEY_STORAGE = 'resume-admin-key'
 
@@ -124,46 +125,38 @@ export default function StatsDashboard() {
         {loading ? (
           <div className="text-center py-12 text-muted-foreground">Loading...</div>
         ) : stats ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <m.div
-              initial={useReducedMotion() ? false : { opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: DURATION.base, ease: EASE_OUT, delay: 0.05 }}
-            >
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Total Visits
-                  </CardTitle>
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-4xl font-bold">
-                    <CountUp to={stats.visits} />
-                  </div>
-                </CardContent>
-              </Card>
-            </m.div>
-            <m.div
-              initial={useReducedMotion() ? false : { opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: DURATION.base, ease: EASE_OUT, delay: 0.15 }}
-            >
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Total Downloads
-                  </CardTitle>
-                  <Download className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-4xl font-bold">
-                    <CountUp to={stats.downloads} />
-                  </div>
-                </CardContent>
-              </Card>
-            </m.div>
-          </div>
+          <AnimatedGroup
+            variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+            amount={0.1}
+          >
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Visits
+                </CardTitle>
+                <Eye className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold">
+                  <CountUp to={stats.visits} />
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Downloads
+                </CardTitle>
+                <Download className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold">
+                  <CountUp to={stats.downloads} />
+                </div>
+              </CardContent>
+            </Card>
+          </AnimatedGroup>
         ) : null}
       </div>
     </m.div>

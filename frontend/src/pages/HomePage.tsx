@@ -7,12 +7,18 @@ import { Footer } from "@/components/Footer";
 import { ArrowRight, Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
-import { Stagger, StaggerItem } from "@/components/motion/Stagger";
+import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
 import { HoverCard } from "@/components/motion/HoverCard";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
 import { m, useReducedMotion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
-import { DURATION, EASE_OUT, VIEWPORT } from "@/lib/motion";
+import {
+  DURATION,
+  EASE_OUT,
+  VIEWPORT,
+  animatedGroupContainer,
+  animatedGroupItem,
+} from "@/lib/motion";
 
 // ─── Inline SVG illustrations ────────────────────────────────────────────────
 
@@ -759,9 +765,14 @@ export default function HomePage() {
           </div>
 
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <Stagger alwaysAnimate className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 py-16 sm:py-20 lg:py-24">
+            <AnimatedGroup
+              triggerOn="mount"
+              amount={0.15}
+              variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+              className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 py-16 sm:py-20 lg:py-24"
+            >
               {/* Left: text */}
-              <StaggerItem className="flex-1 text-center lg:text-left">
+              <div className="flex-1 text-center lg:text-left">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary mb-6">
                   <Sparkles className="h-3 w-3" />
@@ -811,10 +822,10 @@ export default function HomePage() {
 
                 {/* Trust badges — all SVG */}
                 <TrustBadges />
-              </StaggerItem>
+              </div>
 
               {/* Right: document illustration */}
-              <StaggerItem className="relative w-52 sm:w-64 lg:w-72 shrink-0 overflow-visible">
+              <div className="relative w-52 sm:w-64 lg:w-72 shrink-0 overflow-visible">
                 {/* Glow ring */}
                 <div className="absolute inset-6 rounded-2xl bg-primary/10 blur-2xl" />
                 <m.div
@@ -851,8 +862,8 @@ export default function HomePage() {
                   </svg>
                   LaTeX quality
                 </div>
-              </StaggerItem>
-            </Stagger>
+              </div>
+            </AnimatedGroup>
           </div>
         </section>
 
@@ -869,36 +880,39 @@ export default function HomePage() {
               </p>
             </FadeIn>
 
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" amount={0.1}>
+            <AnimatedGroup
+              variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              amount={0.1}
+            >
               {features.map(
                 ({ icon: Icon, gradient, borderHover, title, desc }) => (
-                  <StaggerItem key={title}>
-                    <HoverCard
-                      lift={4}
-                      scale={1.01}
-                      className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 hover:shadow-lg ${borderHover} h-full`}
-                    >
-                      {/* Gradient overlay */}
-                      <div
-                        className={`pointer-events-none absolute inset-0 bg-linear-to-br ${gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
-                      />
-                      {/* Content */}
-                      <div className="relative">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-border/50 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
-                          <Icon />
-                        </div>
-                        <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">
-                          {title}
-                        </h3>
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                          {desc}
-                        </p>
+                  <HoverCard
+                    key={title}
+                    lift={4}
+                    scale={1.01}
+                    className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 hover:shadow-lg ${borderHover} h-full`}
+                  >
+                    {/* Gradient overlay */}
+                    <div
+                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
+                    />
+                    {/* Content */}
+                    <div className="relative">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-border/50 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
+                        <Icon />
                       </div>
-                    </HoverCard>
-                  </StaggerItem>
+                      <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">
+                        {title}
+                      </h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                        {desc}
+                      </p>
+                    </div>
+                  </HoverCard>
                 ),
               )}
-            </Stagger>
+            </AnimatedGroup>
           </div>
         </section>
 
@@ -924,7 +938,11 @@ export default function HomePage() {
                 transition={{ duration: DURATION.slow, ease: EASE_OUT, delay: 0.2 }}
               />
 
-              <Stagger className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8" amount={0.15}>
+              <AnimatedGroup
+                variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+                className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8"
+                amount={0.15}
+              >
                 {steps.map(({ n, label, desc }, i) => {
                   const Graphic = stepGraphics[i];
                   const cfg = {
@@ -937,40 +955,39 @@ export default function HomePage() {
                   };
 
                   return (
-                    <StaggerItem key={n}>
-                      <HoverCard
-                        lift={4}
-                        scale={1.01}
-                        className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
-                      >
-                        {/* Background gradient overlay */}
-                        <div
-                          className={`pointer-events-none absolute inset-0 bg-linear-to-br ${cfg.gradient} opacity-70 group-hover:opacity-100 transition-opacity duration-300`}
-                        />
+                    <HoverCard
+                      key={n}
+                      lift={4}
+                      scale={1.01}
+                      className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
+                    >
+                      {/* Background gradient overlay */}
+                      <div
+                        className={`pointer-events-none absolute inset-0 bg-linear-to-br ${cfg.gradient} opacity-70 group-hover:opacity-100 transition-opacity duration-300`}
+                      />
 
-                        <div className="relative z-10 flex flex-col items-center">
-                          {/* Step pill */}
-                          <div
-                            className={`inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-bold mb-4 ${cfg.pillBg}`}
-                          >
-                            Step 0{n}
-                          </div>
-                          {/* SVG Graphic */}
-                          <div className="mb-4 group-hover:scale-105 transition-transform duration-300">
-                            <Graphic />
-                          </div>
-                          <h3 className="font-bold text-base mb-1.5 text-foreground">
-                            {label}
-                          </h3>
-                          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-55">
-                            {desc}
-                          </p>
+                      <div className="relative z-10 flex flex-col items-center">
+                        {/* Step pill */}
+                        <div
+                          className={`inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-bold mb-4 ${cfg.pillBg}`}
+                        >
+                          Step 0{n}
                         </div>
-                      </HoverCard>
-                    </StaggerItem>
+                        {/* SVG Graphic */}
+                        <div className="mb-4 group-hover:scale-105 transition-transform duration-300">
+                          <Graphic />
+                        </div>
+                        <h3 className="font-bold text-base mb-1.5 text-foreground">
+                          {label}
+                        </h3>
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-55">
+                          {desc}
+                        </p>
+                      </div>
+                    </HoverCard>
                   );
                 })}
-              </Stagger>
+              </AnimatedGroup>
             </div>
 
             <FadeIn className="mt-10 text-center" y={12} delay={0.2}>
@@ -1024,15 +1041,17 @@ export default function HomePage() {
               </Link>
             </FadeIn>
           ) : (
-            <Stagger className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" amount={0.1}>
+            <AnimatedGroup
+              variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              amount={0.1}
+            >
               <AnimatePresence mode="popLayout">
                 {versions.map((v) => (
-                  <StaggerItem key={v.id}>
-                    <VersionCard version={v} />
-                  </StaggerItem>
+                  <VersionCard key={v.id} version={v} />
                 ))}
               </AnimatePresence>
-            </Stagger>
+            </AnimatedGroup>
           )}
         </section>
 
