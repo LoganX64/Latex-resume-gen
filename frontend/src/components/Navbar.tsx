@@ -11,11 +11,8 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo + Brand */}
         <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <img src="/logo.svg" alt="LaTeX Resume Logo" className="h-7 w-7 rounded-md" />
-          <span className="font-bold text-sm sm:text-base tracking-tight">
-            <span className="text-primary">LaTeX</span>
-            <span className="text-foreground"> Resume</span>
-          </span>
+          <img src="/cvstack-logo.svg" alt="CVStack Logo" className="h-7 w-auto rounded-md dark:hidden" />
+          <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-7 w-auto rounded-md dark:block" />
         </Link>
 
         {/* Right actions */}

@@ -69,7 +69,7 @@ export default function MobileLayout() {
       initial={useReducedMotion() ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: DURATION.base, ease: EASE_OUT }}
-      className="h-dvh overflow-hidden flex flex-col w-full bg-linear-to-br from-background via-rose-50/10 to-rose-100/20 dark:from-background dark:via-rose-950/10 dark:to-rose-950/20"
+      className="h-dvh overflow-hidden flex flex-col w-full bg-background"
     >
       <MobileTopNavbar
         onSave={() => setShowSaveDialog(true)}

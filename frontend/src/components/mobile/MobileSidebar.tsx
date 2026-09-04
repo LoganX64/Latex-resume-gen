@@ -88,16 +88,18 @@ export function MobileSidebar({
         className="w-64 p-0 flex flex-col bg-sidebar border-r border-sidebar-border"
       >
         {/* ── Header ── */}
-        <div className="flex items-center gap-2.5 px-3 py-3 border-b border-sidebar-border bg-linear-to-r from-primary/10 via-sidebar to-sidebar shrink-0">
+          <div className="flex items-center gap-2.5 px-3 py-3 border-b border-sidebar-border bg-sidebar shrink-0">
           <img
-            src="/logo.svg"
-            alt="Logo"
-            className="h-7 w-7 shrink-0 rounded-md"
+            src="/cvstack-logo.svg"
+            alt="CVStack Logo"
+            className="h-7 w-auto shrink-0 rounded-md dark:hidden"
+          />
+          <img
+            src="/cvstack-logo-dark.svg"
+            alt="CVStack Logo"
+            className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
           />
           <div className="flex flex-col leading-tight text-left">
-            <SheetTitle className="text-sm font-bold text-sidebar-foreground">
-              <span className="text-primary">LaTeX</span> Resume
-            </SheetTitle>
             <p className="text-[10px] text-sidebar-foreground/60">
               IT Professional Resume Builder
             </p>

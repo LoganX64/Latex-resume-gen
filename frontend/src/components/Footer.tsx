@@ -16,10 +16,8 @@ export function Footer() {
         {/* Brand Info */}
         <div className="space-y-3 max-w-md">
           <Link to="/" className="inline-flex items-center gap-2.5">
-            <img src="/logo.svg" alt="LaTeX Resume Logo" className="h-7 w-7 rounded-md" />
-            <span className="font-bold text-sm tracking-tight text-foreground">
-              <span className="text-primary">LaTeX</span> Resume
-            </span>
+            <img src="/cvstack-logo.svg" alt="CVStack Logo" className="h-7 w-auto rounded-md dark:hidden" />
+            <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-7 w-auto rounded-md dark:block" />
           </Link>
           <p className="text-xs text-muted-foreground leading-relaxed">
             Free, professional, ATS-friendly resume builder with LaTeX-quality typesetting.
@@ -35,7 +33,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-8 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px]">
-          <p>© {new Date().getFullYear()} LaTeX Resume Generator. Built with React & Tectonic.</p>
+          <p>© {new Date().getFullYear()} CVStack. Built with React & Tectonic.</p>
           <div className="flex items-center gap-3">
             <p className="flex items-center gap-1">
               Built with <Heart className="h-3 w-3 text-rose-500 fill-rose-500 inline" /> by{' '}

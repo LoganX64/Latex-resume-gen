@@ -80,14 +80,16 @@ export function AppSidebar({
               render={<Link to="/" />}
             >
               <img
-                src="/logo.svg"
-                alt="Logo"
-                className="h-7 w-7 shrink-0 rounded-md"
+                src="/cvstack-logo.svg"
+                alt="CVStack Logo"
+                className="h-7 w-auto shrink-0 rounded-md dark:hidden"
+              />
+              <img
+                src="/cvstack-logo-dark.svg"
+                alt="CVStack Logo"
+                className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
               />
               <div className="flex flex-col leading-tight">
-                <span className="font-bold text-sm">
-                  <span className="text-primary">LaTeX</span> Resume
-                </span>
                 <span className="text-[10px] text-muted-foreground">
                   IT Professional Resume Builder
                 </span>

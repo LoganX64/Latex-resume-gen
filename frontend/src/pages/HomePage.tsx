@@ -365,48 +365,36 @@ function IconEmptyDoc() {
 const features = [
   {
     icon: IconSinglePage,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Single-Page Design",
     desc: "Smart compression keeps your resume on one professional page automatically.",
   },
   {
     icon: IconPhoto,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Photo Support",
     desc: "Upload and crop a profile photo. Works with sidebar and engineering templates.",
   },
   {
     icon: IconPdf,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Instant PDF Export",
     desc: "Compile LaTeX via Tectonic for publication-quality PDF output in seconds.",
   },
   {
     icon: IconLatex,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "LaTeX Source",
     desc: "Download the raw .tex file. Edit in Overleaf or any LaTeX editor you prefer.",
   },
   {
     icon: IconPrivate,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Fully Private",
     desc: "All data stays in your browser. Nothing is sent to any server, ever.",
   },
   {
     icon: IconTemplates,
-    gradient:
-      "from-rose-500/10 via-rose-500/5 to-transparent dark:from-rose-500/15 dark:via-rose-500/5",
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Multiple Templates",
     desc: "Choose from professional LaTeX templates designed for different industries.",
@@ -686,52 +674,6 @@ export default function HomePage() {
   return (
     <div className="relative min-h-screen bg-background overflow-hidden">
       <ScrollProgress />
-      {/* ── Full-page gradient background ──────────────────────────────── */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        {/* Main page gradient */}
-        <div className="absolute inset-0 bg-linear-to-b from-rose-100/90 via-background via-35% to-rose-50/60 dark:from-rose-950/60 dark:via-background dark:via-35% dark:to-rose-950/40" />
-
-        {/* Rich glowing mesh blobs */}
-        <m.div
-          className="absolute -top-24 -left-20 w-125 h-125 rounded-full bg-rose-400/25 dark:bg-rose-600/20 blur-[100px] will-change-transform"
-          animate={
-            reduce
-              ? undefined
-              : { x: [0, 12, -6, 0], y: [0, -8, 6, 0] }
-          }
-          transition={
-            reduce
-              ? undefined
-              : { duration: 24, ease: "easeInOut", repeat: Infinity }
-          }
-        />
-        <m.div
-          className="absolute top-[35%] -right-20 w-112.5 h-112.5 rounded-full bg-pink-400/20 dark:bg-rose-700/15 blur-[100px] will-change-transform"
-          animate={
-            reduce
-              ? undefined
-              : { x: [0, -10, 6, 0], y: [0, 8, -5, 0] }
-          }
-          transition={
-            reduce
-              ? undefined
-              : { duration: 28, ease: "easeInOut", repeat: Infinity, delay: 3 }
-          }
-        />
-        <m.div
-          className="absolute top-[70%] left-[10%] w-125 h-125 rounded-full bg-rose-300/20 dark:bg-rose-500/15 blur-[110px] will-change-transform"
-          animate={
-            reduce
-              ? undefined
-              : { x: [0, 8, -7, 0], y: [0, -6, 9, 0] }
-          }
-          transition={
-            reduce
-              ? undefined
-              : { duration: 32, ease: "easeInOut", repeat: Infinity, delay: 6 }
-          }
-        />
-      </div>
       <div className="relative z-10">
         <Navbar />
 
@@ -886,17 +828,13 @@ export default function HomePage() {
               amount={0.1}
             >
               {features.map(
-                ({ icon: Icon, gradient, borderHover, title, desc }) => (
+                ({ icon: Icon, borderHover, title, desc }) => (
                   <HoverCard
                     key={title}
                     lift={4}
                     scale={1.01}
                     className={`group relative rounded-2xl border border-border bg-card overflow-hidden p-5 sm:p-6 hover:shadow-lg ${borderHover} h-full`}
                   >
-                    {/* Gradient overlay */}
-                    <div
-                      className={`pointer-events-none absolute inset-0 bg-linear-to-br ${gradient} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}
-                    />
                     {/* Content */}
                     <div className="relative">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-border/50 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
@@ -946,8 +884,6 @@ export default function HomePage() {
                 {steps.map(({ n, label, desc }, i) => {
                   const Graphic = stepGraphics[i];
                   const cfg = {
-                    gradient:
-                      "from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent",
                     hoverBorder:
                       "hover:border-rose-300 dark:hover:border-rose-500 dark:hover:shadow-rose-950/30",
                     pillBg:
@@ -961,11 +897,6 @@ export default function HomePage() {
                       scale={1.01}
                       className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
                     >
-                      {/* Background gradient overlay */}
-                      <div
-                        className={`pointer-events-none absolute inset-0 bg-linear-to-br ${cfg.gradient} opacity-70 group-hover:opacity-100 transition-opacity duration-300`}
-                      />
-
                       <div className="relative z-10 flex flex-col items-center">
                         {/* Step pill */}
                         <div
