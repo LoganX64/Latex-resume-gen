@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getDashboardStats } from '@/utils/stats'
-import { Eye, Download, ArrowLeft, BarChart3, Lock } from 'lucide-react'
+import { ArrowLeft, BarChart3, Lock } from 'lucide-react'
+import { EyeIcon, DownloadIcon } from '@/components/Icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -135,7 +136,7 @@ export default function StatsDashboard() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Total Visits
                 </CardTitle>
-                <Eye className="h-4 w-4 text-muted-foreground" />
+                <EyeIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">
@@ -148,7 +149,7 @@ export default function StatsDashboard() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Total Downloads
                 </CardTitle>
-                <Download className="h-4 w-4 text-muted-foreground" />
+                <DownloadIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">

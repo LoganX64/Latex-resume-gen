@@ -4,7 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
+import { TrashIcon } from '@/components/Icons'
 
 export function CertificationsForm() {
   const certifications = useResumeStore((s) => s.resume.certifications)
@@ -27,7 +28,7 @@ export function CertificationsForm() {
               onClick={() => removeCertification(cert.id)}
               aria-label={`Remove certification ${index + 1}`}
             >
-              <Trash2 className="h-3 w-3 text-destructive" />
+              <TrashIcon className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

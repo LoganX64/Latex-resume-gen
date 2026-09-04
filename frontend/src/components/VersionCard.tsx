@@ -8,7 +8,8 @@ import { quickExportPdf, quickExportLatex } from '@/utils/quick-export'
 import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
-import { FileText, Download, Trash2, Loader2 } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
+import { FileTextIcon, DownloadIcon, TrashIcon } from '@/components/Icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { m, useReducedMotion } from 'framer-motion'
@@ -122,7 +123,7 @@ export function VersionCard({ version }: VersionCardProps) {
               {exportingPdf ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Download className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
+                <DownloadIcon className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
               )}
               PDF
             </Button>
@@ -137,7 +138,7 @@ export function VersionCard({ version }: VersionCardProps) {
                 {exportingLatex ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <FileText className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400" />
+                  <FileTextIcon className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400" />
                 )}
                 LaTeX
               </Button>
@@ -149,7 +150,7 @@ export function VersionCard({ version }: VersionCardProps) {
               onClick={() => setShowDeleteDialog(true)}
               title="Delete version"
             >
-              <Trash2 className="h-3.5 w-3.5" />
+              <TrashIcon className="h-3.5 w-3.5" />
             </Button>
           </div>
         </CardContent>

@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { TrashIcon } from "@/components/Icons";
 import {
   DndContext,
   closestCenter,
@@ -81,7 +82,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             onClick={() => removeExperience(experience.id)}
             aria-label={`Remove experience ${index + 1}`}
           >
-            <Trash2 className="h-3 w-3 text-destructive" />
+            <TrashIcon className="h-3 w-3 text-destructive" />
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -231,7 +232,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-                <Trash2 className="h-3 w-3 text-destructive" />
+                <TrashIcon className="h-3 w-3 text-destructive" />
               </Button>
             </div>
           ))}

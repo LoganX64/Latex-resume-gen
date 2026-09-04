@@ -13,13 +13,12 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import {
-  Download,
-  FileText,
   Moon,
   Sun,
   RotateCcw,
   LayoutTemplate,
 } from "lucide-react"
+import { DownloadIcon, FileTextIcon } from "@/components/Icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -68,12 +67,12 @@ export function CommandPalette({
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Export">
             <CommandItem onSelect={() => runAction(onExportPdf)}>
-              <Download className="mr-2 h-4 w-4" />
+              <DownloadIcon className="mr-2 h-4 w-4" />
               <span>Export PDF</span>
               <CommandShortcut>⌘P</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onExportLatex)}>
-              <FileText className="mr-2 h-4 w-4" />
+              <FileTextIcon className="mr-2 h-4 w-4" />
               <span>Export LaTeX</span>
               <CommandShortcut>⌘L</CommandShortcut>
             </CommandItem>

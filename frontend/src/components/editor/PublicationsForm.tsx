@@ -5,7 +5,8 @@ import { Label } from "@/components/ui/label";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { TrashIcon } from "@/components/Icons";
 
 export function PublicationsForm() {
   const publications = useResumeStore((s) => s.resume.publications);
@@ -28,7 +29,7 @@ export function PublicationsForm() {
                 onClick={() => removePublication(pub.id)}
                 aria-label={`Remove publication ${index + 1}`}
               >
-                <Trash2 className="h-3 w-3 text-destructive" />
+                <TrashIcon className="h-3 w-3 text-destructive" />
               </Button>
             </div>
             <div className="space-y-1">

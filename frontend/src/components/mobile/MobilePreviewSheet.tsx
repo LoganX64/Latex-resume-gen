@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { X, Maximize, ZoomIn, ZoomOut } from "lucide-react";
+import { Maximize, ZoomIn, ZoomOut } from "lucide-react";
+import { XIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -111,7 +112,7 @@ export function MobilePreviewSheet({
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
                 aria-label="Close preview"
               >
-                <X className="h-4 w-4" />
+                <XIcon className="h-4 w-4" />
               </SheetClose>
             </div>
           </div>
@@ -133,7 +134,7 @@ export function MobilePreviewSheet({
               className="w-full justify-center gap-2"
               onClick={() => onOpenChange(false)}
             >
-              <X className="h-4 w-4" />
+              <XIcon className="h-4 w-4" />
               Close Preview
             </Button>
           </div>
@@ -191,7 +192,7 @@ export function MobilePreviewSheet({
             className="fixed top-4 right-4 z-200 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Close fullscreen"
           >
-            <X className="h-5 w-5" />
+            <XIcon className="h-5 w-5" />
           </button>
         </div>
       )}

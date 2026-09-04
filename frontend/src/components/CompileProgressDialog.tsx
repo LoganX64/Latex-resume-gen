@@ -1,4 +1,5 @@
-import { Check, Circle, X, ChevronDown, ChevronRight } from 'lucide-react'
+import { Check, Circle, ChevronDown, ChevronRight } from 'lucide-react'
+import { XIcon } from '@/components/Icons'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -60,7 +61,7 @@ export function CompileProgressDialog({
             {status === 'done' ? (
               <Check className="h-4 w-4 text-green-500" />
             ) : status === 'error' ? (
-              <X className="h-4 w-4 text-destructive" />
+              <XIcon className="h-4 w-4 text-destructive" />
             ) : (
               <Spinner className="h-4 w-4" />
             )}

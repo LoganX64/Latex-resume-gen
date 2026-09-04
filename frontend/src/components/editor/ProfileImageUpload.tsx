@@ -2,7 +2,8 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
-import { Upload, X, User } from 'lucide-react'
+import { Upload, User } from 'lucide-react'
+import { XIcon } from '@/components/Icons'
 import Cropper from 'react-easy-crop'
 import * as Sentry from '@sentry/react'
 import {
@@ -106,7 +107,7 @@ export function ProfileImageUpload() {
             aria-label="Remove profile photo"
             className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <X className="h-3 w-3" />
+            <XIcon className="h-3 w-3" />
           </button>
         )}
       </div>

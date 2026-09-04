@@ -11,18 +11,18 @@ import { CompactFooter } from "@/components/CompactFooter";
 import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
+import downloadSvg from "@/assets/download.svg";
+import fileTextSvg from "@/assets/file-content-outline-18.svg";
+import trashSvg from "@/assets/trash-3-fill-24.svg";
+import homeSvg from "@/assets/home.svg";
 import {
   Sun,
   Moon,
-  Download,
-  FileText,
   RotateCcw,
-  Trash2,
   Search,
   TriangleAlert,
   ImageOff,
   Save,
-  Home,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -198,7 +198,7 @@ export default function MainLayout() {
                           />
                         }
                       >
-                        <Home className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <img src={homeSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       </TooltipTrigger>
                       <TooltipContent>Home</TooltipContent>
                     </Tooltip>
@@ -215,7 +215,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <Trash2 className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-destructive" />
+                      <img src={trashSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Clear resume</TooltipContent>
                   </Tooltip>
@@ -344,7 +344,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <FileText className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-sky-500" />
+                      <img src={fileTextSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
                   </Tooltip>
@@ -364,7 +364,7 @@ export default function MainLayout() {
                       {isExportingPdf ? (
                         <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       ) : (
-                        <Download className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-rose-500" />
+                        <img src={downloadSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       )}
                     </TooltipTrigger>
                     <TooltipContent>Export PDF (⌘P)</TooltipContent>

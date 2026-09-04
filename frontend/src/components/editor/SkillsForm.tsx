@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, Trash2, GripVertical, X } from "lucide-react";
+import { Plus, GripVertical } from "lucide-react";
+import { TrashIcon, XIcon } from "@/components/Icons";
 import {
   DndContext,
   closestCenter,
@@ -94,7 +95,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
             onClick={() => removeSkillCategory(category.id)}
             aria-label={`Remove ${category.name || "skill category"}`}
           >
-            <Trash2 className="h-3 w-3 text-destructive" />
+            <TrashIcon className="h-3 w-3 text-destructive" />
           </Button>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -109,7 +110,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
                 aria-label={`Remove ${skill}`}
                 className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-destructive hover:text-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
               >
-                <X className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
+                <XIcon className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
               </button>
             </span>
           ))}

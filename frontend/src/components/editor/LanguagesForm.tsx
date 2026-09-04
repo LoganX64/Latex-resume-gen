@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
+import { TrashIcon } from "@/components/Icons";
 import {
   Select,
   SelectContent,
@@ -54,7 +55,7 @@ export function LanguagesForm() {
             onClick={() => removeLanguage(lang.id)}
             aria-label={`Remove language ${index + 1}`}
           >
-            <Trash2 className="h-3 w-3 text-destructive" />
+            <TrashIcon className="h-3 w-3 text-destructive" />
           </Button>
         </div>
       ))}

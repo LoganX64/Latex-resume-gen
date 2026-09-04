@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Eye, X, ChevronLeft, Maximize, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, Maximize, ZoomIn, ZoomOut } from "lucide-react";
+import { EyeIcon, XIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -74,7 +75,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
           onClick={() => setOpen(true)}
           aria-label="Preview resume"
         >
-          <Eye className="h-6 w-6" />
+          <EyeIcon className="h-6 w-6" />
         </Button>
       )}
 
@@ -123,7 +124,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
                 aria-label="Close preview"
               >
-                <X className="h-4 w-4" />
+                <XIcon className="h-4 w-4" />
               </SheetClose>
             </div>
           </div>
@@ -203,7 +204,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
             className="fixed top-4 right-4 z-200 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Close fullscreen"
           >
-            <X className="h-5 w-5" />
+            <XIcon className="h-5 w-5" />
           </button>
         </div>
       )}

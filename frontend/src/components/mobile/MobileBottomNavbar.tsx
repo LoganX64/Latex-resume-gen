@@ -1,4 +1,5 @@
-import { Home, Bookmark, Eye, Download } from "lucide-react";
+import { Home, Bookmark } from "lucide-react";
+import { EyeIcon, DownloadIcon } from "@/components/Icons";
 import { Spinner } from "@/components/ui/spinner";
 
 interface MobileBottomNavbarProps {
@@ -34,7 +35,7 @@ export function MobileBottomNavbar({
           },
           {
             label: "Preview",
-            icon: <Eye className="h-5 w-5" />,
+            icon: <EyeIcon className="h-5 w-5" />,
             onClick: onPreview,
             key: "preview",
           },
@@ -61,7 +62,7 @@ export function MobileBottomNavbar({
         {isExportingPdf ? (
           <Spinner className="h-5 w-5" />
         ) : (
-          <Download className="h-5 w-5" />
+          <DownloadIcon className="h-5 w-5" />
         )}
         <span className="text-[10px] font-medium">
           {isExportingPdf ? "Exporting…" : "Download"}

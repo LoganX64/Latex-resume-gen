@@ -7,9 +7,9 @@ import {
   GripVertical,
   ChevronDown,
   ChevronUp,
-  Eye,
   EyeOff,
 } from 'lucide-react'
+import { EyeIcon } from '@/components/Icons'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
 import { m } from 'framer-motion'
@@ -77,7 +77,7 @@ export function SectionWrapper({
               aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
-                <Eye className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
+                <EyeIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
               ) : (
                 <EyeOff className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
               )}

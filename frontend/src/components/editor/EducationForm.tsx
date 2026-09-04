@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { Plus, Trash2, GripVertical } from 'lucide-react'
+import { Plus, GripVertical } from 'lucide-react'
+import { TrashIcon } from '@/components/Icons'
 import {
   DndContext,
   closestCenter,
@@ -69,7 +70,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           onClick={() => removeEducation(education.id)}
           aria-label={`Remove education ${index + 1}`}
         >
-          <Trash2 className="h-3 w-3 text-destructive" />
+          <TrashIcon className="h-3 w-3 text-destructive" />
         </Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

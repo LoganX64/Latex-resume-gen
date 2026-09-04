@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
-import { Sun, Moon, Star, FileText } from 'lucide-react'
+import { Sun, Moon, Star } from 'lucide-react'
+import { FileTextIcon } from '@/components/Icons'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -38,7 +39,7 @@ export function Navbar() {
           </Button>
           <Link to="/editor">
             <Button size="sm" className="gap-1.5">
-              <FileText className="h-3.5 w-3.5 sm:hidden" aria-hidden="true" />
+              <FileTextIcon className="h-3.5 w-3.5 sm:hidden" aria-hidden="true" />
               <span className="hidden sm:inline">Build Resume</span>
               <span className="sm:hidden">Build</span>
             </Button>

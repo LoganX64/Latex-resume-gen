@@ -17,36 +17,37 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  User,
-  FileText,
-  Briefcase,
-  FolderGit2,
-  GraduationCap,
-  Award,
   Trophy,
   BookOpen,
-  Globe,
-  Puzzle,
-  Layers,
   PanelLeftClose,
-  Eye,
-  Download,
   Save,
-  Home,
 } from "lucide-react";
 
+import userSvg from "@/assets/user.svg";
+import fileTextSvg from "@/assets/file-content-outline-18.svg";
+import briefcaseSvg from "@/assets/suitcase-3-outline-18.svg";
+import folderGit2Svg from "@/assets/folder.svg";
+import graduationCapSvg from "@/assets/graduation-cap-fill-18.svg";
+import awardSvg from "@/assets/award.svg";
+import globeSvg from "@/assets/globe.svg";
+import puzzleSvg from "@/assets/puzzle-piece-outline-18.svg";
+import layersSvg from "@/assets/layers.svg";
+import eyeSvg from "@/assets/eye-2-outline-32.svg";
+import downloadSvg from "@/assets/download.svg";
+import homeSvg from "@/assets/home.svg";
+
 const navItems = [
-  { id: "personal", icon: User, label: "Personal Info" },
-  { id: "summary", icon: FileText, label: "Summary" },
-  { id: "experience", icon: Briefcase, label: "Experience" },
-  { id: "skills", icon: Puzzle, label: "Skills" },
-  { id: "projects", icon: FolderGit2, label: "Projects" },
-  { id: "education", icon: GraduationCap, label: "Education" },
-  { id: "certifications", icon: Award, label: "Certifications" },
+  { id: "personal", icon: userSvg, label: "Personal Info" },
+  { id: "summary", icon: fileTextSvg, label: "Summary" },
+  { id: "experience", icon: briefcaseSvg, label: "Experience" },
+  { id: "skills", icon: puzzleSvg, label: "Skills" },
+  { id: "projects", icon: folderGit2Svg, label: "Projects" },
+  { id: "education", icon: graduationCapSvg, label: "Education" },
+  { id: "certifications", icon: awardSvg, label: "Certifications" },
   { id: "achievements", icon: Trophy, label: "Achievements" },
   { id: "publications", icon: BookOpen, label: "Publications" },
-  { id: "languages", icon: Globe, label: "Languages" },
-  { id: "customSections", icon: Layers, label: "Custom Sections" },
+  { id: "languages", icon: globeSvg, label: "Languages" },
+  { id: "customSections", icon: layersSvg, label: "Custom Sections" },
 ] as const;
 
 interface AppSidebarProps {
@@ -123,7 +124,8 @@ export function AppSidebar({
                           : ""
                       }`}
                     >
-                      <item.icon
+                      <img
+                        src={item.icon}
                         className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-primary" : ""}`}
                       />
                       <span>{item.label}</span>
@@ -143,19 +145,19 @@ export function AppSidebar({
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.visits.toLocaleString()} visit${stats.visits !== 1 ? "s" : ""}`}
             >
-              <Eye className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
+              <img src={eyeSvg} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
             <span
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? "s" : ""}`}
             >
-              <Download className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
+              <img src={downloadSvg} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-1 px-2 py-1.5 text-xs text-sidebar-foreground/60">
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Eye className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+              <img src={eyeSvg} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>
                 {stats.visits.toLocaleString()} visit
                 {stats.visits !== 1 ? "s" : ""}
@@ -163,7 +165,7 @@ export function AppSidebar({
             </span>
             <span className="text-sidebar-foreground/30">·</span>
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Download className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+              <img src={downloadSvg} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>
                 {stats.downloads.toLocaleString()} download
                 {stats.downloads !== 1 ? "s" : ""}
@@ -188,7 +190,7 @@ export function AppSidebar({
               onClick={() => navigate("/")}
               tooltip="Back to home"
             >
-              <Home className="h-3 w-3 lg:h-4 lg:w-4" />
+              <img src={homeSvg} className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

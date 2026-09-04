@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/stores/resume-store";
 import { loadTemplate, getTemplateConfig } from "@/templates";
-import { AlertTriangle, Maximize, X, ZoomIn, ZoomOut } from "lucide-react";
+import { AlertTriangle, Maximize, ZoomIn, ZoomOut } from "lucide-react";
+import { XIcon } from "@/components/Icons";
 import {
   Select,
   SelectTrigger,
@@ -644,7 +645,7 @@ export function ResumePreview({
             className="fixed top-4 right-4 z-100 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Back"
           >
-            <X className="h-5 w-5" />
+            <XIcon className="h-5 w-5" />
           </button>
         </div>
       )}
