@@ -5,7 +5,7 @@ import { recordVisit } from "@/utils/stats";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { Trophy, BookOpen, Save } from "lucide-react";
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import userSvg from "@/assets/user.svg";
 import fileTextSvg from "@/assets/file-content-outline-18.svg";
 import briefcaseSvg from "@/assets/suitcase-3-outline-18.svg";

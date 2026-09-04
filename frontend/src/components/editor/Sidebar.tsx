@@ -125,7 +125,7 @@ export function AppSidebar({
                       }`}
                     >
                       <img
-                        src={item.icon}
+                        src={item.icon as string}
                         className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-primary" : ""}`}
                       />
                       <span>{item.label}</span>

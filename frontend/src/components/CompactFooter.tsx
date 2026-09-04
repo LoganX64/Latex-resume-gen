@@ -1,4 +1,4 @@
-import { Mail, ShieldCheck } from 'lucide-react'
+import { MailIcon, ShieldCheckIcon } from '@/components/Icons'
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -12,7 +12,7 @@ export function CompactFooter() {
   return (
     <footer className="flex items-center justify-between border-t px-4 py-2 text-[11px] text-muted-foreground bg-background/95 backdrop-blur shrink-0 gap-2">
       <div className="flex items-center gap-1.5 truncate">
-        <ShieldCheck className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+        <ShieldCheckIcon className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
         <span className="truncate">Stored locally in browser</span>
       </div>
 
@@ -33,7 +33,7 @@ export function CompactFooter() {
           aria-label="Email developer"
           title="kpjitin@gmail.com"
         >
-          <Mail className="h-3 w-3 text-rose-500" />
+          <MailIcon className="h-3 w-3 text-rose-500" />
         </a>
       </div>
     </footer>

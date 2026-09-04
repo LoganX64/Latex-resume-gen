@@ -1,5 +1,5 @@
-import { Check, Circle, ChevronDown, ChevronRight } from 'lucide-react'
-import { XIcon } from '@/components/Icons'
+import { Circle, ChevronRight } from 'lucide-react'
+import { XIcon, CheckIcon, ChevronDownIcon } from '@/components/Icons'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -59,7 +59,7 @@ export function CompileProgressDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {status === 'done' ? (
-              <Check className="h-4 w-4 text-green-500" />
+              <CheckIcon className="h-4 w-4 text-green-500" />
             ) : status === 'error' ? (
               <XIcon className="h-4 w-4 text-destructive" />
             ) : (
@@ -89,7 +89,7 @@ export function CompileProgressDialog({
             return (
               <div key={stepId} className="flex items-center gap-2">
                 {isComplete ? (
-                  <Check className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                  <CheckIcon className="h-3.5 w-3.5 text-green-500 shrink-0" />
                 ) : isActive ? (
                   <Spinner className="h-3.5 w-3.5 shrink-0" />
                 ) : (
@@ -122,7 +122,7 @@ export function CompileProgressDialog({
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               {showOutput ? (
-                <ChevronDown className="h-3 w-3" />
+                <ChevronDownIcon className="h-3 w-3" />
               ) : (
                 <ChevronRight className="h-3 w-3" />
               )}

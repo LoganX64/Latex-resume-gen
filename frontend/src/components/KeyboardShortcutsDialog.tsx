@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { Keyboard } from "lucide-react"
+import { KeyboardIcon } from "@/components/Icons"
 
 const shortcuts = [
   { keys: ["⌘", "K"], label: "Open command palette" },
@@ -31,7 +31,7 @@ export function KeyboardShortcutsDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Keyboard className="h-4 w-4" />
+            <KeyboardIcon className="h-4 w-4" />
             Keyboard Shortcuts
           </DialogTitle>
           <DialogDescription>

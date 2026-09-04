@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
-import { Star } from 'lucide-react'
-import { FileTextIcon, SunIcon, MoonIcon } from '@/components/Icons'
+import { FileTextIcon, SunIcon, MoonIcon, StarIcon } from '@/components/Icons'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -25,7 +24,7 @@ export function Navbar() {
               rel="noopener noreferrer"
             >
               <Button variant="ghost" size="icon-sm" aria-label="Star on GitHub">
-                <Star className="h-3.5 w-3.5" />
+                <StarIcon className="h-3.5 w-3.5" />
               </Button>
             </a>
           )}

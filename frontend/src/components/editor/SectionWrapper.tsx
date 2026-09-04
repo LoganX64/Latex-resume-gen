@@ -4,11 +4,9 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
-  ChevronDown,
-  ChevronUp,
   EyeOff,
 } from 'lucide-react'
-import { EyeIcon, GripVerticalIcon } from '@/components/Icons'
+import { EyeIcon, GripVerticalIcon, ChevronDownIcon, ChevronUpIcon } from '@/components/Icons'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
 import { m } from 'framer-motion'
@@ -88,9 +86,9 @@ export function SectionWrapper({
               aria-label={collapsed ? `Expand ${label}` : `Collapse ${label}`}
             >
               {collapsed ? (
-                <ChevronDown className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
+                <ChevronDownIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               ) : (
-                <ChevronUp className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
+                <ChevronUpIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               )}
             </Button>
           </div>

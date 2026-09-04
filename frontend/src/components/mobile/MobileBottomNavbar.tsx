@@ -1,5 +1,4 @@
-import { Bookmark } from "lucide-react";
-import { EyeIcon, DownloadIcon, HomeIcon } from "@/components/Icons";
+import { EyeIcon, DownloadIcon, HomeIcon, BookmarkIcon } from "@/components/Icons";
 import { Spinner } from "@/components/ui/spinner";
 
 interface MobileBottomNavbarProps {
@@ -29,7 +28,7 @@ export function MobileBottomNavbar({
           },
           {
             label: "Saved",
-            icon: <Bookmark className="h-5 w-5" />,
+            icon: <BookmarkIcon className="h-5 w-5" />,
             onClick: onSaved,
             key: "saved",
           },

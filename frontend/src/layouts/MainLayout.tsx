@@ -16,13 +16,12 @@ import fileTextSvg from "@/assets/file-content-outline-18.svg";
 import trashSvg from "@/assets/trash-3-fill-24.svg";
 import homeSvg from "@/assets/home.svg";
 import {
-  RotateCcw,
   Search,
   TriangleAlert,
   ImageOff,
   Save,
 } from "lucide-react";
-import { SunIcon, MoonIcon } from "@/components/Icons";
+import { SunIcon, MoonIcon, RotateCcwIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -230,7 +229,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <RotateCcw className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <RotateCcwIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Load sample data</TooltipContent>
                   </Tooltip>

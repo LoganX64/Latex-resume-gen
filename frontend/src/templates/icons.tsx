@@ -1,5 +1,5 @@
-import { Mail, Phone, MapPin, ExternalLink } from 'lucide-react'
-import { GlobeIcon } from '@/components/Icons'
+import { Phone, MapPin, ExternalLink } from 'lucide-react'
+import { GlobeIcon, MailIcon } from '@/components/Icons'
 import type { ComponentType, SVGProps } from 'react'
 
 type IconProps = SVGProps<SVGSVGElement>
@@ -19,7 +19,7 @@ const LinkedinIcon = (props: IconProps) => (
 export type IconType = 'email' | 'phone' | 'location' | 'linkedin' | 'github' | 'website' | 'externalLink'
 
 const iconMap: Record<IconType, ComponentType<IconProps>> = {
-  email: Mail,
+  email: MailIcon,
   phone: Phone,
   location: MapPin,
   linkedin: LinkedinIcon,

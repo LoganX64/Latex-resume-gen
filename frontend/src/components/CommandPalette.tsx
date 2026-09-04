@@ -13,10 +13,9 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import {
-  RotateCcw,
   LayoutTemplate,
 } from "lucide-react"
-import { DownloadIcon, FileTextIcon, MoonIcon, SunIcon } from "@/components/Icons"
+import { DownloadIcon, FileTextIcon, MoonIcon, SunIcon, RotateCcwIcon } from "@/components/Icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -99,11 +98,11 @@ export function CommandPalette({
               <CommandShortcut>⌘D</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onResetResume)}>
-              <RotateCcw className="mr-2 h-4 w-4" />
+              <RotateCcwIcon className="mr-2 h-4 w-4" />
               <span>Load Sample Data</span>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onClearResume)}>
-              <RotateCcw className="mr-2 h-4 w-4" />
+              <RotateCcwIcon className="mr-2 h-4 w-4" />
               <span>Clear Resume</span>
             </CommandItem>
           </CommandGroup>

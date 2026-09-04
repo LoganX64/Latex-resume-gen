@@ -4,7 +4,8 @@ import { VersionCard } from "@/components/VersionCard";
 import { StorageWarning } from "@/components/StorageWarning";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowRight, Plus, Sparkles } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
+import { SparklesIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -717,7 +718,7 @@ export default function HomePage() {
               <div className="flex-1 text-center lg:text-left">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary mb-6">
-                  <Sparkles className="h-3 w-3" />
+                  <SparklesIcon className="h-3 w-3" />
                   Free · No account · Runs locally
                 </div>
 
