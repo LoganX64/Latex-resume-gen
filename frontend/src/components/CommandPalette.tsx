@@ -13,12 +13,10 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import {
-  Moon,
-  Sun,
   RotateCcw,
   LayoutTemplate,
 } from "lucide-react"
-import { DownloadIcon, FileTextIcon } from "@/components/Icons"
+import { DownloadIcon, FileTextIcon, MoonIcon, SunIcon } from "@/components/Icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -93,9 +91,9 @@ export function CommandPalette({
           <CommandGroup heading="Actions">
             <CommandItem onSelect={() => runAction(onToggleDarkMode)}>
               {isDarkMode ? (
-                <Sun className="mr-2 h-4 w-4" />
+                <SunIcon className="mr-2 h-4 w-4" />
               ) : (
-                <Moon className="mr-2 h-4 w-4" />
+                <MoonIcon className="mr-2 h-4 w-4" />
               )}
               <span>Toggle {isDarkMode ? "Light" : "Dark"} Mode</span>
               <CommandShortcut>⌘D</CommandShortcut>

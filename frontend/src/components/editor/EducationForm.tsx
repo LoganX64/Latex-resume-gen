@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { Plus, GripVertical } from 'lucide-react'
-import { TrashIcon } from '@/components/Icons'
+import { Plus } from 'lucide-react'
+import { TrashIcon, GripVerticalIcon } from '@/components/Icons'
 import {
   DndContext,
   closestCenter,
@@ -59,7 +59,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           {...attributes}
           {...listeners}
         >
-          <GripVertical className="h-3.5 w-3.5" />
+          <GripVerticalIcon className="h-3.5 w-3.5" />
         </button>
         <span className="text-[10px] font-medium text-muted-foreground flex-1">
           Education {index + 1}

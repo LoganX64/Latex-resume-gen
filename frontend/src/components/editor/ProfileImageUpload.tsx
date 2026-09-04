@@ -2,8 +2,8 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
-import { Upload, User } from 'lucide-react'
-import { XIcon } from '@/components/Icons'
+import { Upload } from 'lucide-react'
+import { XIcon, UserIcon } from '@/components/Icons'
 import Cropper from 'react-easy-crop'
 import * as Sentry from '@sentry/react'
 import {
@@ -98,7 +98,7 @@ export function ProfileImageUpload() {
           {profileImage ? (
             <img src={profileImage} alt="Profile" width={80} height={80} loading="lazy" className="w-full h-full object-cover" />
           ) : (
-            <User className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+            <UserIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
           )}
         </div>
         {profileImage && (

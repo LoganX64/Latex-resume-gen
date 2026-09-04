@@ -1,4 +1,5 @@
-import { PanelLeft, Save, Sun, Moon } from "lucide-react";
+import { PanelLeft, Save } from "lucide-react";
+import { SunIcon, MoonIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
@@ -39,9 +40,9 @@ export function MobileTopNavbar({
           className="h-8 w-8"
         >
           {darkMode ? (
-            <Sun className="h-4 w-4" />
+            <SunIcon className="h-4 w-4" />
           ) : (
-            <Moon className="h-4 w-4" />
+            <MoonIcon className="h-4 w-4" />
           )}
         </Button>
         <Button

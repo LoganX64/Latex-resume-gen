@@ -16,14 +16,13 @@ import fileTextSvg from "@/assets/file-content-outline-18.svg";
 import trashSvg from "@/assets/trash-3-fill-24.svg";
 import homeSvg from "@/assets/home.svg";
 import {
-  Sun,
-  Moon,
   RotateCcw,
   Search,
   TriangleAlert,
   ImageOff,
   Save,
 } from "lucide-react";
+import { SunIcon, MoonIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -252,9 +251,9 @@ export default function MainLayout() {
                       }
                     >
                       {darkMode ? (
-                        <Sun className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <SunIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       ) : (
-                        <Moon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <MoonIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       )}
                     </TooltipTrigger>
                     <TooltipContent>

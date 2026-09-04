@@ -1,5 +1,5 @@
-import { Home, Bookmark } from "lucide-react";
-import { EyeIcon, DownloadIcon } from "@/components/Icons";
+import { Bookmark } from "lucide-react";
+import { EyeIcon, DownloadIcon, HomeIcon } from "@/components/Icons";
 import { Spinner } from "@/components/ui/spinner";
 
 interface MobileBottomNavbarProps {
@@ -23,7 +23,7 @@ export function MobileBottomNavbar({
         [
           {
             label: "Home",
-            icon: <Home className="h-5 w-5" />,
+            icon: <HomeIcon className="h-5 w-5" />,
             onClick: onHome,
             key: "home",
           },

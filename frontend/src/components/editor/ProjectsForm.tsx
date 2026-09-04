@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, GripVertical } from "lucide-react";
-import { TrashIcon, XIcon } from "@/components/Icons";
+import { Plus } from "lucide-react";
+import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
 import {
   DndContext,
   closestCenter,
@@ -83,7 +83,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             {...attributes}
             {...listeners}
           >
-            <GripVertical className="h-3.5 w-3.5" />
+            <GripVerticalIcon className="h-3.5 w-3.5" />
           </button>
           <span className="text-[10px] font-medium text-muted-foreground flex-1">
             Project {index + 1}

@@ -25,7 +25,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical } from "lucide-react";
+import { GripVerticalIcon } from "@/components/Icons";
 
 const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
@@ -71,7 +71,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             {...attributes}
             {...listeners}
           >
-            <GripVertical className="h-3.5 w-3.5" />
+            <GripVerticalIcon className="h-3.5 w-3.5" />
           </button>
           <span className="text-[10px] font-medium text-muted-foreground flex-1">
             Experience {index + 1}

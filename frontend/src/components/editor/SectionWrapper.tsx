@@ -4,12 +4,11 @@ import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
-  GripVertical,
   ChevronDown,
   ChevronUp,
   EyeOff,
 } from 'lucide-react'
-import { EyeIcon } from '@/components/Icons'
+import { EyeIcon, GripVerticalIcon } from '@/components/Icons'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
 import { m } from 'framer-motion'
@@ -67,7 +66,7 @@ export function SectionWrapper({
               {...attributes}
               {...listeners}
             >
-              <GripVertical className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden="true" />
+              <GripVerticalIcon className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden="true" />
             </button>
             <CardTitle className="text-xs sm:text-sm font-semibold flex-1 text-foreground">{label}</CardTitle>
             <Button

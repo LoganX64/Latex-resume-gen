@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus, GripVertical } from "lucide-react";
-import { TrashIcon, XIcon } from "@/components/Icons";
+import { Plus } from "lucide-react";
+import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
 import {
   DndContext,
   closestCenter,
@@ -78,7 +78,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
             {...attributes}
             {...listeners}
           >
-            <GripVertical className="h-3.5 w-3.5" />
+            <GripVerticalIcon className="h-3.5 w-3.5" />
           </button>
           <Input
             name="skillCategoryName"
