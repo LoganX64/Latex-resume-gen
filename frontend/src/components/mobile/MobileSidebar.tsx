@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { recordVisit } from "@/utils/stats";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { Trophy, BookOpen, Save } from "lucide-react";
+import { TrophyIcon, BookOpenIcon, SaveIcon } from "@/components/Icons";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import userSvg from "@/assets/user.svg";
 import fileTextSvg from "@/assets/file-content-outline-18.svg";
@@ -29,8 +29,8 @@ const navItems = [
   { id: "projects", icon: folderGit2Svg, label: "Projects" },
   { id: "education", icon: graduationCapSvg, label: "Education" },
   { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: Trophy, label: "Achievements" },
-  { id: "publications", icon: BookOpen, label: "Publications" },
+  { id: "achievements", icon: TrophyIcon, label: "Achievements" },
+  { id: "publications", icon: BookOpenIcon, label: "Publications" },
   { id: "languages", icon: globeSvg, label: "Languages" },
   { id: "customSections", icon: layersSvg, label: "Custom Sections" },
 ];
@@ -154,7 +154,7 @@ export function MobileSidebar({
             onClick={() => onSaveClick?.()}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
           >
-            <Save className="h-3.5 w-3.5 text-primary" />
+            <SaveIcon className="h-3.5 w-3.5 text-primary" />
             <span>Save Version</span>
           </button>
 

@@ -17,11 +17,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import {
-  Trophy,
-  BookOpen,
-  PanelLeftClose,
-  Save,
-} from "lucide-react";
+  TrophyIcon,
+  BookOpenIcon,
+  PanelLeftIcon,
+  SaveIcon,
+} from "@/components/Icons";
 
 import userSvg from "@/assets/user.svg";
 import fileTextSvg from "@/assets/file-content-outline-18.svg";
@@ -44,8 +44,8 @@ const navItems = [
   { id: "projects", icon: folderGit2Svg, label: "Projects" },
   { id: "education", icon: graduationCapSvg, label: "Education" },
   { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: Trophy, label: "Achievements" },
-  { id: "publications", icon: BookOpen, label: "Publications" },
+  { id: "achievements", icon: TrophyIcon, label: "Achievements" },
+  { id: "publications", icon: BookOpenIcon, label: "Publications" },
   { id: "languages", icon: globeSvg, label: "Languages" },
   { id: "customSections", icon: layersSvg, label: "Custom Sections" },
 ] as const;
@@ -180,7 +180,7 @@ export function AppSidebar({
               onClick={onSaveClick}
               tooltip="Save as version"
             >
-              <Save className="h-3 w-3 lg:h-4 lg:w-4" />
+              <SaveIcon className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Save Version</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -200,7 +200,7 @@ export function AppSidebar({
               onClick={toggleSidebar}
               tooltip="Toggle sidebar"
             >
-              <PanelLeftClose className="h-3 w-3 lg:h-4 lg:w-4 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
+              <PanelLeftIcon className="h-3 w-3 lg:h-4 lg:w-4 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
               <span>Collapse</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

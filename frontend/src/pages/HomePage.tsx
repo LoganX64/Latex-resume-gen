@@ -4,8 +4,7 @@ import { VersionCard } from "@/components/VersionCard";
 import { StorageWarning } from "@/components/StorageWarning";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowRight } from "lucide-react";
-import { SparklesIcon, PlusIcon } from "@/components/Icons";
+import { ArrowRightIcon, SparklesIcon, PlusIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -747,7 +746,7 @@ export default function HomePage() {
                       className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                     >
                       Start Building Free
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRightIcon className="h-4 w-4" />
                     </Button>
                   </Link>
                   {versions.length > 0 && (
@@ -929,7 +928,7 @@ export default function HomePage() {
                   className="gap-2 shadow-md shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                 >
                   Get Started — It's Free
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4" />
                 </Button>
               </Link>
             </FadeIn>
@@ -968,7 +967,7 @@ export default function HomePage() {
               <Link to="/editor">
                 <Button variant="outline" className="gap-2">
                   Build Your First Resume
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRightIcon className="h-4 w-4" />
                 </Button>
               </Link>
             </FadeIn>

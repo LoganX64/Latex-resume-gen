@@ -12,10 +12,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import {
-  LayoutTemplate,
-} from "lucide-react"
-import { DownloadIcon, FileTextIcon, MoonIcon, SunIcon, RotateCcwIcon } from "@/components/Icons"
+import { LayoutTemplateIcon, DownloadIcon, FileTextIcon, MoonIcon, SunIcon, RotateCcwIcon } from "@/components/Icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -81,7 +78,7 @@ export function CommandPalette({
                 key={t.id}
                 onSelect={() => runAction(() => onTemplateChange(t.id))}
               >
-                <LayoutTemplate className="mr-2 h-4 w-4" />
+                <LayoutTemplateIcon className="mr-2 h-4 w-4" />
                 <span>{t.name}</span>
               </CommandItem>
             ))}

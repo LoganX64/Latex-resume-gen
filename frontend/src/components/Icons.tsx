@@ -486,3 +486,365 @@ export function EyeOffIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function ArrowRightIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <line x1="3" y1="10" x2="17" y2="10" />
+      <polyline points="12 15 17 10 12 5" />
+    </svg>
+  );
+}
+
+export function ArrowLeftIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <line x1="17" y1="10" x2="3" y2="10" />
+      <polyline points="8 5 3 10 8 15" />
+    </svg>
+  );
+}
+
+export function ChevronRightIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M13.28,8.47L7.03,2.22c-.293-.293-.768-.293-1.061,0s-.293,.768,0,1.061l5.72,5.72-5.72,5.72c-.293,.293-.293,.768,0,1.061,.146,.146,.338,.22,.53,.22s.384-.073,.53-.22l6.25-6.25c.293-.293,.293-.768,0-1.061Z" />
+    </svg>
+  );
+}
+
+export function ChevronLeftIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M11.5,16c-.192,0-.384-.073-.53-.22l-6.25-6.25c-.293-.293-.293-.768,0-1.061L10.97,2.22c.293-.293,.768-.293,1.061,0s.293,.768,0,1.061l-5.72,5.72,5.72,5.72c.293,.293,.293,.768,0,1.061-.146,.146-.338,.22-.53,.22Z" />
+    </svg>
+  );
+}
+
+export function SaveIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="m19,2H5c-1.654,0-3,1.346-3,3v14c0,1.654,1.346,3,3,3h14c1.654,0,3-1.346,3-3V5c0-1.654-1.346-3-3-3Zm-3,12l-4-3.333-4,3.333V4h8v10Z" />
+    </svg>
+  );
+}
+
+export function PanelLeftIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="m27,3H5c-2.206,0-4,1.794-4,4v18c0,2.206,1.794,4,4,4h22c2.206,0,4-1.794,4-4V7c0-2.206-1.794-4-4-4Zm-10,24H5c-1.103,0-2-.897-2-2V7c0-1.103.897-2,2-2h12v22Zm10-5h-6v-2h6v2Zm0-5h-6v-2h6v2Zm0-5h-6v-2h6v2Z" />
+    </svg>
+  );
+}
+
+export function MaximizeIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m7,17h-1c-1.657,0-3-1.343-3-3v-1" />
+      <path d="m13,3h1c1.657,0,3,1.343,3,3v1" />
+      <path d="m3,7v-1c0-1.657,1.343-3,3-3h1" />
+      <path d="m17,13v1c0,1.657-1.343,3-3,3h-1" />
+    </svg>
+  );
+}
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path fillRule="evenodd" clipRule="evenodd" d="M11.1083 11.1083C11.4012 10.8154 11.876 10.8154 12.1689 11.1083L16.2803 15.2197C16.5732 15.5126 16.5732 15.9874 16.2803 16.2803C15.9874 16.5732 15.5126 16.5732 15.2197 16.2803L11.1083 12.1689C10.8154 11.876 10.8154 11.4012 11.1083 11.1083Z" />
+      <path fillRule="evenodd" clipRule="evenodd" d="M1.5 7.75C1.5 4.29829 4.29829 1.5 7.75 1.5C11.2017 1.5 14 4.29829 14 7.75C14 11.2017 11.2017 14 7.75 14C4.29829 14 1.5 11.2017 1.5 7.75ZM7.75 3C5.12671 3 3 5.12671 3 7.75C3 10.3733 5.12671 12.5 7.75 12.5C10.3733 12.5 12.5 10.3733 12.5 7.75C12.5 5.12671 10.3733 3 7.75 3Z" />
+    </svg>
+  );
+}
+
+export function ZoomInIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      {...props}
+    >
+      <line x1="20.5" y1="20.5" x2="15" y2="15" />
+      <circle cx="10" cy="10" r="7" />
+      <line x1="10" y1="13" x2="10" y2="7" />
+      <line x1="7" y1="10" x2="13" y2="10" />
+    </svg>
+  );
+}
+
+export function ZoomOutIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+      {...props}
+    >
+      <line x1="20.5" y1="20.5" x2="15" y2="15" />
+      <circle cx="10" cy="10" r="7" />
+      <line x1="7" y1="10" x2="13" y2="10" />
+    </svg>
+  );
+}
+
+export function PhoneIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M6.08424 11.9158C8.23984 14.0713 11.0787 15.5432 14.2579 15.9883C14.75 16.0572 15.2109 15.726 15.3356 15.245L15.9651 12.8182C16.0879 12.3447 15.8502 11.8518 15.4031 11.6532L12.5339 10.3789C12.1126 10.1918 11.618 10.3169 11.3364 10.6818L10.4574 11.8206C9.57384 11.3015 8.76404 10.6737 8.04524 9.95481C7.32624 9.23601 6.69846 8.42621 6.17946 7.54261L7.31825 6.6636C7.68315 6.3819 7.80824 5.88741 7.62114 5.46611L6.34685 2.597C6.14825 2.1499 5.65534 1.9121 5.18184 2.0349L2.75505 2.6644C2.27415 2.7892 1.94285 3.25001 2.01175 3.74211C2.45685 6.92121 3.92864 9.76021 6.08424 11.9158Z" />
+    </svg>
+  );
+}
+
+export function BookOpenIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M9 2.75L17.7236 7.1118C17.893 7.1965 18 7.36963 18 7.55902V19.75" />
+      <path d="M3 6.75L11.7236 11.1118C11.893 11.1965 12 11.3696 12 11.559V22.75" />
+      <path d="M5.5 13.4263V8L9.4564 9.94092V15.1969H9.19266L7.34576 12.7972L6.06058 13.5639L5.5 13.4263Z" />
+      <path d="M15 10L12 11.5V22.5L21 18V5.82361C21 5.67493 20.8435 5.57823 20.7106 5.64472L18 7V11.5L15 13V10Z" />
+      <path d="M12 11.25L15 9.75" />
+      <path d="M18 7.25L21 5.75" />
+      <path d="M15 13.25L18 11.75" />
+      <path d="M18 11.25L15 9.75L13.5 9" />
+      <path d="M5.5 8.01978V12.9631C5.5 13.3569 5.9342 13.5961 6.26713 13.3857L7.00975 12.9164C7.23854 12.7718 7.54085 12.8355 7.69184 13.0601L9.04252 15.0694C9.18024 15.2743 9.5 15.1768 9.5 14.93V10.027" />
+    </svg>
+  );
+}
+
+export function TriangleAlertIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m13.725,16h1.471c1.54,0,2.502-1.667,1.732-3l-5.196-9c-.77-1.333-2.694-1.333-3.464,0L3.072,13c-.77,1.333.192,3,1.732,3h1.471" />
+      <line x1="10" y1="7" x2="10" y2="11" />
+      <circle cx="10" cy="15.75" r="1.25" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+export function CircleIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <circle cx="12" cy="12" r="10" />
+    </svg>
+  );
+}
+
+export function TrophyIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      stroke="currentColor"
+      strokeWidth="1"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M11.126 14.5732C11.5071 13.888 12.493 13.888 12.874 14.5732L15.7617 19.7715C16.3172 20.7713 15.5939 22 14.4502 22H9.54885C8.40532 21.9998 7.68292 20.7712 8.2383 19.7715L11.126 14.5732ZM3.21291 6.1709C0.61325 4.2136 0.405626 1.08251 3.73342 2.25683C4.58637 2.55792 5.24013 3.19304 5.63674 3.66992C5.95067 4.04749 6.10363 4.5212 6.22854 4.99609C6.92855 7.65714 9.01661 10.5906 10.2442 12.6064C10.6268 13.235 10.1465 13.9569 9.41408 13.8857C2.48389 13.2103 0.410485 10.5421 4.77346 10.0859C1.44153 9.45885 -0.946607 6.66031 3.21291 6.1709ZM20.2666 2.25683C23.5945 1.08246 23.3861 4.21361 20.7862 6.1709C24.9461 6.66022 22.5586 9.45883 19.2266 10.0859C23.5896 10.5421 21.5162 13.2103 14.586 13.8857C13.8534 13.9571 13.3731 13.2351 13.7559 12.6064C14.9834 10.5906 17.0715 7.65716 17.7715 4.99609C17.8964 4.52116 18.0493 4.04751 18.3633 3.66992C18.7599 3.19301 19.4136 2.5579 20.2666 2.25683Z" />
+    </svg>
+  );
+}
+
+export function BarChartIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M14.25,2H3.75c-1.517,0-2.75,1.233-2.75,2.75V13.25c0,1.517,1.233,2.75,2.75,2.75H14.25c1.517,0,2.75-1.233,2.75-2.75V4.75c0-1.517-1.233-2.75-2.75-2.75Zm-7.25,2c.552,0,1,.448,1,1s-.448,1-1,1-1-.448-1-1,.448-1,1-1Zm-4,1c0-.552,.448-1,1-1s1,.448,1,1-.448,1-1,1-1-.448-1-1Zm10.921,1.085l-2.25,4.5c-.123,.245-.369,.403-.642,.414-.277,.012-.531-.129-.672-.364l-.841-1.402-1.364,2.388c-.124,.216-.345,.356-.593,.375-.247,.018-.489-.085-.644-.279l-.44-.55-1.16,1.325c-.148,.169-.356,.256-.565,.256-.175,0-.351-.061-.493-.186-.312-.273-.344-.747-.071-1.058l1.75-2c.146-.167,.356-.25,.581-.256,.222,.005,.43,.108,.569,.281l.311,.389,1.452-2.542c.132-.231,.377-.375,.644-.378,.245,0,.514,.136,.651,.364l.797,1.328,1.639-3.278c.186-.37,.636-.52,1.006-.335,.371,.186,.521,.636,.335,1.006v.002Z" />
+    </svg>
+  );
+}
+
+export function ImageOffIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <line x1="2" x2="22" y1="2" y2="22" />
+      <path d="M10.41 10.41a2 2 0 1 1-2.83-2.83" />
+      <line x1="13.5" x2="6" y1="13.5" y2="21" />
+      <line x1="18" x2="21" y1="12" y2="15" />
+      <path d="M3.59 3.59A1.99 1.99 0 0 0 3 5v14a2 2 0 0 0 2 2h14c.55 0 1.052-.22 1.41-.59" />
+      <path d="M21 15V5a2 2 0 0 0-2-2H9" />
+    </svg>
+  );
+}
+
+export function MapPinIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+export function ExternalLinkIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </svg>
+  );
+}
+
+export function LayoutTemplateIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 32 32"
+      fill="currentColor"
+      {...props}
+    >
+      <rect x="11" y="11" width="2" height="18" />
+      <path d="m26,2H6c-2.206,0-4,1.794-4,4v20c0,2.206,1.794,4,4,4h20c2.206,0,4-1.794,4-4V6c0-2.206-1.794-4-4-4Zm0,26H6c-1.103,0-2-.897-2-2v-14h24v14c0,1.103-.897,2-2,2Z" />
+    </svg>
+  );
+}
+
+export function LoaderIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 18 18"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="M9,5c-.414,0-.75-.336-.75-.75V1.75c0-.414,.336-.75,.75-.75s.75,.336,.75,.75v2.5c0,.414-.336,.75-.75,.75Z" />
+      <path d="M12.359,6.391c-.192,0-.384-.073-.53-.22-.293-.293-.293-.768,0-1.061l1.768-1.768c.293-.293,.768-.293,1.061,0s.293,.768,0,1.061l-1.768,1.768c-.146,.146-.338,.22-.53,.22Z" opacity=".88" />
+      <path d="M16.25,9.75h-2.5c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h2.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z" opacity=".75" />
+      <path d="M14.126,14.876c-.192,0-.384-.073-.53-.22l-1.768-1.768c-.293-.293-.293-.768,0-1.061s.768-.293,1.061,0l1.768,1.768c.293,.293,.293,.768,0,1.061-.146,.146-.338,.22-.53,.22Z" opacity=".63" />
+      <path d="M9,17c-.414,0-.75-.336-.75-.75v-2.5c0-.414,.336-.75,.75-.75s.75,.336,.75,.75v2.5c0,.414-.336,.75-.75,.75Z" opacity=".5" />
+      <path d="M3.874,14.876c-.192,0-.384-.073-.53-.22-.293-.293-.293-.768,0-1.061l1.768-1.768c.293-.293,.768-.293,1.061,0s.293,.768,0,1.061l-1.768,1.768c-.146,.146-.338,.22-.53,.22Z" opacity=".38" />
+      <path d="M4.25,9.75H1.75c-.414,0-.75-.336-.75-.75s.336-.75,.75-.75h2.5c.414,0,.75,.336,.75,.75s-.336,.75-.75,.75Z" opacity=".25" />
+      <path d="M5.641,6.391c-.192,0-.384-.073-.53-.22l-1.768-1.768c-.293-.293-.293-.768,0-1.061s.768-.293,1.061,0l1.768,1.768c.293,.293,.293,.768,0,1.061-.146,.146-.338,.22-.53,.22Z" opacity=".13" />
+    </svg>
+  );
+}

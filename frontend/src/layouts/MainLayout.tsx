@@ -16,11 +16,11 @@ import fileTextSvg from "@/assets/file-content-outline-18.svg";
 import trashSvg from "@/assets/trash-3-fill-24.svg";
 import homeSvg from "@/assets/home.svg";
 import {
-  Search,
-  TriangleAlert,
-  ImageOff,
-  Save,
-} from "lucide-react";
+  TriangleAlertIcon,
+  ImageOffIcon,
+  SearchIcon,
+  SaveIcon,
+} from "@/components/Icons";
 import { SunIcon, MoonIcon, RotateCcwIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
@@ -180,7 +180,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <Save className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <SaveIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Save as version</TooltipContent>
                   </Tooltip>
@@ -278,7 +278,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <Search className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <SearchIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>
                       Command palette (
@@ -397,7 +397,7 @@ export default function MainLayout() {
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
             <div className="flex items-center gap-2">
-              <TriangleAlert className="h-5 w-5 text-destructive shrink-0" />
+              <TriangleAlertIcon className="h-5 w-5 text-destructive shrink-0" />
               <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
             </div>
             <AlertDialogDescription>
@@ -423,7 +423,7 @@ export default function MainLayout() {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <ImageOff className="h-5 w-5 text-muted-foreground shrink-0" />
+              <ImageOffIcon className="h-5 w-5 text-muted-foreground shrink-0" />
               <DialogTitle>No profile photo</DialogTitle>
             </div>
             <DialogDescription>

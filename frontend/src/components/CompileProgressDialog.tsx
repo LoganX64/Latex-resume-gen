@@ -1,5 +1,4 @@
-import { Circle, ChevronRight } from 'lucide-react'
-import { XIcon, CheckIcon, ChevronDownIcon } from '@/components/Icons'
+import { CircleIcon, XIcon, CheckIcon, ChevronDownIcon, ChevronRightIcon } from '@/components/Icons'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -93,7 +92,7 @@ export function CompileProgressDialog({
                 ) : isActive ? (
                   <Spinner className="h-3.5 w-3.5 shrink-0" />
                 ) : (
-                  <Circle className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
+                  <CircleIcon className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
                 )}
                 <span
                   className={cn(
@@ -124,7 +123,7 @@ export function CompileProgressDialog({
               {showOutput ? (
                 <ChevronDownIcon className="h-3 w-3" />
               ) : (
-                <ChevronRight className="h-3 w-3" />
+                <ChevronRightIcon className="h-3 w-3" />
               )}
               Tectonic output
             </button>

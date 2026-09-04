@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Maximize, ZoomIn, ZoomOut } from "lucide-react";
-import { XIcon } from "@/components/Icons";
+import { MaximizeIcon, ZoomInIcon, ZoomOutIcon, XIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -106,7 +105,7 @@ export function MobilePreviewSheet({
                 onClick={() => setFullscreen(true)}
                 aria-label="Fullscreen preview"
               >
-                <Maximize className="h-4 w-4" />
+                <MaximizeIcon className="h-4 w-4" />
               </Button>
               <SheetClose
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
@@ -162,7 +161,7 @@ export function MobilePreviewSheet({
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomIn className="h-5 w-5" />
+              <ZoomInIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -172,7 +171,7 @@ export function MobilePreviewSheet({
               disabled={zoom === "fit"}
               aria-label="Zoom out"
             >
-              <ZoomOut className="h-5 w-5" />
+              <ZoomOutIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -181,7 +180,7 @@ export function MobilePreviewSheet({
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <Maximize className="h-5 w-5" />
+              <MaximizeIcon className="h-5 w-5" />
             </Button>
           </div>
           <button

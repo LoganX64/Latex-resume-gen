@@ -2,8 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/stores/resume-store";
 import { loadTemplate, getTemplateConfig } from "@/templates";
-import { AlertTriangle, Maximize, ZoomIn, ZoomOut } from "lucide-react";
-import { XIcon } from "@/components/Icons";
+import { TriangleAlertIcon, MaximizeIcon, ZoomInIcon, ZoomOutIcon, XIcon } from "@/components/Icons";
 import {
   Select,
   SelectTrigger,
@@ -479,7 +478,7 @@ export function ResumePreview({
               </span>
               {isOverflowing && (
                 <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-amber-600">
-                  <AlertTriangle className="h-3 w-3" />
+                  <TriangleAlertIcon className="h-3 w-3" />
                   {numberOfPages} pages
                 </span>
               )}
@@ -493,7 +492,7 @@ export function ResumePreview({
                 disabled={zoom === 50}
                 aria-label="Zoom out"
               >
-                <ZoomOut className="h-3 w-3" />
+                <ZoomOutIcon className="h-3 w-3" />
               </Button>
               <Select
                 value={String(zoom)}
@@ -534,7 +533,7 @@ export function ResumePreview({
                 disabled={zoom === 150}
                 aria-label="Zoom in"
               >
-                <ZoomIn className="h-3 w-3" />
+                <ZoomInIcon className="h-3 w-3" />
               </Button>
               <Button
                 variant="ghost"
@@ -543,7 +542,7 @@ export function ResumePreview({
                 onClick={toggleFullscreen}
                 aria-label="Full screen"
               >
-                <Maximize className="h-3 w-3" />
+                <MaximizeIcon className="h-3 w-3" />
               </Button>
             </div>
           </div>
@@ -618,7 +617,7 @@ export function ResumePreview({
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomIn className="h-5 w-5" />
+              <ZoomInIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -628,7 +627,7 @@ export function ResumePreview({
               disabled={zoom === 50}
               aria-label="Zoom out"
             >
-              <ZoomOut className="h-5 w-5" />
+              <ZoomOutIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -637,7 +636,7 @@ export function ResumePreview({
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <Maximize className="h-5 w-5" />
+              <MaximizeIcon className="h-5 w-5" />
             </Button>
           </div>
           <button

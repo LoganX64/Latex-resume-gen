@@ -1,5 +1,4 @@
-import { PanelLeft, Save } from "lucide-react";
-import { SunIcon, MoonIcon } from "@/components/Icons";
+import { PanelLeftIcon, SaveIcon, SunIcon, MoonIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
@@ -24,7 +23,7 @@ export function MobileTopNavbar({
           aria-label="Open sidebar"
           className="h-8 w-8"
         >
-          <PanelLeft className="h-4 w-4" />
+          <PanelLeftIcon className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-1.5">
           <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
@@ -52,7 +51,7 @@ export function MobileTopNavbar({
           aria-label="Save as version"
           className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
         >
-          <Save className="h-4 w-4" />
+          <SaveIcon className="h-4 w-4" />
         </Button>
       </div>
     </header>

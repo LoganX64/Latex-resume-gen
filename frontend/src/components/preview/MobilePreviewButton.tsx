@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronLeft, Maximize, ZoomIn, ZoomOut } from "lucide-react";
-import { EyeIcon, XIcon } from "@/components/Icons";
+import { ChevronLeftIcon, MaximizeIcon, ZoomInIcon, ZoomOutIcon, EyeIcon, XIcon } from "@/components/Icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -118,7 +117,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
                 onClick={() => setFullscreen(true)}
                 aria-label="Fullscreen preview"
               >
-                <Maximize className="h-4 w-4" />
+                <MaximizeIcon className="h-4 w-4" />
               </Button>
               <SheetClose
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
@@ -146,7 +145,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               className="w-full justify-center gap-2"
               onClick={() => setOpen(false)}
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeftIcon className="h-4 w-4" />
               Back to Editor
             </Button>
           </div>
@@ -174,7 +173,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomIn className="h-5 w-5" />
+              <ZoomInIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -184,7 +183,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               disabled={zoom === "fit"}
               aria-label="Zoom out"
             >
-              <ZoomOut className="h-5 w-5" />
+              <ZoomOutIcon className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -193,7 +192,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <Maximize className="h-5 w-5" />
+              <MaximizeIcon className="h-5 w-5" />
             </Button>
           </div>
           <button

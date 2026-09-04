@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getDashboardStats } from '@/utils/stats'
-import { ArrowLeft, BarChart3 } from 'lucide-react'
-import { EyeIcon, DownloadIcon, LockIcon } from '@/components/Icons'
+import { BarChartIcon, ArrowLeftIcon, EyeIcon, DownloadIcon, LockIcon } from '@/components/Icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -92,7 +91,7 @@ export default function StatsDashboard() {
                 to="/"
                 className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
               >
-                <ArrowLeft className="h-3.5 w-3.5" />
+                <ArrowLeftIcon className="h-3.5 w-3.5" />
                 Back to Resume Builder
               </Link>
             </div>
@@ -112,12 +111,12 @@ export default function StatsDashboard() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <BarChart3 className="h-6 w-6" />
+            <BarChartIcon className="h-6 w-6" />
             <h1 className="text-2xl font-bold">Stats Dashboard</h1>
           </div>
           <Link to="/">
             <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-1" />
+              <ArrowLeftIcon className="h-4 w-4 mr-1" />
               Back to Builder
             </Button>
           </Link>
