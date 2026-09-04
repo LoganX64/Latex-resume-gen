@@ -16,7 +16,7 @@ export function Footer() {
         {/* Brand Info */}
         <div className="space-y-3 max-w-md">
           <Link to="/" className="inline-flex items-center gap-2.5">
-            <img src="/cvstack-logo.svg" alt="CVStack Logo" className="h-7 w-auto rounded-md dark:hidden" />
+            <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-7 w-auto rounded-md dark:hidden" />
             <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-7 w-auto rounded-md dark:block" />
           </Link>
           <p className="text-xs text-muted-foreground leading-relaxed">

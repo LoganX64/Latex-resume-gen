@@ -90,7 +90,7 @@ export function MobileSidebar({
         {/* ── Header ── */}
           <div className="flex items-center gap-2.5 px-3 py-3 border-b border-sidebar-border bg-sidebar shrink-0">
           <img
-            src="/cvstack-logo.svg"
+            src="/cvstack-logo-light.svg"
             alt="CVStack Logo"
             className="h-7 w-auto shrink-0 rounded-md dark:hidden"
           />

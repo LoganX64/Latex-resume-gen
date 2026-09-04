@@ -26,7 +26,7 @@ export function MobileTopNavbar({
           <PanelLeft className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-1.5">
-          <img src="/cvstack-logo.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
+          <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
           <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-5 w-auto rounded-sm dark:block" />
         </div>
       </div>

@@ -80,7 +80,7 @@ export function AppSidebar({
               render={<Link to="/" />}
             >
               <img
-                src="/cvstack-logo.svg"
+                src="/cvstack-logo-light.svg"
                 alt="CVStack Logo"
                 className="h-7 w-auto shrink-0 rounded-md dark:hidden"
               />
