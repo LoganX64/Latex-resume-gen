@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "@/components/Icons";
 import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
 import {
   DndContext,
@@ -191,7 +191,7 @@ export function SkillsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addSkillCategory}
       >
-        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Skill Category
       </Button>
     </div>

@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "@/components/Icons";
 import { TrashIcon } from "@/components/Icons";
 
 export function AchievementsForm() {
@@ -96,7 +96,7 @@ export function AchievementsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addAchievement}
       >
-        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Achievement
       </Button>
     </div>

@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { Plus } from 'lucide-react'
+import { PlusIcon } from '@/components/Icons'
 import { TrashIcon } from '@/components/Icons'
 
 export function CertificationsForm() {
@@ -91,7 +91,7 @@ export function CertificationsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addCertification}
       >
-        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Certification
       </Button>
     </div>

@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "@/components/Icons";
 import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
 import {
   DndContext,
@@ -222,7 +222,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               ])
             }
           >
-            <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+            <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
             Add Bullet
           </Button>
         </div>
@@ -361,7 +361,7 @@ export function ProjectsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addProject}
       >
-        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Project
       </Button>
     </div>

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "@/components/Icons";
 import { TrashIcon } from "@/components/Icons";
 import {
   Select,
@@ -65,7 +65,7 @@ export function LanguagesForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addLanguage}
       >
-        <Plus className="h-3 w-3 mr-1" aria-hidden="true" />
+        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Language
       </Button>
     </div>
