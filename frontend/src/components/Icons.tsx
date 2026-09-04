@@ -450,3 +450,17 @@ export function PlusIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function UploadIcon(props: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      {...props}
+    >
+      <path d="m19,22H5c-1.654,0-3-1.346-3-3v-4h2v4c0,.551.448,1,1,1h14c.552,0,1-.449,1-1v-4h2v4c0,1.654-1.346,3-3,3Z" />
+      <polygon points="18.414 8 12 1.586 5.586 8 7 9.414 11 5.414 11 16 13 16 13 5.414 17 9.414 18.414 8" />
+    </svg>
+  );
+}

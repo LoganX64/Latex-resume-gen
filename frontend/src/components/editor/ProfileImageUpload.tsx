@@ -2,8 +2,7 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
-import { Upload } from 'lucide-react'
-import { XIcon, UserIcon } from '@/components/Icons'
+import { XIcon, UserIcon, UploadIcon } from '@/components/Icons'
 import Cropper from 'react-easy-crop'
 import * as Sentry from '@sentry/react'
 import {
@@ -125,7 +124,7 @@ export function ProfileImageUpload() {
         className="h-10 text-sm sm:h-7 sm:text-[10px]"
         onClick={() => fileInputRef.current?.click()}
       >
-        <Upload className="h-3 w-3 mr-1" aria-hidden="true" />
+        <UploadIcon className="h-3 w-3 mr-1" aria-hidden="true" />
         Upload Photo
       </Button>
 
