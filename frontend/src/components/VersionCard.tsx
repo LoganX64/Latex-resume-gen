@@ -86,9 +86,6 @@ export function VersionCard({ version }: VersionCardProps) {
           className="group relative overflow-hidden bg-card/90 border border-border/80 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3 h-full"
           onClick={handleLoad}
         >
-        {/* Ambient background gradient overlay for light & dark mode */}
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-rose-500/12 via-rose-500/4 to-transparent dark:from-rose-500/20 dark:via-rose-950/15 dark:to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-300" />
-
         <CardHeader className="relative pb-0 pt-2 px-3 sm:px-4">
           <div className="flex items-start justify-between gap-2">
             <div className="space-y-1">
@@ -150,7 +147,7 @@ export function VersionCard({ version }: VersionCardProps) {
               onClick={() => setShowDeleteDialog(true)}
               title="Delete version"
             >
-              <Icon icon={faTrash} className="h-3.5 w-3.5" />
+              <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
             </Button>
           </div>
         </CardContent>

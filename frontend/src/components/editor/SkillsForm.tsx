@@ -95,7 +95,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
             onClick={() => removeSkillCategory(category.id)}
             aria-label={`Remove ${category.name || "skill category"}`}
           >
-            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -108,7 +108,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
               <button
                 onClick={() => removeSkill(sIndex)}
                 aria-label={`Remove ${skill}`}
-                className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-destructive hover:text-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
+                className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
               >
                 <Icon icon={faXmark} className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
               </button>

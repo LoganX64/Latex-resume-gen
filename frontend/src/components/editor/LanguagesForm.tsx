@@ -55,7 +55,7 @@ export function LanguagesForm() {
             onClick={() => removeLanguage(lang.id)}
             aria-label={`Remove language ${index + 1}`}
           >
-            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
         </div>
       ))}

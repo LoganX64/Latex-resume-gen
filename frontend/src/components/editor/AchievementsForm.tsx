@@ -29,7 +29,7 @@ export function AchievementsForm() {
                 onClick={() => removeAchievement(ach.id)}
                 aria-label={`Remove achievement ${index + 1}`}
               >
-                <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">

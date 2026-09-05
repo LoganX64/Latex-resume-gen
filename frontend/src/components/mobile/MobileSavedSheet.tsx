@@ -98,7 +98,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                         onClick={() => handleDelete(version)}
                         aria-label="Delete version"
                       >
-                        <Icon icon={faTrash} className="h-4 w-4" />
+                        <Icon icon={faTrash} className="h-4 w-4 text-rose-500" />
                       </Button>
                     </div>
                   </div>

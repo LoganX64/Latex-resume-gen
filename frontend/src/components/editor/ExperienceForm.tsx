@@ -82,7 +82,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             onClick={() => removeExperience(experience.id)}
             aria-label={`Remove experience ${index + 1}`}
           >
-            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -232,7 +232,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-<Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+<Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
             </div>
           ))}

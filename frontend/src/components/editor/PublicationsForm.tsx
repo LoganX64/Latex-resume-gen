@@ -29,7 +29,7 @@ export function PublicationsForm() {
                 onClick={() => removePublication(pub.id)}
                 aria-label={`Remove publication ${index + 1}`}
               >
-                <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
             </div>
             <div className="space-y-1">

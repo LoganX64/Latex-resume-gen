@@ -175,7 +175,7 @@ export function MobileSidebar({
             onClick={handleClearResume}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-destructive/10 text-destructive/80 hover:text-destructive transition-colors"
           >
-            <Icon icon={faTrash} className="h-3.5 w-3.5" />
+            <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
             <span>Clear Resume</span>
           </button>
 

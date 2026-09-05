@@ -204,7 +204,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <Icon icon={faTrash} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faTrash} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4 text-rose-500" />
                     </TooltipTrigger>
                     <TooltipContent>Clear resume</TooltipContent>
                   </Tooltip>

@@ -28,7 +28,7 @@ export function CustomSectionsForm() {
                 onClick={() => removeCustomSection(section.id)}
                 aria-label={`Remove custom section ${index + 1}`}
               >
-                <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
+                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
             </div>
             <div className="space-y-1">
