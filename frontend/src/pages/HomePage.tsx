@@ -389,7 +389,7 @@ export default function HomePage() {
               {/* Left: text */}
               <div className="flex-1 text-center lg:text-left">
                 {/* Badge */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary mb-6">
+                <div className="inline-flex items-center gap-2 rounded-full border border-dashed border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary mb-6">
                   <Icon icon={faWandSparkles} className="h-3 w-3" />
                   Free · No account · Runs locally
                 </div>
