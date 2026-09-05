@@ -1,4 +1,5 @@
-import { CircleIcon, XIcon, CheckIcon, ChevronDownIcon, ChevronRightIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faCircle, faXmark, faCheck, faChevronDown, faChevronRight } from '@/lib/icons'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import {
@@ -58,9 +59,9 @@ export function CompileProgressDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {status === 'done' ? (
-              <CheckIcon className="h-4 w-4 text-green-500" />
+              <Icon icon={faCheck} className="h-4 w-4 text-green-500" />
             ) : status === 'error' ? (
-              <XIcon className="h-4 w-4 text-destructive" />
+              <Icon icon={faXmark} className="h-4 w-4 text-destructive" />
             ) : (
               <Spinner className="h-4 w-4" />
             )}
@@ -88,11 +89,11 @@ export function CompileProgressDialog({
             return (
               <div key={stepId} className="flex items-center gap-2">
                 {isComplete ? (
-                  <CheckIcon className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                  <Icon icon={faCheck} className="h-3.5 w-3.5 text-green-500 shrink-0" />
                 ) : isActive ? (
                   <Spinner className="h-3.5 w-3.5 shrink-0" />
                 ) : (
-                  <CircleIcon className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
+                  <Icon icon={faCircle} className="h-3.5 w-3.5 shrink-0 text-muted-foreground/40" />
                 )}
                 <span
                   className={cn(
@@ -121,9 +122,9 @@ export function CompileProgressDialog({
               className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
               {showOutput ? (
-                <ChevronDownIcon className="h-3 w-3" />
+                <Icon icon={faChevronDown} className="h-3 w-3" />
               ) : (
-                <ChevronRightIcon className="h-3 w-3" />
+                <Icon icon={faChevronRight} className="h-3 w-3" />
               )}
               Tectonic output
             </button>

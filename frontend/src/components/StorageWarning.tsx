@@ -1,9 +1,10 @@
-import { TriangleAlertIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faTriangleExclamation } from '@/lib/icons'
 
 export function StorageWarning({ className = '' }: { className?: string }) {
   return (
     <div className={`flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-[11px] sm:text-xs text-destructive ${className}`}>
-      <TriangleAlertIcon className="h-3.5 w-3.5 shrink-0" />
+      <Icon icon={faTriangleExclamation} className="h-3.5 w-3.5 shrink-0" />
       <span>
         Your data is stored locally in this browser only. It will be permanently lost if you clear browser history.
       </span>

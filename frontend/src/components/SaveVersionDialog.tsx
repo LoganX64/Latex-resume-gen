@@ -3,7 +3,8 @@ import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
 import { getTemplateConfig } from '@/templates'
 import { toast } from 'sonner'
-import { ImageOffIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faImageSlash } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -149,7 +150,7 @@ export function SaveVersionDialog({ open, onOpenChange }: SaveVersionDialogProps
             </ul>
           </div>
           <div className="flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive">
-            <ImageOffIcon className="h-3.5 w-3.5 shrink-0" />
+            <Icon icon={faImageSlash} className="h-3.5 w-3.5 shrink-0" />
             <span>Profile photo will NOT be saved with this version.</span>
           </div>
         </div>

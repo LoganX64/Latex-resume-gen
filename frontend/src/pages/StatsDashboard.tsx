@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getDashboardStats } from '@/utils/stats'
-import { BarChartIcon, ArrowLeftIcon, EyeIcon, DownloadIcon, LockIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faChartBar, faArrowLeft, faArrowDown, faLock, faEye } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -63,7 +64,7 @@ export default function StatsDashboard() {
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <LockIcon className="h-6 w-6 text-muted-foreground" />
+              <Icon icon={faLock} className="h-6 w-6 text-muted-foreground" />
             </div>
             <CardTitle className="text-xl">Admin Dashboard</CardTitle>
             <p className="text-sm text-muted-foreground">
@@ -91,7 +92,7 @@ export default function StatsDashboard() {
                 to="/"
                 className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1"
               >
-                <ArrowLeftIcon className="h-3.5 w-3.5" />
+                <Icon icon={faArrowLeft} className="h-3.5 w-3.5" />
                 Back to Resume Builder
               </Link>
             </div>
@@ -111,12 +112,12 @@ export default function StatsDashboard() {
       <div className="max-w-2xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <BarChartIcon className="h-6 w-6" />
+            <Icon icon={faChartBar} className="h-6 w-6" />
             <h1 className="text-2xl font-bold">Stats Dashboard</h1>
           </div>
           <Link to="/">
             <Button variant="outline" size="sm">
-              <ArrowLeftIcon className="h-4 w-4 mr-1" />
+              <Icon icon={faArrowLeft} className="h-4 w-4 mr-1" />
               Back to Builder
             </Button>
           </Link>
@@ -135,7 +136,7 @@ export default function StatsDashboard() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Total Visits
                 </CardTitle>
-                <EyeIcon className="h-4 w-4 text-muted-foreground" />
+                <Icon icon={faEye} className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">
@@ -148,7 +149,7 @@ export default function StatsDashboard() {
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   Total Downloads
                 </CardTitle>
-                <DownloadIcon className="h-4 w-4 text-muted-foreground" />
+                <Icon icon={faArrowDown} className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-4xl font-bold">

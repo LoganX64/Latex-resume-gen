@@ -1,4 +1,5 @@
-import { PanelLeftIcon, SaveIcon, SunIcon, MoonIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faBars, faFloppyDisk, faSun, faMoon } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 
@@ -23,7 +24,7 @@ export function MobileTopNavbar({
           aria-label="Open sidebar"
           className="h-8 w-8"
         >
-          <PanelLeftIcon className="h-4 w-4" />
+          <Icon icon={faBars} className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-1.5">
           <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
@@ -39,9 +40,9 @@ export function MobileTopNavbar({
           className="h-8 w-8"
         >
           {darkMode ? (
-            <SunIcon className="h-4 w-4" />
+            <Icon icon={faSun} className="h-4 w-4" />
           ) : (
-            <MoonIcon className="h-4 w-4" />
+            <Icon icon={faMoon} className="h-4 w-4" />
           )}
         </Button>
         <Button
@@ -51,7 +52,7 @@ export function MobileTopNavbar({
           aria-label="Save as version"
           className="h-8 w-8 text-primary hover:text-primary hover:bg-primary/10"
         >
-          <SaveIcon className="h-4 w-4" />
+          <Icon icon={faFloppyDisk} className="h-4 w-4" />
         </Button>
       </div>
     </header>

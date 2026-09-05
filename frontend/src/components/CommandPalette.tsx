@@ -12,7 +12,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command"
-import { LayoutTemplateIcon, DownloadIcon, FileTextIcon, MoonIcon, SunIcon, RotateCcwIcon } from "@/components/Icons"
+import { Icon } from "@/components/Icon"
+import { faTableColumns, faArrowDown, faFileLines, faMoon, faSun, faRotateLeft } from "@/lib/icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -61,12 +62,12 @@ export function CommandPalette({
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Export">
             <CommandItem onSelect={() => runAction(onExportPdf)}>
-              <DownloadIcon className="mr-2 h-4 w-4" />
+              <Icon icon={faArrowDown} className="mr-2 h-4 w-4" />
               <span>Export PDF</span>
               <CommandShortcut>⌘P</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onExportLatex)}>
-              <FileTextIcon className="mr-2 h-4 w-4" />
+              <Icon icon={faFileLines} className="mr-2 h-4 w-4" />
               <span>Export LaTeX</span>
               <CommandShortcut>⌘L</CommandShortcut>
             </CommandItem>
@@ -78,7 +79,7 @@ export function CommandPalette({
                 key={t.id}
                 onSelect={() => runAction(() => onTemplateChange(t.id))}
               >
-                <LayoutTemplateIcon className="mr-2 h-4 w-4" />
+                <Icon icon={faTableColumns} className="mr-2 h-4 w-4" />
                 <span>{t.name}</span>
               </CommandItem>
             ))}
@@ -87,19 +88,19 @@ export function CommandPalette({
           <CommandGroup heading="Actions">
             <CommandItem onSelect={() => runAction(onToggleDarkMode)}>
               {isDarkMode ? (
-                <SunIcon className="mr-2 h-4 w-4" />
+                <Icon icon={faSun} className="mr-2 h-4 w-4" />
               ) : (
-                <MoonIcon className="mr-2 h-4 w-4" />
+                <Icon icon={faMoon} className="mr-2 h-4 w-4" />
               )}
               <span>Toggle {isDarkMode ? "Light" : "Dark"} Mode</span>
               <CommandShortcut>⌘D</CommandShortcut>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onResetResume)}>
-              <RotateCcwIcon className="mr-2 h-4 w-4" />
+              <Icon icon={faRotateLeft} className="mr-2 h-4 w-4" />
               <span>Load Sample Data</span>
             </CommandItem>
             <CommandItem onSelect={() => runAction(onClearResume)}>
-              <RotateCcwIcon className="mr-2 h-4 w-4" />
+              <Icon icon={faRotateLeft} className="mr-2 h-4 w-4" />
               <span>Clear Resume</span>
             </CommandItem>
           </CommandGroup>

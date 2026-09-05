@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { PlusIcon } from '@/components/Icons'
-import { TrashIcon, GripVerticalIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faPlus, faTrash, faGripVertical } from '@/lib/icons'
 import {
   DndContext,
   closestCenter,
@@ -59,7 +59,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           {...attributes}
           {...listeners}
         >
-          <GripVerticalIcon className="h-3.5 w-3.5" />
+          <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
         </button>
         <span className="text-[10px] font-medium text-muted-foreground flex-1">
           Education {index + 1}
@@ -70,7 +70,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           onClick={() => removeEducation(education.id)}
           aria-label={`Remove education ${index + 1}`}
         >
-          <TrashIcon className="h-3 w-3 text-destructive" />
+          <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
         </Button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -196,7 +196,7 @@ export function EducationForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addEducation}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Education
       </Button>
     </div>

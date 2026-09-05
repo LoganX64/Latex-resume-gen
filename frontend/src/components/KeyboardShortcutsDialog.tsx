@@ -5,7 +5,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog"
-import { KeyboardIcon } from "@/components/Icons"
+import { Icon } from "@/components/Icon"
+import { faKeyboard } from "@/lib/icons"
 
 const shortcuts = [
   { keys: ["⌘", "K"], label: "Open command palette" },
@@ -31,7 +32,7 @@ export function KeyboardShortcutsDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <KeyboardIcon className="h-4 w-4" />
+            <Icon icon={faKeyboard} className="h-4 w-4" />
             Keyboard Shortcuts
           </DialogTitle>
           <DialogDescription>

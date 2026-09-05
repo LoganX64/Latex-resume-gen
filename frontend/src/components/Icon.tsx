@@ -1,0 +1,12 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
+
+interface IconProps {
+  icon: IconProp;
+  className?: string;
+  [key: string]: any;
+}
+
+export function Icon({ icon, className, ...props }: IconProps) {
+  return <FontAwesomeIcon icon={icon} className={className} {...props} />;
+}

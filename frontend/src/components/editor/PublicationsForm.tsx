@@ -5,8 +5,8 @@ import { Label } from "@/components/ui/label";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { PlusIcon } from "@/components/Icons";
-import { TrashIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faPlus, faTrash } from "@/lib/icons";
 
 export function PublicationsForm() {
   const publications = useResumeStore((s) => s.resume.publications);
@@ -29,7 +29,7 @@ export function PublicationsForm() {
                 onClick={() => removePublication(pub.id)}
                 aria-label={`Remove publication ${index + 1}`}
               >
-                <TrashIcon className="h-3 w-3 text-destructive" />
+                <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
               </Button>
             </div>
             <div className="space-y-1">
@@ -138,7 +138,7 @@ export function PublicationsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addPublication}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Publication
       </Button>
     </div>

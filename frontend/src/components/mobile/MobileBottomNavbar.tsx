@@ -1,4 +1,5 @@
-import { EyeIcon, DownloadIcon, HomeIcon, BookmarkIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faEye, faArrowDown, faHouse, faBookmark } from "@/lib/icons";
 import { Spinner } from "@/components/ui/spinner";
 
 interface MobileBottomNavbarProps {
@@ -22,19 +23,19 @@ export function MobileBottomNavbar({
         [
           {
             label: "Home",
-            icon: <HomeIcon className="h-5 w-5" />,
+            icon: <Icon icon={faHouse} className="h-5 w-5" />,
             onClick: onHome,
             key: "home",
           },
           {
             label: "Saved",
-            icon: <BookmarkIcon className="h-5 w-5" />,
+            icon: <Icon icon={faBookmark} className="h-5 w-5" />,
             onClick: onSaved,
             key: "saved",
           },
           {
             label: "Preview",
-            icon: <EyeIcon className="h-5 w-5" />,
+            icon: <Icon icon={faEye} className="h-5 w-5" />,
             onClick: onPreview,
             key: "preview",
           },
@@ -61,7 +62,7 @@ export function MobileBottomNavbar({
         {isExportingPdf ? (
           <Spinner className="h-5 w-5" />
         ) : (
-          <DownloadIcon className="h-5 w-5" />
+          <Icon icon={faArrowDown} className="h-5 w-5" />
         )}
         <span className="text-[10px] font-medium">
           {isExportingPdf ? "Exporting…" : "Download"}

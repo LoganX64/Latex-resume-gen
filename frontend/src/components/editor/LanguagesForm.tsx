@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { PlusIcon } from "@/components/Icons";
-import { TrashIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faPlus, faTrash } from "@/lib/icons";
 import {
   Select,
   SelectContent,
@@ -55,7 +55,7 @@ export function LanguagesForm() {
             onClick={() => removeLanguage(lang.id)}
             aria-label={`Remove language ${index + 1}`}
           >
-            <TrashIcon className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
           </Button>
         </div>
       ))}
@@ -65,7 +65,7 @@ export function LanguagesForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addLanguage}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Language
       </Button>
     </div>

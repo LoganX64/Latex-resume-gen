@@ -2,7 +2,8 @@ import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { useResumeStore } from '@/stores/resume-store'
-import { XIcon, UserIcon, UploadIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faXmark, faUser, faUpload } from '@/lib/icons'
 import Cropper from 'react-easy-crop'
 import * as Sentry from '@sentry/react'
 import {
@@ -97,7 +98,7 @@ export function ProfileImageUpload() {
           {profileImage ? (
             <img src={profileImage} alt="Profile" width={80} height={80} loading="lazy" className="w-full h-full object-cover" />
           ) : (
-            <UserIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+            <Icon icon={faUser} className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
           )}
         </div>
         {profileImage && (
@@ -106,7 +107,7 @@ export function ProfileImageUpload() {
             aria-label="Remove profile photo"
             className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 hover:bg-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            <XIcon className="h-3 w-3" />
+            <Icon icon={faXmark} className="h-3 w-3" />
           </button>
         )}
       </div>
@@ -124,7 +125,7 @@ export function ProfileImageUpload() {
         className="h-10 text-sm sm:h-7 sm:text-[10px]"
         onClick={() => fileInputRef.current?.click()}
       >
-        <UploadIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faUpload} className="h-3 w-3 mr-1" aria-hidden="true" />
         Upload Photo
       </Button>
 

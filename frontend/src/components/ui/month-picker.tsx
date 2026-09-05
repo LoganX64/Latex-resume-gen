@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { CalendarIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faCalendar } from '@/lib/icons'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
@@ -59,7 +60,7 @@ export function MonthPicker({
         <span className="flex-1 text-left truncate">
           {selectedDate ? formatDisplay(value) : 'Pick a month'}
         </span>
-        <CalendarIcon className="size-4 sm:size-3.5 shrink-0 opacity-50" />
+        <Icon icon={faCalendar} className="size-4 sm:size-3.5 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar

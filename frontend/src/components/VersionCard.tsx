@@ -8,7 +8,8 @@ import { quickExportPdf, quickExportLatex } from '@/utils/quick-export'
 import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
-import { LoaderIcon, FileTextIcon, DownloadIcon, TrashIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faSpinner, faFileLines, faArrowDown, faTrash } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { m, useReducedMotion } from 'framer-motion'
@@ -120,9 +121,9 @@ export function VersionCard({ version }: VersionCardProps) {
               disabled={exportingPdf}
             >
               {exportingPdf ? (
-                <LoaderIcon className="h-3.5 w-3.5 animate-spin" />
+                  <Icon icon={faSpinner} className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <DownloadIcon className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
+                <Icon icon={faArrowDown} className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
               )}
               PDF
             </Button>
@@ -135,9 +136,9 @@ export function VersionCard({ version }: VersionCardProps) {
                 disabled={exportingLatex}
               >
                 {exportingLatex ? (
-                  <LoaderIcon className="h-3.5 w-3.5 animate-spin" />
+                <Icon icon={faSpinner} className="h-3.5 w-3.5 animate-spin" />
                 ) : (
-                  <FileTextIcon className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400" />
+                  <Icon icon={faFileLines} className="h-3.5 w-3.5 text-sky-500 dark:text-sky-400" />
                 )}
                 LaTeX
               </Button>
@@ -149,7 +150,7 @@ export function VersionCard({ version }: VersionCardProps) {
               onClick={() => setShowDeleteDialog(true)}
               title="Delete version"
             >
-              <TrashIcon className="h-3.5 w-3.5" />
+              <Icon icon={faTrash} className="h-3.5 w-3.5" />
             </Button>
           </div>
         </CardContent>

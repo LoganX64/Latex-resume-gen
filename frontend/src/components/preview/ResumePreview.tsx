@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/stores/resume-store";
 import { loadTemplate, getTemplateConfig } from "@/templates";
-import { TriangleAlertIcon, MaximizeIcon, ZoomInIcon, ZoomOutIcon, XIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faTriangleExclamation, faExpand, faMagnifyingGlassPlus, faMagnifyingGlassMinus, faXmark } from "@/lib/icons";
 import {
   Select,
   SelectTrigger,
@@ -478,7 +479,7 @@ export function ResumePreview({
               </span>
               {isOverflowing && (
                 <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-amber-600">
-                  <TriangleAlertIcon className="h-3 w-3" />
+                  <Icon icon={faTriangleExclamation} className="h-3 w-3" />
                   {numberOfPages} pages
                 </span>
               )}
@@ -492,7 +493,7 @@ export function ResumePreview({
                 disabled={zoom === 50}
                 aria-label="Zoom out"
               >
-                <ZoomOutIcon className="h-3 w-3" />
+                <Icon icon={faMagnifyingGlassMinus} className="h-3 w-3" />
               </Button>
               <Select
                 value={String(zoom)}
@@ -533,7 +534,7 @@ export function ResumePreview({
                 disabled={zoom === 150}
                 aria-label="Zoom in"
               >
-                <ZoomInIcon className="h-3 w-3" />
+                <Icon icon={faMagnifyingGlassPlus} className="h-3 w-3" />
               </Button>
               <Button
                 variant="ghost"
@@ -542,7 +543,7 @@ export function ResumePreview({
                 onClick={toggleFullscreen}
                 aria-label="Full screen"
               >
-                <MaximizeIcon className="h-3 w-3" />
+                <Icon icon={faExpand} className="h-3 w-3" />
               </Button>
             </div>
           </div>
@@ -617,7 +618,7 @@ export function ResumePreview({
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomInIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassPlus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -627,7 +628,7 @@ export function ResumePreview({
               disabled={zoom === 50}
               aria-label="Zoom out"
             >
-              <ZoomOutIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassMinus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -636,7 +637,7 @@ export function ResumePreview({
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <MaximizeIcon className="h-5 w-5" />
+              <Icon icon={faExpand} className="h-5 w-5" />
             </Button>
           </div>
           <button
@@ -644,7 +645,7 @@ export function ResumePreview({
             className="fixed top-4 right-4 z-100 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Back"
           >
-            <XIcon className="h-5 w-5" />
+            <Icon icon={faXmark} className="h-5 w-5" />
           </button>
         </div>
       )}

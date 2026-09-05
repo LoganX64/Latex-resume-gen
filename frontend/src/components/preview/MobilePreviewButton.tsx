@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ChevronLeftIcon, MaximizeIcon, ZoomInIcon, ZoomOutIcon, EyeIcon, XIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faChevronLeft, faExpand, faMagnifyingGlassPlus, faMagnifyingGlassMinus, faEye, faXmark } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -74,7 +75,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
           onClick={() => setOpen(true)}
           aria-label="Preview resume"
         >
-          <EyeIcon className="h-6 w-6" />
+          <Icon icon={faEye} className="h-6 w-6" />
         </Button>
       )}
 
@@ -117,13 +118,13 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
                 onClick={() => setFullscreen(true)}
                 aria-label="Fullscreen preview"
               >
-                <MaximizeIcon className="h-4 w-4" />
+                <Icon icon={faExpand} className="h-4 w-4" />
               </Button>
               <SheetClose
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
                 aria-label="Close preview"
               >
-                <XIcon className="h-4 w-4" />
+                <Icon icon={faXmark} className="h-4 w-4" />
               </SheetClose>
             </div>
           </div>
@@ -145,7 +146,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               className="w-full justify-center gap-2"
               onClick={() => setOpen(false)}
             >
-              <ChevronLeftIcon className="h-4 w-4" />
+              <Icon icon={faChevronLeft} className="h-4 w-4" />
               Back to Editor
             </Button>
           </div>
@@ -173,7 +174,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomInIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassPlus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -183,7 +184,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               disabled={zoom === "fit"}
               aria-label="Zoom out"
             >
-              <ZoomOutIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassMinus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -192,7 +193,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <MaximizeIcon className="h-5 w-5" />
+              <Icon icon={faExpand} className="h-5 w-5" />
             </Button>
           </div>
           <button
@@ -203,7 +204,7 @@ export function MobilePreviewButton(_props: MobilePreviewButtonProps) {
             className="fixed top-4 right-4 z-200 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Close fullscreen"
           >
-            <XIcon className="h-5 w-5" />
+            <Icon icon={faXmark} className="h-5 w-5" />
           </button>
         </div>
       )}

@@ -3,7 +3,8 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { EyeIcon, EyeOffIcon, GripVerticalIcon, ChevronDownIcon, ChevronUpIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faEye, faEyeSlash, faGripVertical, faChevronDown, faChevronUp } from '@/lib/icons'
 import { useResumeStore } from '@/stores/resume-store'
 import type { SectionVisibility } from '@/types/resume'
 import { m } from 'framer-motion'
@@ -61,7 +62,7 @@ export function SectionWrapper({
               {...attributes}
               {...listeners}
             >
-              <GripVerticalIcon className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden="true" />
+              <Icon icon={faGripVertical} className="h-4 w-4 lg:h-4 lg:w-4" aria-hidden="true" />
             </button>
             <CardTitle className="text-xs sm:text-sm font-semibold flex-1 text-foreground">{label}</CardTitle>
             <Button
@@ -71,9 +72,9 @@ export function SectionWrapper({
               aria-label={isVisible ? `Hide ${label} section` : `Show ${label} section`}
             >
               {isVisible ? (
-                <EyeIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
+                <Icon icon={faEye} className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary" />
               ) : (
-                <EyeOffIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
+                <Icon icon={faEyeSlash} className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground/60" />
               )}
             </Button>
             <Button
@@ -83,9 +84,9 @@ export function SectionWrapper({
               aria-label={collapsed ? `Expand ${label}` : `Collapse ${label}`}
             >
               {collapsed ? (
-                <ChevronDownIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
+                <Icon icon={faChevronDown} className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               ) : (
-                <ChevronUpIcon className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
+                <Icon icon={faChevronUp} className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-muted-foreground" />
               )}
             </Button>
           </div>

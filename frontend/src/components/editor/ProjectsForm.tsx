@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
-import { PlusIcon } from "@/components/Icons";
-import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
 import {
   DndContext,
   closestCenter,
@@ -83,7 +83,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             {...attributes}
             {...listeners}
           >
-            <GripVerticalIcon className="h-3.5 w-3.5" />
+            <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
           <span className="text-[10px] font-medium text-muted-foreground flex-1">
             Project {index + 1}
@@ -94,7 +94,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             onClick={() => removeProject(project.id)}
             aria-label={`Remove project ${index + 1}`}
           >
-            <TrashIcon className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -207,7 +207,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-                <TrashIcon className="h-3 w-3 text-destructive" />
+<Icon icon={faTrash} className="h-3 w-3 text-destructive" />
               </Button>
             </div>
           ))}
@@ -222,7 +222,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               ])
             }
           >
-            <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+            <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
             Add Bullet
           </Button>
         </div>
@@ -238,7 +238,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 aria-label={`Remove ${tech}`}
                 className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-destructive hover:text-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
               >
-                <XIcon className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
+                <Icon icon={faXmark} className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
               </button>
             </span>
           ))}
@@ -361,7 +361,7 @@ export function ProjectsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addProject}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Project
       </Button>
     </div>

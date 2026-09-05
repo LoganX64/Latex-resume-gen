@@ -4,7 +4,8 @@ import { VersionCard } from "@/components/VersionCard";
 import { StorageWarning } from "@/components/StorageWarning";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowRightIcon, SparklesIcon, PlusIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faArrowRight, faWandSparkles, faPlus } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -717,7 +718,7 @@ export default function HomePage() {
               <div className="flex-1 text-center lg:text-left">
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3.5 py-1.5 text-xs font-medium text-primary mb-6">
-                  <SparklesIcon className="h-3 w-3" />
+                  <Icon icon={faWandSparkles} className="h-3 w-3" />
                   Free · No account · Runs locally
                 </div>
 
@@ -746,7 +747,7 @@ export default function HomePage() {
                       className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                     >
                       Start Building Free
-                      <ArrowRightIcon className="h-4 w-4" />
+                      <Icon icon={faArrowRight} className="h-4 w-4" />
                     </Button>
                   </Link>
                   {versions.length > 0 && (
@@ -928,7 +929,7 @@ export default function HomePage() {
                   className="gap-2 shadow-md shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                 >
                   Get Started — It's Free
-                  <ArrowRightIcon className="h-4 w-4" />
+                  <Icon icon={faArrowRight} className="h-4 w-4" />
                 </Button>
               </Link>
             </FadeIn>
@@ -944,7 +945,7 @@ export default function HomePage() {
             <h2 className="text-xl sm:text-2xl font-bold">Your Resumes</h2>
             <Link to="/editor">
               <Button size="default" className="gap-1.5 shrink-0">
-                <PlusIcon className="h-3.5 w-3.5" />
+                <Icon icon={faPlus} className="h-3.5 w-3.5" />
                 <span className="hidden xs:inline">New Resume</span>
                 <span className="xs:hidden">New</span>
               </Button>
@@ -967,7 +968,7 @@ export default function HomePage() {
               <Link to="/editor">
                 <Button variant="outline" className="gap-2">
                   Build Your First Resume
-                  <ArrowRightIcon className="h-4 w-4" />
+                  <Icon icon={faArrowRight} className="h-4 w-4" />
                 </Button>
               </Link>
             </FadeIn>

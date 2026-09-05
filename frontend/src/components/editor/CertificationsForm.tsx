@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
-import { PlusIcon } from '@/components/Icons'
-import { TrashIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faPlus, faTrash } from '@/lib/icons'
 
 export function CertificationsForm() {
   const certifications = useResumeStore((s) => s.resume.certifications)
@@ -28,7 +28,7 @@ export function CertificationsForm() {
               onClick={() => removeCertification(cert.id)}
               aria-label={`Remove certification ${index + 1}`}
             >
-              <TrashIcon className="h-3 w-3 text-destructive" />
+              <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
             </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -91,7 +91,7 @@ export function CertificationsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addCertification}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Certification
       </Button>
     </div>

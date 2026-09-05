@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
-import { PlusIcon } from "@/components/Icons";
-import { TrashIcon, XIcon, GripVerticalIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
 import {
   DndContext,
   closestCenter,
@@ -78,7 +78,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
             {...attributes}
             {...listeners}
           >
-            <GripVerticalIcon className="h-3.5 w-3.5" />
+            <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
           <Input
             name="skillCategoryName"
@@ -95,7 +95,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
             onClick={() => removeSkillCategory(category.id)}
             aria-label={`Remove ${category.name || "skill category"}`}
           >
-            <TrashIcon className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
           </Button>
         </div>
         <div className="flex flex-wrap gap-1.5">
@@ -110,7 +110,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
                 aria-label={`Remove ${skill}`}
                 className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-destructive hover:text-destructive/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
               >
-                <XIcon className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
+                <Icon icon={faXmark} className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
               </button>
             </span>
           ))}
@@ -191,7 +191,7 @@ export function SkillsForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addSkillCategory}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Skill Category
       </Button>
     </div>

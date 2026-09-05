@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { useResumeStore } from "@/stores/resume-store";
-import { PlusIcon } from "@/components/Icons";
-import { TrashIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faPlus, faTrash, faGripVertical } from "@/lib/icons";
 import {
   DndContext,
   closestCenter,
@@ -25,7 +25,7 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVerticalIcon } from "@/components/Icons";
+
 
 const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
@@ -71,7 +71,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             {...attributes}
             {...listeners}
           >
-            <GripVerticalIcon className="h-3.5 w-3.5" />
+            <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
           <span className="text-[10px] font-medium text-muted-foreground flex-1">
             Experience {index + 1}
@@ -82,7 +82,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             onClick={() => removeExperience(experience.id)}
             aria-label={`Remove experience ${index + 1}`}
           >
-            <TrashIcon className="h-3 w-3 text-destructive" />
+            <Icon icon={faTrash} className="h-3 w-3 text-destructive" />
           </Button>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -232,7 +232,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-                <TrashIcon className="h-3 w-3 text-destructive" />
+<Icon icon={faTrash} className="h-3 w-3 text-destructive" />
               </Button>
             </div>
           ))}
@@ -247,7 +247,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               ])
             }
           >
-            <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+            <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
             Add Bullet
           </Button>
         </div>
@@ -300,7 +300,7 @@ export function ExperienceForm() {
         className="h-10 text-base sm:h-7 sm:text-xs w-full"
         onClick={addExperience}
       >
-        <PlusIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+        <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
         Add Experience
       </Button>
     </div>

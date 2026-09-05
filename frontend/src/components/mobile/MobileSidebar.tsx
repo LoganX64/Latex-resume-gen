@@ -4,37 +4,40 @@ import { useNavigate } from "react-router-dom";
 import { recordVisit } from "@/utils/stats";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { SaveIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import {
+  faFloppyDisk,
+  faEye,
+  faArrowDown,
+  faRotateLeft,
+  faTrash,
+  faHouse,
+  faUser,
+  faFileLines,
+  faBriefcase,
+  faFolder,
+  faGraduationCap,
+  faAward,
+  faGlobe,
+  faPuzzlePiece,
+  faLayerGroup,
+  faTrophy,
+  faBookOpen,
+} from "@/lib/icons";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import userSvg from "@/assets/user.svg";
-import fileTextSvg from "@/assets/file-content-outline-18.svg";
-import briefcaseSvg from "@/assets/suitcase-3-outline-18.svg";
-import folderGit2Svg from "@/assets/folder.svg";
-import graduationCapSvg from "@/assets/graduation-cap-fill-18.svg";
-import awardSvg from "@/assets/award.svg";
-import globeSvg from "@/assets/globe.svg";
-import puzzleSvg from "@/assets/puzzle-piece-outline-18.svg";
-import layersSvg from "@/assets/layers.svg";
-import eyeSvg from "@/assets/eye-2-outline-32.svg";
-import downloadSvg from "@/assets/download.svg";
-import homeSvg from "@/assets/home.svg";
-import trashSvg from "@/assets/trash-3-fill-24.svg";
-import arrowRefreshSvg from "@/assets/arrow-refresh.svg";
-import trophySvg from "@/assets/trophy.svg";
-import booksSvg from "@/assets/books.svg";
 
 const navItems = [
-  { id: "personal", icon: userSvg, label: "Personal Info" },
-  { id: "summary", icon: fileTextSvg, label: "Summary" },
-  { id: "experience", icon: briefcaseSvg, label: "Experience" },
-  { id: "skills", icon: puzzleSvg, label: "Skills" },
-  { id: "projects", icon: folderGit2Svg, label: "Projects" },
-  { id: "education", icon: graduationCapSvg, label: "Education" },
-  { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: trophySvg, label: "Achievements" },
-  { id: "publications", icon: booksSvg, label: "Publications" },
-  { id: "languages", icon: globeSvg, label: "Languages" },
-  { id: "customSections", icon: layersSvg, label: "Custom Sections" },
+  { id: "personal", icon: faUser, label: "Personal Info" },
+  { id: "summary", icon: faFileLines, label: "Summary" },
+  { id: "experience", icon: faBriefcase, label: "Experience" },
+  { id: "skills", icon: faPuzzlePiece, label: "Skills" },
+  { id: "projects", icon: faFolder, label: "Projects" },
+  { id: "education", icon: faGraduationCap, label: "Education" },
+  { id: "certifications", icon: faAward, label: "Certifications" },
+  { id: "achievements", icon: faTrophy, label: "Achievements" },
+  { id: "publications", icon: faBookOpen, label: "Publications" },
+  { id: "languages", icon: faGlobe, label: "Languages" },
+  { id: "customSections", icon: faLayerGroup, label: "Custom Sections" },
 ];
 
 interface MobileSidebarProps {
@@ -126,8 +129,8 @@ export function MobileSidebar({
                       : "hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground"
                   } ${!isVisible ? "opacity-40" : ""}`}
                 >
-                  <img
-                    src={item.icon as string}
+                  <Icon
+                    icon={item.icon}
                     className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-primary" : "text-sidebar-foreground/60"}`}
                   />
                   <span>{item.label}</span>
@@ -142,12 +145,12 @@ export function MobileSidebar({
           {/* Stats row */}
           <div className="flex items-center justify-center gap-3 px-3 py-1.5 text-[10px] text-sidebar-foreground/50">
             <span className="inline-flex items-center gap-1">
-              <img src={eyeSvg} className="h-3 w-3" />
+              <Icon icon={faEye} className="h-3 w-3" />
               {stats.visits.toLocaleString()} visits
             </span>
             <span>·</span>
             <span className="inline-flex items-center gap-1">
-              <img src={downloadSvg} className="h-3 w-3" />
+              <Icon icon={faArrowDown} className="h-3 w-3" />
               {stats.downloads.toLocaleString()} downloads
             </span>
           </div>
@@ -156,7 +159,7 @@ export function MobileSidebar({
             onClick={() => onSaveClick?.()}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
           >
-            <SaveIcon className="h-3.5 w-3.5 text-primary" />
+            <Icon icon={faFloppyDisk} className="h-3.5 w-3.5 text-primary" />
             <span>Save Version</span>
           </button>
 
@@ -164,7 +167,7 @@ export function MobileSidebar({
             onClick={handleLoadSample}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
           >
-            <img src={arrowRefreshSvg} className="h-3.5 w-3.5 text-sidebar-foreground/60" />
+            <Icon icon={faRotateLeft} className="h-3.5 w-3.5 text-sidebar-foreground/60" />
             <span>Load Sample Data</span>
           </button>
 
@@ -172,7 +175,7 @@ export function MobileSidebar({
             onClick={handleClearResume}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-destructive/10 text-destructive/80 hover:text-destructive transition-colors"
           >
-            <img src={trashSvg} className="h-3.5 w-3.5" />
+            <Icon icon={faTrash} className="h-3.5 w-3.5" />
             <span>Clear Resume</span>
           </button>
 
@@ -182,7 +185,7 @@ export function MobileSidebar({
             }}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
           >
-            <img src={homeSvg} className="h-3.5 w-3.5 text-sidebar-foreground/60" />
+            <Icon icon={faHouse} className="h-3.5 w-3.5 text-sidebar-foreground/60" />
             <span>Home</span>
           </button>
         </div>

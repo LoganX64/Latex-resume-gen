@@ -16,39 +16,39 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
-import trophySvg from "@/assets/trophy.svg";
-import booksSvg from "@/assets/books.svg";
+import { Icon } from "@/components/Icon";
 import {
-  PanelLeftIcon,
-  SaveIcon,
-} from "@/components/Icons";
-
-import userSvg from "@/assets/user.svg";
-import fileTextSvg from "@/assets/file-content-outline-18.svg";
-import briefcaseSvg from "@/assets/suitcase-3-outline-18.svg";
-import folderGit2Svg from "@/assets/folder.svg";
-import graduationCapSvg from "@/assets/graduation-cap-fill-18.svg";
-import awardSvg from "@/assets/award.svg";
-import globeSvg from "@/assets/globe.svg";
-import puzzleSvg from "@/assets/puzzle-piece-outline-18.svg";
-import layersSvg from "@/assets/layers.svg";
-import eyeSvg from "@/assets/eye-2-outline-32.svg";
-import downloadSvg from "@/assets/download.svg";
-import homeSvg from "@/assets/home.svg";
+  faBars,
+  faFloppyDisk,
+  faEye,
+  faArrowDown,
+  faHouse,
+  faUser,
+  faFileLines,
+  faBriefcase,
+  faFolder,
+  faGraduationCap,
+  faAward,
+  faGlobe,
+  faPuzzlePiece,
+  faLayerGroup,
+  faTrophy,
+  faBookOpen,
+} from "@/lib/icons";
 
 const navItems = [
-  { id: "personal", icon: userSvg, label: "Personal Info" },
-  { id: "summary", icon: fileTextSvg, label: "Summary" },
-  { id: "experience", icon: briefcaseSvg, label: "Experience" },
-  { id: "skills", icon: puzzleSvg, label: "Skills" },
-  { id: "projects", icon: folderGit2Svg, label: "Projects" },
-  { id: "education", icon: graduationCapSvg, label: "Education" },
-  { id: "certifications", icon: awardSvg, label: "Certifications" },
-  { id: "achievements", icon: trophySvg, label: "Achievements" },
-  { id: "publications", icon: booksSvg, label: "Publications" },
-  { id: "languages", icon: globeSvg, label: "Languages" },
-  { id: "customSections", icon: layersSvg, label: "Custom Sections" },
-] as const;
+  { id: "personal", icon: faUser, label: "Personal Info" },
+  { id: "summary", icon: faFileLines, label: "Summary" },
+  { id: "experience", icon: faBriefcase, label: "Experience" },
+  { id: "skills", icon: faPuzzlePiece, label: "Skills" },
+  { id: "projects", icon: faFolder, label: "Projects" },
+  { id: "education", icon: faGraduationCap, label: "Education" },
+  { id: "certifications", icon: faAward, label: "Certifications" },
+  { id: "achievements", icon: faTrophy, label: "Achievements" },
+  { id: "publications", icon: faBookOpen, label: "Publications" },
+  { id: "languages", icon: faGlobe, label: "Languages" },
+  { id: "customSections", icon: faLayerGroup, label: "Custom Sections" },
+];
 
 interface AppSidebarProps {
   activeSection?: string;
@@ -124,8 +124,8 @@ export function AppSidebar({
                           : ""
                       }`}
                     >
-                      <img
-                        src={item.icon as string}
+                      <Icon
+                        icon={item.icon}
                         className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-primary" : ""}`}
                       />
                       <span>{item.label}</span>
@@ -145,19 +145,19 @@ export function AppSidebar({
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.visits.toLocaleString()} visit${stats.visits !== 1 ? "s" : ""}`}
             >
-              <img src={eyeSvg} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
+              <Icon icon={faEye} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
             <span
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? "s" : ""}`}
             >
-              <img src={downloadSvg} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
+              <Icon icon={faArrowDown} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
           </div>
         ) : (
           <div className="flex items-center justify-center gap-1 px-2 py-1.5 text-xs text-sidebar-foreground/60">
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <img src={eyeSvg} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+              <Icon icon={faEye} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>
                 {stats.visits.toLocaleString()} visit
                 {stats.visits !== 1 ? "s" : ""}
@@ -165,7 +165,7 @@ export function AppSidebar({
             </span>
             <span className="text-sidebar-foreground/30">·</span>
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <img src={downloadSvg} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+              <Icon icon={faArrowDown} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>
                 {stats.downloads.toLocaleString()} download
                 {stats.downloads !== 1 ? "s" : ""}
@@ -180,7 +180,7 @@ export function AppSidebar({
               onClick={onSaveClick}
               tooltip="Save as version"
             >
-              <SaveIcon className="h-3 w-3 lg:h-4 lg:w-4" />
+              <Icon icon={faFloppyDisk} className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Save Version</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -190,7 +190,7 @@ export function AppSidebar({
               onClick={() => navigate("/")}
               tooltip="Back to home"
             >
-              <img src={homeSvg} className="h-3 w-3 lg:h-4 lg:w-4" />
+              <Icon icon={faHouse} className="h-3 w-3 lg:h-4 lg:w-4" />
               <span>Home</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -200,7 +200,7 @@ export function AppSidebar({
               onClick={toggleSidebar}
               tooltip="Toggle sidebar"
             >
-              <PanelLeftIcon className="h-3 w-3 lg:h-4 lg:w-4 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
+              <Icon icon={faBars} className="h-3 w-3 lg:h-4 lg:w-4 group-data-[collapsible=icon]:rotate-180 transition-transform duration-200" />
               <span>Collapse</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

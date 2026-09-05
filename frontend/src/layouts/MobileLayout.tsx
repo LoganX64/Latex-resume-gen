@@ -28,7 +28,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { TriangleAlertIcon, ImageOffIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faTriangleExclamation, faImageSlash } from "@/lib/icons";
 import { CompileProgressDialog } from "@/components/CompileProgressDialog";
 import { m, useReducedMotion } from "framer-motion";
 import { DURATION, EASE_OUT } from "@/lib/motion";
@@ -133,7 +134,7 @@ export default function MobileLayout() {
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
             <div className="flex items-center gap-2">
-              <TriangleAlertIcon className="h-5 w-5 text-destructive shrink-0" />
+              <Icon icon={faTriangleExclamation} className="h-5 w-5 text-destructive shrink-0" />
               <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
             </div>
             <AlertDialogDescription>
@@ -160,7 +161,7 @@ export default function MobileLayout() {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <ImageOffIcon className="h-5 w-5 text-muted-foreground shrink-0" />
+              <Icon icon={faImageSlash} className="h-5 w-5 text-muted-foreground shrink-0" />
               <DialogTitle>No profile photo</DialogTitle>
             </div>
             <DialogDescription>

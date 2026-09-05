@@ -5,7 +5,8 @@ import { quickExportPdf } from '@/utils/quick-export'
 import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
-import { DownloadIcon, TrashIcon, FileTextIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faArrowDown, faTrash, faFileLines } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -55,7 +56,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
         <div className="flex-1 overflow-y-auto px-4 pb-4">
           {versions.length === 0 ? (
             <div className="text-center py-8 text-muted-foreground">
-              <FileTextIcon className="h-8 w-8 mx-auto mb-2 opacity-40" />
+              <Icon icon={faFileLines} className="h-8 w-8 mx-auto mb-2 opacity-40" />
               <p className="text-sm">No saved resumes yet.</p>
               <p className="text-xs mt-1">
                 Save your current resume to see it here.
@@ -88,7 +89,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                         onClick={() => handleExportPdf(version)}
                         aria-label="Download PDF"
                       >
-                        <DownloadIcon className="h-4 w-4" />
+                        <Icon icon={faArrowDown} className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
@@ -97,7 +98,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                         onClick={() => handleDelete(version)}
                         aria-label="Delete version"
                       >
-                        <TrashIcon className="h-4 w-4" />
+                        <Icon icon={faTrash} className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>

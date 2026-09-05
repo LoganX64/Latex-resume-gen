@@ -1,5 +1,6 @@
 import { useResumeStore } from '@/stores/resume-store'
-import { TriangleAlertIcon } from '@/components/Icons'
+import { Icon } from '@/components/Icon'
+import { faTriangleExclamation } from '@/lib/icons'
 
 const SOFT_LIMITS = {
   summary: 300,
@@ -47,7 +48,7 @@ export function OverflowIndicator() {
     <div className="border-t border-border px-3 py-2 space-y-1.5">
       {warnings.map((w, i) => (
         <div key={i} className="flex items-center gap-1.5 text-amber-600 bg-amber-50 dark:bg-amber-950/30 rounded px-2 py-1">
-          <TriangleAlertIcon className="h-3 w-3 shrink-0" />
+          <Icon icon={faTriangleExclamation} className="h-3 w-3 shrink-0" />
           <p className="text-[10px] leading-tight">{w}</p>
         </div>
       ))}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { MaximizeIcon, ZoomInIcon, ZoomOutIcon, XIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faExpand, faMagnifyingGlassPlus, faMagnifyingGlassMinus, faXmark } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -105,13 +106,13 @@ export function MobilePreviewSheet({
                 onClick={() => setFullscreen(true)}
                 aria-label="Fullscreen preview"
               >
-                <MaximizeIcon className="h-4 w-4" />
+                <Icon icon={faExpand} className="h-4 w-4" />
               </Button>
               <SheetClose
                 className="flex items-center justify-center h-8 w-8 rounded-md hover:bg-muted"
                 aria-label="Close preview"
               >
-                <XIcon className="h-4 w-4" />
+                <Icon icon={faXmark} className="h-4 w-4" />
               </SheetClose>
             </div>
           </div>
@@ -133,7 +134,7 @@ export function MobilePreviewSheet({
               className="w-full justify-center gap-2"
               onClick={() => onOpenChange(false)}
             >
-              <XIcon className="h-4 w-4" />
+              <Icon icon={faXmark} className="h-4 w-4" />
               Close Preview
             </Button>
           </div>
@@ -161,7 +162,7 @@ export function MobilePreviewSheet({
               disabled={zoom === 150}
               aria-label="Zoom in"
             >
-              <ZoomInIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassPlus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -171,7 +172,7 @@ export function MobilePreviewSheet({
               disabled={zoom === "fit"}
               aria-label="Zoom out"
             >
-              <ZoomOutIcon className="h-5 w-5" />
+              <Icon icon={faMagnifyingGlassMinus} className="h-5 w-5" />
             </Button>
             <Button
               variant="secondary"
@@ -180,7 +181,7 @@ export function MobilePreviewSheet({
               onClick={() => setZoom("fit")}
               aria-label="Fit to screen"
             >
-              <MaximizeIcon className="h-5 w-5" />
+              <Icon icon={faExpand} className="h-5 w-5" />
             </Button>
           </div>
           <button
@@ -191,7 +192,7 @@ export function MobilePreviewSheet({
             className="fixed top-4 right-4 z-200 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
             aria-label="Close fullscreen"
           >
-            <XIcon className="h-5 w-5" />
+            <Icon icon={faXmark} className="h-5 w-5" />
           </button>
         </div>
       )}

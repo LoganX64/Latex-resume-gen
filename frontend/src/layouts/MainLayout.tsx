@@ -11,17 +11,8 @@ import { CompactFooter } from "@/components/CompactFooter";
 import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
-import downloadSvg from "@/assets/download.svg";
-import fileTextSvg from "@/assets/file-content-outline-18.svg";
-import trashSvg from "@/assets/trash-3-fill-24.svg";
-import homeSvg from "@/assets/home.svg";
-import {
-  TriangleAlertIcon,
-  ImageOffIcon,
-  SearchIcon,
-  SaveIcon,
-} from "@/components/Icons";
-import { SunIcon, MoonIcon, RotateCcwIcon } from "@/components/Icons";
+import { Icon } from "@/components/Icon";
+import { faTriangleExclamation, faImageSlash, faMagnifyingGlass, faFloppyDisk, faHouse, faTrash, faFileLines, faArrowDown, faSun, faMoon, faRotateLeft } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -180,7 +171,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <SaveIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faFloppyDisk} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Save as version</TooltipContent>
                   </Tooltip>
@@ -196,7 +187,7 @@ export default function MainLayout() {
                           />
                         }
                       >
-                        <img src={homeSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <Icon icon={faHouse} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       </TooltipTrigger>
                       <TooltipContent>Home</TooltipContent>
                     </Tooltip>
@@ -213,7 +204,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <img src={trashSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faTrash} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Clear resume</TooltipContent>
                   </Tooltip>
@@ -229,7 +220,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <RotateCcwIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faRotateLeft} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Load sample data</TooltipContent>
                   </Tooltip>
@@ -250,9 +241,9 @@ export default function MainLayout() {
                       }
                     >
                       {darkMode ? (
-                        <SunIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <Icon icon={faSun} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       ) : (
-                        <MoonIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <Icon icon={faMoon} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       )}
                     </TooltipTrigger>
                     <TooltipContent>
@@ -278,7 +269,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <SearchIcon className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faMagnifyingGlass} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>
                       Command palette (
@@ -342,7 +333,7 @@ export default function MainLayout() {
                         />
                       }
                     >
-                      <img src={fileTextSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                      <Icon icon={faFileLines} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                     </TooltipTrigger>
                     <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
                   </Tooltip>
@@ -362,7 +353,7 @@ export default function MainLayout() {
                       {isExportingPdf ? (
                         <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       ) : (
-                        <img src={downloadSvg} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <Icon icon={faArrowDown} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       )}
                     </TooltipTrigger>
                     <TooltipContent>Export PDF (⌘P)</TooltipContent>
@@ -397,7 +388,7 @@ export default function MainLayout() {
         <AlertDialogContent className="sm:max-w-sm">
           <AlertDialogHeader>
             <div className="flex items-center gap-2">
-              <TriangleAlertIcon className="h-5 w-5 text-destructive shrink-0" />
+              <Icon icon={faTriangleExclamation} className="h-5 w-5 text-destructive shrink-0" />
               <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
             </div>
             <AlertDialogDescription>
@@ -423,7 +414,7 @@ export default function MainLayout() {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <div className="flex items-center gap-2">
-              <ImageOffIcon className="h-5 w-5 text-muted-foreground shrink-0" />
+              <Icon icon={faImageSlash} className="h-5 w-5 text-muted-foreground shrink-0" />
               <DialogTitle>No profile photo</DialogTitle>
             </div>
             <DialogDescription>
