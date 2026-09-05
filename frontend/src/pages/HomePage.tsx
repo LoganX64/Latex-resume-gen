@@ -397,7 +397,7 @@ export default function HomePage() {
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
                   Build a{" "}
                   <span className="relative inline-block">
-                    <span className="relative z-10 bg-linear-to-r from-primary to-rose-400 bg-clip-text text-transparent">
+                    <span className="relative z-10 text-primary">
                       professional
                     </span>
                     <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 rounded-sm z-0" />
@@ -415,7 +415,7 @@ export default function HomePage() {
                 <div className="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
                   <Link to="/editor">
                     <Button
-                      size="lg"
+                      size="sm"
                       className="w-full sm:w-auto gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                     >
                       Start Building Free
@@ -425,9 +425,9 @@ export default function HomePage() {
                   {versions.length > 0 && (
                     <a href="#your-resumes">
                       <Button
-                        size="lg"
+                        size="sm"
                         variant="outline"
-                        className="w-full sm:w-auto gap-2"
+                        className="w-full sm:w-auto gap-2 border-dashed"
                       >
                         My Resumes ({versions.length})
                       </Button>
@@ -596,7 +596,7 @@ export default function HomePage() {
             <FadeIn className="mt-10 text-center" y={12} delay={0.2}>
               <Link to="/editor">
                 <Button
-                  size="lg"
+                  size="sm"
                   className="gap-2 shadow-md shadow-primary/20 hover:shadow-primary/35 transition-all hover:-translate-y-0.5"
                 >
                   Get Started — It's Free
@@ -615,7 +615,7 @@ export default function HomePage() {
           <FadeIn className="flex items-center justify-between mb-6 gap-3" y={8}>
             <h2 className="text-xl sm:text-2xl font-bold">Your Resumes</h2>
             <Link to="/editor">
-              <Button size="default" className="gap-1.5 shrink-0">
+              <Button size="sm" className="gap-1.5 shrink-0">
                 <Icon icon={faPlus} className="h-3.5 w-3.5" />
                 <span className="hidden xs:inline">New Resume</span>
                 <span className="xs:hidden">New</span>
@@ -637,7 +637,7 @@ export default function HomePage() {
                 Build a resume and save it as a version to see it here.
               </p>
               <Link to="/editor">
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" size="sm" className="gap-2">
                   Build Your First Resume
                   <Icon icon={faArrowRight} className="h-4 w-4" />
                 </Button>

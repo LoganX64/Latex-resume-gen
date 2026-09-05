@@ -116,7 +116,7 @@ export function VersionCard({ version }: VersionCardProps) {
             <Button
               variant="outline"
               size="sm"
-              className="h-8 px-2.5 text-xs gap-1.5 border-border/80 hover:border-primary/40"
+              className="h-8 px-2.5 text-xs gap-1.5 border-dashed border-border/80 hover:border-primary/40"
               onClick={handleExportPdf}
               disabled={exportingPdf}
             >
@@ -131,7 +131,7 @@ export function VersionCard({ version }: VersionCardProps) {
               <Button
                 variant="outline"
                 size="sm"
-                className="h-8 px-2.5 text-xs gap-1.5 border-border/80 hover:border-sky-500/40"
+                className="h-8 px-2.5 text-xs gap-1.5 border-dashed border-border/80 hover:border-sky-500/40"
                 onClick={handleExportLatex}
                 disabled={exportingLatex}
               >
