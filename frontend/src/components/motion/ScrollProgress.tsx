@@ -15,7 +15,7 @@ export function ScrollProgress() {
     <m.div
       aria-hidden="true"
       style={{ scaleX }}
-      className="fixed top-0 left-0 right-0 z-50 h-0.5 origin-left will-change-transform bg-gradient-to-r from-primary via-rose-400 to-primary"
+      className="fixed top-14 left-0 right-0 z-50 h-0.5 origin-left will-change-transform bg-gradient-to-r from-primary via-rose-400 to-primary"
     />
   );
 }

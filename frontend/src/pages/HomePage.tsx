@@ -345,7 +345,7 @@ export default function HomePage() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden">
+    <div className="relative min-h-screen bg-background">
       <ScrollProgress />
       <div className="relative z-10">
         <Navbar />
@@ -567,12 +567,12 @@ export default function HomePage() {
                       key={n}
                       lift={4}
                       scale={1.01}
-                      className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
+                      className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-dashed border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
                     >
                       <div className="relative z-10 flex flex-col items-center">
                         {/* Step pill */}
                         <div
-                          className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-bold mb-3 ${cfg.pillBg}`}
+                          className={`inline-flex items-center rounded-full border border-dashed px-2 py-0.5 text-xs font-bold mb-3 ${cfg.pillBg}`}
                         >
                           Step 0{n}
                         </div>
