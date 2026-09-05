@@ -5,7 +5,18 @@ import { StorageWarning } from "@/components/StorageWarning";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Icon } from "@/components/Icon";
-import { faArrowRight, faWandSparkles, faPlus } from "@/lib/icons";
+import {
+  faArrowRight,
+  faWandSparkles,
+  faPlus,
+  faFileLines,
+  faImage,
+  faFilePdf,
+  faCode,
+  faLock,
+  faTableColumns,
+} from "@/lib/icons";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Button } from "@/components/ui/button";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -112,201 +123,6 @@ function DocIllustration() {
   );
 }
 
-// ─── Feature SVG icons ────────────────────────────────────────────────────────
-
-function IconSinglePage() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <defs>
-        <linearGradient id="gRose" x1="4" y1="2" x2="24" y2="26">
-          <stop stopColor="#f43f5e" />
-          <stop offset="1" stopColor="#e11d48" />
-        </linearGradient>
-      </defs>
-      <rect
-        x="5"
-        y="2"
-        width="18"
-        height="24"
-        rx="3"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <rect x="9" y="7" width="10" height="1.8" rx="0.9" fill="url(#gRose)" />
-      <rect
-        x="9"
-        y="11"
-        width="7"
-        height="1.8"
-        rx="0.9"
-        fill="url(#gRose)"
-        opacity="0.6"
-      />
-      <rect
-        x="9"
-        y="15"
-        width="10"
-        height="1.8"
-        rx="0.9"
-        fill="url(#gRose)"
-        opacity="0.4"
-      />
-      <rect
-        x="9"
-        y="19"
-        width="5"
-        height="1.8"
-        rx="0.9"
-        fill="url(#gRose)"
-        opacity="0.3"
-      />
-    </svg>
-  );
-}
-
-function IconPhoto() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <rect
-        x="3"
-        y="5"
-        width="22"
-        height="18"
-        rx="3"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <circle cx="10" cy="12" r="3" fill="url(#gRose)" opacity="0.7" />
-      <path d="M3 20l6-5 4 3 5-6 7 8H3z" fill="url(#gRose)" opacity="0.4" />
-    </svg>
-  );
-}
-
-function IconPdf() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <path
-        d="M7 3h10l7 7v15a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17 3v7h7"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M14 14v7m-3-3l3 3 3-3"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function IconLatex() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <rect
-        x="3"
-        y="4"
-        width="22"
-        height="20"
-        rx="3"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <path
-        d="M8 10l4 4-4 4"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <rect
-        x="14"
-        y="17"
-        width="6"
-        height="2"
-        rx="1"
-        fill="url(#gRose)"
-        opacity="0.7"
-      />
-    </svg>
-  );
-}
-
-function IconPrivate() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <rect
-        x="5"
-        y="12"
-        width="18"
-        height="14"
-        rx="3"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <path
-        d="M9 12V8a5 5 0 0110 0v4"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-        strokeLinecap="round"
-      />
-      <circle cx="14" cy="19" r="2" fill="url(#gRose)" />
-    </svg>
-  );
-}
-
-function IconTemplates() {
-  return (
-    <svg viewBox="0 0 28 28" fill="none" className="w-7 h-7" aria-hidden="true">
-      <rect
-        x="3"
-        y="3"
-        width="10"
-        height="10"
-        rx="2.5"
-        fill="url(#gRose)"
-        opacity="0.8"
-      />
-      <rect
-        x="15"
-        y="3"
-        width="10"
-        height="10"
-        rx="2.5"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <rect
-        x="3"
-        y="15"
-        width="10"
-        height="10"
-        rx="2.5"
-        stroke="url(#gRose)"
-        strokeWidth="2"
-      />
-      <rect
-        x="15"
-        y="15"
-        width="10"
-        height="10"
-        rx="2.5"
-        fill="url(#gRose)"
-        opacity="0.4"
-      />
-    </svg>
-  );
-}
-
 function IconEmptyDoc() {
   return (
     <svg
@@ -363,39 +179,39 @@ function IconEmptyDoc() {
 
 // ─── Feature cards data ───────────────────────────────────────────────────────
 
-const features = [
+const features: { icon: IconProp; borderHover: string; title: string; desc: string }[] = [
   {
-    icon: IconSinglePage,
+    icon: faFileLines,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Single-Page Design",
     desc: "Smart compression keeps your resume on one professional page automatically.",
   },
   {
-    icon: IconPhoto,
+    icon: faImage,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Photo Support",
     desc: "Upload and crop a profile photo. Works with sidebar and engineering templates.",
   },
   {
-    icon: IconPdf,
+    icon: faFilePdf,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Instant PDF Export",
     desc: "Compile LaTeX via Tectonic for publication-quality PDF output in seconds.",
   },
   {
-    icon: IconLatex,
+    icon: faCode,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "LaTeX Source",
-    desc: "Download the raw .tex file. Edit in Overleaf or any LaTeX editor you prefer.",
+    desc: "Download the raw .tex file. Edit in any LaTeX editor you prefer.",
   },
   {
-    icon: IconPrivate,
+    icon: faLock,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Fully Private",
     desc: "All data stays in your browser. Nothing is sent to any server, ever.",
   },
   {
-    icon: IconTemplates,
+    icon: faTableColumns,
     borderHover: "hover:border-rose-300 dark:hover:border-rose-700",
     title: "Multiple Templates",
     desc: "Choose from professional LaTeX templates designed for different industries.",
@@ -513,7 +329,7 @@ const steps = [
   {
     n: "3",
     label: "Export to PDF",
-    desc: "Compile instantly with Tectonic or download the .tex source for Overleaf.",
+    desc: "Compile instantly with Tectonic or download the .tex source.",
   },
 ];
 
@@ -829,7 +645,7 @@ export default function HomePage() {
               amount={0.1}
             >
               {features.map(
-                ({ icon: Icon, borderHover, title, desc }) => (
+                ({ icon: faIcon, borderHover, title, desc }) => (
                   <HoverCard
                     key={title}
                     lift={4}
@@ -838,8 +654,8 @@ export default function HomePage() {
                   >
                     {/* Content */}
                     <div className="relative">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-border/50 shadow-sm mb-4 group-hover:scale-105 transition-transform duration-300">
-                        <Icon />
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background/80 dark:bg-background/40 border border-dashed border-border mb-4 group-hover:scale-105 transition-transform duration-300">
+                        <Icon icon={faIcon} className="text-rose-500" style={{ width: "1.5rem", height: "1.5rem" }} />
                       </div>
                       <h3 className="font-semibold text-sm sm:text-base mb-1.5 text-card-foreground">
                         {title}
