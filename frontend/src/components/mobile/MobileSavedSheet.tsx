@@ -6,7 +6,7 @@ import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Icon } from '@/components/Icon'
-import { faArrowDown, faTrash, faFileLines } from '@/lib/icons'
+import { faDownload, faTrash, faFileLines } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -89,7 +89,7 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                         onClick={() => handleExportPdf(version)}
                         aria-label="Download PDF"
                       >
-                        <Icon icon={faArrowDown} className="h-4 w-4" />
+                        <Icon icon={faDownload} className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"

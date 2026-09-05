@@ -21,7 +21,7 @@ import {
   faBars,
   faFloppyDisk,
   faEye,
-  faArrowDown,
+  faDownload,
   faHouse,
   faUser,
   faFileLines,
@@ -151,7 +151,7 @@ export function AppSidebar({
               className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
               title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? "s" : ""}`}
             >
-              <Icon icon={faArrowDown} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
+              <Icon icon={faDownload} className="h-4 w-4 lg:h-4 lg:w-4 text-sidebar-foreground/60" />
             </span>
           </div>
         ) : (
@@ -165,7 +165,7 @@ export function AppSidebar({
             </span>
             <span className="text-sidebar-foreground/30">·</span>
             <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Icon icon={faArrowDown} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
+              <Icon icon={faDownload} className="h-3.5 w-3.5 lg:h-4 lg:w-4" />
               <span>
                 {stats.downloads.toLocaleString()} download
                 {stats.downloads !== 1 ? "s" : ""}

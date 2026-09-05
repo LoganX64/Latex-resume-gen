@@ -13,7 +13,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { Icon } from "@/components/Icon"
-import { faTableColumns, faArrowDown, faFileLines, faMoon, faSun, faRotateLeft } from "@/lib/icons"
+import { faTableColumns, faDownload, faFileLines, faMoon, faSun, faRotateLeft } from "@/lib/icons"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -62,7 +62,7 @@ export function CommandPalette({
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Export">
             <CommandItem onSelect={() => runAction(onExportPdf)}>
-              <Icon icon={faArrowDown} className="mr-2 h-4 w-4" />
+              <Icon icon={faDownload} className="mr-2 h-4 w-4" />
               <span>Export PDF</span>
               <CommandShortcut>⌘P</CommandShortcut>
             </CommandItem>

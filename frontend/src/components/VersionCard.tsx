@@ -9,7 +9,7 @@ import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Icon } from '@/components/Icon'
-import { faSpinner, faFileLines, faArrowDown, faTrash } from '@/lib/icons'
+import { faSpinner, faFileLines, faDownload, faTrash } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { m, useReducedMotion } from 'framer-motion'
@@ -123,7 +123,7 @@ export function VersionCard({ version }: VersionCardProps) {
               {exportingPdf ? (
                   <Icon icon={faSpinner} className="h-3.5 w-3.5 animate-spin" />
               ) : (
-                <Icon icon={faArrowDown} className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
+                <Icon icon={faDownload} className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
               )}
               PDF
             </Button>

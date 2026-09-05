@@ -1,5 +1,5 @@
 import { Icon } from "@/components/Icon";
-import { faEye, faArrowDown, faHouse, faBookmark } from "@/lib/icons";
+import { faEye, faDownload, faHouse, faBookmark } from "@/lib/icons";
 import { Spinner } from "@/components/ui/spinner";
 
 interface MobileBottomNavbarProps {
@@ -62,7 +62,7 @@ export function MobileBottomNavbar({
         {isExportingPdf ? (
           <Spinner className="h-5 w-5" />
         ) : (
-          <Icon icon={faArrowDown} className="h-5 w-5" />
+          <Icon icon={faDownload} className="h-5 w-5" />
         )}
         <span className="text-[10px] font-medium">
           {isExportingPdf ? "Exporting…" : "Download"}

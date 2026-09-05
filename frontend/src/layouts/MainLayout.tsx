@@ -12,7 +12,7 @@ import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
 import { Icon } from "@/components/Icon";
-import { faTriangleExclamation, faImageSlash, faMagnifyingGlass, faFloppyDisk, faHouse, faTrash, faFileLines, faArrowDown, faSun, faMoon, faRotateLeft } from "@/lib/icons";
+import { faTriangleExclamation, faImageSlash, faMagnifyingGlass, faFloppyDisk, faHouse, faTrash, faFileLines, faDownload, faSun, faMoon, faRotateLeft } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -353,7 +353,7 @@ export default function MainLayout() {
                       {isExportingPdf ? (
                         <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       ) : (
-                        <Icon icon={faArrowDown} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+                        <Icon icon={faDownload} className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
                       )}
                     </TooltipTrigger>
                     <TooltipContent>Export PDF (⌘P)</TooltipContent>

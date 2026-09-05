@@ -79,6 +79,7 @@ import {
   faEllipsis,
   faImage,
   faFilePdf,
+  faDownload,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Brand icons
@@ -166,6 +167,7 @@ library.add(
   faEllipsis,
   faImage,
   faFilePdf,
+  faDownload,
   faGithub,
   faLinkedin,
 );
@@ -249,6 +251,7 @@ export {
   faEllipsis,
   faImage,
   faFilePdf,
+  faDownload,
   faGithub,
   faLinkedin,
 };

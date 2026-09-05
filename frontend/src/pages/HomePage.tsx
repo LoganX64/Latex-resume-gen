@@ -18,6 +18,9 @@ import {
 } from "@/lib/icons";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Button } from "@/components/ui/button";
+import fillDetailsSvg from "@/assets/Fill-details.svg";
+import multipleTemplatesSvg from "@/assets/multiple-templates.svg";
+import latexDownloadSvg from "@/assets/latex-download.svg";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
 import { HoverCard } from "@/components/motion/HoverCard";
@@ -333,154 +336,7 @@ const steps = [
   },
 ];
 
-// ─── Steps SVG graphics ────────────────────────────────────────────────────────
-
-function StepGraphic1() {
-  return (
-    <svg
-      viewBox="0 0 80 80"
-      fill="none"
-      className="w-20 h-20 drop-shadow-md"
-      aria-hidden="true"
-    >
-      <rect
-        x="12"
-        y="10"
-        width="56"
-        height="60"
-        rx="8"
-        fill="#ffffff"
-        stroke="#e2e8f0"
-        strokeWidth="2"
-      />
-      {/* Header bar */}
-      <rect x="18" y="18" width="24" height="6" rx="3" fill="#e11d48" />
-      <rect x="46" y="18" width="16" height="6" rx="3" fill="#cbd5e1" />
-      {/* Input lines */}
-      <rect
-        x="18"
-        y="32"
-        width="44"
-        height="8"
-        rx="4"
-        fill="#f1f5f9"
-        stroke="#cbd5e1"
-        strokeWidth="1"
-      />
-      <rect x="22" y="35" width="20" height="2" rx="1" fill="#64748b" />
-
-      <rect
-        x="18"
-        y="46"
-        width="44"
-        height="8"
-        rx="4"
-        fill="#f1f5f9"
-        stroke="#cbd5e1"
-        strokeWidth="1"
-      />
-      <rect x="22" y="49" width="28" height="2" rx="1" fill="#64748b" />
-      {/* Floating pencil badge */}
-      <circle cx="58" cy="56" r="14" fill="#e11d48" />
-      <path
-        d="M52 60.5l1.5-5.5 8 8-5.5 1.5zM62.5 56.5l3-3a2.12 2.12 0 00-3-3l-3 3 6 6z"
-        fill="#ffffff"
-      />
-    </svg>
-  );
-}
-
-function StepGraphic2() {
-  return (
-    <svg
-      viewBox="0 0 80 80"
-      fill="none"
-      className="w-20 h-20 drop-shadow-md"
-      aria-hidden="true"
-    >
-      {/* Template card 1 (background) */}
-      <rect
-        x="10"
-        y="18"
-        width="38"
-        height="50"
-        rx="6"
-        fill="#f8fafc"
-        stroke="#cbd5e1"
-        strokeWidth="1.5"
-      />
-      <rect x="16" y="24" width="26" height="5" rx="2.5" fill="#94a3b8" />
-      <rect x="16" y="33" width="20" height="2" fill="#cbd5e1" />
-      <rect x="16" y="38" width="24" height="2" fill="#cbd5e1" />
-
-      {/* Template card 2 (selected foreground) */}
-      <rect
-        x="30"
-        y="10"
-        width="40"
-        height="54"
-        rx="6"
-        fill="#ffffff"
-        stroke="#e11d48"
-        strokeWidth="2"
-      />
-      <rect x="36" y="16" width="28" height="6" rx="3" fill="#e11d48" />
-      <rect x="36" y="26" width="22" height="2.5" rx="1.25" fill="#64748b" />
-      <rect x="36" y="32" width="28" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="36" y="37" width="24" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="36" y="42" width="18" height="2" rx="1" fill="#cbd5e1" />
-
-      {/* Selected check badge */}
-      <circle cx="64" cy="58" r="12" fill="#10b981" />
-      <path
-        d="M59 58l3.5 3.5 6-6"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function StepGraphic3() {
-  return (
-    <svg
-      viewBox="0 0 80 80"
-      fill="none"
-      className="w-20 h-20 drop-shadow-md"
-      aria-hidden="true"
-    >
-      {/* Document */}
-      <rect
-        x="18"
-        y="10"
-        width="44"
-        height="58"
-        rx="6"
-        fill="#ffffff"
-        stroke="#e2e8f0"
-        strokeWidth="2"
-      />
-      <rect x="24" y="16" width="32" height="6" rx="3" fill="#e11d48" />
-      <rect x="24" y="26" width="28" height="2" fill="#94a3b8" />
-      <rect x="24" y="31" width="24" height="2" fill="#cbd5e1" />
-      <rect x="24" y="36" width="20" height="2" fill="#cbd5e1" />
-
-      {/* Floating Download PDF badge */}
-      <circle cx="40" cy="54" r="16" fill="#059669" />
-      <path
-        d="M40 44v14M33 51l7 7 7-7"
-        stroke="#ffffff"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-const stepGraphics = [StepGraphic1, StepGraphic2, StepGraphic3];
+const stepGraphics = [fillDetailsSvg, multipleTemplatesSvg, latexDownloadSvg];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -699,7 +555,6 @@ export default function HomePage() {
                 amount={0.15}
               >
                 {steps.map(({ n, label, desc }, i) => {
-                  const Graphic = stepGraphics[i];
                   const cfg = {
                     hoverBorder:
                       "hover:border-rose-300 dark:hover:border-rose-500 dark:hover:shadow-rose-950/30",
@@ -717,13 +572,13 @@ export default function HomePage() {
                       <div className="relative z-10 flex flex-col items-center">
                         {/* Step pill */}
                         <div
-                          className={`inline-flex items-center rounded-full border px-3 py-0.5 text-xs font-bold mb-4 ${cfg.pillBg}`}
+                          className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-bold mb-3 ${cfg.pillBg}`}
                         >
                           Step 0{n}
                         </div>
                         {/* SVG Graphic */}
                         <div className="mb-4 group-hover:scale-105 transition-transform duration-300">
-                          <Graphic />
+                          <img src={stepGraphics[i]} alt="" className="w-32 h-32 drop-shadow-md" />
                         </div>
                         <h3 className="font-bold text-base mb-1.5 text-foreground">
                           {label}
