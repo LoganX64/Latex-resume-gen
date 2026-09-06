@@ -644,17 +644,17 @@ export default function HomePage() {
               </Link>
             </FadeIn>
           ) : (
-            <AnimatedGroup
-              variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-              amount={0.1}
-            >
-              <AnimatePresence mode="popLayout">
+            <AnimatePresence mode="popLayout">
+              <AnimatedGroup
+                variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                amount={0.1}
+              >
                 {versions.map((v) => (
                   <VersionCard key={v.id} version={v} />
                 ))}
-              </AnimatePresence>
-            </AnimatedGroup>
+              </AnimatedGroup>
+            </AnimatePresence>
           )}
         </section>
 
