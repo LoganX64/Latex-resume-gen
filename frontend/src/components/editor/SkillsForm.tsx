@@ -2,7 +2,6 @@ import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { AnimatedSectionChild } from "./AnimatedSectionChild";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
@@ -66,11 +65,10 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
   }
 
   return (
-    <AnimatedSectionChild
-      index={index}
+    <div
       ref={setNodeRef}
       style={style}
-      className={isDragging ? "opacity-50 bg-muted" : ""}
+      className={`flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] ${isDragging ? "opacity-50 bg-muted" : ""}`}
     >
       <CardContent className="p-3 space-y-2">
         <div className="flex items-center gap-2">
@@ -151,7 +149,7 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           ))}
         </div>
       </CardContent>
-    </AnimatedSectionChild>
+    </div>
   );
 });
 

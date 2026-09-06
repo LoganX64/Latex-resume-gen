@@ -102,7 +102,7 @@ export function AppSidebar({
           </div>
         )}
       </SidebarHeader>
-      <SidebarContent className="py-4 overflow-y-auto">
+      <SidebarContent className="py-4 overflow-y-auto group-data-[collapsible=icon]:overflow-y-auto!">
         <NavSections
           activeSection={activeSection}
           onSectionClick={onSectionClick}

@@ -6,8 +6,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
-import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
-import { AnimatedSectionChild } from "./AnimatedSectionChild";
+import {
+  faPlus,
+  faTrash,
+  faXmark,
+  faGripVertical,
+  faChevronDown,
+} from "@/lib/icons";
+import { m } from "framer-motion";
 import {
   DndContext,
   closestCenter,
@@ -36,6 +42,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
   const updateProject = useResumeStore((s) => s.updateProject);
   const removeProject = useResumeStore((s) => s.removeProject);
   const [newTech, setNewTech] = useState("");
+  const [cardCollapsed, setCardCollapsed] = useState(false);
 
   const {
     attributes,
@@ -71,13 +78,12 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
   }
 
   return (
-    <AnimatedSectionChild
-      index={index}
+    <div
       ref={setNodeRef}
       style={style}
-      className={isDragging ? "opacity-50 bg-muted" : ""}
+      className={`flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] ${isDragging ? "opacity-50 bg-muted" : ""}`}
     >
-      <CardContent className="p-3 space-y-2">
+      <CardContent className="p-3">
         <div className="flex items-center gap-2">
           <button
             aria-label={`Drag to reorder project ${index + 1}`}
@@ -93,230 +99,266 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           <Button
             variant="ghost"
             size="icon-xs"
+            onClick={() => setCardCollapsed((value) => !value)}
+            aria-label={
+              cardCollapsed
+                ? `Expand project ${index + 1}`
+                : `Collapse project ${index + 1}`
+            }
+          >
+            <m.div
+              animate={{ rotate: cardCollapsed ? 0 : 180 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+            >
+              <Icon
+                icon={faChevronDown}
+                className="h-3 w-3 text-muted-foreground"
+              />
+            </m.div>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-xs"
             onClick={() => removeProject(project.id)}
             aria-label={`Remove project ${index + 1}`}
           >
             <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-name-${project.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Project Name *
-            </Label>
-            <Input
-              id={`proj-name-${project.id}`}
-              name="projectName"
-              autoComplete="off"
-              value={project.name}
-              onChange={(e) =>
-                updateProject(project.id, "name", e.target.value)
-              }
-              placeholder="E-Commerce Platform"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-role-${project.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Role
-            </Label>
-            <Input
-              id={`proj-role-${project.id}`}
-              name="projectRole"
-              value={project.role}
-              onChange={(e) =>
-                updateProject(project.id, "role", e.target.value)
-              }
-              placeholder="Lead Developer"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-duration-${project.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Duration
-            </Label>
-            <Input
-              id={`proj-duration-${project.id}`}
-              name="projectDuration"
-              autoComplete="off"
-              value={project.duration}
-              onChange={(e) =>
-                updateProject(project.id, "duration", e.target.value)
-              }
-              placeholder="2023 - Present"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-        </div>
-        <div className="space-y-1">
-          <Label
-            htmlFor={`proj-desc-${project.id}`}
-            className="text-sm sm:text-xs"
-          >
-            Description
-          </Label>
-          <Textarea
-            id={`proj-desc-${project.id}`}
-            name="projectDescription"
-            value={project.description}
-            onChange={(e) =>
-              updateProject(project.id, "description", e.target.value)
-            }
-            placeholder="Brief description of the project…"
-            className="min-h-15 text-base sm:text-sm resize-y py-2"
-          />
-        </div>
-        <div className="space-y-1">
-          <Label className="text-sm sm:text-xs">Bullet Points</Label>
-          {(project.bulletPoints || []).map((bullet, bIndex) => (
-            <div key={bIndex} className="flex gap-1">
+        <m.div
+          initial={false}
+          animate={{
+            height: cardCollapsed ? 0 : "auto",
+            opacity: cardCollapsed ? 0 : 1,
+          }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+          style={{ overflow: "hidden" }}
+        >
+          <div className="space-y-2 pt-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              <div className="space-y-1">
+                <Label
+                  htmlFor={`proj-name-${project.id}`}
+                  className="text-sm sm:text-xs"
+                >
+                  Project Name *
+                </Label>
+                <Input
+                  id={`proj-name-${project.id}`}
+                  name="projectName"
+                  autoComplete="off"
+                  value={project.name}
+                  onChange={(e) =>
+                    updateProject(project.id, "name", e.target.value)
+                  }
+                  placeholder="E-Commerce Platform"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label
+                  htmlFor={`proj-role-${project.id}`}
+                  className="text-sm sm:text-xs"
+                >
+                  Role
+                </Label>
+                <Input
+                  id={`proj-role-${project.id}`}
+                  name="projectRole"
+                  value={project.role}
+                  onChange={(e) =>
+                    updateProject(project.id, "role", e.target.value)
+                  }
+                  placeholder="Lead Developer"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label
+                  htmlFor={`proj-duration-${project.id}`}
+                  className="text-sm sm:text-xs"
+                >
+                  Duration
+                </Label>
+                <Input
+                  id={`proj-duration-${project.id}`}
+                  name="projectDuration"
+                  autoComplete="off"
+                  value={project.duration}
+                  onChange={(e) =>
+                    updateProject(project.id, "duration", e.target.value)
+                  }
+                  placeholder="2023 - Present"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <Label
+                htmlFor={`proj-desc-${project.id}`}
+                className="text-sm sm:text-xs"
+              >
+                Description
+              </Label>
               <Textarea
-                name="projectBulletPoint"
-                autoComplete="off"
-                value={bullet}
-                onChange={(e) => {
-                  const newBullets = [...(project.bulletPoints || [])];
-                  newBullets[bIndex] = e.target.value;
-                  updateProject(project.id, "bulletPoints", newBullets);
-                }}
-                placeholder="• Describe a feature or achievement…"
-                aria-label={`Bullet point ${bIndex + 1}`}
+                id={`proj-desc-${project.id}`}
+                name="projectDescription"
+                value={project.description}
+                onChange={(e) =>
+                  updateProject(project.id, "description", e.target.value)
+                }
+                placeholder="Brief description of the project…"
                 className="min-h-15 text-base sm:text-sm resize-y py-2"
               />
+            </div>
+            <div className="space-y-1">
+              <Label className="text-sm sm:text-xs">Bullet Points</Label>
+              {(project.bulletPoints || []).map((bullet, bIndex) => (
+                <div key={bIndex} className="flex gap-1">
+                  <Textarea
+                    name="projectBulletPoint"
+                    autoComplete="off"
+                    value={bullet}
+                    onChange={(e) => {
+                      const newBullets = [...(project.bulletPoints || [])];
+                      newBullets[bIndex] = e.target.value;
+                      updateProject(project.id, "bulletPoints", newBullets);
+                    }}
+                    placeholder="• Describe a feature or achievement…"
+                    aria-label={`Bullet point ${bIndex + 1}`}
+                    className="min-h-15 text-base sm:text-sm resize-y py-2"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    onClick={() => {
+                      const newBullets = (project.bulletPoints || []).filter(
+                        (_, i) => i !== bIndex,
+                      );
+                      updateProject(
+                        project.id,
+                        "bulletPoints",
+                        newBullets.length ? newBullets : [""],
+                      );
+                    }}
+                    aria-label={`Remove bullet point ${bIndex + 1}`}
+                  >
+                    <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                  </Button>
+                </div>
+              ))}
               <Button
                 variant="ghost"
-                size="icon-xs"
-                onClick={() => {
-                  const newBullets = (project.bulletPoints || []).filter(
-                    (_, i) => i !== bIndex,
-                  );
-                  updateProject(
-                    project.id,
-                    "bulletPoints",
-                    newBullets.length ? newBullets : [""],
-                  );
-                }}
-                aria-label={`Remove bullet point ${bIndex + 1}`}
-              >
-                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
-              </Button>
-            </div>
-          ))}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-9 text-sm sm:h-8 sm:text-sm"
-            onClick={() =>
-              updateProject(project.id, "bulletPoints", [
-                ...(project.bulletPoints || []),
-                "",
-              ])
-            }
-          >
-            <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
-            Add Bullet
-          </Button>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {(project.technologies || []).map((tech, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-xs max-w-50 truncate"
-            >
-              {tech}
-              <button
-                onClick={() => removeTech(i)}
-                aria-label={`Remove ${tech}`}
-                className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
+                size="sm"
+                className="h-9 text-sm sm:h-8 sm:text-sm"
+                onClick={() =>
+                  updateProject(project.id, "bulletPoints", [
+                    ...(project.bulletPoints || []),
+                    "",
+                  ])
+                }
               >
                 <Icon
-                  icon={faXmark}
-                  className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5"
+                  icon={faPlus}
+                  className="h-3 w-3 mr-1"
+                  aria-hidden="true"
                 />
-              </button>
-            </span>
-          ))}
-        </div>
-        <div className="flex gap-1">
-          <Input
-            name="newTechnology"
-            autoComplete="off"
-            value={newTech}
-            onChange={(e) => setNewTech(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addTech();
-              }
-            }}
-            placeholder="Add technology and press Enter"
-            aria-label="New technology name"
-            className="h-10 text-base sm:h-8 sm:text-sm"
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-10 text-sm sm:h-8 sm:text-xs px-2"
-            onClick={addTech}
-          >
-            Add
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-github-${project.id}`}
-              className="text-sm sm:text-xs"
-            >
-              GitHub URL
-            </Label>
-            <Input
-              id={`proj-github-${project.id}`}
-              name="projectGitHubUrl"
-              autoComplete="url"
-              value={project.githubUrl}
-              onChange={(e) =>
-                updateProject(project.id, "githubUrl", e.target.value)
-              }
-              placeholder="github.com/user/project"
-              type="url"
-              inputMode="url"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
+                Add Bullet
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {(project.technologies || []).map((tech, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-xs max-w-50 truncate"
+                >
+                  {tech}
+                  <button
+                    onClick={() => removeTech(i)}
+                    aria-label={`Remove ${tech}`}
+                    className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
+                  >
+                    <Icon
+                      icon={faXmark}
+                      className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5"
+                    />
+                  </button>
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-1">
+              <Input
+                name="newTechnology"
+                autoComplete="off"
+                value={newTech}
+                onChange={(e) => setNewTech(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addTech();
+                  }
+                }}
+                placeholder="Add technology and press Enter"
+                aria-label="New technology name"
+                className="h-10 text-base sm:h-8 sm:text-sm"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 text-sm sm:h-8 sm:text-xs px-2"
+                onClick={addTech}
+              >
+                Add
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="space-y-1">
+                <Label
+                  htmlFor={`proj-github-${project.id}`}
+                  className="text-sm sm:text-xs"
+                >
+                  GitHub URL
+                </Label>
+                <Input
+                  id={`proj-github-${project.id}`}
+                  name="projectGitHubUrl"
+                  autoComplete="url"
+                  value={project.githubUrl}
+                  onChange={(e) =>
+                    updateProject(project.id, "githubUrl", e.target.value)
+                  }
+                  placeholder="github.com/user/project"
+                  type="url"
+                  inputMode="url"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label
+                  htmlFor={`proj-demo-${project.id}`}
+                  className="text-sm sm:text-xs"
+                >
+                  Live Demo URL
+                </Label>
+                <Input
+                  id={`proj-demo-${project.id}`}
+                  name="projectDemoUrl"
+                  autoComplete="url"
+                  value={project.liveDemoUrl}
+                  onChange={(e) =>
+                    updateProject(project.id, "liveDemoUrl", e.target.value)
+                  }
+                  placeholder="project.example.com"
+                  type="url"
+                  inputMode="url"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
+                />
+              </div>
+            </div>
           </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-demo-${project.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Live Demo URL
-            </Label>
-            <Input
-              id={`proj-demo-${project.id}`}
-              name="projectDemoUrl"
-              autoComplete="url"
-              value={project.liveDemoUrl}
-              onChange={(e) =>
-                updateProject(project.id, "liveDemoUrl", e.target.value)
-              }
-              placeholder="project.example.com"
-              type="url"
-              inputMode="url"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-        </div>
+        </m.div>
       </CardContent>
-    </AnimatedSectionChild>
+    </div>
   );
 });
 

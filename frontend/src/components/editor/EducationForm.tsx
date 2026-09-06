@@ -7,7 +7,6 @@ import { MonthPicker } from "@/components/ui/month-picker";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash, faGripVertical } from "@/lib/icons";
-import { AnimatedSectionChild } from "./AnimatedSectionChild";
 import {
   DndContext,
   closestCenter,
@@ -53,11 +52,10 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
   if (!education) return null;
 
   return (
-    <AnimatedSectionChild
-      index={index}
+    <div
       ref={setNodeRef}
       style={style}
-      className={isDragging ? "opacity-50 bg-muted" : ""}
+      className={`flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] ${isDragging ? "opacity-50 bg-muted" : ""}`}
     >
       <CardContent className="p-3 space-y-2">
         <div className="flex items-center gap-2">
@@ -197,7 +195,7 @@ const SortableEducationEntry = memo(function SortableEducationEntry({
           </div>
         </div>
       </CardContent>
-    </AnimatedSectionChild>
+    </div>
   );
 });
 

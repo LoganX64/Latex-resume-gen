@@ -87,13 +87,20 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               variant="ghost"
               size="icon-xs"
               onClick={() => setCardCollapsed((value) => !value)}
-              aria-label={cardCollapsed ? `Expand experience ${index + 1}` : `Collapse experience ${index + 1}`}
+              aria-label={
+                cardCollapsed
+                  ? `Expand experience ${index + 1}`
+                  : `Collapse experience ${index + 1}`
+              }
             >
               <m.div
                 animate={{ rotate: cardCollapsed ? 0 : 180 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
               >
-                <Icon icon={faChevronDown} className="h-3 w-3 text-muted-foreground" />
+                <Icon
+                  icon={faChevronDown}
+                  className="h-3 w-3 text-muted-foreground"
+                />
               </m.div>
             </Button>
             <Button
@@ -107,182 +114,203 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           </div>
           <m.div
             initial={false}
-            animate={{ height: cardCollapsed ? 0 : "auto", opacity: cardCollapsed ? 0 : 1 }}
+            animate={{
+              height: cardCollapsed ? 0 : "auto",
+              opacity: cardCollapsed ? 0 : 1,
+            }}
             transition={{ duration: DURATION.slow, ease: EASE_OUT }}
             style={{ overflow: "hidden" }}
           >
             <div className="space-y-2 pt-2">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div className="space-y-1">
-            <Label
-              htmlFor={`exp-company-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Company *
-            </Label>
-            <Input
-              id={`exp-company-${experience.id}`}
-              name="company"
-              autoComplete="organization"
-              value={experience.company}
-              onChange={(e) =>
-                updateExperience(experience.id, "company", e.target.value)
-              }
-              placeholder="Google"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`exp-position-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Position *
-            </Label>
-            <Input
-              id={`exp-position-${experience.id}`}
-              name="position"
-              autoComplete="organization-title"
-              value={experience.position}
-              onChange={(e) =>
-                updateExperience(experience.id, "position", e.target.value)
-              }
-              placeholder="Senior Software Engineer"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          <div className="space-y-1">
-            <Label
-              htmlFor={`exp-location-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Location
-            </Label>
-            <Input
-              id={`exp-location-${experience.id}`}
-              name="expLocation"
-              autoComplete="off"
-              value={experience.location}
-              onChange={(e) =>
-                updateExperience(experience.id, "location", e.target.value)
-              }
-              placeholder="Mountain View, CA"
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`exp-start-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Start Date *
-            </Label>
-            <MonthPicker
-              id={`exp-start-${experience.id}`}
-              value={experience.startDate}
-              onValueChange={(val) =>
-                updateExperience(experience.id, "startDate", val)
-              }
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`exp-end-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              End Date
-            </Label>
-            <MonthPicker
-              id={`exp-end-${experience.id}`}
-              value={experience.endDate}
-              onValueChange={(val) =>
-                updateExperience(experience.id, "endDate", val)
-              }
-              disabled={experience.current}
-              className="h-10 text-base sm:h-8 sm:text-sm"
-            />
-          </div>
-          </div>
-          <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id={`current-${experience.id}`}
-              checked={experience.current}
-              onCheckedChange={(checked) =>
-                updateExperience(experience.id, "current", checked === true)
-              }
-            />
-            <Label
-              htmlFor={`current-${experience.id}`}
-              className="text-sm sm:text-xs"
-            >
-              Currently working here
-            </Label>
-          </div>
-          </div>
-          <div className="space-y-1">
-          <Label className="text-sm sm:text-xs">Bullet Points</Label>
-          {experience.bulletPoints.length === 0 && (
-            <p className="text-xs text-muted-foreground">
-              No bullet points yet
-            </p>
-          )}
-          {experience.bulletPoints.map((bullet, bIndex) => (
-            <m.div
-              key={bIndex}
-              layout
-              className="flex gap-1"
-              transition={{ layout: { duration: DURATION.base, ease: EASE_OUT } }}
-            >
-              <Textarea
-                name="expBulletPoint"
-                autoComplete="off"
-                value={bullet}
-                onChange={(e) => {
-                  const newBullets = [...experience.bulletPoints];
-                  newBullets[bIndex] = e.target.value;
-                  updateExperienceBulletPoints(experience.id, newBullets);
-                }}
-                placeholder="• Describe your achievement…"
-                aria-label={`Bullet point ${bIndex + 1}`}
-                className="min-h-15 text-base sm:text-sm resize-y py-2"
-              />
-              <Button
-                variant="ghost"
-                size="icon-xs"
-                onClick={() => {
-                  const newBullets = experience.bulletPoints.filter(
-                    (_, i) => i !== bIndex,
-                  );
-                  updateExperienceBulletPoints(
-                    experience.id,
-                    newBullets.length ? newBullets : [""],
-                  );
-                }}
-                aria-label={`Remove bullet point ${bIndex + 1}`}
-              >
-                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
-              </Button>
-            </m.div>
-          ))}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-9 text-sm sm:h-7 sm:text-xs"
-            onClick={() =>
-              updateExperienceBulletPoints(experience.id, [
-                ...experience.bulletPoints,
-                "",
-              ])
-            }
-          >
-            <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
-            Add Bullet
-          </Button>
-            </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label
+                    htmlFor={`exp-company-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    Company *
+                  </Label>
+                  <Input
+                    id={`exp-company-${experience.id}`}
+                    name="company"
+                    autoComplete="organization"
+                    value={experience.company}
+                    onChange={(e) =>
+                      updateExperience(experience.id, "company", e.target.value)
+                    }
+                    placeholder="Google"
+                    className="h-10 text-base sm:h-8 sm:text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label
+                    htmlFor={`exp-position-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    Position *
+                  </Label>
+                  <Input
+                    id={`exp-position-${experience.id}`}
+                    name="position"
+                    autoComplete="organization-title"
+                    value={experience.position}
+                    onChange={(e) =>
+                      updateExperience(
+                        experience.id,
+                        "position",
+                        e.target.value,
+                      )
+                    }
+                    placeholder="Senior Software Engineer"
+                    className="h-10 text-base sm:h-8 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                <div className="space-y-1">
+                  <Label
+                    htmlFor={`exp-location-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    Location
+                  </Label>
+                  <Input
+                    id={`exp-location-${experience.id}`}
+                    name="expLocation"
+                    autoComplete="off"
+                    value={experience.location}
+                    onChange={(e) =>
+                      updateExperience(
+                        experience.id,
+                        "location",
+                        e.target.value,
+                      )
+                    }
+                    placeholder="Mountain View, CA"
+                    className="h-10 text-base sm:h-8 sm:text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label
+                    htmlFor={`exp-start-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    Start Date *
+                  </Label>
+                  <MonthPicker
+                    id={`exp-start-${experience.id}`}
+                    value={experience.startDate}
+                    onValueChange={(val) =>
+                      updateExperience(experience.id, "startDate", val)
+                    }
+                    className="h-10 text-base sm:h-8 sm:text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label
+                    htmlFor={`exp-end-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    End Date
+                  </Label>
+                  <MonthPicker
+                    id={`exp-end-${experience.id}`}
+                    value={experience.endDate}
+                    onValueChange={(val) =>
+                      updateExperience(experience.id, "endDate", val)
+                    }
+                    disabled={experience.current}
+                    className="h-10 text-base sm:h-8 sm:text-sm"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id={`current-${experience.id}`}
+                    checked={experience.current}
+                    onCheckedChange={(checked) =>
+                      updateExperience(
+                        experience.id,
+                        "current",
+                        checked === true,
+                      )
+                    }
+                  />
+                  <Label
+                    htmlFor={`current-${experience.id}`}
+                    className="text-sm sm:text-xs"
+                  >
+                    Currently working here
+                  </Label>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-sm sm:text-xs">Bullet Points</Label>
+                {experience.bulletPoints.length === 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    No bullet points yet
+                  </p>
+                )}
+                {experience.bulletPoints.map((bullet, bIndex) => (
+                  <m.div
+                    key={bIndex}
+                    layout
+                    className="flex gap-1"
+                    transition={{
+                      layout: { duration: DURATION.base, ease: EASE_OUT },
+                    }}
+                  >
+                    <Textarea
+                      name="expBulletPoint"
+                      autoComplete="off"
+                      value={bullet}
+                      onChange={(e) => {
+                        const newBullets = [...experience.bulletPoints];
+                        newBullets[bIndex] = e.target.value;
+                        updateExperienceBulletPoints(experience.id, newBullets);
+                      }}
+                      placeholder="• Describe your achievement…"
+                      aria-label={`Bullet point ${bIndex + 1}`}
+                      className="min-h-15 text-base sm:text-sm resize-y py-2"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={() => {
+                        const newBullets = experience.bulletPoints.filter(
+                          (_, i) => i !== bIndex,
+                        );
+                        updateExperienceBulletPoints(
+                          experience.id,
+                          newBullets.length ? newBullets : [""],
+                        );
+                      }}
+                      aria-label={`Remove bullet point ${bIndex + 1}`}
+                    >
+                      <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                    </Button>
+                  </m.div>
+                ))}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-9 text-sm sm:h-7 sm:text-xs"
+                  onClick={() =>
+                    updateExperienceBulletPoints(experience.id, [
+                      ...experience.bulletPoints,
+                      "",
+                    ])
+                  }
+                >
+                  <Icon
+                    icon={faPlus}
+                    className="h-3 w-3 mr-1"
+                    aria-hidden="true"
+                  />
+                  Add Bullet
+                </Button>
+              </div>
             </div>
           </m.div>
         </m.div>
