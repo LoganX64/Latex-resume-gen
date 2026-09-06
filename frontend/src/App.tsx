@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { SentryFeedbackButton } from '@/components/SentryFeedbackButton'
 import { PageTransition } from '@/components/motion/PageTransition'
+import { LoadingScreen } from '@/components/LoadingScreen'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const MainLayout = lazy(() => import('@/layouts/MainLayout'))
@@ -65,7 +66,7 @@ function AppRoutes() {
 function App() {
   return (
     <>
-      <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading…</div>}>
+      <Suspense fallback={<LoadingScreen />}>
         <SentryFeedbackButton />
         <AppRoutes />
       </Suspense>
