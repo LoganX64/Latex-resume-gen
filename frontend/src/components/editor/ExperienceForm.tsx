@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { MonthPicker } from "@/components/ui/month-picker";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
-import { faPlus, faTrash, faGripVertical } from "@/lib/icons";
+import { faPlus, faTrash, faGripVertical, faChevronDown } from "@/lib/icons";
 import {
   DndContext,
   closestCenter,
@@ -27,7 +27,6 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { AnimatePresence, m } from "framer-motion";
 import { DURATION, EASE_OUT } from "@/lib/motion";
-import { useSectionAnimation } from "./SectionAnimationContext";
 
 const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
@@ -36,14 +35,13 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id: string;
   index: number;
 }) {
+  const [cardCollapsed, setCardCollapsed] = useState(false);
   const experience = useResumeStore((s) => s.resume.experience[index]);
   const updateExperience = useResumeStore((s) => s.updateExperience);
   const updateExperienceBulletPoints = useResumeStore(
     (s) => s.updateExperienceBulletPoints,
   );
   const removeExperience = useResumeStore((s) => s.removeExperience);
-  const { collapsed } = useSectionAnimation();
-
   const {
     attributes,
     listeners,
@@ -61,53 +59,60 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
   if (!experience) return null;
 
   return (
-    <m.div
+    <div
       ref={setNodeRef}
       style={style}
-      layout="position"
-      initial={{ opacity: 0, y: 14, scale: 0.98 }}
-      animate={{
-        opacity: collapsed ? 0 : 1,
-        y: collapsed ? 14 : 0,
-        scale: collapsed ? 0.98 : 1,
-      }}
-      exit={{ opacity: 0, y: -8, scale: 0.98 }}
-      transition={{
-        layout: { duration: DURATION.slow, ease: EASE_OUT },
-        opacity: { duration: DURATION.base, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
-        y: { duration: DURATION.slow, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
-        scale: { duration: DURATION.slow, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
-      }}
+      className={isDragging ? "opacity-50 bg-muted" : ""}
     >
-      <Card className={isDragging ? "opacity-50 bg-muted" : ""}>
+      <Card>
         <m.div
           data-slot="card-content"
-          className="p-3 space-y-2"
+          className="p-3"
           layout
           transition={{ layout: { duration: DURATION.base, ease: EASE_OUT } }}
         >
-        <div className="flex items-center gap-2">
-          <button
-            aria-label={`Drag to reorder experience ${index + 1}`}
-            className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            {...attributes}
-            {...listeners}
+          <div className="flex items-center gap-2">
+            <button
+              aria-label={`Drag to reorder experience ${index + 1}`}
+              className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              {...attributes}
+              {...listeners}
+            >
+              <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+            </button>
+            <span className="text-xs font-medium text-muted-foreground flex-1">
+              Experience {index + 1}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => setCardCollapsed((value) => !value)}
+              aria-label={cardCollapsed ? `Expand experience ${index + 1}` : `Collapse experience ${index + 1}`}
+            >
+              <m.div
+                animate={{ rotate: cardCollapsed ? 0 : 180 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <Icon icon={faChevronDown} className="h-3 w-3 text-muted-foreground" />
+              </m.div>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              onClick={() => removeExperience(experience.id)}
+              aria-label={`Remove experience ${index + 1}`}
+            >
+              <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+            </Button>
+          </div>
+          <m.div
+            initial={false}
+            animate={{ height: cardCollapsed ? 0 : "auto", opacity: cardCollapsed ? 0 : 1 }}
+            transition={{ duration: DURATION.slow, ease: EASE_OUT }}
+            style={{ overflow: "hidden" }}
           >
-            <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
-          </button>
-          <span className="text-xs font-medium text-muted-foreground flex-1">
-            Experience {index + 1}
-          </span>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={() => removeExperience(experience.id)}
-            aria-label={`Remove experience ${index + 1}`}
-          >
-            <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
-          </Button>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="space-y-2 pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div className="space-y-1">
             <Label
               htmlFor={`exp-company-${experience.id}`}
@@ -146,8 +151,8 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           <div className="space-y-1">
             <Label
               htmlFor={`exp-location-${experience.id}`}
@@ -200,8 +205,8 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
-        </div>
-        <div className="space-y-1">
+          </div>
+          <div className="space-y-1">
           <div className="flex items-center gap-2">
             <Checkbox
               id={`current-${experience.id}`}
@@ -217,8 +222,8 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               Currently working here
             </Label>
           </div>
-        </div>
-        <div className="space-y-1">
+          </div>
+          <div className="space-y-1">
           <Label className="text-sm sm:text-xs">Bullet Points</Label>
           {experience.bulletPoints.length === 0 && (
             <p className="text-xs text-muted-foreground">
@@ -277,10 +282,12 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />
             Add Bullet
           </Button>
-        </div>
+            </div>
+            </div>
+          </m.div>
         </m.div>
       </Card>
-    </m.div>
+    </div>
   );
 });
 
