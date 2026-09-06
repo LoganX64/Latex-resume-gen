@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable'
 import { useResumeStore } from '@/stores/resume-store'
 import { SectionWrapper } from './SectionWrapper'
+import { EditorSection } from './EditorSection'
 import { PersonalInfoForm } from './PersonalInfoForm'
 import { SummaryForm } from './SummaryForm'
 import { ExperienceForm } from './ExperienceForm'
@@ -26,8 +27,6 @@ import { AchievementsForm } from './AchievementsForm'
 import { PublicationsForm } from './PublicationsForm'
 import { LanguagesForm } from './LanguagesForm'
 import { CustomSectionsForm } from './CustomSectionsForm'
-import { m, useReducedMotion } from 'framer-motion'
-import { sectionEntrance } from '@/lib/motion'
 
 const sectionComponents: Record<string, ReactNode> = {
   summary: <SummaryForm />,
@@ -64,7 +63,6 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
   const reorderSections = useResumeStore((s) => s.reorderSections)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({})
   const scrollRef = useRef<HTMLDivElement>(null)
-  const reduce = useReducedMotion()
 
   useEffect(() => {
     if (!activeSection) return
@@ -97,14 +95,9 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
 
   return (
     <div ref={scrollRef} className="p-2 sm:p-4 space-y-4">
-      <m.div
-        variants={sectionEntrance}
-        initial={reduce ? false : "hidden"}
-        animate="visible"
-        transition={{ duration: 3, type: "spring" as const, bounce: 0.2, delay: 0.5 }}
-      >
-        <div id="section-personal"><PersonalInfoForm /></div>
-      </m.div>
+      <EditorSection sectionType="personal">
+        <PersonalInfoForm />
+      </EditorSection>
 
       <DndContext
         sensors={sensors}
@@ -115,14 +108,10 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
           items={visibleSections.map((s) => s.id)}
           strategy={verticalListSortingStrategy}
         >
-          {visibleSections.map((section, index) => (
-            <m.div
+          {visibleSections.map((section) => (
+            <EditorSection
               key={section.id}
-              id={`section-${section.type}`}
-              variants={sectionEntrance}
-              initial={reduce ? false : "hidden"}
-              animate="visible"
-              transition={{ duration: 3, type: "spring" as const, bounce: 0.2, delay: 0.5 + (index + 1) * 0.8 }}
+              sectionType={section.type}
             >
               <SectionWrapper
                 id={section.id}
@@ -133,7 +122,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
               >
                 {sectionComponents[section.type]}
               </SectionWrapper>
-            </m.div>
+            </EditorSection>
           ))}
         </SortableContext>
       </DndContext>

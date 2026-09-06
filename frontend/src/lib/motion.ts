@@ -114,6 +114,25 @@ export const sectionEntrance: Variants = {
   },
 };
 
+export const editorSection: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: EASE_OUT },
+  },
+};
+
+export const editorCard: Variants = {
+  hidden: { opacity: 0, y: 12, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.4, ease: EASE_OUT },
+  },
+};
+
 export function useMotionVariants(variants: Variants): Variants {
   const reduce = useReducedMotion();
   if (!reduce) return variants;
