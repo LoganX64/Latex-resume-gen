@@ -3,6 +3,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { Icon } from "@/components/Icon";
 import { useResumeStore } from "@/stores/resume-store";
@@ -41,9 +42,27 @@ interface NavSectionsProps {
 
 export function NavSections({ activeSection, onSectionClick }: NavSectionsProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
+  const { state } = useSidebar();
+  const visibleSections = navSections.filter((item) => {
+    const sectionKey =
+      item.id === "personal"
+        ? "personalInfo"
+        : (item.id as keyof typeof sectionVisibility);
+    return item.id === "personal" || (sectionVisibility[sectionKey] ?? false);
+  }).length;
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="px-3">
+      {state !== "collapsed" && (
+        <div className="mb-2 flex items-center justify-between px-2">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sidebar-foreground/45">
+            Resume sections
+          </span>
+          <span className="font-mono text-[10px] text-sidebar-foreground/40">
+            {visibleSections}/{navSections.length}
+          </span>
+        </div>
+      )}
       <SidebarMenu>
         {navSections.map((item) => {
           const sectionKey =
@@ -62,13 +81,13 @@ export function NavSections({ activeSection, onSectionClick }: NavSectionsProps)
                 tooltip={item.label}
                 className={`${!isVisible ? "opacity-40" : ""} ${
                   activeSection === item.id
-                    ? "bg-primary/10! text-primary! font-semibold border-l-2 border-primary"
+                    ? "bg-sidebar-primary/10! text-sidebar-primary! font-semibold shadow-[inset_3px_0_0_var(--sidebar-primary)]"
                     : ""
                 }`}
               >
                 <Icon
                   icon={item.icon}
-                  className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-primary" : ""}`}
+                  className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-sidebar-primary" : "text-sidebar-foreground/60"}`}
                 />
                 <span>{item.label}</span>
               </SidebarMenuButton>

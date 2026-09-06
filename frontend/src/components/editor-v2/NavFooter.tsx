@@ -24,7 +24,7 @@ export function NavFooter({ stats, onSaveClick }: NavFooterProps) {
   const navigate = useNavigate();
 
   return (
-    <SidebarFooter className="p-2">
+    <SidebarFooter className="gap-2 border-t border-sidebar-border/70 bg-sidebar/80 p-3">
       {state === "collapsed" ? (
         <div className="flex flex-col items-center gap-1 py-1">
           <span
@@ -41,7 +41,7 @@ export function NavFooter({ stats, onSaveClick }: NavFooterProps) {
           </span>
         </div>
       ) : (
-        <div className="flex items-center justify-center gap-1 px-2 py-1.5 text-xs text-sidebar-foreground/60">
+        <div className="flex items-center justify-between rounded-md bg-sidebar-accent/50 px-2.5 py-2 text-[11px] text-sidebar-foreground/55">
           <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
             <Icon icon={faEye} className="h-3.5 w-3.5" />
             <span>
@@ -49,7 +49,7 @@ export function NavFooter({ stats, onSaveClick }: NavFooterProps) {
               {stats.visits !== 1 ? "s" : ""}
             </span>
           </span>
-          <span className="text-sidebar-foreground/30">·</span>
+          <span className="h-3 w-px bg-sidebar-border" />
           <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
             <Icon icon={faDownload} className="h-3.5 w-3.5" />
             <span>
@@ -65,9 +65,10 @@ export function NavFooter({ stats, onSaveClick }: NavFooterProps) {
             size="sm"
             onClick={onSaveClick}
             tooltip="Save as version"
+            className="h-9"
           >
             <Icon icon={faFloppyDisk} className="h-3 w-3 lg:h-4 lg:w-4" />
-            <span>Save Version</span>
+            <span className="font-medium">Save Version</span>
           </SidebarMenuButton>
         </SidebarMenuItem>
         <SidebarMenuItem>

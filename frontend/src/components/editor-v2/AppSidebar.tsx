@@ -7,7 +7,6 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarRail,
-  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -36,8 +35,8 @@ export function AppSidebar({
   }, []);
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
-      <SidebarHeader className={`h-10 sm:h-12 flex ${state === "collapsed" ? "items-center" : "items-start"} justify-center p-0 gap-0`}>
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+      <SidebarHeader className={`h-14 flex ${state === "collapsed" ? "items-center" : "items-start"} justify-center border-b border-sidebar-border/70 p-0 gap-0`}>
         {state === "collapsed" ? (
           <Tooltip>
             <TooltipTrigger
@@ -55,23 +54,23 @@ export function AppSidebar({
             <TooltipContent side="right">Open sidebar</TooltipContent>
           </Tooltip>
         ) : (
-          <div className="flex items-center justify-between w-full h-full px-1">
-            <Link to="/" className="rounded-md hover:bg-sidebar-accent transition-colors">
+          <div className="flex items-center justify-between w-full h-full px-3">
+            <Link to="/" className="rounded-md hover:bg-sidebar-accent transition-colors px-1.5 py-1">
               <img
                 src="/cvstack-logo-light.svg"
                 alt="CVStack Logo"
-                className="h-7 w-auto shrink-0 rounded-md dark:hidden"
+                className="h-7 w-auto shrink-0 dark:hidden"
               />
               <img
                 src="/cvstack-logo-dark.svg"
                 alt="CVStack Logo"
-                className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
+                className="hidden h-7 w-auto shrink-0 dark:block"
               />
             </Link>
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon-xs" className="sm:h-7 sm:w-7 lg:h-8 lg:w-8" onClick={toggleSidebar} aria-label="Close sidebar" />
+                  <Button variant="ghost" size="icon-xs" className="h-8 w-8 text-sidebar-foreground/60 hover:text-sidebar-foreground" onClick={toggleSidebar} aria-label="Close sidebar" />
                 }
               >
                 <PanelLeftIcon className="h-4 w-4 text-rose-500" />
@@ -81,13 +80,12 @@ export function AppSidebar({
           </div>
         )}
       </SidebarHeader>
-      <SidebarContent className="py-2 overflow-y-auto">
+      <SidebarContent className="py-4 overflow-y-auto">
         <NavSections
           activeSection={activeSection}
           onSectionClick={onSectionClick}
         />
       </SidebarContent>
-      <SidebarSeparator />
       <NavFooter stats={stats} onSaveClick={onSaveClick} />
       <SidebarRail />
     </Sidebar>
