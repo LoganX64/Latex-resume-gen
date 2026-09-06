@@ -26,6 +26,8 @@ import { AchievementsForm } from './AchievementsForm'
 import { PublicationsForm } from './PublicationsForm'
 import { LanguagesForm } from './LanguagesForm'
 import { CustomSectionsForm } from './CustomSectionsForm'
+import { m, useReducedMotion } from 'framer-motion'
+import { sectionEntrance } from '@/lib/motion'
 
 const sectionComponents: Record<string, ReactNode> = {
   summary: <SummaryForm />,
@@ -62,6 +64,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
   const reorderSections = useResumeStore((s) => s.reorderSections)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({})
   const scrollRef = useRef<HTMLDivElement>(null)
+  const reduce = useReducedMotion()
 
   useEffect(() => {
     if (!activeSection) return
@@ -94,7 +97,14 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
 
   return (
     <div ref={scrollRef} className="p-2 sm:p-4 space-y-4">
-      <div id="section-personal"><PersonalInfoForm /></div>
+      <m.div
+        variants={sectionEntrance}
+        initial={reduce ? false : "hidden"}
+        animate="visible"
+        transition={{ duration: 3, type: "spring" as const, bounce: 0.2, delay: 0.5 }}
+      >
+        <div id="section-personal"><PersonalInfoForm /></div>
+      </m.div>
 
       <DndContext
         sensors={sensors}
@@ -105,8 +115,15 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
           items={visibleSections.map((s) => s.id)}
           strategy={verticalListSortingStrategy}
         >
-          {visibleSections.map((section) => (
-            <div key={section.id} id={`section-${section.type}`}>
+          {visibleSections.map((section, index) => (
+            <m.div
+              key={section.id}
+              id={`section-${section.type}`}
+              variants={sectionEntrance}
+              initial={reduce ? false : "hidden"}
+              animate="visible"
+              transition={{ duration: 3, type: "spring" as const, bounce: 0.2, delay: 0.5 + (index + 1) * 0.8 }}
+            >
               <SectionWrapper
                 id={section.id}
                 sectionType={section.type}
@@ -116,7 +133,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
               >
                 {sectionComponents[section.type]}
               </SectionWrapper>
-            </div>
+            </m.div>
           ))}
         </SortableContext>
       </DndContext>

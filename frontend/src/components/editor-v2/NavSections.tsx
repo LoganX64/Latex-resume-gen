@@ -20,6 +20,8 @@ import {
   faGlobe,
   faLayerGroup,
 } from "@/lib/icons";
+import { m, useReducedMotion } from "framer-motion";
+import { sectionEntrance } from "@/lib/motion";
 
 const navSections = [
   { id: "personal", icon: faUser, label: "Personal Info" },
@@ -46,6 +48,7 @@ export function NavSections({
 }: NavSectionsProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
   const { state } = useSidebar();
+  const reduce = useReducedMotion();
   const visibleSections = navSections.filter((item) => {
     const sectionKey =
       item.id === "personal"
@@ -67,7 +70,7 @@ export function NavSections({
         </div>
       )}
       <SidebarMenu>
-        {navSections.map((item) => {
+        {navSections.map((item, index) => {
           const sectionKey =
             item.id === "personal"
               ? "personalInfo"
@@ -77,22 +80,29 @@ export function NavSections({
 
           return (
             <SidebarMenuItem key={item.id}>
-              <SidebarMenuButton
-                isActive={activeSection === item.id}
-                onClick={() => onSectionClick?.(item.id)}
-                tooltip={item.label}
-                className={`${!isVisible ? "opacity-40" : ""} ${
-                  activeSection === item.id
-                    ? "bg-sidebar-primary/10! text-sidebar-primary! font-semibold shadow-[inset_3px_0_0_var(--sidebar-primary)]"
-                    : ""
-                }`}
+              <m.div
+                variants={sectionEntrance}
+                initial={reduce ? false : "hidden"}
+                animate="visible"
+                transition={{ duration: 2, type: "spring" as const, bounce: 0.2, delay: index * 0.3 }}
               >
-                <Icon
-                  icon={item.icon}
-                  className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-sidebar-primary" : "text-sidebar-foreground/60"}`}
-                />
-                <span>{item.label}</span>
-              </SidebarMenuButton>
+                <SidebarMenuButton
+                  isActive={activeSection === item.id}
+                  onClick={() => onSectionClick?.(item.id)}
+                  tooltip={item.label}
+                  className={`${!isVisible ? "opacity-40" : ""} ${
+                    activeSection === item.id
+                      ? "bg-sidebar-primary/10! text-sidebar-primary! font-semibold shadow-[inset_3px_0_0_var(--sidebar-primary)]"
+                      : ""
+                  }`}
+                >
+                  <Icon
+                    icon={item.icon}
+                    className={`h-3.5 w-3.5 lg:h-4 lg:w-4 ${activeSection === item.id ? "text-sidebar-primary" : "text-sidebar-foreground/60"}`}
+                  />
+                  <span>{item.label}</span>
+                </SidebarMenuButton>
+              </m.div>
             </SidebarMenuItem>
           );
         })}

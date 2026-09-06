@@ -65,8 +65,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { m, useReducedMotion } from "framer-motion";
-import { splitPaneLeft, splitPaneRight } from "@/lib/motion";
 
 function EditorSplitPaneLeft({
   className,
@@ -75,17 +73,10 @@ function EditorSplitPaneLeft({
   className: string;
   children: React.ReactNode;
 }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
   return (
-    <m.div
-      className={className}
-      variants={splitPaneLeft}
-      initial="hidden"
-      animate="show"
-    >
+    <div className={`${className} animate-slide-in-left`}>
       {children}
-    </m.div>
+    </div>
   );
 }
 
@@ -96,17 +87,10 @@ function EditorSplitPaneRight({
   className: string;
   children: React.ReactNode;
 }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
   return (
-    <m.div
-      className={className}
-      variants={splitPaneRight}
-      initial="hidden"
-      animate="show"
-    >
+    <div className={`${className} animate-slide-in-right`}>
       {children}
-    </m.div>
+    </div>
   );
 }
 
