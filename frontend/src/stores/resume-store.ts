@@ -314,7 +314,7 @@ export const useResumeStore = create<ResumeStore>()(
   persist(
     (set) => ({
     resume: sampleResume,
-      templateId: 'classic',
+      templateId: 'academic',
       sectionOrder: defaultSectionOrder,
       sectionVisibility: defaultSectionVisibility,
       zoom: 100,
@@ -718,7 +718,7 @@ export const useResumeStore = create<ResumeStore>()(
       resetResume: () =>
         set({
           resume: sampleResume,
-          templateId: 'classic',
+          templateId: 'academic',
           sectionOrder: defaultSectionOrder,
           sectionVisibility: defaultSectionVisibility,
           zoom: 100,

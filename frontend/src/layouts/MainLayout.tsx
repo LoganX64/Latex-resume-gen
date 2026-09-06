@@ -154,7 +154,7 @@ export default function MainLayout() {
             <EditorSplitPaneLeft className="flex flex-col w-full lg:w-[55%] min-w-0 border-r border-border">
               <header className="flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">
+                  <h2 className="text-sm sm:text-base font-semibold text-foreground">
                     Resume Editor
                   </h2>
                 </div>
@@ -294,7 +294,7 @@ export default function MainLayout() {
             <EditorSplitPaneRight className="hidden lg:flex lg:flex-col lg:flex-1 min-w-0 relative bg-background">
               <div className="relative z-10 flex items-center justify-between px-4 py-2 h-10 sm:h-12 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xs sm:text-sm font-semibold text-foreground">
+                  <h2 className="text-sm sm:text-base font-semibold text-foreground">
                     Live Preview
                   </h2>
                   <Select

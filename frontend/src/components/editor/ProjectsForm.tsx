@@ -1,12 +1,13 @@
 import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 import {
   DndContext,
   closestCenter,
@@ -70,7 +71,8 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
   }
 
   return (
-    <Card
+    <AnimatedSectionChild
+      index={index}
       ref={setNodeRef}
       style={style}
       className={isDragging ? "opacity-50 bg-muted" : ""}
@@ -79,13 +81,13 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
         <div className="flex items-center gap-2">
           <button
             aria-label={`Drag to reorder project ${index + 1}`}
-            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             {...attributes}
             {...listeners}
           >
             <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
-          <span className="text-[10px] font-medium text-muted-foreground flex-1">
+          <span className="text-xs font-medium text-muted-foreground flex-1">
             Project {index + 1}
           </span>
           <Button
@@ -97,11 +99,11 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <div className="space-y-1">
             <Label
               htmlFor={`proj-name-${project.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Project Name *
             </Label>
@@ -114,13 +116,31 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 updateProject(project.id, "name", e.target.value)
               }
               placeholder="E-Commerce Platform"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
+            />
+          </div>
+          <div className="space-y-1">
+            <Label
+              htmlFor={`proj-role-${project.id}`}
+              className="text-sm sm:text-xs"
+            >
+              Role
+            </Label>
+            <Input
+              id={`proj-role-${project.id}`}
+              name="projectRole"
+              value={project.role}
+              onChange={(e) =>
+                updateProject(project.id, "role", e.target.value)
+              }
+              placeholder="Lead Developer"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
           <div className="space-y-1">
             <Label
               htmlFor={`proj-duration-${project.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Duration
             </Label>
@@ -133,50 +153,30 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 updateProject(project.id, "duration", e.target.value)
               }
               placeholder="2023 - Present"
-              className="h-10 text-base sm:h-7 sm:text-xs"
-            />
-          </div>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-role-${project.id}`}
-              className="text-xs sm:text-[10px]"
-            >
-              Role
-            </Label>
-            <Input
-              id={`proj-role-${project.id}`}
-              name="projectRole"
-              value={project.role}
-              onChange={(e) =>
-                updateProject(project.id, "role", e.target.value)
-              }
-              placeholder="Lead Developer"
-              className="h-10 text-base sm:h-7 sm:text-xs"
-            />
-          </div>
-          <div className="space-y-1">
-            <Label
-              htmlFor={`proj-desc-${project.id}`}
-              className="text-xs sm:text-[10px]"
-            >
-              Description
-            </Label>
-            <Textarea
-              id={`proj-desc-${project.id}`}
-              name="projectDescription"
-              value={project.description}
-              onChange={(e) =>
-                updateProject(project.id, "description", e.target.value)
-              }
-              placeholder="Brief description of the project…"
-              className="min-h-15 text-base sm:text-xs resize-y py-2"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
         </div>
         <div className="space-y-1">
-          <Label className="text-xs sm:text-[10px]">Bullet Points</Label>
+          <Label
+            htmlFor={`proj-desc-${project.id}`}
+            className="text-sm sm:text-xs"
+          >
+            Description
+          </Label>
+          <Textarea
+            id={`proj-desc-${project.id}`}
+            name="projectDescription"
+            value={project.description}
+            onChange={(e) =>
+              updateProject(project.id, "description", e.target.value)
+            }
+            placeholder="Brief description of the project…"
+            className="min-h-15 text-base sm:text-sm resize-y py-2"
+          />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-sm sm:text-xs">Bullet Points</Label>
           {(project.bulletPoints || []).map((bullet, bIndex) => (
             <div key={bIndex} className="flex gap-1">
               <Textarea
@@ -190,7 +190,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 }}
                 placeholder="• Describe a feature or achievement…"
                 aria-label={`Bullet point ${bIndex + 1}`}
-                className="min-h-15 text-base sm:text-xs resize-y py-2"
+                className="min-h-15 text-base sm:text-sm resize-y py-2"
               />
               <Button
                 variant="ghost"
@@ -207,14 +207,14 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-<Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
             </div>
           ))}
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 text-sm sm:h-6 sm:text-[10px]"
+            className="h-9 text-sm sm:h-8 sm:text-sm"
             onClick={() =>
               updateProject(project.id, "bulletPoints", [
                 ...(project.bulletPoints || []),
@@ -230,7 +230,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           {(project.technologies || []).map((tech, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-[10px] max-w-50 truncate"
+              className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-xs max-w-50 truncate"
             >
               {tech}
               <button
@@ -238,7 +238,10 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
                 aria-label={`Remove ${tech}`}
                 className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
               >
-                <Icon icon={faXmark} className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
+                <Icon
+                  icon={faXmark}
+                  className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5"
+                />
               </button>
             </span>
           ))}
@@ -257,12 +260,12 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
             }}
             placeholder="Add technology and press Enter"
             aria-label="New technology name"
-            className="h-10 text-base sm:h-7 sm:text-xs"
+            className="h-10 text-base sm:h-8 sm:text-sm"
           />
           <Button
             variant="outline"
             size="sm"
-            className="h-10 text-sm sm:h-7 sm:text-[10px] px-2"
+            className="h-10 text-sm sm:h-8 sm:text-xs px-2"
             onClick={addTech}
           >
             Add
@@ -272,7 +275,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           <div className="space-y-1">
             <Label
               htmlFor={`proj-github-${project.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               GitHub URL
             </Label>
@@ -287,13 +290,13 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               placeholder="github.com/user/project"
               type="url"
               inputMode="url"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
           <div className="space-y-1">
             <Label
               htmlFor={`proj-demo-${project.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Live Demo URL
             </Label>
@@ -308,12 +311,12 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
               placeholder="project.example.com"
               type="url"
               inputMode="url"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
         </div>
       </CardContent>
-    </Card>
+    </AnimatedSectionChild>
   );
 });
 
@@ -358,7 +361,7 @@ export function ProjectsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addProject}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MonthPicker } from "@/components/ui/month-picker";
@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash } from "@/lib/icons";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 
 export function AchievementsForm() {
   const achievements = useResumeStore((s) => s.resume.achievements);
@@ -17,10 +18,10 @@ export function AchievementsForm() {
   return (
     <div className="space-y-3">
       {achievements.map((ach, index) => (
-        <Card key={ach.id}>
+        <AnimatedSectionChild index={index} key={ach.id}>
           <CardContent className="p-3 space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-medium text-muted-foreground flex-1">
+              <span className="text-xs font-medium text-muted-foreground flex-1">
                 Achievement {index + 1}
               </span>
               <Button
@@ -36,7 +37,7 @@ export function AchievementsForm() {
               <div className="space-y-1">
                 <Label
                   htmlFor={`ach-title-${ach.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   Title *
                 </Label>
@@ -49,13 +50,13 @@ export function AchievementsForm() {
                     updateAchievement(ach.id, "title", e.target.value)
                   }
                   placeholder="Best Innovation Award"
-                  className="h-10 text-base sm:h-7 sm:text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
                 />
               </div>
               <div className="space-y-1">
                 <Label
                   htmlFor={`ach-date-${ach.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   Date
                 </Label>
@@ -65,14 +66,14 @@ export function AchievementsForm() {
                   onValueChange={(val) =>
                     updateAchievement(ach.id, "date", val)
                   }
-                  className="h-10 text-base sm:h-7 sm:text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
                 />
               </div>
             </div>
             <div className="space-y-1">
               <Label
                 htmlFor={`ach-desc-${ach.id}`}
-                className="text-xs sm:text-[10px]"
+                className="text-xs sm:text-xs"
               >
                 Description
               </Label>
@@ -84,16 +85,16 @@ export function AchievementsForm() {
                   updateAchievement(ach.id, "description", e.target.value)
                 }
                 placeholder="Brief description of the achievement…"
-                className="min-h-15 text-base sm:text-xs resize-y py-2"
+                className="min-h-15 text-base sm:text-sm resize-y py-2"
               />
             </div>
           </CardContent>
-        </Card>
+        </AnimatedSectionChild>
       ))}
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addAchievement}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

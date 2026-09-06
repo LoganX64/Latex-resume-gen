@@ -1,7 +1,8 @@
 import { memo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash, faXmark, faGripVertical } from "@/lib/icons";
@@ -65,7 +66,8 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
   }
 
   return (
-    <Card
+    <AnimatedSectionChild
+      index={index}
       ref={setNodeRef}
       style={style}
       className={isDragging ? "opacity-50 bg-muted" : ""}
@@ -74,21 +76,51 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
         <div className="flex items-center gap-2">
           <button
             aria-label={`Drag to reorder ${category.name || "skill category"}`}
-            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             {...attributes}
             {...listeners}
           >
             <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
-          <Input
-            name="skillCategoryName"
-            autoComplete="off"
-            value={category.name}
-            onChange={(e) => updateSkillCategory(category.id, e.target.value)}
-            placeholder="Category name (e.g., Programming Languages)"
-            aria-label="Skill category name"
-            className="h-10 text-base sm:h-7 sm:text-xs flex-1"
-          />
+
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <Input
+              name="skillCategoryName"
+              autoComplete="off"
+              value={category.name}
+              onChange={(e) => updateSkillCategory(category.id, e.target.value)}
+              placeholder="Category name (e.g., Programming Languages)"
+              aria-label="Skill category name"
+              className="h-10 text-base sm:h-8 sm:text-sm flex-1 min-w-0"
+            />
+
+            <div className="flex min-w-[220px] max-w-[300px] flex-1 items-center gap-1">
+              <Input
+                name="newSkill"
+                autoComplete="off"
+                value={newSkill}
+                onChange={(e) => setNewSkill(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addSkill();
+                  }
+                }}
+                placeholder="Type a skill and press Enter…"
+                aria-label="New skill name"
+                className="h-10 text-base sm:h-8 sm:text-sm flex-1 min-w-0"
+              />
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-10 shrink-0 px-2 text-sm sm:h-8 sm:text-xs"
+                onClick={addSkill}
+              >
+                Add
+              </Button>
+            </div>
+          </div>
+
           <Button
             variant="ghost"
             size="icon-xs"
@@ -102,46 +134,24 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
           {category.skills.map((skill, sIndex) => (
             <span
               key={sIndex}
-              className="inline-flex items-center gap-1 bg-secondary text-secondary-foreground rounded-md px-2 py-1 sm:py-0.5 text-sm sm:text-[10px] max-w-50 truncate"
+              className="inline-flex max-w-[200px] min-w-0 items-center gap-1 rounded-md bg-secondary px-2 py-1 text-sm text-secondary-foreground sm:py-0.5 sm:text-xs"
             >
-              {skill}
+              <span className="min-w-0 truncate">{skill}</span>
               <button
                 onClick={() => removeSkill(sIndex)}
                 aria-label={`Remove ${skill}`}
-                className="flex items-center justify-center min-w-5 min-h-5 sm:min-w-0 sm:min-h-0 text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm -mr-1 shrink-0"
+                className="flex shrink-0 items-center justify-center rounded-sm text-rose-500 hover:text-rose-500/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 min-w-5 min-h-5 sm:min-w-0 sm:min-h-0"
               >
-                <Icon icon={faXmark} className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5" />
+                <Icon
+                  icon={faXmark}
+                  className="h-3.5 w-3.5 sm:h-2.5 sm:w-2.5"
+                />
               </button>
             </span>
           ))}
         </div>
-        <div className="flex gap-1">
-          <Input
-            name="newSkill"
-            autoComplete="off"
-            value={newSkill}
-            onChange={(e) => setNewSkill(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.preventDefault();
-                addSkill();
-              }
-            }}
-            placeholder="Type a skill and press Enter…"
-            aria-label="New skill name"
-            className="h-10 text-base sm:h-7 sm:text-xs"
-          />
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-10 text-sm sm:h-7 sm:text-[10px] px-2"
-            onClick={addSkill}
-          >
-            Add
-          </Button>
-        </div>
       </CardContent>
-    </Card>
+    </AnimatedSectionChild>
   );
 });
 
@@ -188,7 +198,7 @@ export function SkillsForm() {
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addSkillCategory}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

@@ -25,7 +25,9 @@ import {
   useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-
+import { AnimatePresence, m } from "framer-motion";
+import { DURATION, EASE_OUT } from "@/lib/motion";
+import { useSectionAnimation } from "./SectionAnimationContext";
 
 const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
@@ -40,6 +42,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
     (s) => s.updateExperienceBulletPoints,
   );
   const removeExperience = useResumeStore((s) => s.removeExperience);
+  const { collapsed } = useSectionAnimation();
 
   const {
     attributes,
@@ -58,22 +61,41 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
   if (!experience) return null;
 
   return (
-    <Card
+    <m.div
       ref={setNodeRef}
       style={style}
-      className={isDragging ? "opacity-50 bg-muted" : ""}
+      layout="position"
+      initial={{ opacity: 0, y: 14, scale: 0.98 }}
+      animate={{
+        opacity: collapsed ? 0 : 1,
+        y: collapsed ? 14 : 0,
+        scale: collapsed ? 0.98 : 1,
+      }}
+      exit={{ opacity: 0, y: -8, scale: 0.98 }}
+      transition={{
+        layout: { duration: DURATION.slow, ease: EASE_OUT },
+        opacity: { duration: DURATION.base, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
+        y: { duration: DURATION.slow, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
+        scale: { duration: DURATION.slow, ease: EASE_OUT, delay: collapsed ? 0 : index * 0.06 },
+      }}
     >
-      <CardContent className="p-3 space-y-2">
+      <Card className={isDragging ? "opacity-50 bg-muted" : ""}>
+        <m.div
+          data-slot="card-content"
+          className="p-3 space-y-2"
+          layout
+          transition={{ layout: { duration: DURATION.base, ease: EASE_OUT } }}
+        >
         <div className="flex items-center gap-2">
           <button
             aria-label={`Drag to reorder experience ${index + 1}`}
-            className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+            className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
             {...attributes}
             {...listeners}
           >
             <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
           </button>
-          <span className="text-[10px] font-medium text-muted-foreground flex-1">
+          <span className="text-xs font-medium text-muted-foreground flex-1">
             Experience {index + 1}
           </span>
           <Button
@@ -89,7 +111,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           <div className="space-y-1">
             <Label
               htmlFor={`exp-company-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Company *
             </Label>
@@ -102,13 +124,13 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 updateExperience(experience.id, "company", e.target.value)
               }
               placeholder="Google"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
           <div className="space-y-1">
             <Label
               htmlFor={`exp-position-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Position *
             </Label>
@@ -121,7 +143,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 updateExperience(experience.id, "position", e.target.value)
               }
               placeholder="Senior Software Engineer"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
         </div>
@@ -129,7 +151,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           <div className="space-y-1">
             <Label
               htmlFor={`exp-location-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Location
             </Label>
@@ -142,13 +164,13 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 updateExperience(experience.id, "location", e.target.value)
               }
               placeholder="Mountain View, CA"
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
           <div className="space-y-1">
             <Label
               htmlFor={`exp-start-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Start Date *
             </Label>
@@ -158,13 +180,13 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
               onValueChange={(val) =>
                 updateExperience(experience.id, "startDate", val)
               }
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
           <div className="space-y-1">
             <Label
               htmlFor={`exp-end-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               End Date
             </Label>
@@ -175,7 +197,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 updateExperience(experience.id, "endDate", val)
               }
               disabled={experience.current}
-              className="h-10 text-base sm:h-7 sm:text-xs"
+              className="h-10 text-base sm:h-8 sm:text-sm"
             />
           </div>
         </div>
@@ -190,21 +212,26 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             />
             <Label
               htmlFor={`current-${experience.id}`}
-              className="text-xs sm:text-[10px]"
+              className="text-sm sm:text-xs"
             >
               Currently working here
             </Label>
           </div>
         </div>
         <div className="space-y-1">
-          <Label className="text-xs sm:text-[10px]">Bullet Points</Label>
+          <Label className="text-sm sm:text-xs">Bullet Points</Label>
           {experience.bulletPoints.length === 0 && (
-            <p className="text-[10px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               No bullet points yet
             </p>
           )}
           {experience.bulletPoints.map((bullet, bIndex) => (
-            <div key={bIndex} className="flex gap-1">
+            <m.div
+              key={bIndex}
+              layout
+              className="flex gap-1"
+              transition={{ layout: { duration: DURATION.base, ease: EASE_OUT } }}
+            >
               <Textarea
                 name="expBulletPoint"
                 autoComplete="off"
@@ -216,7 +243,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 }}
                 placeholder="• Describe your achievement…"
                 aria-label={`Bullet point ${bIndex + 1}`}
-                className="min-h-15 text-base sm:text-xs resize-y py-2"
+                className="min-h-15 text-base sm:text-sm resize-y py-2"
               />
               <Button
                 variant="ghost"
@@ -232,14 +259,14 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
                 }}
                 aria-label={`Remove bullet point ${bIndex + 1}`}
               >
-<Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
               </Button>
-            </div>
+            </m.div>
           ))}
           <Button
             variant="ghost"
             size="sm"
-            className="h-9 text-sm sm:h-6 sm:text-[10px]"
+            className="h-9 text-sm sm:h-7 sm:text-xs"
             onClick={() =>
               updateExperienceBulletPoints(experience.id, [
                 ...experience.bulletPoints,
@@ -251,8 +278,9 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
             Add Bullet
           </Button>
         </div>
-      </CardContent>
-    </Card>
+        </m.div>
+      </Card>
+    </m.div>
   );
 });
 
@@ -289,15 +317,17 @@ export function ExperienceForm() {
           items={experience.map((e) => e.id)}
           strategy={verticalListSortingStrategy}
         >
-          {experience.map((exp, index) => (
-            <SortableExperienceEntry key={exp.id} id={exp.id} index={index} />
-          ))}
+          <AnimatePresence initial={false} mode="popLayout">
+            {experience.map((exp, index) => (
+              <SortableExperienceEntry key={exp.id} id={exp.id} index={index} />
+            ))}
+          </AnimatePresence>
         </SortableContext>
       </DndContext>
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addExperience}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

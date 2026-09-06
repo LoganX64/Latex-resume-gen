@@ -9,16 +9,16 @@ export function PersonalInfoForm() {
   const updatePersonalInfo = useResumeStore((s) => s.updatePersonalInfo)
 
   return (
-    <Card className="relative bg-background/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm overflow-hidden">
+    <Card className="relative bg-background/60 backdrop-blur-sm border border-border/60 hover:border-primary/40 shadow-sm overflow-hidden gap-0">
       <CardHeader className="py-2.5 px-3">
-        <CardTitle className="text-xs sm:text-sm font-semibold text-foreground">Personal Information</CardTitle>
+        <CardTitle className="text-sm sm:text-base font-semibold text-foreground">Personal Information</CardTitle>
       </CardHeader>
-      <CardContent className="px-3 pb-3 pt-3">
+      <CardContent className="px-3 pb-3 pt-1">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="fullName" className="text-sm sm:text-[11px]">Full Name *</Label>
+                <Label htmlFor="fullName" className="text-sm sm:text-xs">Full Name *</Label>
                 <Input
                   id="fullName"
                   name="fullName"
@@ -30,7 +30,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="professionalTitle" className="text-sm sm:text-[11px]">Professional Title</Label>
+                <Label htmlFor="professionalTitle" className="text-sm sm:text-xs">Professional Title</Label>
                 <Input
                   id="professionalTitle"
                   name="professionalTitle"
@@ -44,7 +44,7 @@ export function PersonalInfoForm() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-sm sm:text-[11px]">Email *</Label>
+                <Label htmlFor="email" className="text-sm sm:text-xs">Email *</Label>
                 <Input
                   id="email"
                   name="email"
@@ -58,7 +58,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="phone" className="text-sm sm:text-[11px]">Phone *</Label>
+                <Label htmlFor="phone" className="text-sm sm:text-xs">Phone *</Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -73,7 +73,7 @@ export function PersonalInfoForm() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="location" className="text-sm sm:text-[11px]">Location *</Label>
+              <Label htmlFor="location" className="text-sm sm:text-xs">Location *</Label>
                 <Input
                   id="location"
                   name="location"
@@ -86,7 +86,7 @@ export function PersonalInfoForm() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="linkedin" className="text-sm sm:text-[11px]">LinkedIn</Label>
+                <Label htmlFor="linkedin" className="text-sm sm:text-xs">LinkedIn</Label>
                 <Input
                   id="linkedin"
                   name="linkedin"
@@ -100,7 +100,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="github" className="text-sm sm:text-[11px]">GitHub</Label>
+                <Label htmlFor="github" className="text-sm sm:text-xs">GitHub</Label>
                 <Input
                   id="github"
                   name="github"
@@ -114,7 +114,7 @@ export function PersonalInfoForm() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="website" className="text-sm sm:text-[11px]">Website</Label>
+                <Label htmlFor="website" className="text-sm sm:text-xs">Website</Label>
                 <Input
                   id="website"
                   name="website"

@@ -10,6 +10,7 @@ import { PageTransition } from '@/components/motion/PageTransition'
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const MainLayout = lazy(() => import('@/layouts/MainLayout'))
 const MobileLayout = lazy(() => import('@/layouts/MobileLayout'))
+const EditorV2Layout = lazy(() => import('@/layouts/EditorV2Layout'))
 const StatsDashboard = lazy(() => import('@/pages/StatsDashboard'))
 
 const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes)
@@ -37,6 +38,14 @@ function AppRoutes() {
           element={
             <PageTransition>
               <EditorRoute />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/editor-v2"
+          element={
+            <PageTransition>
+              <EditorV2Layout />
             </PageTransition>
           }
         />

@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 
 export function LanguagesForm() {
   const languages = useResumeStore((s) => s.resume.languages);
@@ -20,7 +21,7 @@ export function LanguagesForm() {
   return (
     <div className="space-y-1.5">
       {languages.map((lang, index) => (
-        <div key={lang.id} className="flex items-center gap-2">
+        <AnimatedSectionChild index={index} key={lang.id} variant="plain" className="flex items-center gap-2">
           <Input
             name="langName"
             autoComplete="off"
@@ -57,7 +58,7 @@ export function LanguagesForm() {
           >
             <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
           </Button>
-        </div>
+        </AnimatedSectionChild>
       ))}
       <Button
         variant="outline"

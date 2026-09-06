@@ -18,9 +18,9 @@ export function SummaryForm() {
         value={summary}
         onChange={(e) => updateSummary(e.target.value)}
         placeholder="Experienced software engineer with 5+ years of expertise in full-stack development, specializing in React, Node.js, and cloud infrastructure…"
-        className="min-h-25 text-base sm:text-xs resize-y py-2"
+        className="min-h-25 text-base sm:text-sm resize-y py-2"
       />
-      <p className="text-[10px] text-muted-foreground">
+      <p className="text-xs text-muted-foreground">
         {summary.length}/500 characters recommended
       </p>
     </div>

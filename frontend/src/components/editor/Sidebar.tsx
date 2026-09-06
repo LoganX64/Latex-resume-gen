@@ -91,7 +91,7 @@ export function AppSidebar({
                 className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
               />
               <div className="flex flex-col leading-tight">
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-xs text-muted-foreground">
                   IT Professional Resume Builder
                 </span>
               </div>

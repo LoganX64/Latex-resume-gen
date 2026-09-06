@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MonthPicker } from "@/components/ui/month-picker";
@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash } from "@/lib/icons";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 
 export function PublicationsForm() {
   const publications = useResumeStore((s) => s.resume.publications);
@@ -17,10 +18,10 @@ export function PublicationsForm() {
   return (
     <div className="space-y-3">
       {publications.map((pub, index) => (
-        <Card key={pub.id}>
+        <AnimatedSectionChild index={index} key={pub.id}>
           <CardContent className="p-3 space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-medium text-muted-foreground flex-1">
+              <span className="text-xs font-medium text-muted-foreground flex-1">
                 Publication {index + 1}
               </span>
               <Button
@@ -35,7 +36,7 @@ export function PublicationsForm() {
             <div className="space-y-1">
               <Label
                 htmlFor={`pub-title-${pub.id}`}
-                className="text-xs sm:text-[10px]"
+                className="text-xs sm:text-xs"
               >
                 Title *
               </Label>
@@ -48,14 +49,14 @@ export function PublicationsForm() {
                   updatePublication(pub.id, "title", e.target.value)
                 }
                 placeholder="Research paper or article title"
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <div className="space-y-1">
                 <Label
                   htmlFor={`pub-publisher-${pub.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   Publisher *
                 </Label>
@@ -68,13 +69,13 @@ export function PublicationsForm() {
                     updatePublication(pub.id, "publisher", e.target.value)
                   }
                   placeholder="IEEE / ACM"
-                  className="h-10 text-base sm:h-7 sm:text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
                 />
               </div>
               <div className="space-y-1">
                 <Label
                   htmlFor={`pub-date-${pub.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   Date *
                 </Label>
@@ -84,7 +85,7 @@ export function PublicationsForm() {
                   onValueChange={(val) =>
                     updatePublication(pub.id, "date", val)
                   }
-                  className="h-10 text-base sm:h-7 sm:text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
                 />
               </div>
             </div>
@@ -92,7 +93,7 @@ export function PublicationsForm() {
               <div className="space-y-1">
                 <Label
                   htmlFor={`pub-url-${pub.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   URL
                 </Label>
@@ -107,13 +108,13 @@ export function PublicationsForm() {
                   placeholder="https://…"
                   type="url"
                   inputMode="url"
-                  className="h-10 text-base sm:h-7 sm:text-xs"
+                  className="h-10 text-base sm:h-8 sm:text-sm"
                 />
               </div>
               <div className="space-y-1">
                 <Label
                   htmlFor={`pub-desc-${pub.id}`}
-                  className="text-xs sm:text-[10px]"
+                  className="text-xs sm:text-xs"
                 >
                   Description
                 </Label>
@@ -125,17 +126,17 @@ export function PublicationsForm() {
                     updatePublication(pub.id, "description", e.target.value)
                   }
                   placeholder="Brief description…"
-                  className="min-h-10 text-base sm:text-xs resize-y py-2"
+                  className="min-h-10 text-base sm:text-sm resize-y py-2"
                 />
               </div>
             </div>
           </CardContent>
-        </Card>
+        </AnimatedSectionChild>
       ))}
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addPublication}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useResumeStore } from "@/stores/resume-store";
 import { Icon } from "@/components/Icon";
 import { faPlus, faTrash } from "@/lib/icons";
+import { AnimatedSectionChild } from "./AnimatedSectionChild";
 
 export function CustomSectionsForm() {
   const customSections = useResumeStore((s) => s.resume.customSections);
@@ -16,10 +17,10 @@ export function CustomSectionsForm() {
   return (
     <div className="space-y-3">
       {customSections.map((section, index) => (
-        <Card key={section.id}>
+        <AnimatedSectionChild index={index} key={section.id}>
           <CardContent className="p-3 space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-medium text-muted-foreground flex-1">
+              <span className="text-xs font-medium text-muted-foreground flex-1">
                 Custom Section {index + 1}
               </span>
               <Button
@@ -34,7 +35,7 @@ export function CustomSectionsForm() {
             <div className="space-y-1">
               <Label
                 htmlFor={`custom-title-${section.id}`}
-                className="text-xs sm:text-[10px]"
+                className="text-xs sm:text-xs"
               >
                 Section Title *
               </Label>
@@ -47,13 +48,13 @@ export function CustomSectionsForm() {
                   updateCustomSection(section.id, "title", e.target.value)
                 }
                 placeholder="e.g., Volunteer Experience"
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
             <div className="space-y-1">
               <Label
                 htmlFor={`custom-content-${section.id}`}
-                className="text-xs sm:text-[10px]"
+                className="text-xs sm:text-xs"
               >
                 Content *
               </Label>
@@ -65,16 +66,16 @@ export function CustomSectionsForm() {
                   updateCustomSection(section.id, "content", e.target.value)
                 }
                 placeholder="Enter content for this section…"
-                className="min-h-20 text-base sm:text-xs resize-y py-2"
+                className="min-h-20 text-base sm:text-sm resize-y py-2"
               />
             </div>
           </CardContent>
-        </Card>
+        </AnimatedSectionChild>
       ))}
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addCustomSection}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

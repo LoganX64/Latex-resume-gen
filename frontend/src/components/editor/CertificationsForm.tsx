@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { MonthPicker } from '@/components/ui/month-picker'
 import { useResumeStore } from '@/stores/resume-store'
 import { Icon } from '@/components/Icon'
 import { faPlus, faTrash } from '@/lib/icons'
+import { AnimatedSectionChild } from './AnimatedSectionChild'
 
 export function CertificationsForm() {
   const certifications = useResumeStore((s) => s.resume.certifications)
@@ -16,10 +17,10 @@ export function CertificationsForm() {
   return (
     <div className="space-y-3">
       {certifications.map((cert, index) => (
-        <Card key={cert.id}>
+        <AnimatedSectionChild index={index} key={cert.id}>
           <CardContent className="p-3 space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-medium text-muted-foreground flex-1">
+            <span className="text-xs font-medium text-muted-foreground flex-1">
               Certification {index + 1}
             </span>
             <Button
@@ -33,7 +34,7 @@ export function CertificationsForm() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`cert-name-${cert.id}`} className="text-xs sm:text-[10px]">Name *</Label>
+              <Label htmlFor={`cert-name-${cert.id}`} className="text-xs sm:text-xs">Name *</Label>
               <Input
                 id={`cert-name-${cert.id}`}
                 name="certName"
@@ -41,11 +42,11 @@ export function CertificationsForm() {
                 value={cert.name}
                 onChange={(e) => updateCertification(cert.id, 'name', e.target.value)}
                 placeholder="AWS Solutions Architect"
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`cert-issuer-${cert.id}`} className="text-xs sm:text-[10px]">Issuer *</Label>
+              <Label htmlFor={`cert-issuer-${cert.id}`} className="text-xs sm:text-xs">Issuer *</Label>
               <Input
                 id={`cert-issuer-${cert.id}`}
                 name="certIssuer"
@@ -53,22 +54,22 @@ export function CertificationsForm() {
                 value={cert.issuer}
                 onChange={(e) => updateCertification(cert.id, 'issuer', e.target.value)}
                 placeholder="Amazon Web Services"
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <Label htmlFor={`cert-date-${cert.id}`} className="text-xs sm:text-[10px]">Date *</Label>
+              <Label htmlFor={`cert-date-${cert.id}`} className="text-xs sm:text-xs">Date *</Label>
               <MonthPicker
                 id={`cert-date-${cert.id}`}
                 value={cert.date}
                 onValueChange={(val) => updateCertification(cert.id, 'date', val)}
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor={`cert-url-${cert.id}`} className="text-xs sm:text-[10px]">URL</Label>
+              <Label htmlFor={`cert-url-${cert.id}`} className="text-xs sm:text-xs">URL</Label>
               <Input
                 id={`cert-url-${cert.id}`}
                 name="certUrl"
@@ -78,17 +79,17 @@ export function CertificationsForm() {
                 placeholder="https://…"
                 type="url"
                 inputMode="url"
-                className="h-10 text-base sm:h-7 sm:text-xs"
+                className="h-10 text-base sm:h-8 sm:text-sm"
               />
             </div>
           </div>
           </CardContent>
-        </Card>
+        </AnimatedSectionChild>
       ))}
       <Button
         variant="outline"
         size="sm"
-        className="h-10 text-base sm:h-7 sm:text-xs w-full"
+        className="h-10 text-base sm:h-8 sm:text-sm w-full"
         onClick={addCertification}
       >
         <Icon icon={faPlus} className="h-3 w-3 mr-1" aria-hidden="true" />

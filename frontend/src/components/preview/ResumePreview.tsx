@@ -38,6 +38,7 @@ interface ResumePreviewProps {
   onZoomChange?: (zoom: ZoomLevel) => void;
   fullscreen?: boolean;
   onToggleFullscreen?: () => void;
+  toolbarActions?: React.ReactNode;
 }
 
 export function ResumePreview({
@@ -47,6 +48,7 @@ export function ResumePreview({
   onZoomChange,
   fullscreen: externalFullscreen,
   onToggleFullscreen,
+  toolbarActions,
 }: ResumePreviewProps) {
   const storeZoom = useResumeStore((s) => s.zoom);
   const setStoreZoom = useResumeStore((s) => s.setZoom);
@@ -469,7 +471,7 @@ export function ResumePreview({
     <>
       <div className="flex flex-col h-full">
         {!hideToolbar && (
-          <div className="flex items-center justify-between px-3 py-1.5 border-b border-border bg-background/95 backdrop-blur">
+          <div className="flex items-center justify-between px-3 py-1.5 border-b border-border backdrop-blur">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-[9px] sm:text-[10px] text-muted-foreground">
                 A4 Page Preview
@@ -477,6 +479,7 @@ export function ResumePreview({
               <span className="text-[8px] sm:text-[9px] text-muted-foreground italic">
                 (approximate)
               </span>
+              {toolbarActions}
               {isOverflowing && (
                 <span className="inline-flex items-center gap-1 text-[9px] sm:text-[10px] text-amber-600">
                   <Icon icon={faTriangleExclamation} className="h-3 w-3" />
@@ -488,7 +491,7 @@ export function ResumePreview({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="size-7 sm:size-5"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
                 onClick={() => cycleZoom("out")}
                 disabled={zoom === 50}
                 aria-label="Zoom out"
@@ -529,7 +532,7 @@ export function ResumePreview({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="size-7 sm:size-5"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
                 onClick={() => cycleZoom("in")}
                 disabled={zoom === 150}
                 aria-label="Zoom in"
@@ -539,7 +542,7 @@ export function ResumePreview({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="size-7 sm:size-5"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
                 onClick={toggleFullscreen}
                 aria-label="Full screen"
               >

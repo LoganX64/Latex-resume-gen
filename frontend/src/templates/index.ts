@@ -64,5 +64,5 @@ export function getTemplateConfig(id: string): TemplateConfig | undefined {
 }
 
 export function getAllTemplateConfigs(): TemplateConfig[] {
-  return Object.values(configs)
+  return Object.values(configs).sort((a, b) => a.name.localeCompare(b.name))
 }
