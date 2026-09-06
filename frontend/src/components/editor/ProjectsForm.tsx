@@ -14,6 +14,7 @@ import {
   faChevronDown,
 } from "@/lib/icons";
 import { m } from "framer-motion";
+import { ScrollRevealCard } from "./ScrollRevealCard";
 import {
   DndContext,
   closestCenter,
@@ -83,6 +84,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
       style={style}
       className={`flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] ${isDragging ? "opacity-50 bg-muted" : ""}`}
     >
+      <ScrollRevealCard>
       <CardContent className="p-3">
         <div className="flex items-center gap-2">
           <button
@@ -358,6 +360,7 @@ const SortableProjectEntry = memo(function SortableProjectEntry({
           </div>
         </m.div>
       </CardContent>
+      </ScrollRevealCard>
     </div>
   );
 });

@@ -68,7 +68,7 @@ export function EditorPanel({ activeSection }: EditorPanelProps) {
     if (!activeSection) return
     const el = document.getElementById(`section-${activeSection}`)
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }, [activeSection])
 

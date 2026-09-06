@@ -115,11 +115,11 @@ export const sectionEntrance: Variants = {
 };
 
 export const editorSection: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: EASE_OUT },
+    transition: { duration: 0.3, ease: EASE_OUT },
   },
 };
 

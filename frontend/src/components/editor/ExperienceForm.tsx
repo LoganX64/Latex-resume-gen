@@ -27,6 +27,7 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { AnimatePresence, m } from "framer-motion";
 import { DURATION, EASE_OUT } from "@/lib/motion";
+import { ScrollRevealCard } from "./ScrollRevealCard";
 
 const SortableExperienceEntry = memo(function SortableExperienceEntry({
   id,
@@ -64,7 +65,8 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
       style={style}
       className={isDragging ? "opacity-50 bg-muted" : ""}
     >
-      <Card>
+      <ScrollRevealCard>
+        <Card>
         <m.div
           data-slot="card-content"
           className="p-3"
@@ -315,6 +317,7 @@ const SortableExperienceEntry = memo(function SortableExperienceEntry({
           </m.div>
         </m.div>
       </Card>
+      </ScrollRevealCard>
     </div>
   );
 });
