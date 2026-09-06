@@ -9,7 +9,11 @@ import {
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { PanelLeftIcon } from "@/components/PanelLeftIcon";
 import { NavSections } from "@/components/editor-v2/NavSections";
@@ -35,13 +39,22 @@ export function AppSidebar({
   }, []);
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
-      <SidebarHeader className={`h-14 flex ${state === "collapsed" ? "items-center" : "items-start"} justify-center border-b border-sidebar-border/70 p-0 gap-0`}>
+    <Sidebar
+      collapsible="icon"
+      className="border-r border-sidebar-border bg-sidebar"
+    >
+      <SidebarHeader
+        className={`h-14 flex ${state === "collapsed" ? "items-center" : "items-start"} justify-center border-b border-sidebar-border/70 p-0 gap-0`}
+      >
         {state === "collapsed" ? (
           <Tooltip>
             <TooltipTrigger
               render={
-                <button onClick={toggleSidebar} className="group/logo relative flex items-center justify-center rounded-md" aria-label="Open sidebar">
+                <button
+                  onClick={toggleSidebar}
+                  className="group/logo relative flex items-center justify-center rounded-md"
+                  aria-label="Open sidebar"
+                >
                   <img
                     src="/logo.svg"
                     alt="Logo"
@@ -55,7 +68,10 @@ export function AppSidebar({
           </Tooltip>
         ) : (
           <div className="flex items-center justify-between w-full h-full px-3">
-            <Link to="/" className="rounded-md hover:bg-sidebar-accent transition-colors px-1.5 py-1">
+            <Link
+              to="/"
+              className="rounded-md hover:bg-sidebar-accent transition-colors px-1.5 py-1"
+            >
               <img
                 src="/cvstack-logo-light.svg"
                 alt="CVStack Logo"
@@ -70,7 +86,13 @@ export function AppSidebar({
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon-xs" className="h-8 w-8 text-sidebar-foreground/60 hover:text-sidebar-foreground" onClick={toggleSidebar} aria-label="Close sidebar" />
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="h-8 w-8 text-sidebar-foreground/60 hover:text-sidebar-foreground"
+                    onClick={toggleSidebar}
+                    aria-label="Close sidebar"
+                  />
                 }
               >
                 <PanelLeftIcon className="h-4 w-4 text-rose-500" />

@@ -7,12 +7,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Icon } from "@/components/Icon";
-import {
-  faFloppyDisk,
-  faHouse,
-  faEye,
-  faDownload,
-} from "@/lib/icons";
+import { faFloppyDisk, faHouse, faEye, faDownload } from "@/lib/icons";
 
 interface NavFooterProps {
   stats: { visits: number; downloads: number };
@@ -37,7 +32,10 @@ export function NavFooter({ stats, onSaveClick }: NavFooterProps) {
             className="flex items-center justify-center w-7 h-7 rounded hover:bg-sidebar-accent transition-colors cursor-default"
             title={`${stats.downloads.toLocaleString()} download${stats.downloads !== 1 ? "s" : ""}`}
           >
-            <Icon icon={faDownload} className="h-4 w-4 text-sidebar-foreground/60" />
+            <Icon
+              icon={faDownload}
+              className="h-4 w-4 text-sidebar-foreground/60"
+            />
           </span>
         </div>
       ) : (

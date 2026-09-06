@@ -40,7 +40,10 @@ interface NavSectionsProps {
   onSectionClick?: (id: string) => void;
 }
 
-export function NavSections({ activeSection, onSectionClick }: NavSectionsProps) {
+export function NavSections({
+  activeSection,
+  onSectionClick,
+}: NavSectionsProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
   const { state } = useSidebar();
   const visibleSections = navSections.filter((item) => {
@@ -70,8 +73,7 @@ export function NavSections({ activeSection, onSectionClick }: NavSectionsProps)
               ? "personalInfo"
               : (item.id as keyof typeof sectionVisibility);
           const isVisible =
-            item.id === "personal" ||
-            (sectionVisibility[sectionKey] ?? false);
+            item.id === "personal" || (sectionVisibility[sectionKey] ?? false);
 
           return (
             <SidebarMenuItem key={item.id}>
