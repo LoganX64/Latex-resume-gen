@@ -336,7 +336,13 @@ export function ResumePreview({
   useEffect(() => {
     if (!isFullscreen) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") toggleFullscreen();
+      if (e.key === "Escape") {
+        if (onToggleFullscreen) {
+          onToggleFullscreen();
+        } else {
+          setInternalFullscreen(false);
+        }
+      }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -470,7 +476,7 @@ export function ResumePreview({
   return (
     <>
       <div className="flex flex-col h-full">
-        {!hideToolbar && (
+        {!hideToolbar && !isFullscreen && (
           <div className="flex items-center justify-between px-3 py-1.5 border-b border-border backdrop-blur">
             <div className="flex items-center gap-2 min-w-0">
               <span className="text-[9px] sm:text-[10px] text-muted-foreground">
@@ -590,67 +596,14 @@ export function ResumePreview({
         {renderPageContent()}
       </div>
 
-      {isFullscreen && externalFullscreen === undefined && (
-        <div
-          className="fixed inset-0 z-100 bg-gray-900 overflow-auto p-4"
-          style={{ overscrollBehavior: "contain" }}
+      {isFullscreen && (
+        <button
+          onClick={toggleFullscreen}
+          className="fixed top-4 right-4 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
+          aria-label="Exit full screen"
         >
-          <div
-            style={{
-              width: A4_WIDTH_PX * displayScale,
-              height: totalScaledHeight * displayScale,
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                transform: `scale(${displayScale})`,
-                transformOrigin: "top left",
-                width: A4_WIDTH_PX,
-              }}
-            >
-              {a4Content}
-            </div>
-          </div>
-          <div className="fixed bottom-6 right-6 z-100 flex flex-col gap-2">
-            <Button
-              variant="secondary"
-              size="icon"
-              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
-              onClick={() => cycleZoom("in")}
-              disabled={zoom === 150}
-              aria-label="Zoom in"
-            >
-              <Icon icon={faMagnifyingGlassPlus} className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="icon"
-              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
-              onClick={() => cycleZoom("out")}
-              disabled={zoom === 50}
-              aria-label="Zoom out"
-            >
-              <Icon icon={faMagnifyingGlassMinus} className="h-5 w-5" />
-            </Button>
-            <Button
-              variant="secondary"
-              size="icon"
-              className="h-12 w-12 rounded-full shadow-lg bg-background/90 backdrop-blur"
-              onClick={() => setZoom("fit")}
-              aria-label="Fit to screen"
-            >
-              <Icon icon={faExpand} className="h-5 w-5" />
-            </Button>
-          </div>
-          <button
-            onClick={toggleFullscreen}
-            className="fixed top-4 right-4 z-100 flex items-center justify-center w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white transition-colors shadow-lg"
-            aria-label="Back"
-          >
-            <Icon icon={faXmark} className="h-5 w-5" />
-          </button>
-        </div>
+          <Icon icon={faXmark} className="h-5 w-5" />
+        </button>
       )}
     </>
   );
