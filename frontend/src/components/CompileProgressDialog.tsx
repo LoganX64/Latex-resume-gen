@@ -1,6 +1,5 @@
 import { Icon } from '@/components/Icon'
-import { faCheck, faChevronDown, faTriangleExclamation, faXmark } from '@/lib/icons'
-import { useState } from 'react'
+import { faCheck, faTriangleExclamation, faXmark } from '@/lib/icons'
 import { cn } from '@/lib/utils'
 import {
   Dialog,
@@ -341,11 +340,9 @@ export function CompileProgressDialog({
   progress,
   errorMessage,
 }: CompileProgressDialogProps) {
-  const [showOutput, setShowOutput] = useState(true)
   const reduce = useReducedMotion()
 
   const activeStep = (progress.length > 0 ? progress[progress.length - 1].step : null) as StepId | null
-  const hasOutput = progress.some((p) => p.output)
   const isAnimating = status === 'compiling' || status === 'connecting'
 
   const handleClose = (_open: boolean, eventDetails?: { reason?: string }) => {
@@ -380,13 +377,13 @@ export function CompileProgressDialog({
         : status === 'done'
           ? 'PDF is ready to download'
           : status === 'error'
-            ? 'Check the output for details'
+            ? 'Compilation encountered an error'
             : 'Waiting to start…'
 
   return (
     <Dialog open={open} onOpenChange={handleClose} disablePointerDismissal={isAnimating}>
       <DialogContent
-        className="!top-[42%] flex w-[min(100%,34rem)] max-w-[34rem] flex-col gap-0 overflow-hidden p-0 sm:max-w-[34rem]"
+        className="!top-[42%] flex w-[min(100%,27rem)] max-w-[27rem] flex-col gap-0 overflow-hidden p-0 sm:max-w-[27rem]"
         showCloseButton={false}
       >
         {/* Header */}
@@ -517,44 +514,6 @@ export function CompileProgressDialog({
               </m.div>
             )}
           </AnimatePresence>
-
-          <div className="shrink-0 border-t border-border/60 pt-2.5">
-            <button
-              type="button"
-              onClick={() => hasOutput && setShowOutput((v) => !v)}
-              disabled={!hasOutput}
-              className={cn(
-                'flex w-full items-center gap-1.5 text-[11px] font-medium transition-colors',
-                hasOutput
-                  ? 'text-muted-foreground hover:text-foreground'
-                  : 'cursor-default text-muted-foreground/40'
-              )}
-            >
-              <m.span
-                animate={{ rotate: showOutput && hasOutput ? 0 : -90 }}
-                transition={{ duration: DURATION.fast }}
-                className="inline-flex"
-              >
-                <Icon icon={faChevronDown} className="h-2.5 w-2.5" />
-              </m.span>
-              Tectonic output
-            </button>
-            <div className="mt-2 max-h-24 overflow-hidden rounded-md bg-muted/50 p-2.5 font-mono text-[11px] text-muted-foreground ring-1 ring-border/50">
-              {hasOutput && showOutput ? (
-                progress
-                  .filter((p) => p.output)
-                  .map((p, i) => (
-                    <div key={i} className="break-words leading-relaxed">
-                      {p.output}
-                    </div>
-                  ))
-              ) : (
-                <span className="text-muted-foreground/40">
-                  {hasOutput ? 'Output hidden' : 'Waiting for compiler output…'}
-                </span>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Footer */}
