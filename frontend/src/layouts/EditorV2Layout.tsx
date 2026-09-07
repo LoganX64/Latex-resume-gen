@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { m } from "framer-motion";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/editor-v2/AppSidebar";
@@ -104,6 +105,7 @@ export default function EditorV2Layout() {
   const isMobile = useIsMobile();
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const resetResume = useResumeStore((s) => s.resetResume);
   const clearResume = useResumeStore((s) => s.clearResume);
   const templateId = useResumeStore((s) => s.templateId);
@@ -165,6 +167,12 @@ export default function EditorV2Layout() {
 
   useKeyboardShortcuts(shortcuts);
 
+  useEffect(() => {
+    if (!isMobile) return;
+    const el = document.getElementById("editor-main");
+    el?.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+  }, [isMobile, location.pathname]);
+
   return (
     <TooltipProvider delay={400}>
       <a
@@ -180,14 +188,20 @@ export default function EditorV2Layout() {
           <MobileTopNavbar
             onMenuToggle={() => setSidebarOpen(true)}
           />
-          <div className="flex-1 min-h-0 overflow-hidden">
+          <m.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 min-h-0 overflow-hidden"
+          >
             <div
               id="editor-main"
               className="h-full overflow-y-auto pb-24"
             >
               <EditorPanel activeSection={activeSection} />
             </div>
-          </div>
+          </m.div>
           <MobileBottomNavbar
             onHome={() => navigate("/")}
             onSaved={() => setSavedOpen(true)}

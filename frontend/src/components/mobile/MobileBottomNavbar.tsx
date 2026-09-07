@@ -2,6 +2,7 @@ import { Icon } from "@/components/Icon";
 import { faEye, faDownload, faHouse, faBookmark, faFloppyDisk } from "@/lib/icons";
 import { Spinner } from "@/components/ui/spinner";
 import { m } from "framer-motion";
+import { useTheme } from "@/components/theme-provider";
 
 interface MobileBottomNavbarProps {
   onHome: () => void;
@@ -46,6 +47,8 @@ export function MobileBottomNavbar({
   onDownload,
   isExportingPdf,
 }: MobileBottomNavbarProps) {
+  const { darkMode } = useTheme();
+
   return (
     <nav
       className="fixed bottom-0 left-0 right-0 z-30 pointer-events-none select-none px-4 pb-3 safe-area-inset-bottom"
@@ -62,10 +65,19 @@ export function MobileBottomNavbar({
         <svg
           viewBox={`0 0 ${VW} ${BAR_H}`}
           preserveAspectRatio="none"
-          className="w-full h-full block"
+          className={`w-full h-full block ${
+            darkMode
+              ? "drop-shadow-[0_-2px_8px_rgba(255,255,255,0.08)]"
+              : "drop-shadow-[0_-2px_8px_rgba(0,0,0,0.06)]"
+          }`}
           aria-hidden="true"
         >
-          <path d={svgPath} fill="white" />
+          <path
+            d={svgPath}
+            className={darkMode ? "fill-sidebar" : "fill-white"}
+            stroke={darkMode ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}
+            strokeWidth="1"
+          />
         </svg>
 
         <div
@@ -111,7 +123,9 @@ export function MobileBottomNavbar({
           transition={{ type: "spring", stiffness: 220, damping: 20 }}
           onClick={onHome}
           aria-label="Home"
-          className="flex items-center justify-center rounded-full text-[var(--primary-foreground)] focus:outline-none shadow-md"
+          className={`flex items-center justify-center rounded-full focus:outline-none shadow-md ${
+            darkMode ? "text-sidebar-primary-foreground" : "text-[var(--primary-foreground)]"
+          }`}
           style={{
             width: BTN_SIZE,
             height: BTN_SIZE,
@@ -134,6 +148,7 @@ interface NavTabProps {
 }
 
 function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) {
+  const { darkMode } = useTheme();
   return (
     <m.button
       whileTap={{ scale: 0.88, y: 1 }}
@@ -141,7 +156,11 @@ function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) 
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      className="flex flex-col items-center justify-center h-full text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 focus:outline-none"
+      className={`flex flex-col items-center justify-center h-full transition-colors disabled:opacity-50 focus:outline-none ${
+        darkMode
+          ? "text-sidebar-foreground/50 hover:text-sidebar-foreground"
+          : "text-gray-400 hover:text-gray-600"
+      }`}
       style={{ gap: 3 }}
     >
       {children}
