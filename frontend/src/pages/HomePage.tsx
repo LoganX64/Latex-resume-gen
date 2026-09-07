@@ -497,7 +497,7 @@ export default function HomePage() {
 
             <AnimatedGroup
               variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4"
               amount={0.1}
             >
               {features.map(
@@ -567,12 +567,12 @@ export default function HomePage() {
                       key={n}
                       lift={4}
                       scale={1.01}
-                      className={`group relative overflow-hidden flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-dashed border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
+                      className={`group relative overflow-hidden flex flex-col items-center text-center p-4 sm:p-6 rounded-2xl bg-card border border-dashed border-border/80 shadow-sm hover:shadow-lg ${cfg.hoverBorder} h-full`}
                     >
                       <div className="relative z-10 flex flex-col items-center">
                         {/* Step pill */}
                         <div
-                          className={`inline-flex items-center rounded-full border border-dashed px-2 py-0.5 text-xs font-bold mb-3 ${cfg.pillBg}`}
+                          className={`inline-flex items-center rounded-full border border-dashed px-2 py-0.5 text-xs font-bold mb-2 sm:mb-3 ${cfg.pillBg}`}
                         >
                           Step 0{n}
                         </div>
@@ -580,7 +580,7 @@ export default function HomePage() {
                         <div className="mb-4 group-hover:scale-105 transition-transform duration-300">
                           <img src={stepGraphics[i]} alt="" className="w-32 h-32 drop-shadow-md" />
                         </div>
-                        <h3 className="font-bold text-base mb-1.5 text-foreground">
+                        <h3 className="font-bold text-sm sm:text-base mb-1 sm:mb-1.5 text-foreground">
                           {label}
                         </h3>
                         <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-55">
@@ -647,7 +647,7 @@ export default function HomePage() {
             <AnimatePresence mode="popLayout">
               <AnimatedGroup
                 variants={{ container: animatedGroupContainer, item: animatedGroupItem }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4"
                 amount={0.1}
               >
                 {versions.map((v) => (
