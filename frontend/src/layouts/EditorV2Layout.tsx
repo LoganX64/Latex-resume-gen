@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { m } from "framer-motion";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/editor-v2/AppSidebar";
@@ -167,10 +166,11 @@ export default function EditorV2Layout() {
 
   useKeyboardShortcuts(shortcuts);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isMobile) return;
     const el = document.getElementById("editor-main");
-    el?.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    el?.scrollTo({ top: 0, behavior: "auto" });
   }, [isMobile, location.pathname]);
 
   return (
@@ -188,20 +188,17 @@ export default function EditorV2Layout() {
           <MobileTopNavbar
             onMenuToggle={() => setSidebarOpen(true)}
           />
-          <m.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex-1 min-h-0 overflow-hidden"
-          >
+          <div className="flex-1 min-h-0 overflow-hidden">
             <div
               id="editor-main"
               className="h-full overflow-y-auto pb-24"
             >
-              <EditorPanel activeSection={activeSection} />
+              <EditorPanel
+                activeSection={activeSection}
+                disableInitialActiveSectionScroll
+              />
             </div>
-          </m.div>
+          </div>
           <MobileBottomNavbar
             onHome={() => navigate("/")}
             onSaved={() => setSavedOpen(true)}

@@ -3,10 +3,21 @@ import { useLocation } from "react-router-dom";
 import { m, useReducedMotion } from "framer-motion";
 import { pageEnter } from "@/lib/motion";
 
-export function PageTransition({ children }: { children: ReactNode }) {
+export function PageTransition({
+  children,
+  disableOnMobile = false,
+}: {
+  children: ReactNode;
+  disableOnMobile?: boolean;
+}) {
   const location = useLocation();
   const reduce = useReducedMotion();
-  if (reduce) {
+  const isMobile =
+    disableOnMobile &&
+    typeof window !== "undefined" &&
+    window.matchMedia("(max-width: 767px)").matches;
+
+  if (reduce || isMobile) {
     return <div className="contents">{children}</div>;
   }
   return (

@@ -30,7 +30,7 @@ function AppRoutes() {
         <Route
           path="/editor"
           element={
-            <PageTransition>
+            <PageTransition disableOnMobile>
               <EditorV2Layout />
             </PageTransition>
           }

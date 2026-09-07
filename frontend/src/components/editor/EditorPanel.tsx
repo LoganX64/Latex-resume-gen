@@ -56,16 +56,29 @@ const sectionLabels: Record<string, string> = {
 
 interface EditorPanelProps {
   activeSection?: string
+  disableInitialActiveSectionScroll?: boolean
 }
 
-export function EditorPanel({ activeSection }: EditorPanelProps) {
+export function EditorPanel({
+  activeSection,
+  disableInitialActiveSectionScroll = false,
+}: EditorPanelProps) {
   const sectionOrder = useResumeStore((s) => s.sectionOrder)
   const reorderSections = useResumeStore((s) => s.reorderSections)
   const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({})
   const scrollRef = useRef<HTMLDivElement>(null)
+  const previousActiveSection = useRef(activeSection)
 
   useEffect(() => {
     if (!activeSection) return
+
+    const activeSectionChanged = previousActiveSection.current !== activeSection
+    previousActiveSection.current = activeSection
+
+    if (disableInitialActiveSectionScroll && !activeSectionChanged) {
+      return
+    }
+
     const el = document.getElementById(`section-${activeSection}`)
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' })
