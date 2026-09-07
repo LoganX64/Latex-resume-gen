@@ -12,6 +12,12 @@ import { CompactFooter } from "@/components/CompactFooter";
 import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileTopNavbar } from "@/components/mobile/MobileTopNavbar";
+import { MobileBottomNavbar } from "@/components/mobile/MobileBottomNavbar";
+import { MobileSidebar } from "@/components/mobile/MobileSidebar";
+import { MobilePreviewSheet } from "@/components/mobile/MobilePreviewSheet";
+import { MobileSavedSheet } from "@/components/mobile/MobileSavedSheet";
 import { Icon } from "@/components/Icon";
 import {
   faTriangleExclamation,
@@ -95,6 +101,7 @@ function EditorSplitPaneRight({
 }
 
 export default function EditorV2Layout() {
+  const isMobile = useIsMobile();
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
   const resetResume = useResumeStore((s) => s.resetResume);
@@ -105,6 +112,9 @@ export default function EditorV2Layout() {
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("personal");
   const [fullscreenPreview, setFullscreenPreview] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [savedOpen, setSavedOpen] = useState(false);
 
   const {
     handleExportPdf,
@@ -163,6 +173,44 @@ export default function EditorV2Layout() {
       >
         Skip to editor
       </a>
+
+      {/* ── Mobile layout ── */}
+      {isMobile ? (
+        <div className="flex flex-col h-dvh overflow-hidden bg-background">
+          <MobileTopNavbar
+            onSave={() => setShowSaveDialog(true)}
+            onMenuToggle={() => setSidebarOpen(true)}
+          />
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <div
+              id="editor-main"
+              className="h-full overflow-y-auto"
+            >
+              <EditorPanel activeSection={activeSection} />
+            </div>
+          </div>
+          <MobileBottomNavbar
+            onHome={() => navigate("/")}
+            onSaved={() => setSavedOpen(true)}
+            onPreview={() => setPreviewOpen(true)}
+            onDownload={handleExportPdf}
+            isExportingPdf={isExportingPdf}
+          />
+          <MobileSidebar
+            open={sidebarOpen}
+            onOpenChange={setSidebarOpen}
+            activeSection={activeSection}
+            onSectionClick={(id) => {
+              setActiveSection(id);
+              setSidebarOpen(false);
+            }}
+            onSaveClick={() => setShowSaveDialog(true)}
+          />
+          <MobilePreviewSheet open={previewOpen} onOpenChange={setPreviewOpen} />
+          <MobileSavedSheet open={savedOpen} onOpenChange={setSavedOpen} />
+        </div>
+      ) : (
+      /* ── Desktop layout ── */
       <SidebarProvider>
         {!fullscreenPreview && (
           <AppSidebar
@@ -433,6 +481,9 @@ export default function EditorV2Layout() {
           />
         </SidebarInset>
       </SidebarProvider>
+      )}
+
+      {/* ── Shared dialogs ── */}
       <AlertDialog
         open={showMultiPageDialog}
         onOpenChange={setShowMultiPageDialog}
