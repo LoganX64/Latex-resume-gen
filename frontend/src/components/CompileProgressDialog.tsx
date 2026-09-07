@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils'
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
@@ -31,12 +32,14 @@ const STEPS = [
 
 const STEP_ORDER = STEPS.map((s) => s.id)
 type StepId = (typeof STEP_ORDER)[number]
+type StepState = 'pending' | 'active' | 'complete' | 'error'
+type CompileStatus = CompileProgressDialogProps['status']
 
 function getStepState(
   stepId: StepId,
   activeStep: StepId | null,
-  status: 'idle' | 'connecting' | 'compiling' | 'done' | 'error'
-): 'pending' | 'active' | 'complete' | 'error' {
+  status: CompileStatus
+): StepState {
   if (status === 'error') {
     if (activeStep && STEP_ORDER.indexOf(stepId) <= STEP_ORDER.indexOf(activeStep)) {
       return stepId === activeStep ? 'error' : 'complete'
@@ -50,30 +53,24 @@ function getStepState(
   return 'pending'
 }
 
-// ── Orbital spinner (two-layer ring) ──────────────────────────────────────────
-function OrbitalSpinner() {
+function Spinner({ className }: { className?: string }) {
   return (
-    <span className="relative flex h-4 w-4 items-center justify-center">
-      <m.span
-        className="absolute inset-0 rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground"
-        animate={{ rotate: 360 }}
-        transition={{ duration: 0.85, repeat: Infinity, ease: 'linear' }}
-      />
-      <m.span
-        className="h-1.5 w-1.5 rounded-full bg-primary-foreground"
-        animate={{ scale: [1, 0.65, 1] }}
-        transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
-      />
-    </span>
+    <m.span
+      className={cn(
+        'block h-3.5 w-3.5 rounded-full border-2 border-current/25 border-t-current',
+        className
+      )}
+      animate={{ rotate: 360 }}
+      transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+    />
   )
 }
 
-// ── Animated SVG checkmark ─────────────────────────────────────────────────────
-function CheckmarkSvg() {
+function CheckPath() {
   const reduce = useReducedMotion()
   return (
     <m.svg
-      className="h-3.5 w-3.5"
+      className="h-3 w-3"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -82,114 +79,122 @@ function CheckmarkSvg() {
       strokeLinejoin="round"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
       transition={{ duration: DURATION.fast }}
     >
       <m.path
         d="M5 13l4 4L19 7"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 1 }}
-        transition={reduce ? { duration: 0 } : { duration: 0.4, ease: EASE_OUT, delay: 0.05 }}
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={reduce ? { duration: 0 } : { duration: 0.35, ease: EASE_OUT }}
       />
     </m.svg>
   )
 }
 
-// ── Step icon circle ──────────────────────────────────────────────────────────
-function StepIcon({ state }: { state: 'pending' | 'active' | 'complete' | 'error' }) {
+function StatusGlyph({ status }: { status: CompileStatus }) {
+  const reduce = useReducedMotion()
+  const enter = reduce
+    ? undefined
+    : { initial: { scale: 0.7, opacity: 0 }, animate: { scale: 1, opacity: 1 }, exit: { scale: 0.7, opacity: 0 } }
+
+  return (
+    <AnimatePresence mode="wait">
+      {status === 'done' ? (
+        <m.span
+          key="done"
+          className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm shadow-primary/25"
+          {...enter}
+          transition={{ duration: DURATION.base, ease: EASE_OUT }}
+        >
+          <Icon icon={faCheck} className="h-3.5 w-3.5" />
+        </m.span>
+      ) : status === 'error' ? (
+        <m.span
+          key="error"
+          className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-destructive text-destructive-foreground shadow-sm shadow-destructive/20"
+          {...enter}
+          transition={{ duration: DURATION.base, ease: EASE_OUT }}
+        >
+          <Icon icon={faTriangleExclamation} className="h-3.5 w-3.5" />
+        </m.span>
+      ) : (
+        <m.span
+          key="busy"
+          className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary ring-1 ring-primary/20"
+          {...enter}
+          transition={{ duration: DURATION.fast }}
+        >
+          {!reduce && (
+            <m.span
+              className="absolute inset-0 rounded-lg bg-primary/15"
+              animate={{ opacity: [0.35, 0.7, 0.35] }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+            />
+          )}
+          <Spinner className="relative" />
+        </m.span>
+      )}
+    </AnimatePresence>
+  )
+}
+
+function StepIcon({ state }: { state: StepState }) {
   return (
     <AnimatePresence mode="wait">
       {state === 'complete' ? (
         <m.span
           key="complete"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-green-500 text-white shadow-sm shadow-green-500/30 ring-1 ring-green-500/30"
-          initial={{ scale: 0.5, opacity: 0 }}
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground"
+          initial={{ scale: 0.55, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
+          exit={{ scale: 0.55, opacity: 0 }}
           transition={{ duration: DURATION.base, ease: EASE_OUT }}
         >
-          <CheckmarkSvg />
+          <CheckPath />
         </m.span>
       ) : state === 'active' ? (
         <m.span
           key="active"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm shadow-primary/30 ring-1 ring-primary/40"
-          initial={{ scale: 0.5, opacity: 0 }}
+          className="relative flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground"
+          initial={{ scale: 0.55, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
+          exit={{ scale: 0.55, opacity: 0 }}
           transition={{ duration: DURATION.base, ease: EASE_OUT }}
         >
-          <OrbitalSpinner />
+          <m.span
+            className="absolute inset-0 rounded-full bg-primary/40"
+            animate={{ scale: [1, 1.45], opacity: [0.45, 0] }}
+            transition={{ duration: 1.4, repeat: Infinity, ease: 'easeOut' }}
+          />
+          <Spinner className="relative h-3 w-3" />
         </m.span>
       ) : state === 'error' ? (
         <m.span
           key="error"
-          className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm shadow-destructive/25 ring-1 ring-destructive/30"
-          initial={{ scale: 0.5, opacity: 0 }}
+          className="flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground"
+          initial={{ scale: 0.55, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.5, opacity: 0 }}
+          exit={{ scale: 0.55, opacity: 0 }}
           transition={{ duration: DURATION.base, ease: EASE_OUT }}
         >
-          <Icon icon={faTriangleExclamation} className="h-3 w-3" />
+          <Icon icon={faTriangleExclamation} className="h-2.5 w-2.5" />
         </m.span>
       ) : (
         <m.span
           key="pending"
-          className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-muted"
+          className="flex h-6 w-6 items-center justify-center rounded-full border border-border bg-muted/60"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: DURATION.fast }}
         >
-          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/25" />
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />
         </m.span>
       )}
     </AnimatePresence>
   )
 }
 
-// ── Step row badge ─────────────────────────────────────────────────────────────
-function StepBadge({ state }: { state: 'pending' | 'active' | 'complete' | 'error' }) {
-  return (
-    <AnimatePresence>
-      {state === 'complete' && (
-        <m.span
-          className="shrink-0 rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-medium leading-none text-green-600 dark:text-green-400 ring-1 ring-green-500/20"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: DURATION.base, ease: EASE_OUT }}
-        >
-          Done
-        </m.span>
-      )}
-      {state === 'active' && (
-        <m.span
-          className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium leading-none text-primary ring-1 ring-primary/20"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: DURATION.base, ease: EASE_OUT }}
-        >
-          Running
-        </m.span>
-      )}
-      {state === 'error' && (
-        <m.span
-          className="shrink-0 rounded-full bg-destructive/10 px-2 py-0.5 text-[10px] font-medium leading-none text-destructive ring-1 ring-destructive/20"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: DURATION.base, ease: EASE_OUT }}
-        >
-          Failed
-        </m.span>
-      )}
-    </AnimatePresence>
-  )
-}
-
-// ── Full step row ──────────────────────────────────────────────────────────────
 function StepRow({
   state,
   label,
@@ -197,7 +202,7 @@ function StepRow({
   output,
   isLast,
 }: {
-  state: 'pending' | 'active' | 'complete' | 'error'
+  state: StepState
   label: string
   description: string
   output?: string
@@ -206,126 +211,128 @@ function StepRow({
   const reduce = useReducedMotion()
 
   return (
-    <m.div
-      className="flex gap-3"
-      variants={reduce ? undefined : fadeUp}
-    >
-      {/* Left rail: icon + connector line */}
+    <m.div className="flex gap-3" variants={reduce ? undefined : fadeUp}>
       <div className="flex flex-col items-center">
         <StepIcon state={state} />
         {!isLast && (
-          <div className="mt-1 w-px flex-1 min-h-3">
+          <div className="relative mt-1.5 w-px flex-1 overflow-hidden rounded-full bg-border">
             <m.div
               className={cn(
-                'w-full h-full rounded-full',
-                state === 'complete' ? 'bg-green-500/40' : 'bg-border'
+                'absolute inset-x-0 top-0 w-full origin-top rounded-full',
+                state === 'complete' ? 'bg-primary/50' : 'bg-transparent'
               )}
-              style={{ minHeight: '12px' }}
-              initial={{ scaleY: 0, originY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ duration: DURATION.slow, ease: EASE_OUT, delay: 0.1 }}
+              initial={false}
+              animate={{ scaleY: state === 'complete' ? 1 : 0 }}
+              transition={{ duration: DURATION.slow, ease: EASE_OUT }}
+              style={{ height: '100%', minHeight: 14 }}
             />
           </div>
         )}
       </div>
 
-      {/* Content: label + description/output + badge */}
-      <div className="flex flex-1 min-w-0 items-start justify-between gap-2 pb-3">
-        <div className="flex flex-col min-w-0 flex-1">
-          <span
-            className={cn(
-              'text-xs font-medium leading-none transition-colors duration-300',
-              state === 'pending' && 'text-muted-foreground/40',
-              state === 'active' && 'text-foreground',
-              state === 'complete' && 'text-foreground',
-              state === 'error' && 'text-destructive'
+      <div className={cn('min-w-0 flex-1', !isLast && 'pb-3')}>
+        <p
+          className={cn(
+            'text-xs font-medium leading-none transition-colors duration-300',
+            state === 'pending' && 'text-muted-foreground/50',
+            state === 'active' && 'text-foreground',
+            state === 'complete' && 'text-foreground',
+            state === 'error' && 'text-destructive'
+          )}
+        >
+          {label}
+        </p>
+        <div className="mt-1 min-h-4 overflow-hidden">
+          <AnimatePresence mode="wait">
+            {state === 'active' && output ? (
+              <m.p
+                key="output"
+                className="line-clamp-2 text-[11px] leading-snug text-muted-foreground"
+                initial={reduce ? false : { opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0, y: -3 }}
+                transition={{ duration: DURATION.base, ease: EASE_OUT }}
+              >
+                {output}
+              </m.p>
+            ) : (
+              <m.p
+                key="desc"
+                className={cn(
+                  'text-[11px] transition-colors duration-300',
+                  state === 'pending' ? 'text-muted-foreground/40' : 'text-muted-foreground'
+                )}
+                initial={reduce ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduce ? undefined : { opacity: 0 }}
+                transition={{ duration: DURATION.fast }}
+              >
+                {description}
+              </m.p>
             )}
-          >
-            {label}
-          </span>
-
-          {/* Sub-line: live output when active, else static description */}
-          <div className="mt-0.5 min-w-0 overflow-hidden">
-            <AnimatePresence mode="wait">
-              {state === 'active' && output ? (
-                <m.span
-                  key="output"
-                  className="block truncate text-[10px] text-muted-foreground"
-                  initial={{ opacity: 0, y: 3 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -2 }}
-                  transition={{ duration: DURATION.base, ease: EASE_OUT }}
-                >
-                  {output}
-                </m.span>
-              ) : (
-                <m.span
-                  key="desc"
-                  className={cn(
-                    'block text-[10px] transition-colors duration-300',
-                    state === 'pending'
-                      ? 'text-muted-foreground/30'
-                      : 'text-muted-foreground/60'
-                  )}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: DURATION.fast }}
-                >
-                  {description}
-                </m.span>
-              )}
-            </AnimatePresence>
-          </div>
+          </AnimatePresence>
         </div>
-
-        <StepBadge state={state} />
       </div>
     </m.div>
   )
 }
 
-// ── Progress bar ──────────────────────────────────────────────────────────────
-function ProgressBar({
+function ProgressTrack({
   status,
   activeStep,
 }: {
-  status: 'idle' | 'connecting' | 'compiling' | 'done' | 'error'
+  status: CompileStatus
   activeStep: StepId | null
 }) {
+  const reduce = useReducedMotion()
   const completedCount =
     status === 'done'
       ? STEPS.length
       : activeStep
         ? STEP_ORDER.indexOf(activeStep)
         : 0
-
-  const pct = (completedCount / STEPS.length) * 100
-  const isActive = status !== 'done' && status !== 'error'
+  const pct = Math.round((completedCount / STEPS.length) * 100)
+  const isBusy = status === 'compiling' || status === 'connecting' || status === 'idle'
 
   return (
-    <div className="relative h-1 w-full overflow-hidden rounded-full bg-border">
-      <m.div
-        className={cn(
-          'absolute inset-y-0 left-0 rounded-full',
-          status === 'error' ? 'bg-destructive' : status === 'done' ? 'bg-green-500' : 'bg-primary'
-        )}
-        initial={{ width: '0%' }}
-        animate={{ width: `${pct}%` }}
-        transition={{ duration: DURATION.slow, ease: EASE_OUT }}
-      />
-      {isActive && (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[11px] text-muted-foreground">Progress</span>
+        <m.span
+          key={pct}
+          className={cn(
+            'font-mono text-[11px] tabular-nums',
+            status === 'error' ? 'text-destructive' : 'text-primary'
+          )}
+          initial={reduce ? false : { opacity: 0, y: 2 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: DURATION.fast }}
+        >
+          {status === 'error' ? '—' : `${pct}%`}
+        </m.span>
+      </div>
+      <div className="relative h-1.5 overflow-hidden rounded-full bg-muted">
         <m.div
-          className="absolute inset-y-0 w-12 rounded-full bg-white/25"
-          animate={{ x: ['-3rem', '500px'] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.8 }}
+          className={cn(
+            'absolute inset-y-0 left-0 rounded-full',
+            status === 'error' ? 'bg-destructive' : 'bg-primary'
+          )}
+          initial={{ width: '0%' }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: DURATION.slow, ease: EASE_OUT }}
         />
-      )}
+        {isBusy && !reduce && (
+          <m.div
+            className="absolute inset-y-0 w-16 rounded-full bg-gradient-to-r from-transparent via-primary-foreground/30 to-transparent"
+            animate={{ x: ['-4rem', '18rem'] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.6 }}
+          />
+        )}
+      </div>
     </div>
   )
 }
 
-// ── Main dialog ───────────────────────────────────────────────────────────────
 export function CompileProgressDialog({
   open,
   onOpenChange,
@@ -334,7 +341,7 @@ export function CompileProgressDialog({
   progress,
   errorMessage,
 }: CompileProgressDialogProps) {
-  const [showOutput, setShowOutput] = useState(false)
+  const [showOutput, setShowOutput] = useState(true)
   const reduce = useReducedMotion()
 
   const activeStep = (progress.length > 0 ? progress[progress.length - 1].step : null) as StepId | null
@@ -356,173 +363,175 @@ export function CompileProgressDialog({
           ? 'Connecting…'
           : 'Compiling your resume'
 
-  const completedCount =
+  const subtitleText =
     status === 'done'
-      ? STEPS.length
-      : activeStep
-        ? STEP_ORDER.indexOf(activeStep)
-        : 0
+      ? 'Your PDF is ready'
+      : status === 'error'
+        ? 'Something went wrong while building'
+        : status === 'connecting'
+          ? 'Establishing a secure connection'
+          : `Step ${Math.min((activeStep ? STEP_ORDER.indexOf(activeStep) : 0) + 1, STEPS.length)} of ${STEPS.length}`
+
+  const footerHint =
+    status === 'connecting'
+      ? 'Establishing connection…'
+      : status === 'compiling'
+        ? 'This may take a few seconds'
+        : status === 'done'
+          ? 'PDF is ready to download'
+          : status === 'error'
+            ? 'Check the output for details'
+            : 'Waiting to start…'
 
   return (
     <Dialog open={open} onOpenChange={handleClose} disablePointerDismissal={isAnimating}>
-      <DialogContent className="sm:max-w-sm p-0 gap-0 overflow-hidden" showCloseButton={false}>
-
-        {/* ── Header banner ── */}
-        <div
-          className={cn(
-            'relative flex items-center gap-3 px-4 py-3 border-b border-border/60 transition-colors duration-500',
-            status === 'done' && 'bg-green-500/5',
-            status === 'error' && 'bg-destructive/5',
-            (status === 'compiling' || status === 'connecting' || status === 'idle') && 'bg-primary/5'
+      <DialogContent
+        className="!top-[42%] flex w-[min(100%,34rem)] max-w-[34rem] flex-col gap-0 overflow-hidden p-0 sm:max-w-[34rem]"
+        showCloseButton={false}
+      >
+        {/* Header */}
+        <div className="relative shrink-0 overflow-hidden border-b border-border/70 bg-muted/20 px-4 py-3.5">
+          {!reduce && isAnimating && (
+            <m.div
+              aria-hidden
+              className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-primary/15 blur-2xl"
+              animate={{ opacity: [0.4, 0.75, 0.4], scale: [1, 1.08, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+            />
           )}
-        >
-          {/* Status icon */}
-          <AnimatePresence mode="wait">
-            {status === 'done' ? (
-              <m.span
-                key="done"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-500 text-white shadow-sm shadow-green-500/30"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                transition={{ duration: DURATION.base, ease: EASE_OUT }}
-              >
-                <Icon icon={faCheck} className="h-3.5 w-3.5" />
-              </m.span>
-            ) : status === 'error' ? (
-              <m.span
-                key="error-icon"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-destructive text-destructive-foreground shadow-sm shadow-destructive/30"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                transition={{ duration: DURATION.base, ease: EASE_OUT }}
-              >
-                <Icon icon={faTriangleExclamation} className="h-3.5 w-3.5" />
-              </m.span>
-            ) : (
-              <m.span
-                key="spinner-icon"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm shadow-primary/30"
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                transition={{ duration: DURATION.fast }}
-              >
-                <OrbitalSpinner />
-              </m.span>
-            )}
-          </AnimatePresence>
+          {!reduce && status === 'done' && (
+            <m.div
+              aria-hidden
+              className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-primary/20 blur-2xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DURATION.slow, ease: EASE_OUT }}
+            />
+          )}
+          {!reduce && status === 'error' && (
+            <m.div
+              aria-hidden
+              className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-destructive/20 blur-2xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: DURATION.slow, ease: EASE_OUT }}
+            />
+          )}
 
-          {/* Title + subtitle */}
-          <div className="flex-1 min-w-0">
-            <DialogHeader>
-              <DialogTitle className="leading-none">
+          <div className="relative flex items-start gap-3">
+            <StatusGlyph status={status} />
+
+            <div className="min-w-0 flex-1 pt-0.5">
+              <DialogHeader className="gap-0.5">
+                <DialogTitle className="h-4 leading-none">
+                  <AnimatePresence mode="wait">
+                    <m.span
+                      key={titleText}
+                      className="block truncate"
+                      initial={reduce ? false : { opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={reduce ? undefined : { opacity: 0, y: -4 }}
+                      transition={{ duration: DURATION.base, ease: EASE_OUT }}
+                    >
+                      {titleText}
+                    </m.span>
+                  </AnimatePresence>
+                </DialogTitle>
+                <DialogDescription className="sr-only">
+                  Live progress for compiling your LaTeX resume into a PDF.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="mt-1 h-4 overflow-hidden">
                 <AnimatePresence mode="wait">
-                  <m.span
-                    key={titleText}
-                    className="block"
-                    initial={reduce ? false : { opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={reduce ? undefined : { opacity: 0, y: -4 }}
-                    transition={{ duration: DURATION.base, ease: EASE_OUT }}
+                  <m.p
+                    key={subtitleText}
+                    className={cn(
+                      'truncate text-[11px] leading-4',
+                      status === 'error' ? 'text-destructive' : 'text-muted-foreground'
+                    )}
+                    initial={reduce ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={reduce ? undefined : { opacity: 0 }}
+                    transition={{ duration: DURATION.fast }}
                   >
-                    {titleText}
-                  </m.span>
+                    {subtitleText}
+                  </m.p>
                 </AnimatePresence>
-              </DialogTitle>
-            </DialogHeader>
-            <AnimatePresence mode="wait">
-              <m.p
-                key={`sub-${status}`}
-                className={cn(
-                  'mt-0.5 text-[10px]',
-                  status === 'done' && 'text-green-600 dark:text-green-400',
-                  status === 'error' && 'text-destructive',
-                  status !== 'done' && status !== 'error' && 'text-muted-foreground'
-                )}
+              </div>
+            </div>
+
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center">
+              {!isAnimating && (
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => onOpenChange(false)}
+                  aria-label="Close"
+                >
+                  <Icon icon={faXmark} className="h-3.5 w-3.5" />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Body */}
+        <div className="flex flex-col gap-3 px-4 py-3.5">
+          <ProgressTrack status={status} activeStep={activeStep} />
+
+          <m.div
+            className="flex flex-col"
+            variants={reduce ? undefined : staggerContainer}
+            initial="hidden"
+            animate="show"
+          >
+            {STEPS.map((step, index) => {
+              const stepState = getStepState(step.id, activeStep, status)
+              const serverStep = progress.find((p) => p.step === step.id)
+              return (
+                <StepRow
+                  key={step.id}
+                  state={stepState}
+                  label={step.label}
+                  description={step.description}
+                  output={serverStep?.output}
+                  isLast={index === STEPS.length - 1}
+                />
+              )
+            })}
+          </m.div>
+
+          <AnimatePresence>
+            {status === 'error' && errorMessage && (
+              <m.div
+                className="overflow-hidden rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2"
                 initial={reduce ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={reduce ? undefined : { opacity: 0 }}
-                transition={{ duration: DURATION.fast }}
+                transition={{ duration: DURATION.base, ease: EASE_OUT }}
               >
-                {status === 'done'
-                  ? `All ${STEPS.length} steps completed`
-                  : status === 'error'
-                    ? 'An error occurred during compilation'
-                    : `Step ${Math.min(completedCount + 1, STEPS.length)} of ${STEPS.length}`}
-              </m.p>
-            </AnimatePresence>
-          </div>
+                <p className="line-clamp-2 break-words font-mono text-[11px] leading-relaxed text-destructive">
+                  {errorMessage}
+                </p>
+              </m.div>
+            )}
+          </AnimatePresence>
 
-          {/* Close — only when not animating */}
-          {!isAnimating && (
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="shrink-0 text-muted-foreground hover:text-foreground"
-              onClick={() => onOpenChange(false)}
-              aria-label="Close"
-            >
-              <Icon icon={faXmark} className="h-3.5 w-3.5" />
-            </Button>
-          )}
-        </div>
-
-        {/* ── Progress bar ── */}
-        <div className="px-4 pt-3">
-          <ProgressBar status={status} activeStep={activeStep} />
-        </div>
-
-        {/* ── Step list ── */}
-        <m.div
-          className="flex flex-col px-4 pt-3"
-          variants={reduce ? undefined : staggerContainer}
-          initial="hidden"
-          animate="show"
-        >
-          {STEPS.map((step, index) => {
-            const stepState = getStepState(step.id, activeStep, status)
-            const serverStep = progress.find((p) => p.step === step.id)
-            return (
-              <StepRow
-                key={step.id}
-                state={stepState}
-                label={step.label}
-                description={step.description}
-                output={serverStep?.output}
-                isLast={index === STEPS.length - 1}
-              />
-            )
-          })}
-        </m.div>
-
-        {/* ── Error message ── */}
-        <AnimatePresence>
-          {status === 'error' && errorMessage && (
-            <m.div
-              className="mx-4 mb-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2"
-              initial={reduce ? false : { opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={reduce ? undefined : { opacity: 0, height: 0 }}
-              transition={{ duration: DURATION.base, ease: EASE_OUT }}
-            >
-              <p className="text-[10px] font-mono text-destructive leading-relaxed break-all">
-                {errorMessage}
-              </p>
-            </m.div>
-          )}
-        </AnimatePresence>
-
-        {/* ── Tectonic output collapsible ── */}
-        {hasOutput && (
-          <div className="border-t border-border/60 mx-4 mb-2 pt-2">
+          <div className="shrink-0 border-t border-border/60 pt-2.5">
             <button
-              onClick={() => setShowOutput(!showOutput)}
-              className="flex w-full items-center gap-1.5 text-[10px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+              type="button"
+              onClick={() => hasOutput && setShowOutput((v) => !v)}
+              disabled={!hasOutput}
+              className={cn(
+                'flex w-full items-center gap-1.5 text-[11px] font-medium transition-colors',
+                hasOutput
+                  ? 'text-muted-foreground hover:text-foreground'
+                  : 'cursor-default text-muted-foreground/40'
+              )}
             >
               <m.span
-                animate={{ rotate: showOutput ? 0 : -90 }}
+                animate={{ rotate: showOutput && hasOutput ? 0 : -90 }}
                 transition={{ duration: DURATION.fast }}
                 className="inline-flex"
               >
@@ -530,56 +539,55 @@ export function CompileProgressDialog({
               </m.span>
               Tectonic output
             </button>
-            <AnimatePresence>
-              {showOutput && (
-                <m.div
-                  className="mt-1.5 max-h-28 overflow-y-auto rounded-md bg-muted/60 p-2 text-[10px] font-mono text-muted-foreground ring-1 ring-border/50"
-                  initial={reduce ? false : { height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={reduce ? undefined : { height: 0, opacity: 0 }}
-                  transition={{ duration: DURATION.base, ease: EASE_OUT }}
-                >
-                  {progress
-                    .filter((p) => p.output)
-                    .map((p, i) => (
-                      <div key={i} className="leading-relaxed break-all">{p.output}</div>
-                    ))}
-                </m.div>
+            <div className="mt-2 max-h-24 overflow-hidden rounded-md bg-muted/50 p-2.5 font-mono text-[11px] text-muted-foreground ring-1 ring-border/50">
+              {hasOutput && showOutput ? (
+                progress
+                  .filter((p) => p.output)
+                  .map((p, i) => (
+                    <div key={i} className="break-words leading-relaxed">
+                      {p.output}
+                    </div>
+                  ))
+              ) : (
+                <span className="text-muted-foreground/40">
+                  {hasOutput ? 'Output hidden' : 'Waiting for compiler output…'}
+                </span>
               )}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex h-12 shrink-0 items-center justify-between gap-3 border-t border-border/70 bg-muted/10 px-4">
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <m.span
+                key={footerHint}
+                className="block truncate text-[11px] text-muted-foreground"
+                initial={reduce ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduce ? undefined : { opacity: 0 }}
+                transition={{ duration: DURATION.fast }}
+              >
+                {footerHint}
+              </m.span>
             </AnimatePresence>
           </div>
-        )}
-
-        {/* ── Footer ── */}
-        <div className="flex items-center justify-between border-t border-border/60 bg-muted/30 px-4 py-2">
-          <span className="text-[10px] text-muted-foreground">
-            {status === 'connecting' && 'Establishing connection…'}
-            {status === 'compiling' && 'This may take a few seconds'}
-            {status === 'done' && 'PDF is ready to download'}
-            {status === 'error' && 'Check the output for details'}
-            {status === 'idle' && 'Waiting to start…'}
-          </span>
           {isAnimating ? (
-            <Button
-              variant="outline"
-              size="xs"
-              className="h-6 px-2 text-[10px]"
-              onClick={onCancel}
-            >
+            <Button variant="outline" size="xs" className="h-7 shrink-0 px-2.5 text-[11px]" onClick={onCancel}>
               Cancel
             </Button>
           ) : (
             <Button
-              variant="ghost"
+              variant={status === 'done' ? 'default' : 'ghost'}
               size="xs"
-              className="h-6 px-2 text-[10px]"
+              className="h-7 shrink-0 px-2.5 text-[11px]"
               onClick={() => onOpenChange(false)}
             >
               Close
             </Button>
           )}
         </div>
-
       </DialogContent>
     </Dialog>
   )
