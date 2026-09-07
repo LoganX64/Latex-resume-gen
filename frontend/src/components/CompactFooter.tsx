@@ -1,5 +1,5 @@
 import { Icon } from '@/components/Icon'
-import { faEnvelope, faShieldHalved, faGithub } from '@/lib/icons'
+import { faBug, faShieldHalved, faGithub } from '@/lib/icons'
 
 
 
@@ -25,10 +25,10 @@ export function CompactFooter() {
         <a
           href="mailto:kpjitin@gmail.com?subject=LaTeX%20Resume%20Enquiry"
           className="hover:text-foreground transition-colors inline-flex items-center gap-1"
-          aria-label="Email developer"
-          title="kpjitin@gmail.com"
+          aria-label="Report a bug"
+          title="Bug Report"
         >
-          <Icon icon={faEnvelope} className="h-3 w-3 text-rose-500" />
+          <Icon icon={faBug} className="h-3 w-3 text-rose-500" />
         </a>
       </div>
     </footer>

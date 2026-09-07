@@ -80,6 +80,7 @@ import {
   faImage,
   faFilePdf,
   faDownload,
+  faBug,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Brand icons
@@ -168,6 +169,7 @@ library.add(
   faImage,
   faFilePdf,
   faDownload,
+  faBug,
   faGithub,
   faLinkedin,
 );
@@ -252,6 +254,7 @@ export {
   faImage,
   faFilePdf,
   faDownload,
+  faBug,
   faGithub,
   faLinkedin,
 };

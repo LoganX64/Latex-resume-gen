@@ -25,6 +25,7 @@ import {
   faMagnifyingGlass,
   faFloppyDisk,
   faHouse,
+  faEye,
   faTrash,
   faFileLines,
   faDownload,
@@ -217,7 +218,6 @@ export default function EditorV2Layout() {
             }}
             onSaveClick={() => setShowSaveDialog(true)}
           />
-          <MobilePreviewSheet open={previewOpen} onOpenChange={setPreviewOpen} />
           <MobileSavedSheet open={savedOpen} onOpenChange={setSavedOpen} />
         </div>
       ) : (
@@ -494,7 +494,18 @@ export default function EditorV2Layout() {
       </SidebarProvider>
       )}
 
+      <Button
+        variant="default"
+        size="icon"
+        className="fixed bottom-24 right-6 z-40 h-14 w-14 rounded-full shadow-lg hidden md:flex lg:hidden touch-manipulation"
+        onClick={() => setPreviewOpen(true)}
+        aria-label="Preview resume"
+      >
+        <Icon icon={faEye} className="h-6 w-6 md:h-7 md:w-7" />
+      </Button>
+
       {/* ── Shared dialogs ── */}
+      <MobilePreviewSheet open={previewOpen} onOpenChange={setPreviewOpen} />
       <AlertDialog
         open={showMultiPageDialog}
         onOpenChange={setShowMultiPageDialog}
