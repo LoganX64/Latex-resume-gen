@@ -10,6 +10,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 const HomePage = lazy(() => import('@/pages/HomePage'))
 const EditorV2Layout = lazy(() => import('@/layouts/EditorV2Layout'))
 const StatsDashboard = lazy(() => import('@/pages/StatsDashboard'))
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
 const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes)
 
@@ -39,6 +40,14 @@ function AppRoutes() {
           element={
             <PageTransition>
               <StatsDashboard />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <PageTransition>
+              <NotFoundPage />
             </PageTransition>
           }
         />
