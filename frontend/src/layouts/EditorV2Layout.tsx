@@ -178,7 +178,6 @@ export default function EditorV2Layout() {
       {isMobile ? (
         <div className="flex flex-col h-dvh overflow-hidden bg-background">
           <MobileTopNavbar
-            onSave={() => setShowSaveDialog(true)}
             onMenuToggle={() => setSidebarOpen(true)}
           />
           <div className="flex-1 min-h-0 overflow-hidden">
@@ -192,6 +191,7 @@ export default function EditorV2Layout() {
           <MobileBottomNavbar
             onHome={() => navigate("/")}
             onSaved={() => setSavedOpen(true)}
+            onSave={() => setShowSaveDialog(true)}
             onPreview={() => setPreviewOpen(true)}
             onDownload={handleExportPdf}
             isExportingPdf={isExportingPdf}
@@ -399,17 +399,17 @@ export default function EditorV2Layout() {
                         onValueChange={(v) => v && setTemplateId(v)}
                       >
                         <SelectTrigger
-                          className="text-[10px] sm:text-xs h-6 sm:h-7 px-2 py-1 gap-1 cursor-pointer min-w-[120px] sm:min-w-[140px]"
+                          className="text-xs sm:text-sm h-8 sm:h-9 px-2 py-1 gap-1 cursor-pointer min-w-[120px] sm:min-w-[140px]"
                           aria-label="Select resume template"
                         >
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="min-w-48 text-[10px] sm:text-xs">
+                        <SelectContent className="min-w-48 text-xs sm:text-sm">
                           {templateConfigs.map((tc) => (
                             <SelectItem
                               key={tc.id}
                               value={tc.id}
-                              className="py-0.5 pr-6 pl-1.5 text-[10px] sm:text-xs"
+                              className="py-1 pr-6 pl-1.5 text-xs sm:text-sm"
                             >
                               {tc.name}
                             </SelectItem>

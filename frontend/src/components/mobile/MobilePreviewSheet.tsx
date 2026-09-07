@@ -82,17 +82,17 @@ export function MobilePreviewSheet({
                 onValueChange={(v) => v && setTemplateId(v)}
               >
                 <SelectTrigger
-                  className="text-[10px] h-6 px-2 py-1 gap-1 cursor-pointer w-32"
+                  className="text-xs h-8 px-2 py-1 gap-1 cursor-pointer w-36"
                   aria-label="Select resume template"
                 >
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="min-w-32 text-[10px]">
+                <SelectContent className="min-w-36 text-xs">
                   {templateConfigs.map((tc) => (
                     <SelectItem
                       key={tc.id}
                       value={tc.id}
-                      className="py-0.5 pr-6 pl-1.5 text-[10px]"
+                      className="py-1 pr-6 pl-1.5 text-xs"
                     >
                       {tc.name}
                     </SelectItem>

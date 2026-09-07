@@ -71,17 +71,17 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
       className={`flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] ${isDragging ? "opacity-50 bg-muted" : ""}`}
     >
       <CardContent className="p-3 space-y-2">
-        <div className="flex items-center gap-2">
-          <button
-            aria-label={`Drag to reorder ${category.name || "skill category"}`}
-            className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            {...attributes}
-            {...listeners}
-          >
-            <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
-          </button>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="flex items-center gap-2">
+            <button
+              aria-label={`Drag to reorder ${category.name || "skill category"}`}
+              className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              {...attributes}
+              {...listeners}
+            >
+              <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+            </button>
 
-          <div className="flex min-w-0 flex-1 items-center gap-2">
             <Input
               name="skillCategoryName"
               autoComplete="off"
@@ -92,41 +92,41 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
               className="h-10 text-base sm:h-8 sm:text-sm flex-1 min-w-0"
             />
 
-            <div className="flex min-w-[220px] max-w-[300px] flex-1 items-center gap-1">
-              <Input
-                name="newSkill"
-                autoComplete="off"
-                value={newSkill}
-                onChange={(e) => setNewSkill(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addSkill();
-                  }
-                }}
-                placeholder="Type a skill and press Enter…"
-                aria-label="New skill name"
-                className="h-10 text-base sm:h-8 sm:text-sm flex-1 min-w-0"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-10 shrink-0 px-2 text-sm sm:h-8 sm:text-xs"
-                onClick={addSkill}
-              >
-                Add
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => removeSkillCategory(category.id)}
+              aria-label={`Remove ${category.name || "skill category"}`}
+            >
+              <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+            </Button>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            onClick={() => removeSkillCategory(category.id)}
-            aria-label={`Remove ${category.name || "skill category"}`}
-          >
-            <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
-          </Button>
+          <div className="flex items-center gap-1 sm:flex-1 sm:min-w-[220px] sm:max-w-[300px] w-full sm:pl-0 pl-[22px]">
+            <Input
+              name="newSkill"
+              autoComplete="off"
+              value={newSkill}
+              onChange={(e) => setNewSkill(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addSkill();
+                }
+              }}
+              placeholder="Type a skill and press Enter…"
+              aria-label="New skill name"
+              className="h-10 text-base sm:h-8 sm:text-sm flex-1 min-w-0 w-full"
+            />
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-8 shrink-0 px-2 text-xs sm:h-8 sm:text-xs"
+              onClick={addSkill}
+            >
+              Add
+            </Button>
+          </div>
         </div>
         <div className="flex flex-wrap gap-1.5">
           {category.skills.map((skill, sIndex) => (

@@ -69,6 +69,7 @@ export function SectionWrapper({
             <Button
               variant="ghost"
               size="icon-xs"
+              className="cursor-pointer"
               onClick={() => toggleSectionVisibility(sectionTypeKey)}
               aria-label={
                 isVisible ? `Hide ${label} section` : `Show ${label} section`

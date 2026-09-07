@@ -383,7 +383,7 @@ export function CompileProgressDialog({
   return (
     <Dialog open={open} onOpenChange={handleClose} disablePointerDismissal={isAnimating}>
       <DialogContent
-        className="!top-[42%] flex w-[min(100%,27rem)] max-w-[27rem] flex-col gap-0 overflow-hidden p-0 sm:max-w-[27rem]"
+        className="!top-[42%] flex w-[min(calc(100%-2rem),27rem)] max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden p-0 sm:max-w-[27rem]"
         showCloseButton={false}
       >
         {/* Header */}

@@ -28,7 +28,7 @@ export function LanguagesForm() {
             value={lang.name}
             onChange={(e) => updateLanguage(lang.id, "name", e.target.value)}
             placeholder="Language"
-            className="h-10 text-base sm:h-7 sm:text-xs flex-1 min-w-0"
+            className="flex-1 min-w-0"
           />
           <Select
             value={lang.proficiency}
@@ -37,7 +37,7 @@ export function LanguagesForm() {
             }}
           >
             <SelectTrigger
-              className="h-10 text-base sm:h-7 sm:text-xs w-30"
+              className="!h-10 sm:!h-7 text-base sm:text-xs flex-1 min-w-0"
               aria-label="Proficiency level"
             >
               <SelectValue placeholder="Level" />
@@ -52,7 +52,7 @@ export function LanguagesForm() {
           </Select>
           <Button
             variant="ghost"
-            size="icon-xs"
+            size="icon-sm"
             onClick={() => removeLanguage(lang.id)}
             aria-label={`Remove language ${index + 1}`}
           >
