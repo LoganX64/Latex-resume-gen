@@ -1,5 +1,7 @@
 import { Icon } from "@/components/Icon";
-import { faBars, faSun, faMoon, faRotateLeft, faTrash } from "@/lib/icons";
+import { faBars, faRotateLeft, faTrash } from "@/lib/icons";
+import { SunIcon } from "@/components/SunIcon";
+import { MoonIcon } from "@/components/MoonIcon";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { useResumeStore } from "@/stores/resume-store";
@@ -76,9 +78,9 @@ export function MobileTopNavbar({
           className="h-8 w-8"
         >
           {darkMode ? (
-            <Icon icon={faSun} className="h-4 w-4" />
+            <SunIcon className="h-4 w-4" />
           ) : (
-            <Icon icon={faMoon} className="h-4 w-4" />
+            <MoonIcon className="h-4 w-4" />
           )}
         </Button>
       </div>
