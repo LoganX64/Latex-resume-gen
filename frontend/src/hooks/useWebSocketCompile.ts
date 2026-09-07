@@ -25,6 +25,7 @@ export function useWebSocketCompile() {
   const [result, setResult] = useState<CompileResult | null>(null)
   const wsRef = useRef<WebSocket | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isCompilingRef = useRef(false)
 
   const cleanup = useCallback(() => {
     if (timeoutRef.current) {
@@ -35,6 +36,7 @@ export function useWebSocketCompile() {
       wsRef.current.close()
       wsRef.current = null
     }
+    isCompilingRef.current = false
   }, [])
 
   const startCompile = useCallback((latex: string, profileImage: string) => {
@@ -59,6 +61,7 @@ export function useWebSocketCompile() {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
+      isCompilingRef.current = true
       setStatus('compiling')
       ws.send(JSON.stringify({ latex, profileImage }))
     }
@@ -83,6 +86,7 @@ export function useWebSocketCompile() {
             return [...prev, step]
           })
         } else if (msg.type === 'complete') {
+          isCompilingRef.current = false
           setProgress((prev) => [
             ...prev,
             { step: 'done', message: 'Done' },
@@ -101,6 +105,7 @@ export function useWebSocketCompile() {
     }
 
     ws.onerror = () => {
+      isCompilingRef.current = false
       setError('WebSocket connection failed')
       setStatus('error')
     }
@@ -110,7 +115,8 @@ export function useWebSocketCompile() {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
-      if (status === 'compiling' || status === 'connecting') {
+      if (isCompilingRef.current) {
+        isCompilingRef.current = false
         setError('Connection lost during compilation')
         setStatus('error')
       }
@@ -130,6 +136,7 @@ export function useWebSocketCompile() {
     setProgress([])
     setError('')
     setResult(null)
+    isCompilingRef.current = false
   }, [cleanup])
 
   return { progress, status, error, result, startCompile, cancel, reset }
