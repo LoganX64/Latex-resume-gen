@@ -183,7 +183,7 @@ export default function EditorV2Layout() {
           <div className="flex-1 min-h-0 overflow-hidden">
             <div
               id="editor-main"
-              className="h-full overflow-y-auto"
+              className="h-full overflow-y-auto pb-24"
             >
               <EditorPanel activeSection={activeSection} />
             </div>

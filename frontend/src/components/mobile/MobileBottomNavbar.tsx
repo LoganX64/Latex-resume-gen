@@ -11,6 +11,32 @@ interface MobileBottomNavbarProps {
   isExportingPdf: boolean;
 }
 
+const BTN_SIZE = 56;
+const VW       = 358;
+const BAR_H    = 64;
+const R_OUT    = 22;
+const CX       = VW / 2;
+const NR       = 32;
+const FR       = 14;
+const PAD_TOP  = 16;
+
+const svgPath = [
+  `M ${R_OUT} 0`,
+  `L ${CX - NR - FR} 0`,
+  `Q ${CX - NR} 0, ${CX - NR} ${FR}`,
+  `A ${NR} ${NR} 0 0 0 ${CX + NR} ${FR}`,
+  `Q ${CX + NR} 0, ${CX + NR + FR} 0`,
+  `L ${VW - R_OUT} 0`,
+  `A ${R_OUT} ${R_OUT} 0 0 1 ${VW} ${R_OUT}`,
+  `L ${VW} ${BAR_H - R_OUT}`,
+  `A ${R_OUT} ${R_OUT} 0 0 1 ${VW - R_OUT} ${BAR_H}`,
+  `L ${R_OUT} ${BAR_H}`,
+  `A ${R_OUT} ${R_OUT} 0 0 1 0 ${BAR_H - R_OUT}`,
+  `L 0 ${R_OUT}`,
+  `A ${R_OUT} ${R_OUT} 0 0 1 ${R_OUT} 0`,
+  `Z`,
+].join(" ");
+
 export function MobileBottomNavbar({
   onHome,
   onSaved,
@@ -20,67 +46,102 @@ export function MobileBottomNavbar({
   isExportingPdf,
 }: MobileBottomNavbarProps) {
   return (
-    <nav className="relative select-none rounded-t-2xl border-t border-border/60 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] shrink-0 safe-area-inset-bottom">
-      <div className="flex items-center justify-around max-w-lg mx-auto px-2 pt-2 pb-3">
-        {/* Left: Save */}
-        <button
-          onClick={onSave}
-          className="flex flex-col items-center justify-center min-w-[50px] py-1 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-colors active:scale-95"
-          aria-label="Save as version"
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-30 pointer-events-none select-none px-4 pb-3 safe-area-inset-bottom"
+      style={{ paddingTop: PAD_TOP }}
+    >
+      <div
+        className="relative mx-auto max-w-md pointer-events-auto"
+        style={{
+          height: BAR_H,
+          filter:
+            "drop-shadow(0px 8px 24px rgba(0,0,0,0.08)) drop-shadow(0px 2px 6px rgba(0,0,0,0.04))",
+        }}
+      >
+        <svg
+          viewBox={`0 0 ${VW} ${BAR_H}`}
+          preserveAspectRatio="none"
+          className="w-full h-full block"
+          aria-hidden="true"
         >
-          <Icon icon={faFloppyDisk} className="h-5 w-5" />
-          <span className="text-[10px] font-medium mt-1">Save</span>
-        </button>
+          <path d={svgPath} fill="white" />
+        </svg>
 
-        {/* Left: Saved */}
-        <button
-          onClick={onSaved}
-          className="flex flex-col items-center justify-center min-w-[50px] py-1 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-colors active:scale-95"
-          aria-label="Saved versions"
+        <div
+          className="absolute inset-0 grid"
+          style={{ gridTemplateColumns: "repeat(5, 1fr)" }}
         >
-          <Icon icon={faBookmark} className="h-5 w-5" />
-          <span className="text-[10px] font-medium mt-1">Saved</span>
-        </button>
+          <NavTab label="Save" onClick={onSave} ariaLabel="Save version">
+            <Icon icon={faFloppyDisk} style={{ width: 20, height: 20 }} />
+          </NavTab>
 
-        {/* Center: Home (raised) */}
-        <div className="relative flex justify-center -mt-6 z-10">
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-indigo-500 blur-md opacity-60 scale-110" />
-          <button
-            onClick={onHome}
-            className="relative z-10 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-indigo-600 text-white shadow-xl border-4 border-background active:scale-95 transition-transform"
-            aria-label="Home"
+          <NavTab label="Saved" onClick={onSaved} ariaLabel="Saved versions">
+            <Icon icon={faBookmark} style={{ width: 20, height: 20 }} />
+          </NavTab>
+
+          <div aria-hidden="true" />
+
+          <NavTab label="Preview" onClick={onPreview} ariaLabel="Preview">
+            <Icon icon={faEye} style={{ width: 20, height: 20 }} />
+          </NavTab>
+
+          <NavTab
+            label={isExportingPdf ? "Exporting" : "Download"}
+            onClick={onDownload}
+            disabled={isExportingPdf}
+            ariaLabel="Download PDF"
           >
-            <Icon icon={faHouse} className="h-6 w-6" />
-          </button>
+            {isExportingPdf ? (
+              <Spinner style={{ width: 20, height: 20 }} />
+            ) : (
+              <Icon icon={faDownload} style={{ width: 20, height: 20 }} />
+            )}
+          </NavTab>
         </div>
+      </div>
 
-        {/* Right: Preview */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 pointer-events-auto"
+        style={{ top: 0, zIndex: 20 }}
+      >
         <button
-          onClick={onPreview}
-          className="flex flex-col items-center justify-center min-w-[50px] py-1 text-muted-foreground hover:text-primary hover:bg-primary/5 rounded-xl transition-colors active:scale-95"
-          aria-label="Preview"
+          onClick={onHome}
+          aria-label="Home"
+          className="flex items-center justify-center rounded-full text-[var(--primary-foreground)] active:scale-90 transition-transform focus:outline-none shadow-md"
+          style={{
+            width: BTN_SIZE,
+            height: BTN_SIZE,
+            background: "var(--primary)",
+          }}
         >
-          <Icon icon={faEye} className="h-5 w-5" />
-          <span className="text-[10px] font-medium mt-1">Preview</span>
-        </button>
-
-        {/* Right: Download */}
-        <button
-          onClick={onDownload}
-          disabled={isExportingPdf}
-          className="flex flex-col items-center justify-center min-w-[50px] py-1 text-primary hover:bg-primary/10 rounded-xl transition-colors active:scale-95 disabled:opacity-60"
-          aria-label="Download PDF"
-        >
-          {isExportingPdf ? (
-            <Spinner className="h-5 w-5" />
-          ) : (
-            <Icon icon={faDownload} className="h-5 w-5" />
-          )}
-          <span className="text-[10px] font-medium mt-1">
-            {isExportingPdf ? "Exporting…" : "Download"}
-          </span>
+          <Icon icon={faHouse} style={{ width: 22, height: 22 }} />
         </button>
       </div>
     </nav>
+  );
+}
+
+interface NavTabProps {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  ariaLabel: string;
+  children: React.ReactNode;
+}
+
+function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className="flex flex-col items-center justify-center h-full text-gray-400 hover:text-gray-600 active:scale-95 transition-all disabled:opacity-50 focus:outline-none"
+      style={{ gap: 3 }}
+    >
+      {children}
+      <span className="font-medium leading-none" style={{ fontSize: 11 }}>
+        {label}
+      </span>
+    </button>
   );
 }
