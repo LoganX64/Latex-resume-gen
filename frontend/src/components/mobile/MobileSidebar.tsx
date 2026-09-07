@@ -113,11 +113,7 @@ export function MobileSidebar({
               alt="CVStack Logo"
               className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
             />
-            <div className="flex flex-col leading-tight text-left">
-              <p className="text-[10px] text-sidebar-foreground/60">
-                IT Professional Resume Builder
-              </p>
-            </div>
+
           </div>
 
           {/* ── Nav items ── */}
