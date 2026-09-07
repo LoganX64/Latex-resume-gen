@@ -1,6 +1,7 @@
 import { Icon } from "@/components/Icon";
 import { faEye, faDownload, faHouse, faBookmark, faFloppyDisk } from "@/lib/icons";
 import { Spinner } from "@/components/ui/spinner";
+import { m } from "framer-motion";
 
 interface MobileBottomNavbarProps {
   onHome: () => void;
@@ -104,10 +105,13 @@ export function MobileBottomNavbar({
         className="absolute left-1/2 -translate-x-1/2 pointer-events-auto"
         style={{ top: 0, zIndex: 20 }}
       >
-        <button
+        <m.button
+          whileTap={{ scale: 0.88 }}
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 220, damping: 20 }}
           onClick={onHome}
           aria-label="Home"
-          className="flex items-center justify-center rounded-full text-[var(--primary-foreground)] active:scale-90 transition-transform focus:outline-none shadow-md"
+          className="flex items-center justify-center rounded-full text-[var(--primary-foreground)] focus:outline-none shadow-md"
           style={{
             width: BTN_SIZE,
             height: BTN_SIZE,
@@ -115,7 +119,7 @@ export function MobileBottomNavbar({
           }}
         >
           <Icon icon={faHouse} style={{ width: 22, height: 22 }} />
-        </button>
+        </m.button>
       </div>
     </nav>
   );
@@ -131,17 +135,19 @@ interface NavTabProps {
 
 function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) {
   return (
-    <button
+    <m.button
+      whileTap={{ scale: 0.88, y: 1 }}
+      transition={{ type: "spring", stiffness: 220, damping: 20 }}
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      className="flex flex-col items-center justify-center h-full text-gray-400 hover:text-gray-600 active:scale-95 transition-all disabled:opacity-50 focus:outline-none"
+      className="flex flex-col items-center justify-center h-full text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 focus:outline-none"
       style={{ gap: 3 }}
     >
       {children}
       <span className="font-medium leading-none" style={{ fontSize: 11 }}>
         {label}
       </span>
-    </button>
+    </m.button>
   );
 }

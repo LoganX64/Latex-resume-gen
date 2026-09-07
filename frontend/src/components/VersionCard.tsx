@@ -140,15 +140,17 @@ export function VersionCard({ version }: VersionCardProps) {
                 LaTeX
               </Button>
             )}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-8 w-8 ml-auto text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-              onClick={() => setShowDeleteDialog(true)}
-              title="Delete version"
-            >
-              <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
-            </Button>
+            <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="ml-auto">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                onClick={() => setShowDeleteDialog(true)}
+                title="Delete version"
+              >
+                <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
+              </Button>
+            </m.div>
           </div>
         </CardContent>
       </Card>
