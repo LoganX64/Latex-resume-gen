@@ -23,8 +23,9 @@ import {
   faLayerGroup,
   faTrophy,
   faBookOpen,
+  faXmark,
 } from "@/lib/icons";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -99,6 +100,7 @@ export function MobileSidebar({
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent
           side="left"
+          showCloseButton={false}
           className="w-64 p-0 flex flex-col bg-sidebar border-r border-sidebar-border"
         >
           {/* ── Header ── */}
@@ -113,7 +115,9 @@ export function MobileSidebar({
               alt="CVStack Logo"
               className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
             />
-
+            <SheetClose className="ml-auto p-1 rounded-md hover:bg-sidebar-accent">
+              <Icon icon={faXmark} className="h-4 w-4" />
+            </SheetClose>
           </div>
 
           {/* ── Nav items ── */}
