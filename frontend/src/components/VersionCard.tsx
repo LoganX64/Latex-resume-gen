@@ -97,22 +97,33 @@ export function VersionCard({ version }: VersionCardProps) {
           onClick={handleLoad}
         >
         <CardHeader className="relative pb-0 pt-2 px-3 sm:px-4">
-          <div className="flex items-start justify-between gap-2">
-            <div className="space-y-1">
-              <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-                {version.name}
-              </CardTitle>
-              <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-xs text-muted-foreground">
-                <span className="font-medium text-foreground/90">{templateConfig?.name || version.templateId}</span>
-                <span className="text-muted-foreground/60">•</span>
-                <span>{activeSections.length} sections</span>
-                <span className="text-muted-foreground/60">•</span>
-                <span>{(() => {
-                  const date = new Date(version.createdAt)
-                  return isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')
-                })()}</span>
-              </div>
-            </div>
+          <div className="flex items-center justify-between gap-2">
+            <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+              {version.name}
+            </CardTitle>
+            {isMobile && (
+              <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => setShowDeleteDialog(true)}
+                  title="Delete version"
+                >
+                  <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
+                </Button>
+              </m.div>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-xs text-muted-foreground mt-1">
+            <span className="font-medium text-foreground/90">{templateConfig?.name || version.templateId}</span>
+            <span className="text-muted-foreground/60">•</span>
+            <span>{activeSections.length} sections</span>
+            <span className="text-muted-foreground/60">•</span>
+            <span>{(() => {
+              const date = new Date(version.createdAt)
+              return isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')
+            })()}</span>
           </div>
         </CardHeader>
         <CardContent className="relative pt-3 pb-3 px-3 sm:px-4">
@@ -150,17 +161,19 @@ export function VersionCard({ version }: VersionCardProps) {
                 LaTeX
               </Button>
             )}
-            <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="ml-auto">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-                onClick={() => setShowDeleteDialog(true)}
-                title="Delete version"
-              >
-                <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
-              </Button>
-            </m.div>
+            {!isMobile && (
+              <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }} className="ml-auto">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                  onClick={() => setShowDeleteDialog(true)}
+                  title="Delete version"
+                >
+                  <Icon icon={faTrash} className="h-3.5 w-3.5 text-rose-500" />
+                </Button>
+              </m.div>
+            )}
           </div>
         </CardContent>
       </Card>
