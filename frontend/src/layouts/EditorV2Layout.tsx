@@ -246,6 +246,30 @@ export default function EditorV2Layout() {
                       Resume Editor
                     </span>
                     <div className="flex items-center gap-1">
+                      {/* Download button - tablet only */}
+                      <div className="hidden md:flex lg:hidden">
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                variant="ghost"
+                                size="icon-xs"
+                                className="sm:h-7 sm:w-7"
+                                onClick={() => handleExportPdf()}
+                                disabled={isExportingPdf}
+                                aria-label="Download PDF"
+                              />
+                            }
+                          >
+                            {isExportingPdf ? (
+                              <Spinner className="h-3.5 w-3.5" />
+                            ) : (
+                              <Icon icon={faDownload} className="h-3.5 w-3.5" />
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent>Download PDF</TooltipContent>
+                        </Tooltip>
+                      </div>
                       <Tooltip>
                         <TooltipTrigger
                           render={
@@ -501,7 +525,7 @@ export default function EditorV2Layout() {
       <Button
         variant="default"
         size="icon"
-        className="fixed bottom-24 right-6 z-40 h-14 w-14 rounded-full shadow-lg hidden md:flex lg:hidden touch-manipulation"
+        className="fixed top-20 right-6 z-40 h-14 w-14 rounded-full shadow-lg hidden md:flex lg:hidden touch-manipulation"
         onClick={() => setPreviewOpen(true)}
         aria-label="Preview resume"
       >
