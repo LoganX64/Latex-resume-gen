@@ -6,6 +6,7 @@ import { downloadFile, downloadPdf } from '@/utils/download'
 import { recordDownload } from '@/utils/stats'
 import { loadTemplate, getTemplateConfig } from '@/templates'
 import { useWebSocketCompile } from '@/hooks/useWebSocketCompile'
+import type { ResumeVersion } from '@/types/resume'
 
 interface UseExportActionsOptions {
   onNavigateHome?: () => void
@@ -23,6 +24,7 @@ export function useExportActions(_options?: UseExportActionsOptions) {
   const pendingDownloadRef = useRef<{ blob: Blob; filename: string } | null>(null)
   const [showNoPhotoDialog, setShowNoPhotoDialog] = useState(false)
   const pendingNoPhotoRef = useRef<'pdf' | 'latex' | null>(null)
+  const pendingVersionRef = useRef<ResumeVersion | null>(null)
   const [compileDialogOpen, setCompileDialogOpen] = useState(false)
 
   const {
@@ -96,6 +98,34 @@ export function useExportActions(_options?: UseExportActionsOptions) {
     })
   }, [resume, sectionOrder, sectionVisibility, templateId, isExportingPdf, checkPhotoWarning, startCompile, resetCompile])
 
+  const handleExportVersionPdf = useCallback(async (version: ResumeVersion) => {
+    if (isExportingPdf) return
+
+    setIsExportingPdf(true)
+    setCompileDialogOpen(true)
+    resetCompile()
+    pendingVersionRef.current = version
+
+    try {
+      const template = await loadTemplate(version.templateId)
+      if (!template) {
+        setCompileDialogOpen(false)
+        setIsExportingPdf(false)
+        return
+      }
+
+      const latex = template.generateLatex(version.resume, version.sectionOrder, version.sectionVisibility)
+      const profileImage = version.resume.personalInfo.profileImage || ''
+      startCompile(latex, profileImage)
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not connect to server'
+      toast.error('PDF export failed', {
+        description: `${message}. Make sure the backend is running.`,
+      })
+      setIsExportingPdf(false)
+    }
+  }, [isExportingPdf, startCompile, resetCompile])
+
   const handleMultiPageDownload = useCallback(() => {
     const pending = pendingDownloadRef.current
     if (!pending) return
@@ -123,8 +153,12 @@ export function useExportActions(_options?: UseExportActionsOptions) {
 
   useEffect(() => {
     if (compileStatus === 'done' && compileResult?.pdfBlob) {
-      const name = resume.personalInfo.fullName || 'resume'
-      const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
+      const version = pendingVersionRef.current
+      const name = version?.resume.personalInfo.fullName || resume.personalInfo.fullName || 'resume'
+      const versionName = version?.name
+      const filename = versionName
+        ? `${name.toLowerCase().replace(/\s+/g, '-')}-${versionName.toLowerCase().replace(/\s+/g, '-')}.pdf`
+        : `${name.toLowerCase().replace(/\s+/g, '-')}.pdf`
       const blob = compileResult.pdfBlob
 
       Sentry.startSpan({ name: 'Export PDF - handle result', op: 'export.pdf' }, (span) => {
@@ -160,13 +194,16 @@ export function useExportActions(_options?: UseExportActionsOptions) {
         })
       })
       setIsExportingPdf(false)
+      pendingVersionRef.current = null
     } else if (compileStatus === 'error') {
       setIsExportingPdf(false)
+      pendingVersionRef.current = null
     }
   }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
 
   return useMemo(() => ({
     handleExportPdf,
+    handleExportVersionPdf,
     handleExportLatex,
     handleMultiPageDownload,
     handleNoPhotoContinue,
@@ -184,6 +221,7 @@ export function useExportActions(_options?: UseExportActionsOptions) {
     compileWsError,
   }), [
     handleExportPdf,
+    handleExportVersionPdf,
     handleExportLatex,
     handleMultiPageDownload,
     handleNoPhotoContinue,

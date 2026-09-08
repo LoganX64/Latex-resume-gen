@@ -120,6 +120,7 @@ export default function EditorV2Layout() {
 
   const {
     handleExportPdf,
+    handleExportVersionPdf,
     handleExportLatex,
     handleMultiPageDownload,
     handleNoPhotoContinue,
@@ -218,7 +219,12 @@ export default function EditorV2Layout() {
             }}
             onSaveClick={() => setShowSaveDialog(true)}
           />
-          <MobileSavedSheet open={savedOpen} onOpenChange={setSavedOpen} />
+          <MobileSavedSheet
+            open={savedOpen}
+            onOpenChange={setSavedOpen}
+            onExportPdf={handleExportVersionPdf}
+            isExportingPdf={isExportingPdf}
+          />
         </div>
       ) : (
       /* ── Desktop layout ── */

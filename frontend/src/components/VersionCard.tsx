@@ -4,12 +4,12 @@ import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
 import { useIsMobile } from '@/hooks/use-mobile'
 import { getTemplateConfig } from '@/templates'
-import { quickExportPdf, quickExportLatex } from '@/utils/quick-export'
+import { quickExportLatex } from '@/utils/quick-export'
 import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Icon } from '@/components/Icon'
-import { faSpinner, faFileLines, faDownload, faTrash } from '@/lib/icons'
+import { faSpinner, faFileLines, faDownload, faTrash, faTriangleExclamation } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { m, useReducedMotion } from 'framer-motion'
@@ -24,6 +24,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { CompileProgressDialog } from '@/components/CompileProgressDialog'
+import { Spinner } from '@/components/ui/spinner'
+import { useVersionExport } from '@/hooks/useVersionExport'
 import type { ResumeVersion } from '@/types/resume'
 
 interface VersionCardProps {
@@ -36,8 +39,22 @@ export function VersionCard({ version }: VersionCardProps) {
   const loadFromVersion = useResumeStore((s) => s.loadFromVersion)
   const removeVersion = useVersionsStore((s) => s.removeVersion)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [exportingPdf, setExportingPdf] = useState(false)
   const [exportingLatex, setExportingLatex] = useState(false)
+
+  const {
+    handleExportPdf,
+    handleMultiPageDownload,
+    handleCompileCancel,
+    isExportingPdf,
+    compileDialogOpen,
+    setCompileDialogOpen,
+    showMultiPageDialog,
+    setShowMultiPageDialog,
+    multiPageCount,
+    progress,
+    compileStatus,
+    compileWsError,
+  } = useVersionExport()
 
   const templateConfig = getTemplateConfig(version.templateId)
   const activeSections = version.sectionOrder.filter((s) => {
@@ -48,13 +65,6 @@ export function VersionCard({ version }: VersionCardProps) {
   function handleLoad() {
     loadFromVersion(version)
     navigate('/editor')
-  }
-
-  async function handleExportPdf() {
-    setExportingPdf(true)
-    const success = await quickExportPdf(version)
-    if (success) recordDownload()
-    setExportingPdf(false)
   }
 
   async function handleExportLatex() {
@@ -114,11 +124,11 @@ export function VersionCard({ version }: VersionCardProps) {
               variant="outline"
               size="sm"
               className="h-8 px-2.5 text-xs gap-1.5 border-dashed border-border/80 hover:border-primary/40"
-              onClick={handleExportPdf}
-              disabled={exportingPdf}
+              onClick={() => handleExportPdf(version)}
+              disabled={isExportingPdf}
             >
-              {exportingPdf ? (
-                  <Icon icon={faSpinner} className="h-3.5 w-3.5 animate-spin" />
+              {isExportingPdf ? (
+                <Spinner className="h-3.5 w-3.5" />
               ) : (
                 <Icon icon={faDownload} className="h-3.5 w-3.5 text-rose-500 dark:text-rose-400" />
               )}
@@ -174,6 +184,45 @@ export function VersionCard({ version }: VersionCardProps) {
             <AlertDialogCancel className="flex-1 sm:flex-none h-11 sm:h-9">
               Cancel
             </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <CompileProgressDialog
+        open={compileDialogOpen}
+        onOpenChange={setCompileDialogOpen}
+        onCancel={handleCompileCancel}
+        status={compileStatus}
+        progress={progress}
+        errorMessage={compileWsError}
+      />
+
+      <AlertDialog open={showMultiPageDialog} onOpenChange={setShowMultiPageDialog}>
+        <AlertDialogContent className="sm:max-w-sm">
+          <AlertDialogHeader>
+            <div className="flex items-center gap-2">
+              <Icon
+                icon={faTriangleExclamation}
+                className="h-5 w-5 text-destructive shrink-0"
+              />
+              <AlertDialogTitle>Multi-page resume</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription>
+              Your resume is <strong>{multiPageCount} pages</strong> long. Most
+              ATS systems and recruiters prefer single-page resumes.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <p className="text-xs text-muted-foreground">
+            Try hiding less important sections or shortening bullet points to
+            fit on one page.
+          </p>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setShowMultiPageDialog(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleMultiPageDownload}>
+              Download anyway
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

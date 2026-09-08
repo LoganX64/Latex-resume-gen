@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { useResumeStore } from '@/stores/resume-store'
 import { useVersionsStore } from '@/stores/versions-store'
 import { getTemplateConfig } from '@/templates'
-import { quickExportPdf } from '@/utils/quick-export'
-import { recordDownload } from '@/utils/stats'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
 import { Icon } from '@/components/Icon'
@@ -27,13 +25,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import type { ResumeVersion } from '@/types/resume'
+import { Spinner } from '@/components/ui/spinner'
 
 interface MobileSavedSheetProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  onExportPdf: (version: ResumeVersion) => void
+  isExportingPdf: boolean
 }
 
-export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) {
+export function MobileSavedSheet({ open, onOpenChange, onExportPdf, isExportingPdf }: MobileSavedSheetProps) {
   const loadFromVersion = useResumeStore((s) => s.loadFromVersion)
   const versions = useVersionsStore((s) => s.versions)
   const removeVersion = useVersionsStore((s) => s.removeVersion)
@@ -43,11 +45,6 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
     loadFromVersion(version)
     onOpenChange(false)
     toast.success('Version loaded', { description: `"${version.name}" has been loaded.` })
-  }
-
-  async function handleExportPdf(version: (typeof versions)[0]) {
-    const success = await quickExportPdf(version)
-    if (success) recordDownload()
   }
 
   function confirmDelete() {
@@ -107,15 +104,20 @@ export function MobileSavedSheet({ open, onOpenChange }: MobileSavedSheetProps) 
                               {isNaN(date.getTime()) ? 'Unknown date' : format(date, 'MMM d, yyyy')}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                           <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                             <Button
                               variant="ghost"
                               size="icon-sm"
                               className="h-11 w-11 sm:h-9 sm:w-9"
-                              onClick={() => handleExportPdf(version)}
+                              onClick={() => onExportPdf(version)}
+                              disabled={isExportingPdf}
                               aria-label="Download PDF"
                             >
-                              <Icon icon={faDownload} className="h-4 w-4" />
+                              {isExportingPdf ? (
+                                <Spinner className="h-4 w-4" />
+                              ) : (
+                                <Icon icon={faDownload} className="h-4 w-4" />
+                              )}
                             </Button>
                             <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
                               <Button
