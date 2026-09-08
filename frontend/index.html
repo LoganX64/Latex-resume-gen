@@ -4,57 +4,88 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0a0a0a"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <title>CVStack — Build Professional Resumes Online</title>
     <link rel="canonical" href="https://latex-resume-gen.vercel.app/" />
-    <meta name="description" content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview, multiple templates, and instant PDF export." />
-    <meta name="keywords" content="latex resume, resume builder, online resume, pdf resume, professional resume, cv builder" />
+    <meta
+      name="description"
+      content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview, multiple templates, and instant PDF export."
+    />
+    <meta
+      name="keywords"
+      content="latex resume, resume builder, online resume, pdf resume, professional resume, cv builder"
+    />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://latex-resume-gen.vercel.app/" />
-    <meta property="og:title" content="CVStack — Build Professional Resumes Online" />
-    <meta property="og:description" content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview and instant PDF export." />
-    <meta property="og:image" content="https://latex-resume-gen.vercel.app/og-image.png" />
+    <meta
+      property="og:title"
+      content="CVStack — Build Professional Resumes Online"
+    />
+    <meta
+      property="og:description"
+      content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview and instant PDF export."
+    />
+    <meta
+      property="og:image"
+      content="https://latex-resume-gen.vercel.app/og-image.png"
+    />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CVStack" />
-    <meta name="twitter:description" content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder." />
-    <meta name="twitter:image" content="https://latex-resume-gen.vercel.app/og-image.png" />
+    <meta
+      name="twitter:description"
+      content="Create professional, ATS-friendly resumes using LaTeX. Free online resume builder."
+    />
+    <meta
+      name="twitter:image"
+      content="https://latex-resume-gen.vercel.app/og-image.png"
+    />
     <meta name="robots" content="index, follow" />
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "CVStack",
-      "url": "https://latex-resume-gen.vercel.app",
-      "description": "Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview, multiple templates, and instant PDF export.",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "featureList": [
-        "Live split-screen editor",
-        "9 ATS-friendly templates",
-        "LaTeX and PDF export",
-        "Drag-and-drop section ordering",
-        "Real-time preview"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "CVStack",
+        "url": "https://latex-resume-gen.vercel.app",
+        "description": "Create professional, ATS-friendly resumes using LaTeX. Free online resume builder with real-time preview, multiple templates, and instant PDF export.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Mobile-responsive editor with sidebar navigation",
+          "ATS-friendly templates",
+          "LaTeX and PDF export with real-time compilation progress",
+          "Drag-and-drop section ordering",
+          "Real-time preview",
+          "Version history",
+          "Dark mode support"
+        ]
+      }
     </script>
   </head>
   <body>
     <script>
-      (function() {
+      (function () {
         try {
-          var stored = JSON.parse(localStorage.getItem('latex-resume-storage'));
+          var stored = JSON.parse(localStorage.getItem("latex-resume-storage"));
           if (stored && stored.state && stored.state.darkMode) {
-            document.documentElement.classList.add('dark');
+            document.documentElement.classList.add("dark");
           }
-        } catch(e) {}
+        } catch (e) {}
       })();
     </script>
     <div id="root"></div>
