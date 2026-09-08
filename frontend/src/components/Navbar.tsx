@@ -5,6 +5,7 @@ import { Icon } from '@/components/Icon'
 import { faFileLines, faStar } from '@/lib/icons'
 import { SunIcon } from '@/components/SunIcon'
 import { MoonIcon } from '@/components/MoonIcon'
+import { ShineButton } from '@/components/motion/ShineButton'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -40,11 +41,11 @@ export function Navbar() {
             {darkMode ? <SunIcon className="h-3.5 w-3.5" /> : <MoonIcon className="h-3.5 w-3.5" />}
           </Button>
           <Link to="/editor">
-            <Button size="sm" className="gap-1.5">
+            <ShineButton size="sm" className="gap-1.5">
               <Icon icon={faFileLines} className="h-3.5 w-3.5 sm:hidden" aria-hidden="true" />
               <span className="hidden sm:inline">Build Resume</span>
               <span className="sm:hidden">Build</span>
-            </Button>
+            </ShineButton>
           </Link>
         </div>
       </div>
