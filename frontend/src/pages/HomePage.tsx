@@ -308,14 +308,11 @@ export default function HomePage() {
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1]">
                   Build a{" "}
-                  <span className="relative inline-block">
-                    <span className="relative z-10 text-primary">
-                      professional
-                    </span>
-                    <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 rounded-sm z-0" />
+                  <span className="animate-gradient gradient-primary inline-block">
+                    Professional
                   </span>
                   <br />
-                  resume with <span className="text-primary">LaTeX</span>
+                  resume with <span className="animate-gradient gradient-rose inline-block">LaTeX</span>
                 </h1>
 
                 <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0">

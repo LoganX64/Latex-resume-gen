@@ -192,3 +192,47 @@ body {
 @utility safe-area-inset-bottom {
   padding-bottom: env(safe-area-inset-bottom);
 }
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-shift 3s ease-in-out infinite;
+}
+
+.gradient-primary {
+  background-image: linear-gradient(
+    to right,
+    var(--primary),
+    oklch(0.65 0.22 320),
+    oklch(0.7 0.18 280),
+    var(--primary)
+  );
+}
+
+.gradient-rose {
+  background-image: linear-gradient(
+    to right,
+    oklch(0.65 0.22 17),
+    oklch(0.7 0.18 330),
+    oklch(0.6 0.2 10),
+    oklch(0.65 0.22 17)
+  );
+}
+
+.dark .gradient-primary {
+  background-image: linear-gradient(
+    to right,
+    var(--primary),
+    oklch(0.7 0.2 320),
+    oklch(0.75 0.18 280),
+    var(--primary)
+  );
+}
