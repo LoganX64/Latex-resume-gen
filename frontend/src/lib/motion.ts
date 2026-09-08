@@ -1,5 +1,4 @@
 import type { Transition, Variants } from "framer-motion";
-import { useReducedMotion } from "framer-motion";
 
 export const DURATION = {
   fast: 0.18,
@@ -29,23 +28,6 @@ export const fadeUp: Variants = {
   },
 };
 
-export const fadeIn: Variants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { duration: DURATION.base, ease: EASE_OUT },
-  },
-};
-
-export const scaleIn: Variants = {
-  hidden: { opacity: 0, scale: 0.96 },
-  show: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: DURATION.base, ease: EASE_OUT },
-  },
-};
-
 export const staggerContainer: Variants = {
   hidden: {},
   show: {
@@ -69,24 +51,6 @@ export const pageEnter: Variants = {
     opacity: 0,
     y: -4,
     transition: { duration: DURATION.fast, ease: EASE_IN },
-  },
-};
-
-export const splitPaneLeft: Variants = {
-  hidden: { opacity: 0, x: -16 },
-  show: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: DURATION.slow, ease: EASE_OUT },
-  },
-};
-
-export const splitPaneRight: Variants = {
-  hidden: { opacity: 0, x: 16 },
-  show: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: DURATION.slow, ease: EASE_OUT, delay: 0.08 },
   },
 };
 
@@ -132,21 +96,3 @@ export const editorCard: Variants = {
     transition: { duration: 0.4, ease: EASE_OUT },
   },
 };
-
-export function useMotionVariants(variants: Variants): Variants {
-  const reduce = useReducedMotion();
-  if (!reduce) return variants;
-  return Object.fromEntries(
-    Object.entries(variants).map(([key, value]) => {
-      if (typeof value !== "object" || value === null) return [key, value];
-      const v = value as { opacity?: number; y?: number; x?: number; scale?: number; transition?: Transition };
-      return [
-        key,
-        {
-          opacity: v.opacity ?? 1,
-          transition: { duration: 0 },
-        },
-      ];
-    }),
-  ) as Variants;
-}

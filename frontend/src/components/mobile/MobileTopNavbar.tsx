@@ -1,5 +1,6 @@
 import { Icon } from "@/components/Icon";
-import { faBars, faRotateLeft, faTrash } from "@/lib/icons";
+import { faRotateLeft, faTrash } from "@/lib/icons";
+import { PanelLeftIcon } from "@/components/PanelLeftIcon";
 import { SunIcon } from "@/components/SunIcon";
 import { MoonIcon } from "@/components/MoonIcon";
 import { Button } from "@/components/ui/button";
@@ -42,7 +43,7 @@ export function MobileTopNavbar({
           aria-label="Open sidebar"
           className="h-8 w-8"
         >
-          <Icon icon={faBars} className="h-4 w-4" />
+          <PanelLeftIcon className="h-4 w-4" />
         </Button>
         <div className="flex items-center gap-1.5">
           <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />

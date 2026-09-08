@@ -155,8 +155,7 @@ latex-resume-gen/
 │   │   │   ├── use-mobile.ts
 │   │   │   └── useExportActions.ts
 │   │   ├── layouts/
-│   │   │   ├── MainLayout.tsx   # Split-screen layout
-│   │   │   └── MobileLayout.tsx
+│   │   │   └── EditorV2Layout.tsx # Responsive editor layout
 │   │   ├── pages/
 │   │   │   ├── HomePage.tsx
 │   │   │   └── StatsDashboard.tsx
