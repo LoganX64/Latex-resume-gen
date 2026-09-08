@@ -164,10 +164,7 @@ export function useExportActions(_options?: UseExportActionsOptions) {
       Sentry.startSpan({ name: 'Export PDF - handle result', op: 'export.pdf' }, (span) => {
         span.setAttribute('pdf.size', blob.size)
 
-        const pageCount = parseInt(
-          progress.find((p) => p.step === 'reading')?.message?.match(/\d+/)?.[0] || '1',
-          10
-        )
+        const pageCount = compileResult.pageCount
         span.setAttribute('pdf.pages', pageCount)
 
         if (pageCount > 1) {
@@ -199,7 +196,7 @@ export function useExportActions(_options?: UseExportActionsOptions) {
       setIsExportingPdf(false)
       pendingVersionRef.current = null
     }
-  }, [compileStatus, compileResult, progress, resume.personalInfo.fullName, resetCompile])
+  }, [compileStatus, compileResult, resume.personalInfo.fullName, resetCompile])
 
   return useMemo(() => ({
     handleExportPdf,

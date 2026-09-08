@@ -26,6 +26,7 @@ export function useWebSocketCompile() {
   const wsRef = useRef<WebSocket | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isCompilingRef = useRef(false)
+  const pageCountRef = useRef(1)
 
   const cleanup = useCallback(() => {
     if (timeoutRef.current) {
@@ -45,6 +46,7 @@ export function useWebSocketCompile() {
     setStatus('connecting')
     setError('')
     setResult(null)
+    pageCountRef.current = 1
 
     const ws = new WebSocket(WS_URL)
     wsRef.current = ws
@@ -87,6 +89,9 @@ export function useWebSocketCompile() {
           })
         } else if (msg.type === 'complete') {
           isCompilingRef.current = false
+          pageCountRef.current = Number.isInteger(msg.pageCount) && msg.pageCount > 0
+            ? msg.pageCount
+            : 1
           setProgress((prev) => [
             ...prev,
             { step: 'done', message: 'Done' },
@@ -99,7 +104,7 @@ export function useWebSocketCompile() {
         }
       } else {
         const blob = new Blob([event.data], { type: 'application/pdf' })
-        setResult({ pdfBlob: blob, pageCount: 0 })
+        setResult({ pdfBlob: blob, pageCount: pageCountRef.current })
         ws.close()
       }
     }
@@ -137,6 +142,7 @@ export function useWebSocketCompile() {
     setError('')
     setResult(null)
     isCompilingRef.current = false
+    pageCountRef.current = 1
   }, [cleanup])
 
   return { progress, status, error, result, startCompile, cancel, reset }
