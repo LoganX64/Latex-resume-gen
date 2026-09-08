@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from "react";
-import { m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { VIEWPORT, DURATION, EASE_OUT } from "@/lib/motion";
 
 type FadeInProps = {
@@ -12,7 +13,7 @@ type FadeInProps = {
 };
 
 export function FadeIn({ children, delay = 0, y = 12, className, as = "div", alwaysAnimate = false }: FadeInProps) {
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   if (reduce) {
     const Plain = as;
     return <Plain className={className}>{children}</Plain>;

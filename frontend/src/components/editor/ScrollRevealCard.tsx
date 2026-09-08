@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { editorCard } from "@/lib/motion";
 
 export function ScrollRevealCard({ children }: { children: ReactNode }) {
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   const { ref, isInView } = useScrollReveal();
 
   if (reduce) return <>{children}</>;

@@ -72,10 +72,10 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
     >
       <CardContent className="p-3 space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:flex-1 min-w-0">
             <button
               aria-label={`Drag to reorder ${category.name || "skill category"}`}
-              className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              className="cursor-grab active:cursor-grabbing text-rose-500 hover:text-rose-500/80 touch-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm shrink-0"
               {...attributes}
               {...listeners}
             >
@@ -97,12 +97,13 @@ const SortableSkillCategory = memo(function SortableSkillCategory({
               size="icon-sm"
               onClick={() => removeSkillCategory(category.id)}
               aria-label={`Remove ${category.name || "skill category"}`}
+              className="shrink-0"
             >
               <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
             </Button>
           </div>
 
-          <div className="flex items-center gap-1 sm:flex-1 sm:min-w-[220px] sm:max-w-[300px] w-full sm:pl-0 pl-[22px]">
+          <div className="flex items-center gap-1 w-full sm:flex-1 min-w-0 sm:pl-0 pl-[22px]">
             <Input
               name="newSkill"
               autoComplete="off"

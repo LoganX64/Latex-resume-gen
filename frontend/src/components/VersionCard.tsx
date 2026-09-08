@@ -12,7 +12,8 @@ import { Icon } from '@/components/Icon'
 import { faSpinner, faFileLines, faDownload, faTrash, faTriangleExclamation } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { m, useReducedMotion } from 'framer-motion'
+import { m } from 'framer-motion'
+import { useIsMotionDisabled } from '@/hooks/useIsMotionDisabled'
 import { DURATION, EASE_OUT } from '@/lib/motion'
 import {
   AlertDialog,
@@ -80,7 +81,7 @@ export function VersionCard({ version }: VersionCardProps) {
     toast.success('Version deleted', { description: `"${version.name}" has been removed.` })
   }
 
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   const motionProps = reduce
     ? {}
     : {

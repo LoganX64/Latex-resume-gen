@@ -5,7 +5,8 @@ import {
   type ElementType,
   type ReactNode,
 } from "react";
-import { m, useReducedMotion, type Variants } from "framer-motion";
+import { m, type Variants } from "framer-motion";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 
 export type PresetType =
   | "fade"
@@ -111,7 +112,7 @@ export function AnimatedGroup({
   amount = 0.15,
   once = true,
 }: AnimatedGroupProps) {
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
 
   const selected = {
     item: addDefaultVariants(preset ? presetVariants[preset] : {}),

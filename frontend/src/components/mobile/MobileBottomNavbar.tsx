@@ -1,7 +1,7 @@
+import type { ReactNode } from "react";
 import { Icon } from "@/components/Icon";
 import { faEye, faDownload, faHouse, faBookmark, faFloppyDisk } from "@/lib/icons";
 import { Spinner } from "@/components/ui/spinner";
-import { m } from "framer-motion";
 import { useTheme } from "@/components/theme-provider";
 
 interface MobileBottomNavbarProps {
@@ -117,13 +117,10 @@ export function MobileBottomNavbar({
         className="absolute left-1/2 -translate-x-1/2 pointer-events-auto"
         style={{ top: 0, zIndex: 20 }}
       >
-        <m.button
-          whileTap={{ scale: 0.88 }}
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 220, damping: 20 }}
+        <button
           onClick={onHome}
           aria-label="Home"
-          className={`flex items-center justify-center rounded-full focus:outline-none shadow-md ${
+          className={`flex items-center justify-center rounded-full focus:outline-none shadow-md active:opacity-80 transition-opacity ${
             darkMode ? "text-sidebar-primary-foreground" : "text-[var(--primary-foreground)]"
           }`}
           style={{
@@ -133,7 +130,7 @@ export function MobileBottomNavbar({
           }}
         >
           <Icon icon={faHouse} style={{ width: 22, height: 22 }} />
-        </m.button>
+        </button>
       </div>
     </nav>
   );
@@ -144,19 +141,17 @@ interface NavTabProps {
   onClick: () => void;
   disabled?: boolean;
   ariaLabel: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) {
   const { darkMode } = useTheme();
   return (
-    <m.button
-      whileTap={{ scale: 0.88, y: 1 }}
-      transition={{ type: "spring", stiffness: 220, damping: 20 }}
+    <button
       onClick={onClick}
       disabled={disabled}
       aria-label={ariaLabel}
-      className={`flex flex-col items-center justify-center h-full transition-colors disabled:opacity-50 focus:outline-none ${
+      className={`flex flex-col items-center justify-center h-full transition-colors disabled:opacity-50 focus:outline-none active:opacity-70 ${
         darkMode
           ? "text-sidebar-foreground/50 hover:text-sidebar-foreground"
           : "text-gray-400 hover:text-gray-600"
@@ -167,6 +162,6 @@ function NavTab({ label, onClick, disabled, ariaLabel, children }: NavTabProps) 
       <span className="font-medium leading-none" style={{ fontSize: 11 }}>
         {label}
       </span>
-    </m.button>
+    </button>
   );
 }

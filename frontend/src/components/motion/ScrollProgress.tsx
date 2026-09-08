@@ -1,7 +1,8 @@
-import { m, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 
 export function ScrollProgress() {
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 220,

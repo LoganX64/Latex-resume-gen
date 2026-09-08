@@ -1,5 +1,6 @@
 import type { ElementType, ReactNode } from "react";
-import { m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 
 type HoverCardProps = {
@@ -17,7 +18,7 @@ export function HoverCard({
   scale = 1.01,
   as = "div",
 }: HoverCardProps) {
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   if (reduce) {
     const Plain = as;
     return <Plain className={className}>{children}</Plain>;

@@ -7,7 +7,6 @@ import { format } from 'date-fns'
 import { Icon } from '@/components/Icon'
 import { faDownload, faTrash, faFileLines } from '@/lib/icons'
 import { Button } from '@/components/ui/button'
-import { m, AnimatePresence } from 'framer-motion'
 import {
   Sheet,
   SheetContent,
@@ -78,18 +77,12 @@ export function MobileSavedSheet({ open, onOpenChange, onExportPdf, isExportingP
               </div>
             ) : (
               <div className="space-y-2">
-                <AnimatePresence mode="popLayout">
                   {versions.map((version) => {
                     const templateConfig = getTemplateConfig(version.templateId)
                     const date = new Date(version.createdAt)
                     return (
-                      <m.div
+                      <div
                         key={version.id}
-                        layout
-                        initial={{ opacity: 0, y: 12, scale: 0.96 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85, height: 0, marginTop: 0, marginBottom: 0 }}
-                        transition={{ duration: 0.25, ease: [0.32, 0.72, 0, 1] }}
                         className="overflow-hidden"
                       >
                         <div
@@ -119,7 +112,7 @@ export function MobileSavedSheet({ open, onOpenChange, onExportPdf, isExportingP
                                 <Icon icon={faDownload} className="h-4 w-4" />
                               )}
                             </Button>
-                            <m.div whileTap={{ scale: 0.8, rotate: -15 }} transition={{ type: "spring", stiffness: 400, damping: 17 }}>
+                            <div>
                               <Button
                                 variant="ghost"
                                 size="icon-sm"
@@ -129,13 +122,12 @@ export function MobileSavedSheet({ open, onOpenChange, onExportPdf, isExportingP
                               >
                                 <Icon icon={faTrash} className="h-4 w-4 text-rose-500" />
                               </Button>
-                            </m.div>
+                            </div>
                           </div>
                         </div>
-                      </m.div>
+                      </div>
                     )
                   })}
-                </AnimatePresence>
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useIsMotionDisabled } from "./useIsMotionDisabled";
 
 interface UseScrollRevealOptions {
   once?: boolean;
@@ -10,7 +10,7 @@ export function useScrollReveal({
 }: UseScrollRevealOptions = {}) {
   const ref = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const reduce = useReducedMotion();
+  const reduce = useIsMotionDisabled();
   const [isInView, setIsInView] = useState(reduce);
 
   useEffect(() => {
