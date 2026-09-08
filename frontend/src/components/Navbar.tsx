@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/Icon'
-import { faFileLines, faSun, faMoon, faStar } from '@/lib/icons'
+import { faFileLines, faStar } from '@/lib/icons'
+import { SunIcon } from '@/components/SunIcon'
+import { MoonIcon } from '@/components/MoonIcon'
 
 export function Navbar() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -35,7 +37,7 @@ export function Navbar() {
             onClick={toggleDarkMode}
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            {darkMode ? <Icon icon={faSun} className="h-3.5 w-3.5" /> : <Icon icon={faMoon} className="h-3.5 w-3.5" />}
+            {darkMode ? <SunIcon className="h-3.5 w-3.5" /> : <MoonIcon className="h-3.5 w-3.5" />}
           </Button>
           <Link to="/editor">
             <Button size="sm" className="gap-1.5">

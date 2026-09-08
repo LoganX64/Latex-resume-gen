@@ -19,7 +19,7 @@ export function Footer() {
             Single-page design, photo support, and instant PDF — all in your browser.
           </p>
           <div className="flex items-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-2.5 py-1 text-[11px] text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-border bg-background px-2.5 py-1 text-[11px] text-muted-foreground">
               <Icon icon={faShieldHalved} className="h-3.5 w-3.5 text-rose-500" />
               100% Local & Private
             </span>

@@ -29,10 +29,10 @@ import {
   faTrash,
   faFileLines,
   faDownload,
-  faSun,
-  faMoon,
   faRotateLeft,
 } from "@/lib/icons";
+import { SunIcon } from "@/components/SunIcon";
+import { MoonIcon } from "@/components/MoonIcon";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -340,13 +340,11 @@ export default function EditorV2Layout() {
                           }
                         >
                           {darkMode ? (
-                            <Icon
-                              icon={faSun}
+                            <SunIcon
                               className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4"
                             />
                           ) : (
-                            <Icon
-                              icon={faMoon}
+                            <MoonIcon
                               className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4"
                             />
                           )}

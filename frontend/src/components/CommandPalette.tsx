@@ -13,7 +13,9 @@ import {
   CommandShortcut,
 } from "@/components/ui/command"
 import { Icon } from "@/components/Icon"
-import { faTableColumns, faDownload, faFileLines, faMoon, faSun, faRotateLeft } from "@/lib/icons"
+import { faTableColumns, faDownload, faFileLines, faRotateLeft } from "@/lib/icons"
+import { SunIcon } from "@/components/SunIcon"
+import { MoonIcon } from "@/components/MoonIcon"
 
 interface CommandPaletteProps {
   onExportLatex: () => void
@@ -88,9 +90,9 @@ export function CommandPalette({
           <CommandGroup heading="Actions">
             <CommandItem onSelect={() => runAction(onToggleDarkMode)}>
               {isDarkMode ? (
-                <Icon icon={faSun} className="mr-2 h-4 w-4" />
+                <SunIcon className="mr-2 h-4 w-4" />
               ) : (
-                <Icon icon={faMoon} className="mr-2 h-4 w-4" />
+                <MoonIcon className="mr-2 h-4 w-4" />
               )}
               <span>Toggle {isDarkMode ? "Light" : "Dark"} Mode</span>
               <CommandShortcut>⌘D</CommandShortcut>

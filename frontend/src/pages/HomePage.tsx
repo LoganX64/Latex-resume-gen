@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import fillDetailsSvg from "@/assets/Fill-details.svg";
 import multipleTemplatesSvg from "@/assets/multiple-templates.svg";
 import latexDownloadSvg from "@/assets/latex-download.svg";
+import heroDocSvg from "@/assets/hero-doc.svg";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
 import { HoverCard } from "@/components/motion/HoverCard";
@@ -36,95 +37,6 @@ import {
 } from "@/lib/motion";
 
 // ─── Inline SVG illustrations ────────────────────────────────────────────────
-
-/** Stylized A4 document with typeset lines */
-function DocIllustration() {
-  return (
-    <svg
-      viewBox="0 0 120 150"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      className="w-full h-full drop-shadow-2xl"
-    >
-      {/* Paper shadow */}
-      <rect
-        x="14"
-        y="12"
-        width="94"
-        height="132"
-        rx="6"
-        fill="#000000"
-        opacity="0.12"
-      />
-      {/* Paper - crisp white resume sheet */}
-      <rect x="10" y="8" width="94" height="132" rx="6" fill="#ffffff" />
-      <rect
-        x="10"
-        y="8"
-        width="94"
-        height="132"
-        rx="6"
-        stroke="#e2e8f0"
-        strokeWidth="1.5"
-      />
-      {/* Red header bar */}
-      <rect x="10" y="8" width="94" height="28" rx="6" fill="#e11d48" />
-      <rect x="10" y="28" width="94" height="8" fill="#e11d48" />
-      {/* Avatar circle in header */}
-      <circle cx="30" cy="22" r="10" fill="#ffffff" opacity="0.3" />
-      <circle cx="30" cy="19" r="5" fill="#ffffff" opacity="0.6" />
-      <path
-        d="M20 34c0-5.5 4.5-10 10-10s10 4.5 10 10"
-        fill="#ffffff"
-        opacity="0.3"
-      />
-      {/* Name & title lines in header */}
-      <rect
-        x="46"
-        y="16"
-        width="36"
-        height="4"
-        rx="2"
-        fill="#ffffff"
-        opacity="0.95"
-      />
-      <rect
-        x="46"
-        y="24"
-        width="24"
-        height="3"
-        rx="1.5"
-        fill="#ffffff"
-        opacity="0.7"
-      />
-      {/* Body content */}
-      <rect x="20" y="46" width="18" height="2.5" rx="1.25" fill="#e11d48" />
-      <rect x="20" y="52" width="72" height="2" rx="1" fill="#64748b" />
-      <rect x="20" y="57" width="66" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="20" y="62" width="58" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="20" y="72" width="18" height="2.5" rx="1.25" fill="#e11d48" />
-      <rect x="20" y="78" width="72" height="2" rx="1" fill="#64748b" />
-      <rect x="20" y="83" width="60" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="20" y="88" width="68" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="20" y="98" width="18" height="2.5" rx="1.25" fill="#e11d48" />
-      <rect x="20" y="104" width="72" height="2" rx="1" fill="#64748b" />
-      <rect x="20" y="109" width="52" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="20" y="119" width="18" height="2.5" rx="1.25" fill="#e11d48" />
-      <rect x="20" y="125" width="44" height="2" rx="1" fill="#cbd5e1" />
-      <rect x="65" y="125" width="26" height="2" rx="1" fill="#cbd5e1" />
-      {/* Download badge */}
-      <circle cx="92" cy="124" r="14" fill="#e11d48" />
-      <path
-        d="M92 116v14M86 124l6 6 6-6"
-        stroke="#ffffff"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function IconEmptyDoc() {
   return (
@@ -440,7 +352,7 @@ export default function HomePage() {
               </div>
 
               {/* Right: document illustration */}
-              <div className="relative w-52 sm:w-64 lg:w-72 shrink-0 overflow-visible">
+              <div className="relative w-80 sm:w-96 lg:w-[28rem] shrink-0 overflow-visible">
                 {/* Glow ring */}
                 <div className="absolute inset-6 rounded-2xl bg-primary/10 blur-2xl" />
                 <m.div
@@ -456,14 +368,18 @@ export default function HomePage() {
                       : { duration: 6, ease: "easeInOut", repeat: Infinity }
                   }
                 >
-                  <DocIllustration />
+                  <img
+                    src={heroDocSvg}
+                    alt="Resume document preview"
+                    className="w-full h-auto drop-shadow-2xl"
+                  />
                 </m.div>
                 {/* Floating chips - kept inside container with positive positioning */}
-                <div className="absolute top-0 right-0 translate-x-2 -translate-y-3 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
+                <div className="absolute top-2 right-2 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
                   <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
                   PDF Ready
                 </div>
-                <div className="absolute bottom-0 left-0 -translate-x-2 translate-y-3 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
+                <div className="absolute bottom-4 left-2 rounded-xl border bg-background shadow-md px-3 py-1.5 flex items-center gap-1.5 text-xs font-medium whitespace-nowrap">
                   <svg
                     viewBox="0 0 14 14"
                     className="w-3.5 h-3.5"
