@@ -20,15 +20,17 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 - **WebSocket Compilation** -- Real-time streaming progress events during LaTeX-to-PDF compilation
 - **9 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, Google, Compact, Academic, Elegant, Data Science, Two Column
 - **Live HTML/CSS Preview** -- Real-time preview renders resume content directly in the browser with no backend dependency for preview
-- **Version Management** -- Save, load, and delete resume versions with localStorage persistence
+- **Version Management** -- Save, load, and delete resume versions with encrypted localStorage persistence
+- **Encrypted Local Storage** -- AES-GCM 256-bit Web Crypto encryption for resume data and version history at rest
 - **Command Palette** -- Ctrl+K power-user interface for quick actions (export, template switch, theme toggle)
 - **Keyboard Shortcuts** -- Ctrl+P (PDF), Ctrl+L (LaTeX), Ctrl+D (dark mode), Ctrl+S (save), Ctrl+H (home)
 - **Dark/Light Mode** -- Toggle between themes
-- **Auto-Save** -- All changes persist to localStorage automatically
+- **Auto-Save** -- All changes persist to encrypted localStorage automatically
 - **Responsive UI** -- Modern interface built with shadcn/ui and Tailwind CSS v4
 - **Error Tracking** -- Sentry integration with session replay and performance monitoring
 - **Multi-Page Warning** -- Alerts when resume exceeds single-page limit with download-anyway option
 - **SEO Optimized** -- Open Graph, Twitter Cards, JSON-LD structured data, robots.txt, sitemap.xml
+- **Security Hardened** -- AES-GCM client encryption, constant-time auth checks, HTTP security headers, non-root Docker execution
 
 ---
 
