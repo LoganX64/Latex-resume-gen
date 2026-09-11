@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"crypto/subtle"
 	"net/http"
 	"os"
 
@@ -21,7 +22,7 @@ func AdminKeyRequired() gin.HandlerFunc {
 			return
 		}
 
-		if key != adminKey {
+		if subtle.ConstantTimeCompare([]byte(key), []byte(adminKey)) != 1 {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,
 				"message": "Invalid admin key",

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"crypto/subtle"
 	"net/http"
 	"os"
 
@@ -13,7 +14,7 @@ func BasicAuthRequired() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
 		u, p, ok := c.Request.BasicAuth()
-		if !ok || u != username || p != password {
+		if !ok || subtle.ConstantTimeCompare([]byte(u), []byte(username)) != 1 || subtle.ConstantTimeCompare([]byte(p), []byte(password)) != 1 {
 			c.Header("WWW-Authenticate", `Basic realm="Restricted"`)
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"success": false,

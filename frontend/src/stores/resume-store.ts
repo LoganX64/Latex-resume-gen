@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { encryptedStorage } from '@/lib/crypto'
 import type {
   ResumeData,
   ResumeVersion,
@@ -748,8 +749,8 @@ export const useResumeStore = create<ResumeStore>()(
         }),
     }),
     {
-      name: 'latex-resume-preferences',
-      partialize: (state) => ({ darkMode: state.darkMode }),
+      name: 'latex-resume-data',
+      storage: createJSONStorage(() => encryptedStorage),
     }
   )
 )
