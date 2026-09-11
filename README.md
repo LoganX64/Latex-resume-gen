@@ -294,6 +294,7 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 
 | Variable | Default | Description |
 |----------|---------|-------------|
+| `VITE_ENCRYPTION_KEY` | `latex-resume-gen-secure-vault-key-2026` | Key used for Web Crypto AES-GCM localStorage encryption |
 | `PPROF_ENABLED` | `false` | Set to `true` to start pprof server |
 | `PPROF_PORT` | `6060` | Port for pprof HTTP server |
 | `SERVER_PORT` | `8080` | Backend HTTP server port |
@@ -305,6 +306,15 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 | `STATS_DB_PATH` | `/data/stats.db` | Path to SQLite stats database |
 | `ADMIN_KEY` | `""` | Required header for `/api/stats/dashboard` endpoint |
 | `COMPILE_TIMEOUT_SECONDS` | `120` | LaTeX compilation timeout in seconds |
+
+---
+
+## Security & Hardening
+
+- **Client-Side Storage Encryption**: All resume data and version history stored in `localStorage` are encrypted using AES-GCM (256-bit) with PBKDF2 key derivation (100,000 iterations via Web Crypto API).
+- **Timing Attack Prevention**: Backend authentication middleware (`admin`, `apikey`, `basicauth`) uses Go `crypto/subtle.ConstantTimeCompare` to mitigate timing side-channel vulnerabilities.
+- **HTTP Security Headers**: Configured `CSP`, `HSTS`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` across Nginx (`nginx.conf`) and Vercel (`vercel.json`).
+- **Container Hardening**: Backend and frontend Docker containers run as unprivileged non-root users (`appuser` and `nginx`).
 
 ---
 
