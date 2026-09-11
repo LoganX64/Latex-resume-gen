@@ -12,9 +12,9 @@ RUN apk add --no-cache curl fontconfig && \
     apk del curl
 WORKDIR /app
 COPY --from=builder /app/server .
-RUN mkdir -p /app/temp && \
+RUN mkdir -p /app/temp /data && \
     adduser -D -u 1001 appuser && \
-    chown -R appuser:appuser /app
+    chown -R appuser:appuser /app /data
 USER appuser
 EXPOSE 8080
 CMD ["./server"]
