@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import type { ResumeVersion } from '@/types/resume'
 import { generateId } from '@/lib/utils'
-import { encryptedStorage, encryptData } from '@/lib/crypto'
+import { encryptedStorage } from '@/lib/crypto'
 
 interface VersionMatchData {
   resume: ResumeVersion['resume']
@@ -33,11 +33,6 @@ export const useVersionsStore = create<VersionsStore>()(
         }
         const newState = [...get().versions, newVersion]
         try {
-          encryptData(
-            JSON.stringify({ state: { versions: newState }, version: 0 })
-          ).then((encrypted) => {
-            localStorage.setItem('latex-resume-versions', encrypted)
-          })
           set({ versions: newState })
           return true
         } catch {
@@ -53,11 +48,6 @@ export const useVersionsStore = create<VersionsStore>()(
         }
         const newState = get().versions.map((v) => (v.id === id ? updatedVersion : v))
         try {
-          encryptData(
-            JSON.stringify({ state: { versions: newState }, version: 0 })
-          ).then((encrypted) => {
-            localStorage.setItem('latex-resume-versions', encrypted)
-          })
           set({ versions: newState })
           return true
         } catch {
