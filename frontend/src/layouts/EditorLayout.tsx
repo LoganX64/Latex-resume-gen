@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/editor-v2/AppSidebar";
+import { AppSidebar } from "@/components/editor/AppSidebar";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { ResumePreview } from "@/components/preview/ResumePreview";
 import { OverflowIndicator } from "@/components/preview/OverflowIndicator";
@@ -101,7 +101,7 @@ function EditorSplitPaneRight({
   );
 }
 
-export default function EditorV2Layout() {
+export default function EditorLayout() {
   const isMobile = useIsMobile();
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();

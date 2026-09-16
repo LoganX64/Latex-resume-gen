@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { PanelLeftIcon } from "@/components/PanelLeftIcon";
-import { NavSections } from "@/components/editor-v2/NavSections";
-import { NavFooter } from "@/components/editor-v2/NavFooter";
+import { NavSections } from "@/components/editor/NavSections";
+import { NavFooter } from "@/components/editor/NavFooter";
 
 interface AppSidebarProps {
   activeSection?: string;

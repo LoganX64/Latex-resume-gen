@@ -9,7 +9,7 @@ import { PageTransition } from '@/components/motion/PageTransition'
 import { LoadingScreen } from '@/components/LoadingScreen'
 
 const HomePage = lazy(() => import('@/pages/HomePage'))
-const EditorV2Layout = lazy(() => import('@/layouts/EditorV2Layout'))
+const EditorLayout = lazy(() => import('@/layouts/EditorLayout'))
 const StatsDashboard = lazy(() => import('@/pages/StatsDashboard'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
@@ -32,7 +32,7 @@ function AppRoutes() {
           path="/editor"
           element={
             <PageTransition disableOnMobile>
-              <EditorV2Layout />
+              <EditorLayout />
             </PageTransition>
           }
         />
