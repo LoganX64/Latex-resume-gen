@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import * as Sentry from '@sentry/react'
+import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/sonner'
 import { SentryFeedbackButton } from '@/components/SentryFeedbackButton'
 import { PageTransition } from '@/components/motion/PageTransition'
@@ -64,6 +65,7 @@ function App() {
         <AppRoutes />
       </Suspense>
       <Toaster position="top-center" richColors />
+      <Analytics />
     </>
   )
 }
