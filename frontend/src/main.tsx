@@ -8,6 +8,9 @@ import App from './App'
 import { ThemeProvider } from '@/components/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider'
+import { installPreloadErrorHandler } from '@/lib/preload-error-handler'
+
+installPreloadErrorHandler()
 
 const root = createRoot(document.getElementById('root')!, {
   onUncaughtError: Sentry.reactErrorHandler((error, errorInfo) => {
