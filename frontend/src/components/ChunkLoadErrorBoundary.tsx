@@ -1,4 +1,4 @@
-import { Component, type ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 import {
   Card,
   CardContent,
@@ -28,6 +28,13 @@ export class ChunkLoadErrorBoundary extends Component<
 
   static getDerivedStateFromError(error: Error): ChunkLoadErrorBoundaryState {
     return { error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo): void {
+    Sentry.captureException(error, {
+      tags: { kind: isChunkLoadError(error) ? "chunk-load" : "render" },
+      extra: { componentStack: info.componentStack },
+    });
   }
 
   handleReload = () => {

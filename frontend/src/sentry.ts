@@ -11,7 +11,7 @@ import {
 if (import.meta.env.PROD) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
-    release: import.meta.env.VITE_SENTRY_RELEASE || import.meta.env.VERCEL_GIT_COMMIT_SHA,
+    release: import.meta.env.VITE_SENTRY_RELEASE,
 
     integrations: [
       Sentry.reactRouterBrowserTracingIntegration({
