@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { LazyMotionProvider } from '@/components/motion/LazyMotionProvider'
 import { installPreloadErrorHandler } from '@/lib/preload-error-handler'
+import { ChunkLoadErrorBoundary } from '@/components/ChunkLoadErrorBoundary'
 
 installPreloadErrorHandler()
 
@@ -26,9 +27,9 @@ root.render(
       <ThemeProvider>
         <TooltipProvider>
           <LazyMotionProvider>
-            <Sentry.ErrorBoundary fallback={<p>Something went wrong.</p>}>
+            <ChunkLoadErrorBoundary>
               <App />
-            </Sentry.ErrorBoundary>
+            </ChunkLoadErrorBoundary>
           </LazyMotionProvider>
         </TooltipProvider>
       </ThemeProvider>

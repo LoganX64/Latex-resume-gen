@@ -14,6 +14,8 @@ import {
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import * as Sentry from "@sentry/react";
+import { toast } from "sonner";
+import { isChunkLoadError } from "@/lib/preload-error-handler";
 import type { ZoomLevel, Margins } from "@/types/resume";
 import type { Template } from "@/templates";
 
@@ -277,9 +279,17 @@ export function ResumePreview({
 
   useEffect(() => {
     let cancelled = false;
-    loadTemplate(templateId).then((t) => {
-      if (!cancelled) setTemplate(t ?? null);
-    });
+    loadTemplate(templateId)
+      .then((t) => {
+        if (!cancelled) setTemplate(t ?? null);
+      })
+      .catch((error: unknown) => {
+        if (cancelled || isChunkLoadError(error)) return;
+        toast.error("Failed to load template", {
+          description: "Still showing the previously selected template.",
+        });
+        Sentry.captureException(error);
+      });
     return () => {
       cancelled = true;
     };
