@@ -13,7 +13,7 @@ const EditorLayout = lazy(() => import('@/layouts/EditorLayout'))
 const StatsDashboard = lazy(() => import('@/pages/StatsDashboard'))
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
 
-const SentryRoutes = Sentry.withSentryReactRouterV6Routing(Routes)
+const SentryRoutes = Sentry.wrapReactRouterRouting(Routes)
 
 function AppRoutes() {
   const location = useLocation()

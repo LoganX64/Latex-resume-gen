@@ -22,7 +22,10 @@ if (import.meta.env.PROD) {
         enableLongTask: true,
       }),
 
-      Sentry.replayIntegration(),
+      Sentry.replayIntegration({
+        maskAllText: true,
+        blockAllMedia: true,
+      }),
 
       Sentry.feedbackIntegration({
         colorScheme: "system",
@@ -32,11 +35,11 @@ if (import.meta.env.PROD) {
 
     enableLogs: true,
 
-    tracesSampleRate: 1.0,
+    tracesSampleRate: 0.2,
 
     tracePropagationTargets: ["localhost", /^\//],
 
-    replaysSessionSampleRate: 0.1,
+    replaysSessionSampleRate: 0.05,
     replaysOnErrorSampleRate: 1.0,
 
     environment: import.meta.env.MODE,
