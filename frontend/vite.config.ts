@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
     ],
     build: {
       sourcemap: "hidden",
+      chunkImportMap: true,
     },
     resolve: {
       alias: {
