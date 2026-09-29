@@ -94,7 +94,10 @@ export default function NotFoundPage() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden">
+    <>
+      <title>Page not found — CVStack</title>
+      <meta name="robots" content="noindex, follow" />
+      <div className="relative min-h-screen bg-background overflow-hidden">
       {/* Dot grid accent */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <svg
@@ -184,5 +187,6 @@ export default function NotFoundPage() {
         </m.div>
       </div>
     </div>
+    </>
   );
 }

@@ -39,14 +39,26 @@
       ]
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "https://latex-resume-backend.onrender.com/api/:path*"
+      "handle": "filesystem"
     },
     {
-      "source": "/((?!assets/|_vercel/).*)",
-      "destination": "/index.html"
+      "src": "/api/:path*",
+      "dest": "https://latex-resume-backend.onrender.com/api/:path*"
+    },
+    {
+      "src": "/editor",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/admin/:path*",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404.html"
     }
   ]
 }

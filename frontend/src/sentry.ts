@@ -8,7 +8,10 @@ import {
   matchRoutes,
 } from "react-router-dom";
 
-if (import.meta.env.PROD) {
+// `navigator.webdriver` is true under Puppeteer. The prerender step loads this
+// production bundle in headless Chromium, so without this guard every prerender
+// pass would report a synthetic session, replay, and any render errors.
+if (import.meta.env.PROD && !navigator.webdriver) {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     release: import.meta.env.VITE_SENTRY_RELEASE,
