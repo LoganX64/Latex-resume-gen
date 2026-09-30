@@ -1,5 +1,8 @@
 server.exe
 *.log
+*.db
 temp/
-.env
+.env*
 .git/
+Dockerfile
+.dockerignore
