@@ -119,14 +119,33 @@ export function lazyWithRetry<T extends React.ComponentType<unknown>>(
 ): ReturnType<typeof lazy<T>> {
   return lazy(() =>
     factory().catch((err: unknown) => {
-      if (retries > 0 && isChunkLoadError(err)) {
-        return new Promise<{ default: T }>((resolve, reject) =>
-          setTimeout(
-            () => factory().then(resolve).catch(reject),
-            delayMs,
-          ),
-        )
+      if (!isChunkLoadError(err)) throw err
+
+      if (retries > 0) {
+        // First failure: wait then retry once
+        return new Promise<{ default: T }>((resolve, reject) => {
+          setTimeout(async () => {
+            try {
+              const mod = await factory()
+              resolve(mod)
+            } catch (retryErr: unknown) {
+              // Retry also failed (e.g. stale chunk URL after a Vercel deploy).
+              // Auto-reload if within the rate limit, otherwise surface the
+              // ErrorBoundary so the user can manually reload.
+              if (isChunkLoadError(retryErr)) {
+                const { allowed, state } = nextReloadState()
+                if (allowed) {
+                  rememberReload(state)
+                  window.location.reload()
+                  return // page is reloading; leave promise pending
+                }
+              }
+              reject(retryErr)
+            }
+          }, delayMs)
+        })
       }
+
       throw err
     }),
   )
