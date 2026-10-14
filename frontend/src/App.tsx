@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import * as Sentry from '@sentry/react'
@@ -8,10 +8,12 @@ import { SentryFeedbackButton } from '@/components/SentryFeedbackButton'
 import { PageTransition } from '@/components/motion/PageTransition'
 import { LoadingScreen } from '@/components/LoadingScreen'
 
-const HomePage = lazy(() => import('@/pages/HomePage'))
-const EditorLayout = lazy(() => import('@/layouts/EditorLayout'))
-const StatsDashboard = lazy(() => import('@/pages/StatsDashboard'))
-const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'))
+import { lazyWithRetry } from '@/lib/preload-error-handler'
+
+const HomePage = lazyWithRetry(() => import('@/pages/HomePage'))
+const EditorLayout = lazyWithRetry(() => import('@/layouts/EditorLayout'))
+const StatsDashboard = lazyWithRetry(() => import('@/pages/StatsDashboard'))
+const NotFoundPage = lazyWithRetry(() => import('@/pages/NotFoundPage'))
 
 const SentryRoutes = Sentry.wrapReactRouterRouting(Routes)
 

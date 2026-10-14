@@ -49,6 +49,9 @@ export async function loadTemplate(id: string): Promise<Template | undefined> {
       if (!templateModules[path]) return undefined
 
       const mod = await templateModules[path]()
+      if (!mod.default) {
+        throw new Error(`Template module "${id}" has no default export`)
+      }
       const config = configs[id]
       const template: Template = { ...mod.default, config }
       templateCache.set(id, template)

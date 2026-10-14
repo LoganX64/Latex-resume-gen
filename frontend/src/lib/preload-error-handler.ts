@@ -1,3 +1,4 @@
+import { lazy } from 'react'
 import * as Sentry from '@sentry/react'
 
 const STORAGE_KEY = 'cvstack:chunk-reload'
@@ -101,4 +102,32 @@ export function installPreloadErrorHandler(): void {
     event.preventDefault()
     window.location.reload()
   })
+}
+
+/**
+ * Drop-in replacement for `React.lazy` that automatically retries the dynamic
+ * import once (after a 300 ms delay) when a chunk-load error is detected.
+ *
+ * Handles the Vercel / CDN race condition where a freshly-deployed asset URL
+ * is not yet available on the edge when a user navigates right after a deploy,
+ * causing `lazy()` to throw before the Suspense boundary resolves.
+ */
+export function lazyWithRetry<T extends React.ComponentType<unknown>>(
+  factory: () => Promise<{ default: T }>,
+  retries = 1,
+  delayMs = 300,
+): ReturnType<typeof lazy<T>> {
+  return lazy(() =>
+    factory().catch((err: unknown) => {
+      if (retries > 0 && isChunkLoadError(err)) {
+        return new Promise<{ default: T }>((resolve, reject) =>
+          setTimeout(
+            () => factory().then(resolve).catch(reject),
+            delayMs,
+          ),
+        )
+      }
+      throw err
+    }),
+  )
 }
