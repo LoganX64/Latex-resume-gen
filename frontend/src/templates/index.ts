@@ -1,6 +1,7 @@
 import type { ResumeData, SectionOrder, SectionVisibility, TemplateConfig } from '@/types/resume'
 import type { ReactNode } from 'react'
 import * as Sentry from '@sentry/react'
+import { chunkLoadError } from '@/lib/preload-error-handler'
 
 export interface TemplatePreviewProps {
   resume: ResumeData
@@ -49,8 +50,8 @@ export async function loadTemplate(id: string): Promise<Template | undefined> {
       if (!templateModules[path]) return undefined
 
       const mod = await templateModules[path]()
-      if (!mod.default) {
-        throw new Error(`Template module "${id}" has no default export`)
+      if (!mod?.default) {
+        throw chunkLoadError(`template module "${id}" has no default export`)
       }
       const config = configs[id]
       const template: Template = { ...mod.default, config }

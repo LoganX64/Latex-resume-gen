@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/Icon";
 import { faRotateLeft, faTriangleExclamation } from "@/lib/icons";
 import * as Sentry from "@sentry/react";
-import { isChunkLoadError } from "@/lib/preload-error-handler";
+import { isChunkLoadError, isReloading } from "@/lib/preload-error-handler";
 
 interface ChunkLoadErrorBoundaryProps {
   children: ReactNode;
@@ -47,7 +47,7 @@ export class ChunkLoadErrorBoundary extends Component<
 
   render() {
     const { error } = this.state;
-    if (!error) return this.props.children;
+    if (!error || isReloading()) return this.props.children;
 
     const chunkLoad = isChunkLoadError(error);
 
