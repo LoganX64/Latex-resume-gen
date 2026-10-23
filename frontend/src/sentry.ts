@@ -49,8 +49,24 @@ if (import.meta.env.PROD && !navigator.webdriver) {
 
     environment: import.meta.env.PROD ? 'production' : import.meta.env.MODE,
 
+    ignoreErrors: [
+      // Filter out CefSharp bot/scanner IPC rejections (e.g., Outlook SafeLinks, Defender, anti-detect crawlers)
+      /Object Not Found Matching Id/i,
+    ],
+
     beforeSend(event, hint) {
       const error = hint.originalException;
+      const errorStr =
+        typeof error === 'string'
+          ? error
+          : error instanceof Error
+            ? error.message
+            : event.message || event.exception?.values?.[0]?.value || '';
+
+      if (/Object Not Found Matching Id/i.test(errorStr)) {
+        return null;
+      }
+
       if (isChunkLoadError(error)) {
         event.tags = { ...event.tags, kind: 'chunk-load' };
       }
