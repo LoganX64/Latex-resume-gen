@@ -2,9 +2,15 @@ import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { EditorSidebarV2 } from "@/components/v2/editor/EditorSidebarV2";
 import { EditorPaneV2 } from "@/components/v2/editor/EditorPaneV2";
+import { ResumePreviewV2 } from "@/components/v2/preview/ResumePreviewV2";
 import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { CompileProgressDialog } from "@/components/CompileProgressDialog";
 import { CommandPalette } from "@/components/CommandPalette";
@@ -14,8 +20,22 @@ import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useTheme } from "@/components/theme-provider";
 import { getAllTemplateConfigs } from "@/templates";
 import { Icon } from "@/components/Icon";
-import { faImageSlash, faTriangleExclamation } from "@/lib/icons";
+import {
+  faDownload,
+  faFileLines,
+  faImageSlash,
+  faTriangleExclamation,
+} from "@/lib/icons";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,10 +60,12 @@ export default function EditorV2Layout() {
   const { darkMode, toggleDarkMode } = useTheme();
   const resetResume = useResumeStore((s) => s.resetResume);
   const clearResume = useResumeStore((s) => s.clearResume);
+  const templateId = useResumeStore((s) => s.templateId);
   const setTemplateId = useResumeStore((s) => s.setTemplateId);
   const [activeSection, setActiveSection] = useState("personal");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [fullscreenPreview, setFullscreenPreview] = useState(false);
 
   const {
     handleExportPdf,
@@ -96,27 +118,123 @@ export default function EditorV2Layout() {
 
   useKeyboardShortcuts(shortcuts);
 
+  const previewToolbarActions = (
+    <>
+      <Select
+        value={templateId}
+        onValueChange={(v) => v && setTemplateId(v)}
+      >
+        <SelectTrigger
+          className="text-xs sm:text-sm h-8 sm:h-9 px-2 py-1 gap-1 cursor-pointer min-w-[120px]"
+          aria-label="Select resume template"
+        >
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent className="min-w-48 text-xs sm:text-sm">
+          {templateConfigs.map((tc) => (
+            <SelectItem
+              key={tc.id}
+              value={tc.id}
+              className="py-1 pr-6 pl-1.5 text-xs sm:text-sm"
+            >
+              {tc.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              onClick={() => handleExportLatex()}
+              aria-label="Export LaTeX file"
+            />
+          }
+        >
+          <Icon
+            icon={faFileLines}
+            className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4"
+          />
+        </TooltipTrigger>
+        <TooltipContent>Export LaTeX (⌘L)</TooltipContent>
+      </Tooltip>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              onClick={() => handleExportPdf()}
+              disabled={isExportingPdf}
+              aria-label="Export PDF file"
+            />
+          }
+        >
+          {isExportingPdf ? (
+            <Spinner className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4" />
+          ) : (
+            <Icon
+              icon={faDownload}
+              className="h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4"
+            />
+          )}
+        </TooltipTrigger>
+        <TooltipContent>Export PDF (⌘P)</TooltipContent>
+      </Tooltip>
+    </>
+  );
+
   return (
     <TooltipProvider delay={400}>
       <SidebarProvider>
-        <EditorSidebarV2
-          activeSection={activeSection}
-          onSectionClick={setActiveSection}
-          onSaveClick={openSaveDialog}
-        />
+        {!fullscreenPreview && (
+          <EditorSidebarV2
+            activeSection={activeSection}
+            onSectionClick={setActiveSection}
+            onSaveClick={openSaveDialog}
+          />
+        )}
         <SidebarInset className="h-svh overflow-hidden bg-background">
-          <div className="grid h-full min-h-0 grid-cols-1 lg:grid-cols-2">
-            <EditorPaneV2
-              activeSection={activeSection}
-              isExportingPdf={isExportingPdf}
-              shortcutsOpen={shortcutsOpen}
-              onShortcutsOpenChange={setShortcutsOpen}
-              onSaveClick={openSaveDialog}
-              onClearResume={handleClearResume}
-              onLoadSample={handleLoadSample}
-              onExportPdf={() => handleExportPdf()}
-            />
-            <div aria-hidden="true" className="hidden min-h-0 lg:block" />
+          <div
+            className={cn(
+              "grid h-full min-h-0",
+              fullscreenPreview
+                ? "grid-cols-1"
+                : "grid-cols-1 lg:grid-cols-2"
+            )}
+          >
+            {!fullscreenPreview && (
+              <EditorPaneV2
+                activeSection={activeSection}
+                isExportingPdf={isExportingPdf}
+                shortcutsOpen={shortcutsOpen}
+                onShortcutsOpenChange={setShortcutsOpen}
+                onSaveClick={openSaveDialog}
+                onClearResume={handleClearResume}
+                onLoadSample={handleLoadSample}
+                onExportPdf={() => handleExportPdf()}
+              />
+            )}
+            <section
+              className={cn(
+                "min-h-0 min-w-0 flex-col overflow-hidden",
+                fullscreenPreview
+                  ? "flex h-full"
+                  : "hidden h-[calc(100%-8px)] rounded-l-xl border-l border-border lg:flex"
+              )}
+            >
+              <ResumePreviewV2
+                fullscreen={fullscreenPreview}
+                onToggleFullscreen={() =>
+                  setFullscreenPreview((value) => !value)
+                }
+                toolbarActions={previewToolbarActions}
+              />
+            </section>
           </div>
         </SidebarInset>
       </SidebarProvider>
