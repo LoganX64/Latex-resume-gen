@@ -4,13 +4,13 @@ import { faEnvelope, faShieldHalved, faHeart, faGithub } from '@/lib/icons'
 
 
 
-export function Footer() {
+export function Footer({ homePath = '/' }: { homePath?: string }) {
   return (
     <footer className="border-t bg-muted/20 text-muted-foreground text-xs">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Brand Info */}
         <div className="space-y-3 max-w-md">
-          <Link to="/" className="inline-flex items-center gap-2.5">
+          <Link to={homePath} className="inline-flex items-center gap-2.5">
             <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-7 w-auto rounded-md dark:hidden" />
             <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-7 w-auto rounded-md dark:block" />
           </Link>

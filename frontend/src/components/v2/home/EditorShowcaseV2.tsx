@@ -5,21 +5,22 @@ import { ShowcaseEditorPane } from "@/components/v2/home/showcase/ShowcaseEditor
 import { ShowcasePreview } from "@/components/v2/home/showcase/ShowcasePreview";
 import {
   SHOWCASE_HEIGHT,
+  SHOWCASE_SCALE,
   SHOWCASE_WIDTH,
 } from "@/components/v2/home/showcase/showcase-data";
 
 export function EditorShowcaseV2() {
-  const screenRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(SHOWCASE_SCALE);
 
   useLayoutEffect(() => {
-    const el = screenRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
     const updateScale = () => {
       const width = el.clientWidth;
       if (width > 0) {
-        setScale(Math.min(width / SHOWCASE_WIDTH, 1));
+        setScale(Math.min(SHOWCASE_SCALE, width / SHOWCASE_WIDTH));
       }
     };
 
@@ -28,6 +29,9 @@ export function EditorShowcaseV2() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  const displayWidth = SHOWCASE_WIDTH * scale;
+  const displayHeight = SHOWCASE_HEIGHT * scale;
 
   return (
     <section aria-label="Editor preview" className="relative overflow-hidden">
@@ -38,35 +42,33 @@ export function EditorShowcaseV2() {
 
       <div className="mx-auto max-w-6xl px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
         <FadeIn y={24}>
-          <div
-            role="img"
-            aria-label="Preview of the CVStack resume editor showing the personal information form and an A4 Engineering resume preview"
-            className="overflow-hidden rounded-xl border border-border/60 bg-background shadow-[0_30px_80px_-24px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.03)]"
-          >
-            <div className="flex h-9 items-center gap-3 bg-muted/50 px-4">
-              <div className="flex items-center gap-1.5">
-                <span className="size-2.5 rounded-full bg-[#ff5f57]" />
-                <span className="size-2.5 rounded-full bg-[#febc2e]" />
-                <span className="size-2.5 rounded-full bg-[#28c840]" />
-              </div>
-              <span className="flex-1 truncate text-center text-[11px] font-medium tracking-wide text-muted-foreground">
-                CVStack — Resume Editor
-              </span>
-              <span className="w-[42px]" />
-            </div>
-
+          <div ref={containerRef} className="w-full">
             <div
-              ref={screenRef}
-              className="relative w-full overflow-hidden bg-background"
+              className="mx-auto overflow-hidden rounded-xl border border-border/60 bg-background shadow-[0_30px_80px_-24px_rgba(0,0,0,0.35),0_0_0_1px_rgba(0,0,0,0.03)]"
+              role="img"
+              aria-label="Preview of the CVStack resume editor showing the personal information form and an A4 Engineering resume preview"
+              style={{ width: displayWidth }}
             >
+              <div className="flex h-9 items-center gap-3 bg-muted/50 px-4">
+                <div className="flex items-center gap-1.5">
+                  <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+                  <span className="size-2.5 rounded-full bg-[#febc2e]" />
+                  <span className="size-2.5 rounded-full bg-[#28c840]" />
+                </div>
+                <span className="flex-1 truncate text-center text-[11px] font-medium tracking-wide text-muted-foreground">
+                  CVStack — Resume Editor
+                </span>
+                <span className="w-[42px]" />
+              </div>
+
               <div
-                style={{ height: SHOWCASE_HEIGHT * scale }}
-                aria-hidden="true"
-                inert
-                className="pointer-events-none select-none"
+                className="relative overflow-hidden bg-background"
+                style={{ width: displayWidth, height: displayHeight }}
               >
                 <div
-                  className="flex bg-background"
+                  aria-hidden="true"
+                  inert
+                  className="pointer-events-none flex select-none bg-background"
                   style={{
                     width: SHOWCASE_WIDTH,
                     height: SHOWCASE_HEIGHT,

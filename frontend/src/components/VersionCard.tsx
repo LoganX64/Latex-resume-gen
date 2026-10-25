@@ -32,9 +32,10 @@ import type { ResumeVersion } from '@/types/resume'
 
 interface VersionCardProps {
   version: ResumeVersion
+  editorPath?: string
 }
 
-export function VersionCard({ version }: VersionCardProps) {
+export function VersionCard({ version, editorPath = '/editor' }: VersionCardProps) {
   const navigate = useNavigate()
   const isMobile = useIsMobile()
   const loadFromVersion = useResumeStore((s) => s.loadFromVersion)
@@ -65,7 +66,7 @@ export function VersionCard({ version }: VersionCardProps) {
 
   function handleLoad() {
     loadFromVersion(version)
-    navigate('/editor')
+    navigate(editorPath)
   }
 
   async function handleExportLatex() {

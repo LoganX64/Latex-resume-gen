@@ -4,6 +4,7 @@ import type { ResumeData, SectionOrder } from "@/types/resume";
 export const SHOWCASE_PHOTO = "/profile-pic-preview.jpg";
 export const SHOWCASE_WIDTH = 1440;
 export const SHOWCASE_HEIGHT = 900;
+export const SHOWCASE_SCALE = 0.75;
 export const SHOWCASE_SIDEBAR_WIDTH = 240;
 
 export const showcaseResume: ResumeData = {
