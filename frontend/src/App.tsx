@@ -12,6 +12,8 @@ import { lazyWithRetry } from '@/lib/preload-error-handler'
 
 const HomePage = lazyWithRetry(() => import('@/pages/HomePage'))
 const EditorLayout = lazyWithRetry(() => import('@/layouts/EditorLayout'))
+const HomePageV2 = lazyWithRetry(() => import('@/pages/HomePageV2'))
+const EditorV2Layout = lazyWithRetry(() => import('@/layouts/EditorV2Layout'))
 const StatsDashboard = lazyWithRetry(() => import('@/pages/StatsDashboard'))
 const NotFoundPage = lazyWithRetry(() => import('@/pages/NotFoundPage'))
 
@@ -35,6 +37,22 @@ function AppRoutes() {
           element={
             <PageTransition disableOnMobile>
               <EditorLayout />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/v2"
+          element={
+            <PageTransition>
+              <HomePageV2 />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/editor-v2"
+          element={
+            <PageTransition disableOnMobile>
+              <EditorV2Layout />
             </PageTransition>
           }
         />

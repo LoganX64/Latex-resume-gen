@@ -52,6 +52,14 @@
       "dest": "/index.html"
     },
     {
+      "src": "/v2",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/editor-v2",
+      "dest": "/index.html"
+    },
+    {
       "src": "/admin/:path*",
       "dest": "/index.html"
     },
