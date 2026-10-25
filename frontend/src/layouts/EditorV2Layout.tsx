@@ -21,6 +21,7 @@ import { useTheme } from "@/components/theme-provider";
 import { getAllTemplateConfigs } from "@/templates";
 import { Icon } from "@/components/Icon";
 import {
+  faChevronDown,
   faDownload,
   faFileLines,
   faImageSlash,
@@ -110,7 +111,7 @@ export default function EditorV2Layout() {
       l: () => handleExportLatex(),
       d: toggleDarkMode,
       s: openSaveDialog,
-      h: () => navigate("/"),
+      h: () => navigate("/v2"),
       "?": () => setShortcutsOpen(true),
     }),
     [handleExportPdf, handleExportLatex, toggleDarkMode, openSaveDialog, navigate]
@@ -125,6 +126,7 @@ export default function EditorV2Layout() {
         onValueChange={(v) => v && setTemplateId(v)}
       >
         <SelectTrigger
+          indicatorIcon={faChevronDown}
           className="text-xs sm:text-sm h-8 sm:h-9 px-2 py-1 gap-1 cursor-pointer min-w-[120px]"
           aria-label="Select resume template"
         >

@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
+import type { IconProp } from "@fortawesome/fontawesome-svg-core"
 
 import { cn } from "@/lib/utils"
 import { Icon } from "@/components/Icon"
@@ -30,10 +31,12 @@ function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
 function SelectTrigger({
   className,
   size = "default",
+  indicatorIcon = faChevronUpDown,
   children,
   ...props
 }: SelectPrimitive.Trigger.Props & {
   size?: "sm" | "default"
+  indicatorIcon?: IconProp
 }) {
   return (
     <SelectPrimitive.Trigger
@@ -48,7 +51,7 @@ function SelectTrigger({
       {children}
       <SelectPrimitive.Icon
         render={
-          <Icon icon={faChevronUpDown} className="pointer-events-none size-3.5 text-muted-foreground" />
+          <Icon icon={indicatorIcon} className="pointer-events-none size-3.5 text-muted-foreground" />
         }
       />
     </SelectPrimitive.Trigger>

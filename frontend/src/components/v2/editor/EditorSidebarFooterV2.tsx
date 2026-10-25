@@ -38,7 +38,7 @@ export function EditorSidebarFooterV2({
             <SidebarMenuItem>
               <SidebarMenuButton
                 size="sm"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/v2")}
                 tooltip="Back to home"
                 className="justify-center"
               >
@@ -66,7 +66,7 @@ export function EditorSidebarFooterV2({
           </SidebarMenuButton>
           <SidebarMenuButton
             size="sm"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/v2")}
             tooltip="Back to home"
             className="h-8 flex-1 justify-center gap-1 px-1.5"
           >

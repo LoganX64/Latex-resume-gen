@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useResumeStore } from "@/stores/resume-store";
 import { loadTemplate, getTemplateConfig } from "@/templates";
 import { Icon } from "@/components/Icon";
-import { faTriangleExclamation, faExpand, faMagnifyingGlassPlus, faMagnifyingGlassMinus, faXmark } from "@/lib/icons";
+import { faChevronDown, faTriangleExclamation, faExpand, faMagnifyingGlassPlus, faMagnifyingGlassMinus, faXmark } from "@/lib/icons";
 import {
   Select,
   SelectTrigger,
@@ -541,7 +541,8 @@ export function ResumePreviewV2({
                 }
               >
                 <SelectTrigger
-                  className="text-[9px] sm:text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer min-w-0"
+                  indicatorIcon={faChevronDown}
+                  className="text-[9px] sm:text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer w-14 shrink-0"
                   aria-label="Zoom level"
                 >
                   <SelectValue />

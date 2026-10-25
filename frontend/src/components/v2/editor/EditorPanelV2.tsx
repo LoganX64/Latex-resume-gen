@@ -27,6 +27,7 @@ import { AchievementsForm } from "@/components/editor/AchievementsForm";
 import { PublicationsForm } from "@/components/editor/PublicationsForm";
 import { LanguagesForm } from "@/components/editor/LanguagesForm";
 import { CustomSectionsForm } from "@/components/editor/CustomSectionsForm";
+import { faChevronDown } from "@/lib/icons";
 import "@/components/v2/editor/editor-scroll-v2.css";
 
 const sectionComponents: Record<string, ReactNode> = {
@@ -38,7 +39,7 @@ const sectionComponents: Record<string, ReactNode> = {
   certifications: <CertificationsForm />,
   achievements: <AchievementsForm />,
   publications: <PublicationsForm />,
-  languages: <LanguagesForm />,
+  languages: <LanguagesForm indicatorIcon={faChevronDown} />,
   customSections: <CustomSectionsForm />,
 };
 

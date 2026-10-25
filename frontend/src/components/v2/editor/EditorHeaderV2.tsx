@@ -103,7 +103,7 @@ export function EditorHeaderV2({
                 variant="ghost"
                 size="icon-xs"
                 className={buttonClass}
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/v2")}
                 aria-label="Back to home"
               />
             }

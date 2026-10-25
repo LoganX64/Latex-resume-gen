@@ -1,3 +1,4 @@
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useResumeStore } from "@/stores/resume-store";
@@ -12,7 +13,11 @@ import {
 } from "@/components/ui/select";
 import { AnimatedSectionChild } from "./AnimatedSectionChild";
 
-export function LanguagesForm() {
+interface LanguagesFormProps {
+  indicatorIcon?: IconProp;
+}
+
+export function LanguagesForm({ indicatorIcon }: LanguagesFormProps = {}) {
   const languages = useResumeStore((s) => s.resume.languages);
   const addLanguage = useResumeStore((s) => s.addLanguage);
   const updateLanguage = useResumeStore((s) => s.updateLanguage);
@@ -37,6 +42,7 @@ export function LanguagesForm() {
             }}
           >
             <SelectTrigger
+              indicatorIcon={indicatorIcon}
               className="!h-10 sm:!h-7 text-base sm:text-xs flex-1 min-w-0"
               aria-label="Proficiency level"
             >
