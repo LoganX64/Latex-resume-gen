@@ -150,7 +150,7 @@ export default function EditorV2Layout() {
             <Button
               variant="ghost"
               size="icon-xs"
-              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border"
               onClick={() => handleExportLatex()}
               aria-label="Export LaTeX file"
             />
@@ -169,7 +169,7 @@ export default function EditorV2Layout() {
             <Button
               variant="ghost"
               size="icon-xs"
-              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+              className="sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border"
               onClick={() => handleExportPdf()}
               disabled={isExportingPdf}
               aria-label="Export PDF file"

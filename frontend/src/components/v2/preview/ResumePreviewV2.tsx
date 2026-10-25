@@ -527,7 +527,7 @@ export function ResumePreviewV2({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border"
                 onClick={() => cycleZoom("out")}
                 disabled={zoom === 50}
                 aria-label="Zoom out"
@@ -542,7 +542,7 @@ export function ResumePreviewV2({
               >
                 <SelectTrigger
                   indicatorIcon={faChevronDown}
-                  className="text-[9px] sm:text-[10px] h-6 px-1.5 py-0.5 gap-1 cursor-pointer w-14 shrink-0"
+                  className="text-[9px] sm:text-[10px] data-[size=default]:h-8 w-16 px-1.5 py-0.5 gap-1 cursor-pointer shrink-0 border-dashed border-border/70 hover:border-border"
                   aria-label="Zoom level"
                 >
                   <SelectValue />
@@ -569,7 +569,7 @@ export function ResumePreviewV2({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border"
                 onClick={() => cycleZoom("in")}
                 disabled={zoom === 150}
                 aria-label="Zoom in"
@@ -579,7 +579,7 @@ export function ResumePreviewV2({
               <Button
                 variant="ghost"
                 size="icon-xs"
-                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8"
+                className="sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border"
                 onClick={toggleFullscreen}
                 aria-label="Full screen"
               >

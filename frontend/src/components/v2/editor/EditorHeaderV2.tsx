@@ -32,7 +32,8 @@ interface EditorHeaderV2Props {
 }
 
 const iconClass = "h-3.5 w-3.5 sm:h-3.5 sm:w-3.5 lg:h-4 lg:w-4";
-const buttonClass = "sm:h-7 sm:w-7 lg:h-8 lg:w-8";
+const buttonClass =
+  "sm:h-7 sm:w-7 lg:h-8 lg:w-8 border-dashed border-border/70 hover:border-border";
 
 function openCommandPalette() {
   document.dispatchEvent(
@@ -199,6 +200,7 @@ export function EditorHeaderV2({
         <KeyboardShortcutsButton
           open={shortcutsOpen}
           onOpenChange={onShortcutsOpenChange}
+          className="border border-dashed border-border/70 hover:border-border"
         />
       </div>
     </div>
