@@ -6,6 +6,7 @@ import { faStar } from '@/lib/icons'
 import { SunIcon } from '@/components/SunIcon'
 import { MoonIcon } from '@/components/MoonIcon'
 import { ShineButton } from '@/components/motion/ShineButton'
+import { toggleThemeFromButton } from '@/lib/theme-transition'
 
 export function NavbarV2() {
   const { darkMode, toggleDarkMode } = useTheme()
@@ -36,7 +37,9 @@ export function NavbarV2() {
           <Button
             variant="ghost"
             size="icon-sm"
-            onClick={toggleDarkMode}
+            onClick={(event) =>
+              toggleThemeFromButton(event.currentTarget, toggleDarkMode)
+            }
             aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
             {darkMode ? <SunIcon className="h-3.5 w-3.5" /> : <MoonIcon className="h-3.5 w-3.5" />}

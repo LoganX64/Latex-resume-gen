@@ -11,6 +11,7 @@ import { SunIcon } from "@/components/SunIcon";
 import { MoonIcon } from "@/components/MoonIcon";
 import { KeyboardShortcutsButton } from "@/components/KeyboardShortcutsButton";
 import { useTheme } from "@/components/theme-provider";
+import { toggleThemeFromButton } from "@/lib/theme-transition";
 import {
   faDownload,
   faFloppyDisk,
@@ -154,7 +155,9 @@ export function EditorHeaderV2({
                 variant="ghost"
                 size="icon-xs"
                 className={buttonClass}
-                onClick={toggleDarkMode}
+                onClick={(event) =>
+                  toggleThemeFromButton(event.currentTarget, toggleDarkMode)
+                }
                 aria-label={
                   darkMode ? "Switch to light mode" : "Switch to dark mode"
                 }
