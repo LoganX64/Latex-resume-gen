@@ -62,7 +62,7 @@ export function EditorSidebarFooterV2({
             className="h-8 flex-1 justify-center gap-1 px-1.5"
           >
             <Icon icon={faFloppyDisk} className="h-3 w-3 lg:h-4 lg:w-4" />
-            <span className="font-medium">Save Version</span>
+            <span className="font-medium">Save</span>
           </SidebarMenuButton>
           <SidebarMenuButton
             size="sm"

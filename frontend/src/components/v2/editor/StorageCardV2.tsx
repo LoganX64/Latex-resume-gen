@@ -6,7 +6,7 @@ export function StorageCardV2() {
   return (
     <Card
       size="sm"
-      className="absolute inset-x-3 bottom-1 z-20 gap-1.5 rounded-xl border border-white/40 bg-background/55 px-3 py-2 ring-0 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 sm:inset-x-4 sm:bottom-2"
+      className="absolute inset-x-3 bottom-1 z-20 gap-1.5 rounded-xl border border-border/40 bg-background/55 px-3 py-2 ring-0 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10 sm:inset-x-4 sm:bottom-2"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 text-[11px] font-medium text-foreground">

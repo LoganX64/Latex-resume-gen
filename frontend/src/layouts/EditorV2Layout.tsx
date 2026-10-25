@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
@@ -190,7 +190,9 @@ export default function EditorV2Layout() {
 
   return (
     <TooltipProvider delay={400}>
-      <SidebarProvider>
+      <SidebarProvider
+        style={{ "--sidebar-width": "15rem" } as CSSProperties}
+      >
         {!fullscreenPreview && (
           <EditorSidebarV2
             activeSection={activeSection}

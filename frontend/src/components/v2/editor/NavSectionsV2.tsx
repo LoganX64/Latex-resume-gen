@@ -21,6 +21,7 @@ import {
   faLayerGroup,
 } from "@/lib/icons";
 import { EASE_OUT } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 import { m, useReducedMotion } from "framer-motion";
 
 const navSections = [
@@ -66,16 +67,26 @@ export function NavSectionsV2({
           reduce ? { duration: 0 } : { duration: 1.2, ease: EASE_OUT }
         }
       >
-        {state !== "collapsed" && (
-          <div className="mb-2 flex items-center justify-between px-2">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-sidebar-foreground/45">
-              Resume sections
-            </span>
-            <span className="font-mono text-[10px] text-sidebar-foreground/40">
-              {visibleSections}/{navSections.length}
-            </span>
+        <div
+          className={cn(
+            "grid transition-[grid-template-rows,margin,opacity] duration-300 ease-in-out motion-reduce:transition-none",
+            state === "collapsed"
+              ? "mb-0 grid-rows-[0fr] opacity-0"
+              : "mb-2 grid-rows-[1fr] opacity-100"
+          )}
+          aria-hidden={state === "collapsed"}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="flex min-w-0 items-center justify-between gap-2 px-2">
+              <span className="min-w-0 truncate text-[10px] font-semibold uppercase tracking-[0.16em] text-sidebar-foreground/45">
+                Resume sections
+              </span>
+              <span className="shrink-0 font-mono text-[10px] text-sidebar-foreground/40">
+                {visibleSections}/{navSections.length}
+              </span>
+            </div>
           </div>
-        )}
+        </div>
         <SidebarMenu>
           {navSections.map((item) => {
             const sectionKey =
