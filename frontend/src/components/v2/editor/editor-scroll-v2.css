@@ -1,0 +1,51 @@
+@supports not selector(::-webkit-scrollbar) {
+  .editor-scroll-v2 {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  .editor-scroll-v2:hover,
+  .editor-scroll-v2.is-scrolling {
+    scrollbar-color: color-mix(in oklch, var(--foreground) 22%, transparent)
+      transparent;
+  }
+}
+
+.editor-scroll-v2::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.editor-scroll-v2::-webkit-scrollbar-track,
+.editor-scroll-v2::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.editor-scroll-v2::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  background-color: transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s ease;
+}
+
+.editor-scroll-v2:hover::-webkit-scrollbar-thumb,
+.editor-scroll-v2.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklch, var(--foreground) 22%, transparent);
+}
+
+.editor-scroll-v2::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in oklch, var(--foreground) 38%, transparent);
+}
+
+.editor-scroll-v2::-webkit-scrollbar-button,
+.editor-scroll-v2::-webkit-scrollbar-button:single-button,
+.editor-scroll-v2::-webkit-scrollbar-button:vertical:start:decrement,
+.editor-scroll-v2::-webkit-scrollbar-button:vertical:end:increment,
+.editor-scroll-v2::-webkit-scrollbar-button:horizontal:start:decrement,
+.editor-scroll-v2::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
