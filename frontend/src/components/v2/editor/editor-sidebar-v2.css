@@ -1,0 +1,3 @@
+.editor-sidebar-v2 [data-sidebar="sidebar"] {
+  border-radius: var(--radius-xl);
+}
