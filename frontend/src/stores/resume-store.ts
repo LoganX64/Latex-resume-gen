@@ -84,7 +84,7 @@ interface ResumeStore {
   loadFromVersion: (version: ResumeVersion) => void
 }
 
-const sampleResume: ResumeData = {
+export const sampleResume: ResumeData = {
   personalInfo: {
     fullName: 'Alex Chen',
     email: 'alex.chen@email.com',

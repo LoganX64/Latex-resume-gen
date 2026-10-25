@@ -24,7 +24,7 @@ import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { m, useReducedMotion } from "framer-motion";
 
-const navSections = [
+export const navSections = [
   { id: "personal", icon: faUser, label: "Personal Info" },
   { id: "summary", icon: faFileLines, label: "Summary" },
   { id: "experience", icon: faBriefcase, label: "Experience" },
