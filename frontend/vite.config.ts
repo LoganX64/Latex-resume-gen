@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
         org: env.SENTRY_ORG,
         project: env.SENTRY_PROJECT,
         authToken: env.SENTRY_AUTH_TOKEN,
+        applicationKey: "latex-resume",
         sourcemaps: {
           filesToDeleteAfterUpload: ["./**/*.map"],
         },

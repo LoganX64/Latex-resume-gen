@@ -49,16 +49,32 @@ export function useExportActions(_options?: UseExportActionsOptions) {
 
   const handleExportLatex = useCallback(async (skipPhotoWarning = false) => {
     if (!skipPhotoWarning && checkPhotoWarning('latex')) return
-    const template = await loadTemplate(templateId)
-    if (!template) return
-    const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
-    const name = resume.personalInfo.fullName || 'resume'
-    const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
-    downloadFile(latex, filename, 'application/x-latex')
-    recordDownload()
-    toast.success('LaTeX file exported', {
-      description: `${filename} downloaded successfully.`,
-    })
+    try {
+      const template = await loadTemplate(templateId)
+      if (!template) {
+        Sentry.captureMessage('Template not found for LaTeX export', {
+          level: 'warning',
+          tags: { feature: 'export-latex', templateId },
+          fingerprint: ['template-not-found', templateId],
+        })
+        return
+      }
+      const latex = template.generateLatex(resume, sectionOrder, sectionVisibility)
+      const name = resume.personalInfo.fullName || 'resume'
+      const filename = `${name.toLowerCase().replace(/\s+/g, '-')}.tex`
+      downloadFile(latex, filename, 'application/x-latex')
+      recordDownload()
+      toast.success('LaTeX file exported', {
+        description: `${filename} downloaded successfully.`,
+      })
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not export LaTeX'
+      Sentry.captureException(err, {
+        tags: { feature: 'export-latex', templateId },
+        fingerprint: ['export-latex', templateId],
+      })
+      toast.error('LaTeX export failed', { description: message })
+    }
   }, [resume, sectionOrder, sectionVisibility, templateId, checkPhotoWarning])
 
   const handleExportPdf = useCallback(async (skipPhotoWarning = false) => {
@@ -76,6 +92,11 @@ export function useExportActions(_options?: UseExportActionsOptions) {
         if (!template) {
           span.setAttribute('success', false)
           span.setAttribute('reason', 'template_not_found')
+          Sentry.captureMessage('Template not found for PDF export', {
+            level: 'warning',
+            tags: { feature: 'export-pdf', templateId },
+            fingerprint: ['template-not-found', templateId],
+          })
           setCompileDialogOpen(false)
           return
         }
@@ -90,6 +111,11 @@ export function useExportActions(_options?: UseExportActionsOptions) {
           err instanceof Error ? err.message : 'Could not connect to server'
         span.setAttribute('success', false)
         span.setAttribute('error', message)
+        Sentry.captureException(err, {
+          tags: { feature: 'export-pdf', templateId },
+          extra: { stage: 'load-or-generate' },
+          fingerprint: ['export-pdf', templateId],
+        })
         toast.error('PDF export failed', {
           description: `${message}. Make sure the backend is running.`,
         })
@@ -109,6 +135,15 @@ export function useExportActions(_options?: UseExportActionsOptions) {
     try {
       const template = await loadTemplate(version.templateId)
       if (!template) {
+        Sentry.captureMessage('Template not found for version PDF export', {
+          level: 'warning',
+          tags: {
+            feature: 'export-version-pdf',
+            templateId: version.templateId,
+            versionId: version.id,
+          },
+          fingerprint: ['template-not-found', version.templateId],
+        })
         setCompileDialogOpen(false)
         setIsExportingPdf(false)
         return
@@ -119,6 +154,15 @@ export function useExportActions(_options?: UseExportActionsOptions) {
       startCompile(latex, profileImage)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not connect to server'
+      Sentry.captureException(err, {
+        tags: {
+          feature: 'export-version-pdf',
+          templateId: version.templateId,
+          versionId: version.id,
+        },
+        extra: { stage: 'load-or-generate' },
+        fingerprint: ['export-version-pdf', version.templateId],
+      })
       toast.error('PDF export failed', {
         description: `${message}. Make sure the backend is running.`,
       })

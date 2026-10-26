@@ -36,15 +36,20 @@ if (import.meta.env.PROD && !navigator.webdriver) {
         colorScheme: "system",
         autoInject: false,
       }),
+
+      Sentry.thirdPartyErrorFilterIntegration({
+        filterKeys: ["latex-resume"],
+        behaviour: "drop-error-if-exclusively-contains-third-party-frames",
+      }),
     ],
 
-    enableLogs: true,
+    enableLogs: false,
 
-    tracesSampleRate: 0.2,
+    tracesSampleRate: 0.1,
 
     tracePropagationTargets: ["localhost", /^\//],
 
-    replaysSessionSampleRate: 0.05,
+    replaysSessionSampleRate: 0,
     replaysOnErrorSampleRate: 1.0,
 
     environment: import.meta.env.PROD ? 'production' : import.meta.env.MODE,
@@ -52,22 +57,12 @@ if (import.meta.env.PROD && !navigator.webdriver) {
     ignoreErrors: [
       // Filter out CefSharp bot/scanner IPC rejections (e.g., Outlook SafeLinks, Defender, anti-detect crawlers)
       /Object Not Found Matching Id/i,
+      // Benign browser layout-loop warning that is not actionable in application code
+      /ResizeObserver loop (limit exceeded|completed with undelivered notifications)/i,
     ],
 
     beforeSend(event, hint) {
-      const error = hint.originalException;
-      const errorStr =
-        typeof error === 'string'
-          ? error
-          : error instanceof Error
-            ? error.message
-            : event.message || event.exception?.values?.[0]?.value || '';
-
-      if (/Object Not Found Matching Id/i.test(errorStr)) {
-        return null;
-      }
-
-      if (isChunkLoadError(error)) {
+      if (isChunkLoadError(hint.originalException)) {
         event.tags = { ...event.tags, kind: 'chunk-load' };
       }
       return event;

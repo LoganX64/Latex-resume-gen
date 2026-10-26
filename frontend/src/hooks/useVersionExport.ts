@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import * as Sentry from '@sentry/react'
 import { downloadPdf } from '@/utils/download'
 import { recordDownload } from '@/utils/stats'
 import { loadTemplate } from '@/templates'
@@ -35,6 +36,15 @@ export function useVersionExport() {
     try {
       const template = await loadTemplate(version.templateId)
       if (!template) {
+        Sentry.captureMessage('Template not found for version PDF export', {
+          level: 'warning',
+          tags: {
+            feature: 'export-version-pdf',
+            templateId: version.templateId,
+            versionId: version.id,
+          },
+          fingerprint: ['template-not-found', version.templateId],
+        })
         setCompileDialogOpen(false)
         setIsExportingPdf(false)
         return
@@ -45,6 +55,15 @@ export function useVersionExport() {
       startCompile(latex, profileImage)
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not connect to server'
+      Sentry.captureException(err, {
+        tags: {
+          feature: 'export-version-pdf',
+          templateId: version.templateId,
+          versionId: version.id,
+        },
+        extra: { stage: 'load-or-generate' },
+        fingerprint: ['export-version-pdf', version.templateId],
+      })
       toast.error('PDF export failed', {
         description: `${message}. Make sure the backend is running.`,
       })

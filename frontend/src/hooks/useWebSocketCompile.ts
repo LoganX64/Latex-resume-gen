@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react'
+import * as Sentry from '@sentry/react'
 
 export interface CompileStep {
   step: string
@@ -27,6 +28,21 @@ export function useWebSocketCompile() {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isCompilingRef = useRef(false)
   const pageCountRef = useRef(1)
+  const capturedErrorRef = useRef(false)
+
+  const captureCompileError = useCallback((
+    message: string,
+    stage: string,
+    extra?: Record<string, unknown>,
+  ) => {
+    if (capturedErrorRef.current) return
+    capturedErrorRef.current = true
+    Sentry.captureException(new Error(message), {
+      tags: { feature: 'compile-ws', stage },
+      extra,
+      fingerprint: ['compile-ws', stage],
+    })
+  }, [])
 
   const cleanup = useCallback(() => {
     if (timeoutRef.current) {
@@ -47,11 +63,16 @@ export function useWebSocketCompile() {
     setError('')
     setResult(null)
     pageCountRef.current = 1
+    capturedErrorRef.current = false
 
     const ws = new WebSocket(WS_URL)
     wsRef.current = ws
 
     timeoutRef.current = setTimeout(() => {
+      if (wsRef.current !== ws) return
+      captureCompileError('Compile connection timed out', 'timeout', {
+        timeoutMs: CONNECT_TIMEOUT_MS,
+      })
       ws.close()
       setError('Connection timed out. Is the backend running?')
       setStatus('error')
@@ -59,6 +80,7 @@ export function useWebSocketCompile() {
     }, CONNECT_TIMEOUT_MS)
 
     ws.onopen = () => {
+      if (wsRef.current !== ws) return
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
@@ -69,15 +91,35 @@ export function useWebSocketCompile() {
     }
 
     ws.onmessage = (event) => {
+      if (wsRef.current !== ws) return
+
       if (typeof event.data === 'string') {
-        const msg = JSON.parse(event.data)
+        let msg: {
+          type?: string
+          step?: string
+          message?: string
+          output?: string
+          pageCount?: number
+        }
+        try {
+          msg = JSON.parse(event.data)
+        } catch (err) {
+          isCompilingRef.current = false
+          captureCompileError('Invalid message from compile server', 'parse', {
+            error: err instanceof Error ? err.message : String(err),
+          })
+          setError('Invalid response from compile server')
+          setStatus('error')
+          ws.close()
+          return
+        }
 
         if (msg.type === 'progress') {
           setProgress((prev) => {
             const existing = prev.findIndex((p) => p.step === msg.step)
             const step: CompileStep = {
-              step: msg.step,
-              message: msg.message,
+              step: msg.step ?? 'unknown',
+              message: msg.message ?? '',
               output: msg.output,
             }
             if (existing >= 0) {
@@ -89,45 +131,61 @@ export function useWebSocketCompile() {
           })
         } else if (msg.type === 'complete') {
           isCompilingRef.current = false
-          pageCountRef.current = Number.isInteger(msg.pageCount) && msg.pageCount > 0
-            ? msg.pageCount
-            : 1
+          pageCountRef.current =
+            typeof msg.pageCount === 'number' &&
+            Number.isInteger(msg.pageCount) &&
+            msg.pageCount > 0
+              ? msg.pageCount
+              : 1
           setProgress((prev) => [
             ...prev,
             { step: 'done', message: 'Done' },
           ])
           setStatus('done')
         } else if (msg.type === 'error') {
-          setError(msg.message)
+          isCompilingRef.current = false
+          captureCompileError(msg.message || 'Compilation failed', 'server', {
+            output: msg.output,
+          })
+          setError(msg.message || 'Compilation failed')
           setStatus('error')
           ws.close()
         }
       } else {
         const blob = new Blob([event.data], { type: 'application/pdf' })
         setResult({ pdfBlob: blob, pageCount: pageCountRef.current })
+        isCompilingRef.current = false
         ws.close()
       }
     }
 
     ws.onerror = () => {
+      if (wsRef.current !== ws) return
       isCompilingRef.current = false
+      captureCompileError('WebSocket connection failed', 'websocket-error')
       setError('WebSocket connection failed')
       setStatus('error')
     }
 
-    ws.onclose = () => {
+    ws.onclose = (event) => {
+      if (wsRef.current !== ws) return
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current)
         timeoutRef.current = null
       }
       if (isCompilingRef.current) {
         isCompilingRef.current = false
+        captureCompileError('Connection lost during compilation', 'connection-lost', {
+          code: event.code,
+          reason: event.reason,
+          wasClean: event.wasClean,
+        })
         setError('Connection lost during compilation')
         setStatus('error')
       }
       wsRef.current = null
     }
-  }, [cleanup])
+  }, [cleanup, captureCompileError])
 
   const cancel = useCallback(() => {
     cleanup()

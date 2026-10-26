@@ -68,7 +68,12 @@ export function ProfileImageUpload() {
         span.setAttribute("crop.height", croppedAreaPixels.height);
 
         const image = new Image();
-        image.src = imageSrc;
+        image.onerror = () => {
+          Sentry.captureException(new Error("Failed to load profile image"), {
+            tags: { feature: "profile-image", stage: "load" },
+            fingerprint: ["profile-image", "load"],
+          });
+        };
         image.onload = () => {
           const MAX_SIZE = 400;
           const { width, height } = croppedAreaPixels;
@@ -80,7 +85,16 @@ export function ProfileImageUpload() {
           canvas.width = outputW;
           canvas.height = outputH;
           const ctx = canvas.getContext("2d");
-          if (!ctx) return;
+          if (!ctx) {
+            Sentry.captureException(
+              new Error("Could not get 2D canvas context"),
+              {
+                tags: { feature: "profile-image", stage: "canvas-context" },
+                fingerprint: ["profile-image", "canvas-context"],
+              },
+            );
+            return;
+          }
           ctx.drawImage(
             image,
             croppedAreaPixels.x,
@@ -92,12 +106,24 @@ export function ProfileImageUpload() {
             outputW,
             outputH,
           );
-          const croppedImage = canvas.toDataURL("image/jpeg", 0.8);
+
+          let croppedImage: string;
+          try {
+            croppedImage = canvas.toDataURL("image/jpeg", 0.8);
+          } catch (err) {
+            Sentry.captureException(err, {
+              tags: { feature: "profile-image", stage: "encode" },
+              fingerprint: ["profile-image", "encode"],
+            });
+            return;
+          }
+
           span.setAttribute("output.size", croppedImage.length);
           updatePersonalInfo("profileImage", croppedImage);
           setCropDialogOpen(false);
           setImageSrc(null);
         };
+        image.src = imageSrc;
       },
     );
   }
