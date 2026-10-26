@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
 import { FadeIn } from "@/components/motion/FadeIn";
 import {
   LatexSourceVisual,
@@ -69,7 +70,11 @@ export function FeaturesSectionV2() {
           </p>
         </FadeIn>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+        <AnimatedGroup
+          preset="slide"
+          amount={0.15}
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
+        >
           {features.map(({ title, description, visual: Visual }) => (
             <div
               key={title}
@@ -91,7 +96,7 @@ export function FeaturesSectionV2() {
               </div>
             </div>
           ))}
-        </div>
+        </AnimatedGroup>
       </div>
     </section>
   );

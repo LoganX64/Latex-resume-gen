@@ -71,23 +71,17 @@ export function FooterV2() {
                 className="h-7 w-auto"
               />
             </Link>
-            <p className="mt-4 max-w-[19rem] text-[13px] leading-relaxed text-white/50">
+            <p className="mt-4 max-w-76 text-[13px] leading-relaxed text-white/50">
               Professional, ATS-friendly resumes with LaTeX-quality typesetting
               — built privately in your browser.
             </p>
             <div className="mt-5 inline-flex items-center gap-1.5 rounded-full border border-rose-400/25 bg-rose-500/10 px-2.5 py-1 text-[11px] text-rose-100/80">
-              <Icon
-                icon={faShieldHalved}
-                className="h-3 w-3 text-rose-400"
-              />
+              <Icon icon={faShieldHalved} className="h-3 w-3 text-rose-400" />
               100% local &amp; private
             </div>
           </div>
 
-          <nav
-            aria-label="Product"
-            className="lg:col-span-2 lg:col-start-7"
-          >
+          <nav aria-label="Product" className="lg:col-span-2 lg:col-start-7">
             <h2 className="text-xs font-semibold text-white">Product</h2>
             <ul className="mt-4 space-y-3">
               {productLinks.map((link) => (
@@ -112,10 +106,7 @@ export function FooterV2() {
             </ul>
           </nav>
 
-          <nav
-            aria-label="Resources"
-            className="lg:col-span-2 lg:col-start-9"
-          >
+          <nav aria-label="Resources" className="lg:col-span-2 lg:col-start-9">
             <h2 className="text-xs font-semibold text-white">Resources</h2>
             <ul className="mt-4 space-y-3">
               {resourceLinks.map((link) => (
@@ -188,7 +179,10 @@ export function FooterV2() {
           </div>
 
           <p className="order-3 flex items-center gap-1.5 text-[11px] text-white/45 sm:justify-self-end">
-            <span aria-hidden="true" className="size-1.5 rounded-full bg-rose-400" />
+            <span
+              aria-hidden="true"
+              className="size-1.5 rounded-full bg-rose-400"
+            />
             Privacy-first
           </p>
         </div>

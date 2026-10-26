@@ -86,7 +86,8 @@ type CanvasPoint = { x: number; y: number };
 
 function useDocumentVisible() {
   const [visible, setVisible] = useState(
-    () => typeof document === "undefined" || document.visibilityState === "visible",
+    () =>
+      typeof document === "undefined" || document.visibilityState === "visible",
   );
 
   useEffect(() => {
@@ -368,7 +369,7 @@ export function EditorShowcaseV2() {
                 <span className="flex-1 truncate text-center text-[11px] font-medium tracking-wide text-muted-foreground">
                   CVStack — Resume Editor
                 </span>
-                <span className="w-[42px]" />
+                <span className="w-10.5" />
               </div>
 
               <div
@@ -397,10 +398,7 @@ export function EditorShowcaseV2() {
                     />
                   </div>
                   {!reduce && (
-                    <ShowcaseCursor
-                      cursor={cursor}
-                      duration={cursorDuration}
-                    />
+                    <ShowcaseCursor cursor={cursor} duration={cursorDuration} />
                   )}
                 </div>
               </div>

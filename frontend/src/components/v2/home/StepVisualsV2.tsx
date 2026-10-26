@@ -215,7 +215,7 @@ function PersonalInfoCard({
   saved: boolean;
 }) {
   return (
-    <div className="relative w-[268px] max-w-full overflow-hidden rounded-lg border border-border/60 bg-background shadow-sm">
+    <div className="relative w-67 max-w-full overflow-hidden rounded-lg border border-border/60 bg-background shadow-sm">
       <div className="flex items-center justify-between gap-2 px-2 py-1.5">
         <div className="truncate text-[8px] leading-none font-semibold text-foreground">
           Personal Information
@@ -315,7 +315,7 @@ function PersonalInfoCard({
               <Icon icon={faXmark} className="size-1.5" aria-hidden="true" />
             </span>
           </div>
-          <span className="flex h-[18px] w-full items-center justify-center gap-0.5 rounded-md border border-input bg-background text-[5px] leading-none font-medium text-foreground">
+          <span className="flex h-4.5 w-full items-center justify-center gap-0.5 rounded-md border border-input bg-background text-[5px] leading-none font-medium text-foreground">
             <Icon
               icon={faUpload}
               className="size-1.5 shrink-0"
@@ -383,11 +383,7 @@ export function FillDetailsStepVisual({
         aria-hidden="true"
         className="relative flex h-full w-full items-center justify-center overflow-hidden"
       >
-        <PersonalInfoCard
-          values={INFO_VALUES}
-          activeField={null}
-          saved
-        />
+        <PersonalInfoCard values={INFO_VALUES} activeField={null} saved />
       </div>
     );
   }
@@ -397,7 +393,7 @@ export function FillDetailsStepVisual({
       aria-hidden="true"
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
     >
-      <div className="pointer-events-none absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.06] blur-2xl" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/6 blur-2xl" />
       <PersonalInfoCard
         values={values}
         activeField={activeField}
@@ -429,10 +425,10 @@ function DataSciSection({
 }) {
   return (
     <div className={className}>
-      <div className="text-[3px] leading-[4px] font-bold tracking-[0.08em] text-[#3d5a80] uppercase">
+      <div className="text-[3px] leading-1 font-bold tracking-[0.08em] text-[#3d5a80] uppercase">
         {title}
       </div>
-      <div className="mt-[1px] h-px w-full bg-[#3d5a80]/40" />
+      <div className="mt-px h-px w-full bg-[#3d5a80]/40" />
       <div className="mt-[1.5px] space-y-[1.5px]">{children}</div>
     </div>
   );
@@ -445,7 +441,7 @@ function DataSciRole() {
         <ThumbLine className="w-8 bg-neutral-700/60" />
         <ThumbLine className="w-4" />
       </div>
-      <ThumbLine className="mt-[1px] w-6" />
+      <ThumbLine className="mt-px w-6" />
       <div className="mt-[1.5px] space-y-[1.5px] pl-1">
         <ThumbLine className="w-full" />
         <ThumbLine className="w-[86%]" />
@@ -458,7 +454,7 @@ function DataSciSheet() {
   return (
     <div className="flex h-full w-full flex-col bg-white p-2 text-neutral-800">
       <div className="flex items-start gap-1">
-        <div className="w-[18px] shrink-0 space-y-[2px] pt-[2px]">
+        <div className="w-4.5 shrink-0 space-y-0.5 pt-0.5">
           <ThumbLine className="w-full bg-neutral-500/50" />
           <ThumbLine className="w-[88%]" />
           <ThumbLine className="w-full" />
@@ -471,27 +467,27 @@ function DataSciSheet() {
             Backend Engineer
           </div>
         </div>
-        <div className="flex w-[20px] shrink-0 flex-col items-end space-y-[2px] pt-[2px]">
+        <div className="flex w-5 shrink-0 flex-col items-end space-y-0.5 pt-0.5">
           <ThumbLine className="w-full" />
           <ThumbLine className="w-[84%]" />
           <ThumbLine className="w-[92%]" />
         </div>
       </div>
 
-      <div className="mt-[3px] h-[2px] w-full bg-[#3d5a80]" />
+      <div className="mt-0.75 h-0.5 w-full bg-[#3d5a80]" />
 
-      <DataSciSection title="Summary" className="mt-[3px]">
+      <DataSciSection title="Summary" className="mt-0.75">
         <ThumbLine className="w-full" />
         <ThumbLine className="w-[92%]" />
         <ThumbLine className="w-[74%]" />
       </DataSciSection>
 
-      <DataSciSection title="Technical Experience" className="mt-[4px]">
+      <DataSciSection title="Technical Experience" className="mt-1">
         <DataSciRole />
         <DataSciRole />
       </DataSciSection>
 
-      <DataSciSection title="Skills" className="mt-[4px]">
+      <DataSciSection title="Skills" className="mt-1">
         <div className="flex items-center gap-1">
           <ThumbLine className="w-5 bg-neutral-700/50" />
           <ThumbLine className="flex-1" />
@@ -506,11 +502,11 @@ function DataSciSheet() {
         </div>
       </DataSciSection>
 
-      <DataSciSection title="Projects" className="mt-[4px]">
+      <DataSciSection title="Projects" className="mt-1">
         <DataSciRole />
       </DataSciSection>
 
-      <DataSciSection title="Education" className="mt-[4px]">
+      <DataSciSection title="Education" className="mt-1">
         <div className="flex items-center justify-between gap-1">
           <ThumbLine className="w-9 bg-neutral-700/50" />
           <ThumbLine className="w-4" />
@@ -518,7 +514,7 @@ function DataSciSheet() {
         <ThumbLine className="w-7" />
       </DataSciSection>
 
-      <div className="mt-auto flex justify-center pt-[3px]">
+      <div className="mt-auto flex justify-center pt-0.75">
         <ThumbLine className="h-px w-5" />
       </div>
     </div>
@@ -585,7 +581,7 @@ function TemplateCursor({
       >
         <svg
           viewBox="0 0 14 20"
-          className="h-[14px] w-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+          className="h-3.5 w-2.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
           aria-hidden="true"
         >
           <path
@@ -615,7 +611,7 @@ function TemplateSelect({
   cursorMs: number;
 }) {
   return (
-    <div className="relative h-[210px] w-[208px]">
+    <div className="relative h-52.5 w-52">
       <div
         className={cn(
           "flex h-8 w-full items-center justify-between gap-1.5 rounded-md border bg-background px-2 py-1 text-[11px] leading-none transition-colors",
@@ -646,7 +642,7 @@ function TemplateSelect({
         {open && (
           <m.div
             key="template-menu"
-            className="absolute inset-x-0 top-[38px] z-20 origin-top overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10"
+            className="absolute inset-x-0 top-9.5 z-20 origin-top overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10"
             initial={{ opacity: 0, y: -4, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -3, scale: 0.98 }}
@@ -683,8 +679,8 @@ function TemplateSelect({
 
 function TemplatePreview() {
   return (
-    <div className="h-[200px] w-[140px] overflow-hidden rounded-[3px] bg-white shadow-[0_18px_36px_-20px_rgba(0,0,0,0.5)] ring-1 ring-black/10">
-      <div className="h-[148px] w-[104px] origin-top-left scale-[1.35]">
+    <div className="h-50 w-35 overflow-hidden rounded-[3px] bg-white shadow-[0_18px_36px_-20px_rgba(0,0,0,0.5)] ring-1 ring-black/10">
+      <div className="h-37 w-26 origin-top-left scale-[1.35]">
         <DataSciSheet />
       </div>
     </div>
@@ -862,7 +858,7 @@ function ExportToolbar({
       <span className="shrink-0 text-[8px] leading-none whitespace-nowrap text-muted-foreground italic">
         (approximate)
       </span>
-      <span className="flex h-6 min-w-[62px] shrink-0 items-center justify-between gap-1 rounded-md border border-input bg-background px-2 text-[8px] leading-none text-foreground">
+      <span className="flex h-6 min-w-15.5 shrink-0 items-center justify-between gap-1 rounded-md border border-input bg-background px-2 text-[8px] leading-none text-foreground">
         <span className="truncate">{EXPORT_TEMPLATE}</span>
         <Icon
           icon={faChevronDown}
