@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { m, useInView } from "framer-motion";
 import { Icon } from "@/components/Icon";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import {
   faDownload,
   faFilePdf,
@@ -8,7 +10,18 @@ import {
   faUser,
   faXmark,
 } from "@/lib/icons";
+import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+
+const RESUME_NAME = "Jitin k";
+const RESUME_TITLE = "Backend Engineer";
+const RESUME_SUMMARY =
+  "Backend engineer building fast, reliable APIs with Go, PostgreSQL, and Docker.";
+const ZOOM_SCALE = 2.4;
+const ZOOM_DURATION = 1.15;
+const FADE_DURATION = 0.25;
+
+type ActiveField = "name" | "title" | "summary" | null;
 
 function Bar({ className }: { className?: string }) {
   return (
@@ -26,36 +39,362 @@ function WindowDots() {
   );
 }
 
-export function SinglePageVisual() {
+function Caret({ className }: { className?: string }) {
   return (
-    <div className="relative flex h-full w-full items-center justify-center">
-      <div className="relative h-36 w-28 rounded-[4px] bg-card p-2.5 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)] ring-1 ring-border/60">
-        <div className="flex items-center gap-1.5">
-          <span className="size-4 rounded-full bg-primary/15 ring-1 ring-primary/20" />
-          <span className="h-1.5 w-12 rounded-full bg-foreground/70" />
-        </div>
-        <Bar className="mt-1.5 h-0.5 w-16" />
+    <m.span
+      aria-hidden="true"
+      className={cn(
+        "ml-px inline-block w-px shrink-0 bg-[#1d76e2]",
+        className,
+      )}
+      animate={{ opacity: [1, 1, 0, 0] }}
+      transition={{
+        duration: 0.9,
+        repeat: Infinity,
+        times: [0, 0.5, 0.5, 1],
+        ease: "linear",
+      }}
+    />
+  );
+}
 
-        <div className="mt-3 space-y-1">
-          <Bar className="h-0.5 w-8 bg-primary/60" />
-          <Bar className="w-full" />
-          <Bar className="w-11/12" />
-          <Bar className="w-4/5" />
+function MockHeading({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <h3
+      className={cn(
+        "text-[3px] leading-[4px] font-bold tracking-wide text-[#1d76e2] uppercase",
+        className,
+      )}
+    >
+      {children}
+    </h3>
+  );
+}
+
+function MockRole({
+  company,
+  title,
+  date,
+  bullets,
+}: {
+  company: string;
+  title: string;
+  date: string;
+  bullets: number;
+}) {
+  return (
+    <div className="mt-[3px]">
+      <div className="flex h-[4px] items-center gap-1 overflow-hidden whitespace-nowrap">
+        <span className="shrink-0 text-[3px] leading-none font-bold text-[#333333] uppercase">
+          {company}
+        </span>
+        <span className="truncate text-[2.5px] leading-none text-[#333333]">
+          | {title}
+        </span>
+      </div>
+      <div className="mt-px h-[3px] truncate text-[2.5px] leading-[3px] text-[#6a6a6a]">
+        {date}
+      </div>
+      <div className="mt-[2px] space-y-[2px]">
+        {Array.from({ length: bullets }).map((_, index) => (
+          <div key={index} className="flex h-[3px] items-center gap-1">
+            <span className="size-[2px] shrink-0 rotate-45 bg-[#1d76e2]" />
+            <div className="min-w-0 flex-1">
+              <Bar
+                className={cn(
+                  "h-[2px] bg-[#6a6a6a]/20",
+                  index === 0 ? "w-full" : "w-4/5",
+                )}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MockSkillGroup({ label, lines }: { label: string; lines: number }) {
+  return (
+    <div className="mt-[3px]">
+      <div className="h-[4px] text-[2.5px] leading-[4px] font-bold text-[#333333] uppercase">
+        {label}
+      </div>
+      <div className="mt-px space-y-[2px]">
+        {Array.from({ length: lines }).map((_, index) => (
+          <Bar
+            key={index}
+            className={cn(
+              "h-[2px] bg-[#6a6a6a]/25",
+              index === 0 ? "w-full" : "w-3/4",
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MockEducation({
+  school,
+  degree,
+  date,
+}: {
+  school: string;
+  degree: string;
+  date: string;
+}) {
+  return (
+    <div className="mt-[3px]">
+      <div className="h-[4px] truncate text-[3px] leading-[4px] font-bold text-[#333333] uppercase">
+        {school}
+      </div>
+      <div className="h-[3px] truncate text-[2.5px] leading-[3px] text-[#333333]">
+        {degree}
+      </div>
+      <div className="h-[3px] truncate text-[2.5px] leading-[3px] text-[#6a6a6a]">
+        {date}
+      </div>
+    </div>
+  );
+}
+
+function ResumeMock({
+  name,
+  title,
+  summary,
+  activeField,
+}: {
+  name: string;
+  title: string;
+  summary: string;
+  activeField: ActiveField;
+}) {
+  return (
+    <div className="relative h-36 w-28 overflow-hidden rounded-[4px] bg-white p-2.5 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.35)] ring-1 ring-border/60">
+      <div className="flex h-2 min-w-0 items-center overflow-hidden text-[7px] leading-none font-bold whitespace-nowrap text-[#1d76e2]">
+        <span className="truncate">{name}</span>
+        {activeField === "name" && <Caret className="h-2" />}
+      </div>
+      <div className="mt-[1px] flex h-[4px] min-w-0 items-center overflow-hidden text-[3px] leading-[4px] whitespace-nowrap text-[#1d76e2]">
+        <span className="truncate">{title}</span>
+        {activeField === "title" && <Caret className="h-[3px]" />}
+      </div>
+      <div className="mt-[1px] h-[3px] truncate text-[2.5px] leading-[3px] text-[#1d76e2]">
+        alexmorgan.dev · linkedin.com/in/alexmorgan · alex@morgan.dev
+      </div>
+
+      <MockHeading className="mt-[4px]">Professional Summary</MockHeading>
+      <div className="mt-[1px] h-[10px] overflow-hidden text-[3px] leading-[4px] text-[#333333]">
+        {summary}
+        {activeField === "summary" && <Caret className="h-[4px]" />}
+      </div>
+
+      <div className="mt-[4px] flex items-start gap-[6px]">
+        <div className="flex w-[62%] shrink-0 flex-col">
+          <MockHeading>Experience</MockHeading>
+          <MockRole
+            company="Northwind"
+            title="Senior Backend Engineer"
+            date="2022 – Present · San Francisco"
+            bullets={2}
+          />
+          <MockRole
+            company="Lumen Labs"
+            title="Backend Engineer"
+            date="2020 – 2022 · Remote"
+            bullets={2}
+          />
+          <MockRole
+            company="Fieldwork"
+            title="Software Engineer"
+            date="2018 – 2020"
+            bullets={1}
+          />
+          <MockHeading className="mt-[4px]">Projects</MockHeading>
+          <div className="mt-[2px]">
+            <div className="flex h-[4px] items-center gap-1">
+              <span className="text-[3px] leading-none font-bold text-[#333333] uppercase">
+                CVStack
+              </span>
+              <Bar className="h-[2px] flex-1 bg-[#6a6a6a]/25" />
+            </div>
+            <div className="mt-[2px] space-y-[2px]">
+              <Bar className="h-[2px] w-full bg-[#6a6a6a]/20" />
+              <Bar className="h-[2px] w-[82%] bg-[#6a6a6a]/20" />
+            </div>
+          </div>
         </div>
 
-        <div className="mt-3 space-y-1">
-          <Bar className="h-0.5 w-10 bg-primary/60" />
-          <Bar className="w-full" />
-          <Bar className="w-10/12" />
-          <Bar className="w-3/4" />
-        </div>
-
-        <div className="mt-3 flex gap-1">
-          <span className="h-3 flex-1 rounded-sm bg-muted" />
-          <span className="h-3 flex-1 rounded-sm bg-muted" />
-          <span className="h-3 flex-1 rounded-sm bg-muted" />
+        <div className="flex min-w-0 flex-1 flex-col border-l border-[#1d76e2]/15 pl-[5px]">
+          <MockHeading>Skills</MockHeading>
+          <MockSkillGroup label="Design" lines={2} />
+          <MockSkillGroup label="Tools" lines={2} />
+          <MockSkillGroup label="Code" lines={1} />
+          <MockHeading className="mt-[4px]">Education</MockHeading>
+          <MockEducation
+            school="RISD"
+            degree="BFA Graphic Design"
+            date="2016 – 2020"
+          />
+          <MockEducation
+            school="Parsons"
+            degree="Certificate, UX"
+            date="2021"
+          />
         </div>
       </div>
+    </div>
+  );
+}
+
+export function SinglePageVisual() {
+  const reduce = useIsMotionDisabled();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { amount: 0.3 });
+
+  const [name, setName] = useState(RESUME_NAME);
+  const [title, setTitle] = useState(RESUME_TITLE);
+  const [summary, setSummary] = useState(RESUME_SUMMARY);
+  const [activeField, setActiveField] = useState<ActiveField>(null);
+  const [isFullView, setIsFullView] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    if (reduce || !isInView) return;
+
+    let cancelled = false;
+    const timers = new Set<number>();
+
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const id = window.setTimeout(() => {
+          timers.delete(id);
+          resolve();
+        }, ms);
+        timers.add(id);
+      });
+
+    const type = async (
+      text: string,
+      field: Exclude<ActiveField, null>,
+      setValue: (value: string) => void,
+      minDelay: number,
+      maxDelay: number,
+    ) => {
+      setActiveField(field);
+      setValue("");
+      for (let index = 1; index <= text.length; index++) {
+        if (cancelled) return;
+        const char = text[index - 1];
+        const delay = minDelay + Math.random() * (maxDelay - minDelay);
+        const punctuationPause = /[.,]/.test(char) ? 140 : 0;
+        await wait(delay + punctuationPause);
+        if (cancelled) return;
+        setValue(text.slice(0, index));
+      }
+    };
+
+    const run = async () => {
+      await wait(250);
+
+      while (!cancelled) {
+        setIsVisible(false);
+        await wait(FADE_DURATION * 1000);
+        if (cancelled) return;
+
+        setIsFullView(false);
+        setName("");
+        setTitle("");
+        setSummary("");
+        setActiveField(null);
+        setIsVisible(true);
+        await wait(FADE_DURATION * 1000);
+        if (cancelled) return;
+
+        await type(RESUME_NAME, "name", setName, 50, 105);
+        if (cancelled) return;
+
+        await wait(250);
+        if (cancelled) return;
+
+        await type(RESUME_TITLE, "title", setTitle, 45, 90);
+        if (cancelled) return;
+
+        await wait(300);
+        if (cancelled) return;
+
+        await type(RESUME_SUMMARY, "summary", setSummary, 16, 40);
+        if (cancelled) return;
+
+        await wait(350);
+        setActiveField(null);
+        await wait(200);
+        if (cancelled) return;
+
+        setIsFullView(true);
+        await wait(ZOOM_DURATION * 1000);
+        if (cancelled) return;
+
+        await wait(2200);
+      }
+    };
+
+    void run();
+
+    return () => {
+      cancelled = true;
+      timers.forEach((id) => window.clearTimeout(id));
+      timers.clear();
+    };
+  }, [isInView, reduce]);
+
+  if (reduce) {
+    return (
+      <div className="relative flex h-full w-full items-center justify-center overflow-hidden">
+        <ResumeMock
+          name={RESUME_NAME}
+          title={RESUME_TITLE}
+          summary={RESUME_SUMMARY}
+          activeField={null}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative flex h-full w-full items-center justify-center overflow-hidden"
+    >
+      <m.div
+        initial={false}
+        animate={{
+          scale: isFullView ? 1 : ZOOM_SCALE,
+          opacity: isVisible ? 1 : 0,
+        }}
+        transition={{
+          scale: {
+            duration: isFullView ? ZOOM_DURATION : 0,
+            ease: isFullView ? EASE_OUT : "linear",
+          },
+          opacity: { duration: FADE_DURATION, ease: "easeOut" },
+        }}
+        style={{ originX: 0.5, originY: 0.12 }}
+      >
+        <ResumeMock
+          name={name}
+          title={title}
+          summary={summary}
+          activeField={activeField}
+        />
+      </m.div>
     </div>
   );
 }
