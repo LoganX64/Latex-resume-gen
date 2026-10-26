@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import * as Sentry from '@sentry/react'
 import { Analytics } from '@vercel/analytics/react'
@@ -10,8 +10,6 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 
 import { lazyWithRetry } from '@/lib/preload-error-handler'
 
-const HomePage = lazyWithRetry(() => import('@/pages/HomePage'))
-const EditorLayout = lazyWithRetry(() => import('@/layouts/EditorLayout'))
 const HomePageV2 = lazyWithRetry(() => import('@/pages/HomePageV2'))
 const EditorV2Layout = lazyWithRetry(() => import('@/layouts/EditorV2Layout'))
 const StatsDashboard = lazyWithRetry(() => import('@/pages/StatsDashboard'))
@@ -28,7 +26,7 @@ function AppRoutes() {
           path="/"
           element={
             <PageTransition>
-              <HomePage />
+              <HomePageV2 />
             </PageTransition>
           }
         />
@@ -36,26 +34,12 @@ function AppRoutes() {
           path="/editor"
           element={
             <PageTransition disableOnMobile>
-              <EditorLayout />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/v2"
-          element={
-            <PageTransition>
-              <HomePageV2 />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/editor-v2"
-          element={
-            <PageTransition disableOnMobile>
               <EditorV2Layout />
             </PageTransition>
           }
         />
+        <Route path="/v2" element={<Navigate to="/" replace />} />
+        <Route path="/editor-v2" element={<Navigate to="/editor" replace />} />
         <Route
           path="/admin/stats"
           element={

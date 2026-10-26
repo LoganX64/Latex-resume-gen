@@ -159,7 +159,7 @@ latex-resume-gen/
 │   │   ├── layouts/
 │   │   │   └── EditorV2Layout.tsx # Responsive editor layout
 │   │   ├── pages/
-│   │   │   ├── HomePage.tsx
+│   │   │   ├── HomePageV2.tsx
 │   │   │   └── StatsDashboard.tsx
 │   │   ├── stores/              # Zustand global state
 │   │   │   ├── resume-store.ts

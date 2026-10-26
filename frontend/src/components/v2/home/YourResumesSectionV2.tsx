@@ -25,7 +25,7 @@ export function YourResumesSectionV2() {
           >
             Your Resumes
           </h2>
-          <Link to="/editor-v2">
+          <Link to="/editor">
             <Button size="sm" className="gap-1.5 rounded-full">
               <Icon icon={faPlus} className="h-3.5 w-3.5" />
               <span className="hidden sm:inline">New Resume</span>
@@ -52,7 +52,7 @@ export function YourResumesSectionV2() {
             <p className="mx-auto mb-5 max-w-xs text-sm text-muted-foreground">
               Build a resume and save it as a version to see it here.
             </p>
-            <Link to="/editor-v2">
+            <Link to="/editor">
               <Button variant="outline" size="sm" className="gap-2 border-dashed">
                 Build Your First Resume
                 <Icon icon={faArrowRight} className="h-4 w-4" />
@@ -69,7 +69,7 @@ export function YourResumesSectionV2() {
               <VersionCard
                 key={version.id}
                 version={version}
-                editorPath="/editor-v2"
+                editorPath="/editor"
                 showPreview
               />
             ))}

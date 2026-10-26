@@ -69,15 +69,6 @@ export const animatedGroupItem: Variants = {
   },
 };
 
-export const sectionEntrance: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 3, type: "spring", bounce: 0.2 },
-  },
-};
-
 export const editorSection: Variants = {
   hidden: { opacity: 0, y: 8 },
   visible: {

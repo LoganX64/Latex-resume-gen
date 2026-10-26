@@ -19,7 +19,7 @@ const githubUrl =
 
 const productLinks = [
   { label: "Features", href: "#features-v2-heading" },
-  { label: "Templates", href: "/editor-v2" },
+  { label: "Templates", href: "/editor" },
   { label: "How it works", href: "#steps-v2-heading" },
   { label: "Your Resumes", href: "#your-resumes" },
 ];
@@ -61,7 +61,7 @@ export function FooterV2() {
         <div className="grid gap-12 py-14 sm:grid-cols-2 sm:gap-10 lg:grid-cols-12 lg:gap-8 lg:py-16">
           <div className="max-w-sm sm:col-span-2 lg:col-span-6">
             <Link
-              to="/v2"
+              to="/"
               aria-label="CVStack home"
               className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60"
             >
@@ -178,7 +178,7 @@ export function FooterV2() {
               </button>
 
               <Link
-                to="/editor-v2"
+                to="/editor"
                 className="ml-0.5 inline-flex h-8 items-center gap-1.5 rounded-full bg-[#e23d63] px-3.5 text-[11px] font-semibold text-white shadow-sm transition-colors hover:bg-[#ed5a7b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 <Icon icon={faWandSparkles} className="h-3 w-3" />

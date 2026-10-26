@@ -6,7 +6,7 @@ interface BrandLogoV2Props {
   className?: string;
 }
 
-export function BrandLogoV2({ to = "/v2", className }: BrandLogoV2Props) {
+export function BrandLogoV2({ to = "/", className }: BrandLogoV2Props) {
   return (
     <Link to={to} className={cn("flex items-center gap-1 shrink-0", className)}>
       <img src="/logo.svg" alt="" className="h-7 w-7 object-contain" />

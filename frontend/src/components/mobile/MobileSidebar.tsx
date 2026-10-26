@@ -1,13 +1,8 @@
 import { useResumeStore } from "@/stores/resume-store";
-import { useStatsStore } from "@/stores/stats-store";
 import { useNavigate } from "react-router-dom";
-import { recordVisit } from "@/utils/stats";
-import { useEffect } from "react";
 import { Icon } from "@/components/Icon";
 import {
   faFloppyDisk,
-  faEye,
-  faDownload,
   faHouse,
   faUser,
   faFileLines,
@@ -46,7 +41,6 @@ interface MobileSidebarProps {
   onSectionClick?: (id: string) => void;
   onSaveClick?: () => void;
   homePath?: string;
-  hideStats?: boolean;
   v2Logo?: boolean;
 }
 
@@ -57,17 +51,10 @@ export function MobileSidebar({
   onSectionClick,
   onSaveClick,
   homePath = "/",
-  hideStats = false,
   v2Logo = false,
 }: MobileSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
-  const stats = useStatsStore();
-  const refresh = useStatsStore((s) => s.refresh);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    recordVisit().then(() => refresh());
-  }, []);
 
   const visibleSections = navItems.filter((item) => {
     const sectionKey =
@@ -150,25 +137,6 @@ export function MobileSidebar({
 
         {/* ── Footer ── */}
         <div className="border-t border-sidebar-border/70 bg-sidebar/80 p-3 space-y-2 shrink-0">
-          {!hideStats && (
-            <div className="flex items-center justify-between rounded-md bg-sidebar-accent/50 px-2.5 py-2 text-[11px] text-sidebar-foreground/55">
-              <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-                <Icon icon={faEye} className="h-3.5 w-3.5" />
-                <span>
-                  {stats.visits.toLocaleString()} visit
-                  {stats.visits !== 1 ? "s" : ""}
-                </span>
-              </span>
-              <span className="h-3 w-px bg-sidebar-border" />
-              <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-                <Icon icon={faDownload} className="h-3.5 w-3.5" />
-                <span>
-                  {stats.downloads.toLocaleString()} download
-                  {stats.downloads !== 1 ? "s" : ""}
-                </span>
-              </span>
-            </div>
-          )}
           <button
             onClick={() => onSaveClick?.()}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"

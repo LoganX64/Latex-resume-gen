@@ -105,6 +105,11 @@ const COMMON_ASSERTIONS = [
       return !stuck;
     },
   },
+  {
+    name: "no local prerender origin",
+    // Vite injects absolute modulepreload URLs for the local capture server.
+    test: (h) => !/https?:\/\/(?:127\.0\.0\.1|localhost):\d+/.test(h),
+  },
 ];
 
 const MIME = {
@@ -222,6 +227,10 @@ function stripStaticHead(html, staticHead) {
   return out;
 }
 
+function stripLocalOrigin(html, origin) {
+  return html.replaceAll(`${origin}/assets/`, "/assets/");
+}
+
 function assertRendered(route, html) {
   const failures = [...COMMON_ASSERTIONS, ...(route.assert ?? [])]
     .filter((a) => !a.test(html))
@@ -283,7 +292,8 @@ async function main() {
       await revealLazyContent(page);
 
       const raw = await page.evaluate(() => document.documentElement.outerHTML);
-      const html = route.stripStaticHead ? stripStaticHead(raw, staticHead) : raw;
+      const normalized = stripLocalOrigin(raw, `http://127.0.0.1:${port}`);
+      const html = route.stripStaticHead ? stripStaticHead(normalized, staticHead) : normalized;
 
       assertRendered(route, html);
       captured.push({ out: route.out, html });

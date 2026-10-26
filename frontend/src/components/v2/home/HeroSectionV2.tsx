@@ -166,7 +166,7 @@ export function HeroSectionV2() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link to="/editor-v2">
+            <Link to="/editor">
               <Button
                 size="sm"
                 className="w-full sm:w-auto gap-2 rounded-full"

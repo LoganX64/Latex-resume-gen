@@ -39,7 +39,7 @@ export function NavbarV2() {
           >
             {darkMode ? <SunIcon className="h-3.5 w-3.5" /> : <MoonIcon className="h-3.5 w-3.5" />}
           </Button>
-          <Link to="/editor-v2">
+          <Link to="/editor">
             <ShineButton size="sm" className="rounded-full px-4">
               <span className="hidden sm:inline">Build Resume</span>
               <span className="sm:hidden">Build</span>

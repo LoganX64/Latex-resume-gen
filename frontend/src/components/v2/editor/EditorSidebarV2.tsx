@@ -44,7 +44,7 @@ export function EditorSidebarV2({
               <TooltipTrigger
                 render={
                   <Link
-                    to="/v2"
+                    to="/"
                     className="flex items-center justify-center rounded-md"
                     aria-label="CVStack home"
                   >
@@ -61,7 +61,7 @@ export function EditorSidebarV2({
           ) : (
             <div className="flex items-center w-full h-full px-3">
               <Link
-                to="/v2"
+                to="/"
                 className="flex items-center gap-1 rounded-md hover:bg-sidebar-accent transition-colors px-1.5 py-1"
               >
                 <img

@@ -36,6 +36,7 @@ import { Icon } from "@/components/Icon";
 import {
   faChevronDown,
   faDownload,
+  faEye,
   faFileLines,
   faImageSlash,
   faTriangleExclamation,
@@ -130,7 +131,7 @@ export default function EditorV2Layout() {
       l: () => handleExportLatex(),
       d: toggleDarkMode,
       s: openSaveDialog,
-      h: () => navigate("/v2"),
+      h: () => navigate("/"),
       "?": () => setShortcutsOpen(true),
     }),
     [handleExportPdf, handleExportLatex, toggleDarkMode, openSaveDialog, navigate]
@@ -240,7 +241,7 @@ export default function EditorV2Layout() {
             </div>
           </div>
           <MobileBottomNavbar
-            onHome={() => navigate("/v2")}
+            onHome={() => navigate("/")}
             onSaved={() => setSavedOpen(true)}
             onSave={() => setShowSaveDialog(true)}
             onPreview={() => setPreviewOpen(true)}
@@ -256,8 +257,7 @@ export default function EditorV2Layout() {
               setSidebarOpen(false);
             }}
             onSaveClick={() => setShowSaveDialog(true)}
-            homePath="/v2"
-            hideStats
+            homePath="/"
             v2Logo
           />
           <MobileSavedSheet
@@ -319,6 +319,16 @@ export default function EditorV2Layout() {
         </SidebarInset>
       </SidebarProvider>
       )}
+
+      <Button
+        variant="default"
+        size="icon"
+        className="fixed top-20 right-6 z-40 h-14 w-14 rounded-full shadow-lg hidden md:flex lg:hidden touch-manipulation"
+        onClick={() => setPreviewOpen(true)}
+        aria-label="Preview resume"
+      >
+        <Icon icon={faEye} className="h-6 w-6 md:h-7 md:w-7" />
+      </Button>
 
       <MobilePreviewSheet open={previewOpen} onOpenChange={setPreviewOpen} />
 

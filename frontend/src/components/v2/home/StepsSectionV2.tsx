@@ -220,7 +220,7 @@ export function StepsSectionV2() {
         </div>
 
         <FadeIn y={12} delay={0.2} className="mt-10 text-center">
-          <Link to="/editor-v2">
+          <Link to="/editor">
             <Button size="sm" className="gap-2 rounded-full">
               Get Started — It&apos;s Free
               <Icon icon={faArrowRight} className="h-4 w-4" />

@@ -8,7 +8,7 @@ import {
   SheetTitle,
   SheetClose,
 } from "@/components/ui/sheet";
-import { ResumePreview } from "@/components/preview/ResumePreview";
+import { ResumePreviewV2 } from "@/components/v2/preview/ResumePreviewV2";
 import { useResumeStore } from "@/stores/resume-store";
 import { getAllTemplateConfigs } from "@/templates";
 import {
@@ -117,7 +117,7 @@ export function MobilePreviewSheet({
             </div>
           </div>
           <div className="flex-1 min-h-0">
-            <ResumePreview
+            <ResumePreviewV2
               hideToolbar
               zoom={zoom}
               onZoomChange={setZoom}
@@ -146,7 +146,7 @@ export function MobilePreviewSheet({
           className="fixed inset-0 z-200 bg-gray-900 overflow-auto"
           style={{ overscrollBehavior: "contain" }}
         >
-          <ResumePreview
+          <ResumePreviewV2
             hideToolbar
             zoom={zoom}
             onZoomChange={setZoom}
