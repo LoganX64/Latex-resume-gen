@@ -26,10 +26,14 @@ const productLinks = [
 
 const resourceLinks = [
   { label: "GitHub", href: githubUrl, external: true },
-  { label: "Contact", href: "mailto:kpjitin@gmail.com", external: false },
+  {
+    label: "Contact",
+    href: "mailto:kpjitin@gmail.com?subject=LaTeX%20Resume%20Enquiry",
+    external: false,
+  },
   {
     label: "Report a bug",
-    href: "mailto:kpjitin@gmail.com?subject=CVStack%20Bug%20Report",
+    href: "mailto:kpjitin@gmail.com?subject=LaTeX%20Resume%20Enquiry",
     external: false,
   },
   { label: "Privacy", href: "#features-v2-heading", external: false },
