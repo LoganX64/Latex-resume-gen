@@ -1,10 +1,13 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
 import { useTheme } from "@/components/theme-provider";
+import { BrandLogoV2 } from "@/components/v2/BrandLogoV2";
 import { Icon } from "@/components/Icon";
 import { SunIcon } from "@/components/SunIcon";
 import { MoonIcon } from "@/components/MoonIcon";
 import { toggleThemeFromButton } from "@/lib/theme-transition";
+import { recordVisit } from "@/utils/stats";
 import {
   faArrowLeft,
   faEnvelope,
@@ -43,6 +46,10 @@ export function FooterV2() {
   const { darkMode, toggleDarkMode } = useTheme();
   const reduceMotion = useReducedMotion();
 
+  useEffect(() => {
+    void recordVisit();
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -60,17 +67,10 @@ export function FooterV2() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 py-14 sm:grid-cols-2 sm:gap-10 lg:grid-cols-12 lg:gap-8 lg:py-16">
           <div className="max-w-sm sm:col-span-2 lg:col-span-6">
-            <Link
-              to="/"
-              aria-label="CVStack home"
-              className="inline-flex rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60"
-            >
-              <img
-                src="/cvstack-logo-dark.svg"
-                alt="CVStack"
-                className="h-7 w-auto"
-              />
-            </Link>
+            <BrandLogoV2
+              inverted
+              className="rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60"
+            />
             <p className="mt-4 max-w-76 text-[13px] leading-relaxed text-white/50">
               Professional, ATS-friendly resumes with LaTeX-quality typesetting
               — built privately in your browser.

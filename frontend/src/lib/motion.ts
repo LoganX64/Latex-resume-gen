@@ -38,8 +38,6 @@ export const staggerContainer: Variants = {
   },
 };
 
-export const staggerItem: Variants = fadeUp;
-
 export const pageEnter: Variants = {
   hidden: { opacity: 0, y: 8 },
   show: {

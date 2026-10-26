@@ -1,5 +1,3 @@
-import { useStatsStore } from '@/stores/stats-store'
-
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api'
 
 const STATS_SESSION_KEY = 'resume-stats-session'
@@ -7,20 +5,6 @@ const STATS_SESSION_KEY = 'resume-stats-session'
 interface Stats {
   visits: number
   downloads: number
-}
-
-export async function getStats(): Promise<Stats> {
-  try {
-    const res = await fetch(`${API_BASE}/stats`)
-    if (res.ok) {
-      const data = await res.json()
-      return {
-        visits: typeof data.visits === 'number' ? data.visits : 0,
-        downloads: typeof data.downloads === 'number' ? data.downloads : 0,
-      }
-    }
-  } catch {}
-  return { visits: 0, downloads: 0 }
 }
 
 export async function recordVisit(): Promise<void> {
@@ -36,9 +20,7 @@ export async function recordDownload(): Promise<number> {
     const res = await fetch(`${API_BASE}/stats/download`, { method: 'POST' })
     if (res.ok) {
       const data = await res.json()
-      const count = typeof data.downloads === 'number' ? data.downloads : 0
-      useStatsStore.getState().setDownloads(count)
-      return count
+      return typeof data.downloads === 'number' ? data.downloads : 0
     }
   } catch {}
   return 0

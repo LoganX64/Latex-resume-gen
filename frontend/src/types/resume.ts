@@ -140,15 +140,6 @@ export interface TemplateConfig {
 
 export type ZoomLevel = 50 | 75 | 100 | 125 | 150 | 'fit'
 
-export interface AppState {
-  resume: ResumeData
-  templateId: string
-  sectionOrder: SectionOrder[]
-  sectionVisibility: SectionVisibility
-  zoom: ZoomLevel
-  darkMode: boolean
-}
-
 export interface ResumeVersion {
   id: string
   name: string

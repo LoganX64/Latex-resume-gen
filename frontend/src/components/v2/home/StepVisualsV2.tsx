@@ -1030,12 +1030,6 @@ export function ExportPdfStepVisual({
   );
 }
 
-export const STEP_DURATIONS = [
-  FILL_DETAILS_DURATION,
-  PICK_TEMPLATE_DURATION,
-  EXPORT_PDF_DURATION,
-] as const;
-
 export const STEP_LINE_TIMING = [
   {
     delay: FILL_START_DELAY_MS,

@@ -62,27 +62,3 @@ export function getContactParts(personalInfo: {
 
   return parts
 }
-
-/**
- * Wraps the header leftContent with a right-aligned profile image minipage if profileImage is provided.
- */
-export function wrapPhotoHeader(
-  personalInfo: { profileImage?: string },
-  leftContent: string,
-  photoWidthPct: number = 0.16
-): string {
-  if (!personalInfo.profileImage) {
-    return leftContent
-  }
-
-  const leftWidth = 1.0 - photoWidthPct - 0.04
-  return `\\begin{minipage}[t]{${leftWidth.toFixed(2)}\\textwidth}
-${leftContent}
-\\end{minipage}
-\\hfill
-\\begin{minipage}[t]{${photoWidthPct.toFixed(2)}\\textwidth}
-  \\raggedleft
-  \\vspace{-10pt}
-  \\IfFileExists{profile.png}{\\includegraphics[width=\\linewidth,height=\\linewidth,keepaspectratio]{profile.png}}{}
-\\end{minipage}`
-}

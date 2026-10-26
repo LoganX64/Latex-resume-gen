@@ -228,10 +228,7 @@ export default function EditorV2Layout() {
 
       {isMobile ? (
         <div className="flex flex-col h-dvh overflow-hidden bg-background">
-          <MobileTopNavbar
-            onMenuToggle={() => setSidebarOpen(true)}
-            v2Logo
-          />
+          <MobileTopNavbar onMenuToggle={() => setSidebarOpen(true)} />
           <div className="flex-1 min-h-0 overflow-hidden">
             <div id="editor-main" className="h-full overflow-y-auto pb-24">
               <EditorPanel
@@ -258,7 +255,6 @@ export default function EditorV2Layout() {
             }}
             onSaveClick={() => setShowSaveDialog(true)}
             homePath="/"
-            v2Logo
           />
           <MobileSavedSheet
             open={savedOpen}

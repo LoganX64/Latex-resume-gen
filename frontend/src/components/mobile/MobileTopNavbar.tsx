@@ -12,13 +12,9 @@ import { toast } from "sonner";
 
 interface MobileTopNavbarProps {
   onMenuToggle: () => void;
-  v2Logo?: boolean;
 }
 
-export function MobileTopNavbar({
-  onMenuToggle,
-  v2Logo = false,
-}: MobileTopNavbarProps) {
+export function MobileTopNavbar({ onMenuToggle }: MobileTopNavbarProps) {
   const { darkMode, toggleDarkMode } = useTheme();
   const resetResume = useResumeStore((s) => s.resetResume);
   const clearResume = useResumeStore((s) => s.clearResume);
@@ -49,14 +45,7 @@ export function MobileTopNavbar({
         >
           <PanelLeftIcon className="h-4 w-4" />
         </Button>
-        {v2Logo ? (
-          <BrandLogoV2 />
-        ) : (
-          <div className="flex items-center gap-1.5">
-            <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
-            <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-5 w-auto rounded-sm dark:block" />
-          </div>
-        )}
+        <BrandLogoV2 />
       </div>
       <div className="flex items-center gap-1">
         <Button
@@ -83,9 +72,7 @@ export function MobileTopNavbar({
           variant="ghost"
           size="icon-sm"
           onClick={(event) =>
-            v2Logo
-              ? toggleThemeFromButton(event.currentTarget, toggleDarkMode)
-              : toggleDarkMode()
+            toggleThemeFromButton(event.currentTarget, toggleDarkMode)
           }
           aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           className="h-8 w-8"

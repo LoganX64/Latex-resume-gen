@@ -41,7 +41,6 @@ interface MobileSidebarProps {
   onSectionClick?: (id: string) => void;
   onSaveClick?: () => void;
   homePath?: string;
-  v2Logo?: boolean;
 }
 
 export function MobileSidebar({
@@ -51,7 +50,6 @@ export function MobileSidebar({
   onSectionClick,
   onSaveClick,
   homePath = "/",
-  v2Logo = false,
 }: MobileSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
   const navigate = useNavigate();
@@ -73,22 +71,7 @@ export function MobileSidebar({
       >
         {/* ── Header ── */}
         <div className="flex items-center gap-2.5 px-3 py-3 border-b border-sidebar-border bg-sidebar shrink-0">
-          {v2Logo ? (
-            <BrandLogoV2 to={homePath} />
-          ) : (
-            <>
-              <img
-                src="/cvstack-logo-light.svg"
-                alt="CVStack Logo"
-                className="h-7 w-auto shrink-0 rounded-md dark:hidden"
-              />
-              <img
-                src="/cvstack-logo-dark.svg"
-                alt="CVStack Logo"
-                className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
-              />
-            </>
-          )}
+          <BrandLogoV2 to={homePath} />
           <SheetClose className="ml-auto p-1 rounded-md hover:bg-sidebar-accent">
             <Icon icon={faXmark} className="h-4 w-4" />
           </SheetClose>
