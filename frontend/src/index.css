@@ -213,6 +213,24 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes step-progress-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.step-progress-fill {
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: step-progress-fill 1s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step-progress-fill {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
 .animate-gradient {
   background-size: 200% 200%;
   background-clip: text;

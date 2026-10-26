@@ -5,7 +5,7 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
-import { AnimatePresence, m, useInView } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import { buttonVariants } from "@/components/ui/button";
 import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
@@ -21,42 +21,131 @@ import { SHOWCASE_PHOTO } from "@/components/v2/home/showcase/showcase-data";
 import { DURATION, EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
+export type StepVisualPhase = "idle" | "running" | "done";
+
+export type StepVisualProps = {
+  phase: StepVisualPhase;
+  paused: boolean;
+  onDone: () => void;
+};
+
 type LoopContext = {
   wait: (ms: number) => Promise<boolean>;
   isCancelled: () => boolean;
 };
 
-function useLoopingEffect(
-  isInView: boolean,
-  reduce: boolean,
-  run: (context: LoopContext) => Promise<void>,
+type PendingWait = {
+  resolve: (completed: boolean) => void;
+  remaining: number;
+  startedAt: number;
+  timer: number | null;
+};
+
+function createStepClock() {
+  let paused = false;
+  let disposed = false;
+  let pending: PendingWait | null = null;
+
+  const schedule = () => {
+    if (!pending) return;
+    const wait = pending;
+    wait.startedAt = performance.now();
+    wait.timer = window.setTimeout(() => {
+      if (pending !== wait) return;
+      pending = null;
+      wait.resolve(true);
+    }, wait.remaining);
+  };
+
+  return {
+    wait(ms: number) {
+      return new Promise<boolean>((resolve) => {
+        if (disposed) {
+          resolve(false);
+          return;
+        }
+        if (pending) {
+          pending.resolve(false);
+          pending = null;
+        }
+        pending = { resolve, remaining: ms, startedAt: 0, timer: null };
+        if (!paused) schedule();
+      });
+    },
+    setPaused(next: boolean) {
+      if (paused === next) return;
+      paused = next;
+      const wait = pending;
+      if (!wait || disposed) return;
+      if (paused) {
+        if (wait.timer !== null) {
+          window.clearTimeout(wait.timer);
+          wait.timer = null;
+          wait.remaining = Math.max(
+            0,
+            wait.remaining - (performance.now() - wait.startedAt),
+          );
+        }
+      } else if (wait.timer === null) {
+        schedule();
+      }
+    },
+    dispose() {
+      disposed = true;
+      const wait = pending;
+      if (!wait) return;
+      if (wait.timer !== null) window.clearTimeout(wait.timer);
+      pending = null;
+      wait.resolve(false);
+    },
+  };
+}
+
+function useStepSequence(
+  phase: StepVisualPhase,
+  paused: boolean,
+  run: (context: LoopContext) => Promise<boolean>,
+  reset: () => void,
+  onDone: () => void,
 ) {
   const runRef = useRef(run);
   runRef.current = run;
+  const resetRef = useRef(reset);
+  resetRef.current = reset;
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+  const clockRef = useRef<ReturnType<typeof createStepClock> | null>(null);
 
   useEffect(() => {
-    if (reduce || !isInView) return;
+    if (phase === "idle") {
+      resetRef.current();
+      return;
+    }
+    if (phase !== "running") return;
 
+    const clock = createStepClock();
+    clockRef.current = clock;
     let cancelled = false;
-    const timers = new Set<number>();
 
-    const wait = (ms: number) =>
-      new Promise<boolean>((resolve) => {
-        const id = window.setTimeout(() => {
-          timers.delete(id);
-          resolve(!cancelled);
-        }, ms);
-        timers.add(id);
+    void runRef
+      .current({
+        wait: (ms) => clock.wait(ms),
+        isCancelled: () => cancelled,
+      })
+      .then((completed) => {
+        if (!cancelled && completed) onDoneRef.current();
       });
-
-    void runRef.current({ wait, isCancelled: () => cancelled });
 
     return () => {
       cancelled = true;
-      timers.forEach((id) => window.clearTimeout(id));
-      timers.clear();
+      clock.dispose();
+      if (clockRef.current === clock) clockRef.current = null;
     };
-  }, [isInView, reduce]);
+  }, [phase]);
+
+  useEffect(() => {
+    clockRef.current?.setPaused(paused);
+  }, [paused]);
 }
 
 function BlinkCaret() {
@@ -126,6 +215,23 @@ const INFO_PLACEHOLDERS: Record<InfoField, string> = {
   website: "johndoe.dev…",
 };
 
+const PREVIEW_TRANSITION_MS = DURATION.base * 2000;
+
+const FILL_START_DELAY_MS = 500;
+const TYPE_DELAY_MS = 24;
+const FIELD_GAP_MS = 110;
+const SAVED_SETTLE_MS = 180;
+const INFO_CHAR_COUNT = INFO_FIELD_ORDER.reduce(
+  (total, field) => total + field.value.length,
+  0,
+);
+
+const FILL_DETAILS_DURATION =
+  FILL_START_DELAY_MS +
+  INFO_CHAR_COUNT * TYPE_DELAY_MS +
+  INFO_FIELD_ORDER.length * FIELD_GAP_MS +
+  SAVED_SETTLE_MS;
+
 function InfoFieldInput({
   label,
   value,
@@ -175,7 +281,7 @@ function PersonalInfoCard({
   saved: boolean;
 }) {
   return (
-    <div className="relative w-[268px] max-w-full overflow-hidden rounded-lg border border-border/60 bg-background/60 shadow-sm ring-1 ring-foreground/5 backdrop-blur-sm">
+    <div className="relative w-[268px] max-w-full overflow-hidden rounded-lg border border-border/60 bg-background shadow-sm">
       <div className="flex items-center justify-between gap-2 px-2 py-1.5">
         <div className="truncate text-[8px] leading-none font-semibold text-foreground">
           Personal Information
@@ -289,53 +395,57 @@ function PersonalInfoCard({
   );
 }
 
-export function FillDetailsStepVisual() {
+export function FillDetailsStepVisual({
+  phase,
+  paused,
+  onDone,
+}: StepVisualProps) {
   const reduce = useIsMotionDisabled();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { amount: 0.3 });
 
   const [values, setValues] =
     useState<Record<InfoField, string>>(EMPTY_INFO_VALUES);
   const [activeField, setActiveField] = useState<InfoField | null>(null);
   const [saved, setSaved] = useState(false);
 
-  useLoopingEffect(isInView, reduce, async ({ wait, isCancelled }) => {
-    const typeValue = async (field: InfoField, text: string) => {
-      setActiveField(field);
-      for (let index = 1; index <= text.length; index += 1) {
-        if (!(await wait(18 + Math.random() * 18))) return false;
-        if (isCancelled()) return false;
-        setValues((current) => ({
-          ...current,
-          [field]: text.slice(0, index),
-        }));
-      }
-      return true;
-    };
+  const reset = () => {
+    setValues(EMPTY_INFO_VALUES);
+    setActiveField(null);
+    setSaved(false);
+  };
 
-    while (!isCancelled()) {
-      setValues(EMPTY_INFO_VALUES);
-      setActiveField(null);
-      setSaved(false);
+  useStepSequence(
+    phase,
+    paused,
+    async ({ wait, isCancelled }) => {
+      reset();
 
-      if (!(await wait(500))) return;
+      if (!(await wait(FILL_START_DELAY_MS))) return false;
 
       for (const field of INFO_FIELD_ORDER) {
-        if (!(await typeValue(field.key, field.value))) return;
-        if (!(await wait(110))) return;
+        setActiveField(field.key);
+        for (let index = 1; index <= field.value.length; index += 1) {
+          if (!(await wait(TYPE_DELAY_MS))) return false;
+          if (isCancelled()) return false;
+          setValues((current) => ({
+            ...current,
+            [field.key]: field.value.slice(0, index),
+          }));
+        }
+        if (!(await wait(FIELD_GAP_MS))) return false;
       }
 
       setActiveField(null);
       setSaved(true);
 
-      if (!(await wait(2400))) return;
-    }
-  });
+      return wait(SAVED_SETTLE_MS);
+    },
+    reset,
+    onDone,
+  );
 
   if (reduce) {
     return (
       <div
-        ref={containerRef}
         aria-hidden="true"
         className="relative flex h-full w-full items-center justify-center overflow-hidden"
       >
@@ -350,7 +460,6 @@ export function FillDetailsStepVisual() {
 
   return (
     <div
-      ref={containerRef}
       aria-hidden="true"
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
     >
@@ -575,7 +684,7 @@ function TemplateSelect({
     <div className="relative h-[210px] w-[208px]">
       <div
         className={cn(
-          "flex h-8 w-full items-center justify-between gap-2 rounded-md border bg-input/20 px-2.5 text-[11px] leading-none transition-colors dark:bg-input/30",
+          "flex h-8 w-full items-center justify-between gap-1.5 rounded-md border bg-background px-2 py-1 text-[11px] leading-none transition-colors",
           open ? "border-ring ring-2 ring-ring/30" : "border-input",
         )}
       >
@@ -593,7 +702,7 @@ function TemplateSelect({
         >
           <Icon
             icon={faChevronDown}
-            className="size-3 shrink-0 text-muted-foreground"
+            className="size-3.5 shrink-0 text-muted-foreground"
             aria-hidden="true"
           />
         </m.span>
@@ -603,7 +712,7 @@ function TemplateSelect({
         {open && (
           <m.div
             key="template-menu"
-            className="absolute inset-x-0 top-[38px] z-20 origin-top overflow-hidden rounded-xl bg-popover p-1.5 text-popover-foreground shadow-[0_18px_40px_-20px_rgba(0,0,0,0.35)] ring-1 ring-foreground/10"
+            className="absolute inset-x-0 top-[38px] z-20 origin-top overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10"
             initial={{ opacity: 0, y: -4, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -3, scale: 0.98 }}
@@ -613,7 +722,7 @@ function TemplateSelect({
               <div
                 key={option}
                 className={cn(
-                  "relative flex h-8 items-center rounded-lg px-3 pr-8 text-[11px] leading-none",
+                  "relative flex min-h-7 items-center rounded-md px-2 py-1 pr-8 text-[11px] leading-none",
                   hovered &&
                     option === SELECTED_TEMPLATE &&
                     "bg-accent text-accent-foreground",
@@ -623,7 +732,7 @@ function TemplateSelect({
                 {selected && option === SELECTED_TEMPLATE && (
                   <Icon
                     icon={faCheck}
-                    className="absolute right-2.5 size-3 shrink-0"
+                    className="absolute right-2 size-3 shrink-0"
                     aria-hidden="true"
                   />
                 )}
@@ -648,10 +757,29 @@ function TemplatePreview() {
   );
 }
 
-export function PickTemplateStepVisual() {
+const PICK_TEMPLATE_TIMING = {
+  reset: 450,
+  cursorShow: 100,
+  cursorOpen: 540,
+  pressOpen: 130,
+  menuOpen: 450,
+  cursorOption: 500,
+  hover: 140,
+  pressSelect: 130,
+  selected: 320,
+  close: 260,
+} as const;
+
+const PICK_TEMPLATE_DURATION =
+  Object.values(PICK_TEMPLATE_TIMING).reduce((total, ms) => total + ms, 0) +
+  PREVIEW_TRANSITION_MS;
+
+export function PickTemplateStepVisual({
+  phase,
+  paused,
+  onDone,
+}: StepVisualProps) {
   const reduce = useIsMotionDisabled();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { amount: 0.3 });
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(false);
@@ -660,67 +788,75 @@ export function PickTemplateStepVisual() {
   const [cursor, setCursor] = useState<TemplateCursorState>(HIDDEN_CURSOR);
   const [cursorMs, setCursorMs] = useState(0.5);
 
-  useLoopingEffect(isInView, reduce, async ({ wait }) => {
-    while (true) {
-      setOpen(false);
-      setSelected(false);
-      setHovered(false);
-      setPreview(false);
-      setCursor((current) => ({
-        ...current,
-        ...HIDDEN_CURSOR,
-        ripple: current.ripple,
-      }));
-      if (!(await wait(450))) return;
+  const reset = () => {
+    setOpen(false);
+    setSelected(false);
+    setHovered(false);
+    setPreview(false);
+    setCursor((current) => ({
+      ...current,
+      ...HIDDEN_CURSOR,
+      ripple: current.ripple,
+    }));
+  };
+
+  useStepSequence(
+    phase,
+    paused,
+    async ({ wait }) => {
+      reset();
+
+      if (!(await wait(PICK_TEMPLATE_TIMING.reset))) return false;
 
       setCursor((current) => ({ ...current, visible: true }));
-      if (!(await wait(100))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.cursorShow))) return false;
 
       setCursorMs(0.5);
       setCursor((current) => ({ ...current, x: 150, y: 16 }));
-      if (!(await wait(540))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.cursorOpen))) return false;
 
       setCursor((current) => ({
         ...current,
         pressed: true,
         ripple: current.ripple + 1,
       }));
-      if (!(await wait(130))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.pressOpen))) return false;
       setCursor((current) => ({ ...current, pressed: false }));
       setOpen(true);
-      if (!(await wait(450))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.menuOpen))) return false;
 
       setCursorMs(0.45);
       setCursor((current) => ({ ...current, x: 170, y: 92 }));
-      if (!(await wait(500))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.cursorOption))) return false;
 
       setHovered(true);
-      if (!(await wait(140))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.hover))) return false;
 
       setCursor((current) => ({
         ...current,
         pressed: true,
         ripple: current.ripple + 1,
       }));
-      if (!(await wait(130))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.pressSelect))) return false;
       setCursor((current) => ({ ...current, pressed: false }));
       setSelected(true);
-      if (!(await wait(320))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.selected))) return false;
 
       setOpen(false);
       setHovered(false);
       setCursor((current) => ({ ...current, visible: false }));
-      if (!(await wait(260))) return;
+      if (!(await wait(PICK_TEMPLATE_TIMING.close))) return false;
 
       setPreview(true);
-      if (!(await wait(3000))) return;
-    }
-  });
+      return wait(PREVIEW_TRANSITION_MS);
+    },
+    reset,
+    onDone,
+  );
 
   if (reduce) {
     return (
       <div
-        ref={containerRef}
         aria-hidden="true"
         className="relative flex h-full w-full items-center justify-center overflow-hidden"
       >
@@ -731,7 +867,6 @@ export function PickTemplateStepVisual() {
 
   return (
     <div
-      ref={containerRef}
       aria-hidden="true"
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
     >
@@ -786,14 +921,14 @@ function ExportToolbar({
   downloadRef: RefObject<HTMLSpanElement | null>;
 }) {
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="flex items-center gap-1.5 rounded-lg border border-border/60 bg-background p-1.5 shadow-sm">
       <span className="shrink-0 text-[10px] leading-none font-semibold whitespace-nowrap text-foreground">
         A4 Page Preview
       </span>
       <span className="shrink-0 text-[8px] leading-none whitespace-nowrap text-muted-foreground italic">
         (approximate)
       </span>
-      <span className="flex h-6 min-w-[70px] shrink-0 items-center justify-between gap-1 rounded-md border border-input bg-input/20 px-2 text-[8px] leading-none text-foreground dark:bg-input/30">
+      <span className="flex h-6 min-w-[62px] shrink-0 items-center justify-between gap-1 rounded-md border border-input bg-background px-2 text-[8px] leading-none text-foreground">
         <span className="truncate">{EXPORT_TEMPLATE}</span>
         <Icon
           icon={faChevronDown}
@@ -825,11 +960,29 @@ function ExportToolbar({
   );
 }
 
-export function ExportPdfStepVisual() {
+const EXPORT_TIMING = {
+  reset: 700,
+  cursorReset: 40,
+  cursorShow: 140,
+  cursorMove: 540,
+  settle: 90,
+  press: 120,
+  release: 100,
+  cursorHide: 140,
+} as const;
+
+const EXPORT_PDF_DURATION =
+  Object.values(EXPORT_TIMING).reduce((total, ms) => total + ms, 0) +
+  PREVIEW_TRANSITION_MS;
+
+export function ExportPdfStepVisual({
+  phase,
+  paused,
+  onDone,
+}: StepVisualProps) {
   const reduce = useIsMotionDisabled();
   const containerRef = useRef<HTMLDivElement>(null);
   const downloadRef = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(containerRef, { amount: 0.3 });
 
   const [preview, setPreview] = useState(false);
   const [pressed, setPressed] = useState(false);
@@ -837,19 +990,25 @@ export function ExportPdfStepVisual() {
     useState<TemplateCursorState>(EXPORT_CURSOR_START);
   const [cursorMs, setCursorMs] = useState(0.5);
 
-  useLoopingEffect(isInView, reduce, async ({ wait }) => {
-    while (true) {
-      setPreview(false);
-      setPressed(false);
-      setCursor(EXPORT_CURSOR_START);
-      setCursorMs(0);
-      if (!(await wait(700))) return;
+  const reset = () => {
+    setPreview(false);
+    setPressed(false);
+    setCursor(EXPORT_CURSOR_START);
+    setCursorMs(0);
+  };
+
+  useStepSequence(
+    phase,
+    paused,
+    async ({ wait }) => {
+      reset();
+
+      if (!(await wait(EXPORT_TIMING.reset))) return false;
 
       const container = containerRef.current;
       const button = downloadRef.current;
       if (!container || !button) {
-        if (!(await wait(400))) return;
-        continue;
+        return wait(400);
       }
 
       const containerRect = container.getBoundingClientRect();
@@ -864,14 +1023,14 @@ export function ExportPdfStepVisual() {
       };
 
       setCursor({ ...start, visible: false, pressed: false, ripple: 0 });
-      if (!(await wait(40))) return;
+      if (!(await wait(EXPORT_TIMING.cursorReset))) return false;
       setCursor((current) => ({ ...current, visible: true }));
-      if (!(await wait(140))) return;
+      if (!(await wait(EXPORT_TIMING.cursorShow))) return false;
 
       setCursorMs(0.52);
       setCursor((current) => ({ ...current, x: target.x, y: target.y }));
-      if (!(await wait(540))) return;
-      if (!(await wait(90))) return;
+      if (!(await wait(EXPORT_TIMING.cursorMove))) return false;
+      if (!(await wait(EXPORT_TIMING.settle))) return false;
 
       setPressed(true);
       setCursor((current) => ({
@@ -879,18 +1038,20 @@ export function ExportPdfStepVisual() {
         pressed: true,
         ripple: current.ripple + 1,
       }));
-      if (!(await wait(120))) return;
+      if (!(await wait(EXPORT_TIMING.press))) return false;
       setPressed(false);
       setCursor((current) => ({ ...current, pressed: false }));
-      if (!(await wait(100))) return;
+      if (!(await wait(EXPORT_TIMING.release))) return false;
 
       setCursor((current) => ({ ...current, visible: false }));
-      if (!(await wait(140))) return;
+      if (!(await wait(EXPORT_TIMING.cursorHide))) return false;
 
       setPreview(true);
-      if (!(await wait(3000))) return;
-    }
-  });
+      return wait(PREVIEW_TRANSITION_MS);
+    },
+    reset,
+    onDone,
+  );
 
   if (reduce) {
     return (
@@ -938,3 +1099,25 @@ export function ExportPdfStepVisual() {
     </div>
   );
 }
+
+export const STEP_DURATIONS = [
+  FILL_DETAILS_DURATION,
+  PICK_TEMPLATE_DURATION,
+  EXPORT_PDF_DURATION,
+] as const;
+
+export const STEP_LINE_TIMING = [
+  {
+    delay: FILL_START_DELAY_MS,
+    duration: FILL_DETAILS_DURATION - FILL_START_DELAY_MS,
+  },
+  {
+    delay: PICK_TEMPLATE_TIMING.reset,
+    duration: PICK_TEMPLATE_DURATION - PICK_TEMPLATE_TIMING.reset,
+  },
+  {
+    delay: EXPORT_TIMING.reset + EXPORT_TIMING.cursorReset,
+    duration:
+      EXPORT_PDF_DURATION - EXPORT_TIMING.reset - EXPORT_TIMING.cursorReset,
+  },
+] as const;

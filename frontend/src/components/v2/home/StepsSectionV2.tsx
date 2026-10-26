@@ -1,5 +1,11 @@
-import type { ComponentType } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+} from "react";
 import { Link } from "react-router-dom";
+import { useInView } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
@@ -8,13 +14,17 @@ import {
   ExportPdfStepVisual,
   FillDetailsStepVisual,
   PickTemplateStepVisual,
+  STEP_LINE_TIMING,
+  type StepVisualPhase,
+  type StepVisualProps,
 } from "@/components/v2/home/StepVisualsV2";
+import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { faArrowRight } from "@/lib/icons";
 
 const steps: {
   title: string;
   description: string;
-  visual: ComponentType;
+  visual: ComponentType<StepVisualProps>;
 }[] = [
   {
     title: "Fill your details",
@@ -36,7 +46,112 @@ const steps: {
   },
 ];
 
+const IDLE_PHASES: StepVisualPhase[] = ["idle", "idle", "idle"];
+
+const LOOP_RESTART_MS = 300;
+
+type LineStatus = "idle" | "running" | "done";
+
+function StepProgressLine({
+  status,
+  delay,
+  duration,
+  paused,
+}: {
+  status: LineStatus;
+  delay: number;
+  duration: number;
+  paused: boolean;
+}) {
+  return (
+    <span className="relative h-px flex-1 overflow-hidden bg-border">
+      {status === "running" && (
+        <span
+          aria-hidden="true"
+          className="step-progress-fill absolute inset-0 bg-rose-500"
+          style={{
+            animationDelay: `${delay}ms`,
+            animationDuration: `${duration}ms`,
+            animationPlayState: paused ? "paused" : "running",
+          }}
+        />
+      )}
+      {status === "done" && (
+        <span aria-hidden="true" className="absolute inset-0 bg-rose-500" />
+      )}
+    </span>
+  );
+}
+
 export function StepsSectionV2() {
+  const reduce = useIsMotionDisabled();
+  const gridRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(gridRef, { amount: 0.2 });
+
+  const [phases, setPhases] = useState<StepVisualPhase[]>(IDLE_PHASES);
+  const [paused, setPaused] = useState(false);
+  const [restarting, setRestarting] = useState(false);
+  const startedRef = useRef(false);
+  const restartRemainingRef = useRef(LOOP_RESTART_MS);
+  const restartFiredRef = useRef(false);
+
+  useEffect(() => {
+    if (reduce) return;
+
+    if (!isInView) {
+      setPaused(true);
+      return;
+    }
+
+    setPaused(false);
+
+    if (startedRef.current) return;
+    startedRef.current = true;
+
+    setPhases((current) => {
+      if (current[0] !== "idle") return current;
+      return ["running", "idle", "idle"];
+    });
+  }, [isInView, reduce]);
+
+  useEffect(() => {
+    if (!restarting || paused) return;
+
+    const startedAt = performance.now();
+    const remaining = restartRemainingRef.current;
+    const timer = window.setTimeout(() => {
+      restartFiredRef.current = true;
+      restartRemainingRef.current = LOOP_RESTART_MS;
+      setRestarting(false);
+      setPhases(["running", "idle", "idle"]);
+    }, remaining);
+
+    return () => {
+      window.clearTimeout(timer);
+      if (!restartFiredRef.current) {
+        restartRemainingRef.current = Math.max(
+          0,
+          remaining - (performance.now() - startedAt),
+        );
+      }
+    };
+  }, [restarting, paused]);
+
+  const handleDone = (index: number) => {
+    if (index === 2) {
+      restartFiredRef.current = false;
+      restartRemainingRef.current = LOOP_RESTART_MS;
+      setRestarting(true);
+    }
+
+    setPhases((current) => {
+      const next = [...current] as StepVisualPhase[];
+      next[index] = "done";
+      if (index < 2) next[index + 1] = "running";
+      return next;
+    });
+  };
+
   return (
     <section aria-labelledby="steps-v2-heading" className="relative">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
@@ -52,38 +167,57 @@ export function StepsSectionV2() {
           </p>
         </FadeIn>
 
-        <AnimatedGroup
-          preset="slide"
-          amount={0.15}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
-        >
-          {steps.map(({ title, description, visual: Visual }, index) => (
-            <div
-              key={title}
-              className="flex h-full flex-col rounded-2xl bg-muted/80 p-2.5 transition-colors duration-300 hover:bg-muted sm:p-3"
-            >
-              <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-background ring-1 ring-border/50">
-                <div className="flex h-full w-full items-center justify-center">
-                  <Visual />
-                </div>
-              </div>
+        <div ref={gridRef}>
+          <AnimatedGroup
+            preset="slide"
+            amount={0.15}
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
+          >
+            {steps.map(({ title, description, visual: Visual }, index) => {
+              const phase = phases[index];
+              const status: LineStatus = reduce
+                ? "done"
+                : phase === "done"
+                  ? "done"
+                  : phase === "running"
+                    ? "running"
+                    : "idle";
 
-              <div className="px-3 pt-5 pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-base font-semibold tracking-tight text-foreground">
+              return (
+                <div key={title} className="flex h-full flex-col">
+                  <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-muted">
+                    <div className="flex h-full w-full items-center justify-center">
+                      <Visual
+                        phase={phase}
+                        paused={paused}
+                        onDone={() => handleDone(index)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex items-center gap-3">
+                    <span className="text-xs leading-none font-medium text-muted-foreground tabular-nums">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <StepProgressLine
+                      status={status}
+                      delay={STEP_LINE_TIMING[index].delay}
+                      duration={STEP_LINE_TIMING[index].duration}
+                      paused={paused}
+                    />
+                  </div>
+
+                  <h3 className="mt-4 text-base font-semibold tracking-tight text-foreground">
                     {title}
                   </h3>
-                  <span className="mt-0.5 shrink-0 rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] leading-none font-semibold text-muted-foreground">
-                    Step 0{index + 1}
-                  </span>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
+                    {description}
+                  </p>
                 </div>
-                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
-                  {description}
-                </p>
-              </div>
-            </div>
-          ))}
-        </AnimatedGroup>
+              );
+            })}
+          </AnimatedGroup>
+        </div>
 
         <FadeIn y={12} delay={0.2} className="mt-10 text-center">
           <Link to="/editor-v2">
