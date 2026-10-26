@@ -2,12 +2,12 @@ import type { ComponentType } from "react";
 import { FadeIn } from "@/components/motion/FadeIn";
 import {
   LatexSourceVisual,
-  MultipleTemplatesVisual,
   PdfExportVisual,
   PhotoSupportVisual,
   PrivacyVisual,
   SinglePageVisual,
 } from "@/components/v2/home/FeatureVisualsV2";
+import { MultipleTemplatesVisual } from "@/components/v2/home/showcase/MultipleTemplatesVisual";
 
 const features: {
   title: string;
