@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BrandLogoV2 } from '@/components/v2/BrandLogoV2'
 import { useTheme } from '@/components/theme-provider'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/Icon'
@@ -14,13 +15,7 @@ export function NavbarV2() {
   return (
     <nav className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/v2" className="flex items-center gap-1 shrink-0">
-          <img src="/logo.svg" alt="" className="h-7 w-7 object-contain" />
-          <span className="text-lg font-bold italic tracking-tight">
-            <span className="text-primary">CV</span>
-            <span className="text-foreground">Stack</span>
-          </span>
-        </Link>
+        <BrandLogoV2 />
 
         <div className="flex items-center gap-1 sm:gap-2">
           {import.meta.env.VITE_GITHUB_URL && (

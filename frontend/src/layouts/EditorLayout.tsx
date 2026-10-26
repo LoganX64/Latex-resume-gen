@@ -202,7 +202,7 @@ export default function EditorLayout() {
             </div>
           </div>
           <MobileBottomNavbar
-            onHome={() => navigate("/")}
+            onHome={() => navigate("/v2")}
             onSaved={() => setSavedOpen(true)}
             onSave={() => setShowSaveDialog(true)}
             onPreview={() => setPreviewOpen(true)}
@@ -218,6 +218,7 @@ export default function EditorLayout() {
               setSidebarOpen(false);
             }}
             onSaveClick={() => setShowSaveDialog(true)}
+            homePath="/v2"
           />
           <MobileSavedSheet
             open={savedOpen}

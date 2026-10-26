@@ -1,5 +1,11 @@
-import { useCallback, useMemo, useState, type CSSProperties } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  useCallback,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type CSSProperties,
+} from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import {
@@ -11,12 +17,19 @@ import {
 import { EditorSidebarV2 } from "@/components/v2/editor/EditorSidebarV2";
 import { EditorPaneV2 } from "@/components/v2/editor/EditorPaneV2";
 import { ResumePreviewV2 } from "@/components/v2/preview/ResumePreviewV2";
+import { EditorPanel } from "@/components/editor/EditorPanel";
+import { MobileTopNavbar } from "@/components/mobile/MobileTopNavbar";
+import { MobileBottomNavbar } from "@/components/mobile/MobileBottomNavbar";
+import { MobileSidebar } from "@/components/mobile/MobileSidebar";
+import { MobilePreviewSheet } from "@/components/mobile/MobilePreviewSheet";
+import { MobileSavedSheet } from "@/components/mobile/MobileSavedSheet";
 import { SaveVersionDialog } from "@/components/SaveVersionDialog";
 import { CompileProgressDialog } from "@/components/CompileProgressDialog";
 import { CommandPalette } from "@/components/CommandPalette";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/components/theme-provider";
 import { getAllTemplateConfigs } from "@/templates";
 import { Icon } from "@/components/Icon";
@@ -57,7 +70,9 @@ import {
 } from "@/components/ui/dialog";
 
 export default function EditorV2Layout() {
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const location = useLocation();
   const { darkMode, toggleDarkMode } = useTheme();
   const resetResume = useResumeStore((s) => s.resetResume);
   const clearResume = useResumeStore((s) => s.clearResume);
@@ -67,9 +82,13 @@ export default function EditorV2Layout() {
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [fullscreenPreview, setFullscreenPreview] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [savedOpen, setSavedOpen] = useState(false);
 
   const {
     handleExportPdf,
+    handleExportVersionPdf,
     handleExportLatex,
     handleMultiPageDownload,
     handleNoPhotoContinue,
@@ -118,6 +137,13 @@ export default function EditorV2Layout() {
   );
 
   useKeyboardShortcuts(shortcuts);
+
+  useLayoutEffect(() => {
+    if (!isMobile) return;
+    const el = document.getElementById("editor-main");
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    el?.scrollTo({ top: 0, behavior: "auto" });
+  }, [isMobile, location.pathname]);
 
   const previewToolbarActions = (
     <>
@@ -192,6 +218,56 @@ export default function EditorV2Layout() {
 
   return (
     <TooltipProvider delay={400}>
+      <a
+        href="#editor-main"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-background focus:border focus:border-ring focus:rounded"
+      >
+        Skip to editor
+      </a>
+
+      {isMobile ? (
+        <div className="flex flex-col h-dvh overflow-hidden bg-background">
+          <MobileTopNavbar
+            onMenuToggle={() => setSidebarOpen(true)}
+            v2Logo
+          />
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <div id="editor-main" className="h-full overflow-y-auto pb-24">
+              <EditorPanel
+                activeSection={activeSection}
+                disableInitialActiveSectionScroll
+              />
+            </div>
+          </div>
+          <MobileBottomNavbar
+            onHome={() => navigate("/v2")}
+            onSaved={() => setSavedOpen(true)}
+            onSave={() => setShowSaveDialog(true)}
+            onPreview={() => setPreviewOpen(true)}
+            onDownload={handleExportPdf}
+            isExportingPdf={isExportingPdf}
+          />
+          <MobileSidebar
+            open={sidebarOpen}
+            onOpenChange={setSidebarOpen}
+            activeSection={activeSection}
+            onSectionClick={(id) => {
+              setActiveSection(id);
+              setSidebarOpen(false);
+            }}
+            onSaveClick={() => setShowSaveDialog(true)}
+            homePath="/v2"
+            hideStats
+            v2Logo
+          />
+          <MobileSavedSheet
+            open={savedOpen}
+            onOpenChange={setSavedOpen}
+            onExportPdf={handleExportVersionPdf}
+            isExportingPdf={isExportingPdf}
+          />
+        </div>
+      ) : (
       <SidebarProvider
         style={{ "--sidebar-width": "15rem" } as CSSProperties}
       >
@@ -242,6 +318,9 @@ export default function EditorV2Layout() {
           </div>
         </SidebarInset>
       </SidebarProvider>
+      )}
+
+      <MobilePreviewSheet open={previewOpen} onOpenChange={setPreviewOpen} />
 
       <AlertDialog
         open={showMultiPageDialog}

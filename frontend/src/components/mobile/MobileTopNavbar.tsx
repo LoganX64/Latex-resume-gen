@@ -6,14 +6,18 @@ import { MoonIcon } from "@/components/MoonIcon";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/components/theme-provider";
 import { useResumeStore } from "@/stores/resume-store";
+import { BrandLogoV2 } from "@/components/v2/BrandLogoV2";
+import { toggleThemeFromButton } from "@/lib/theme-transition";
 import { toast } from "sonner";
 
 interface MobileTopNavbarProps {
   onMenuToggle: () => void;
+  v2Logo?: boolean;
 }
 
 export function MobileTopNavbar({
   onMenuToggle,
+  v2Logo = false,
 }: MobileTopNavbarProps) {
   const { darkMode, toggleDarkMode } = useTheme();
   const resetResume = useResumeStore((s) => s.resetResume);
@@ -45,10 +49,14 @@ export function MobileTopNavbar({
         >
           <PanelLeftIcon className="h-4 w-4" />
         </Button>
-        <div className="flex items-center gap-1.5">
-          <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
-          <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-5 w-auto rounded-sm dark:block" />
-        </div>
+        {v2Logo ? (
+          <BrandLogoV2 />
+        ) : (
+          <div className="flex items-center gap-1.5">
+            <img src="/cvstack-logo-light.svg" alt="CVStack Logo" className="h-5 w-auto rounded-sm dark:hidden" />
+            <img src="/cvstack-logo-dark.svg" alt="CVStack Logo" className="hidden h-5 w-auto rounded-sm dark:block" />
+          </div>
+        )}
       </div>
       <div className="flex items-center gap-1">
         <Button
@@ -74,7 +82,11 @@ export function MobileTopNavbar({
         <Button
           variant="ghost"
           size="icon-sm"
-          onClick={toggleDarkMode}
+          onClick={(event) =>
+            v2Logo
+              ? toggleThemeFromButton(event.currentTarget, toggleDarkMode)
+              : toggleDarkMode()
+          }
           aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
           className="h-8 w-8"
         >

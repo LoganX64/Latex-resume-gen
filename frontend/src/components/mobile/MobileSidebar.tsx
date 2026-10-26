@@ -23,6 +23,7 @@ import {
   faXmark,
 } from "@/lib/icons";
 import { Sheet, SheetContent, SheetClose } from "@/components/ui/sheet";
+import { BrandLogoV2 } from "@/components/v2/BrandLogoV2";
 
 const navItems = [
   { id: "personal", icon: faUser, label: "Personal Info" },
@@ -44,6 +45,9 @@ interface MobileSidebarProps {
   activeSection?: string;
   onSectionClick?: (id: string) => void;
   onSaveClick?: () => void;
+  homePath?: string;
+  hideStats?: boolean;
+  v2Logo?: boolean;
 }
 
 export function MobileSidebar({
@@ -52,6 +56,9 @@ export function MobileSidebar({
   activeSection,
   onSectionClick,
   onSaveClick,
+  homePath = "/",
+  hideStats = false,
+  v2Logo = false,
 }: MobileSidebarProps) {
   const sectionVisibility = useResumeStore((s) => s.sectionVisibility);
   const stats = useStatsStore();
@@ -79,16 +86,22 @@ export function MobileSidebar({
       >
         {/* ── Header ── */}
         <div className="flex items-center gap-2.5 px-3 py-3 border-b border-sidebar-border bg-sidebar shrink-0">
-          <img
-            src="/cvstack-logo-light.svg"
-            alt="CVStack Logo"
-            className="h-7 w-auto shrink-0 rounded-md dark:hidden"
-          />
-          <img
-            src="/cvstack-logo-dark.svg"
-            alt="CVStack Logo"
-            className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
-          />
+          {v2Logo ? (
+            <BrandLogoV2 to={homePath} />
+          ) : (
+            <>
+              <img
+                src="/cvstack-logo-light.svg"
+                alt="CVStack Logo"
+                className="h-7 w-auto shrink-0 rounded-md dark:hidden"
+              />
+              <img
+                src="/cvstack-logo-dark.svg"
+                alt="CVStack Logo"
+                className="hidden h-7 w-auto shrink-0 rounded-md dark:block"
+              />
+            </>
+          )}
           <SheetClose className="ml-auto p-1 rounded-md hover:bg-sidebar-accent">
             <Icon icon={faXmark} className="h-4 w-4" />
           </SheetClose>
@@ -137,23 +150,25 @@ export function MobileSidebar({
 
         {/* ── Footer ── */}
         <div className="border-t border-sidebar-border/70 bg-sidebar/80 p-3 space-y-2 shrink-0">
-          <div className="flex items-center justify-between rounded-md bg-sidebar-accent/50 px-2.5 py-2 text-[11px] text-sidebar-foreground/55">
-            <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Icon icon={faEye} className="h-3.5 w-3.5" />
-              <span>
-                {stats.visits.toLocaleString()} visit
-                {stats.visits !== 1 ? "s" : ""}
+          {!hideStats && (
+            <div className="flex items-center justify-between rounded-md bg-sidebar-accent/50 px-2.5 py-2 text-[11px] text-sidebar-foreground/55">
+              <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
+                <Icon icon={faEye} className="h-3.5 w-3.5" />
+                <span>
+                  {stats.visits.toLocaleString()} visit
+                  {stats.visits !== 1 ? "s" : ""}
+                </span>
               </span>
-            </span>
-            <span className="h-3 w-px bg-sidebar-border" />
-            <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
-              <Icon icon={faDownload} className="h-3.5 w-3.5" />
-              <span>
-                {stats.downloads.toLocaleString()} download
-                {stats.downloads !== 1 ? "s" : ""}
+              <span className="h-3 w-px bg-sidebar-border" />
+              <span className="inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors cursor-default">
+                <Icon icon={faDownload} className="h-3.5 w-3.5" />
+                <span>
+                  {stats.downloads.toLocaleString()} download
+                  {stats.downloads !== 1 ? "s" : ""}
+                </span>
               </span>
-            </span>
-          </div>
+            </div>
+          )}
           <button
             onClick={() => onSaveClick?.()}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
@@ -162,7 +177,7 @@ export function MobileSidebar({
             <span>Save Version</span>
           </button>
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate(homePath)}
             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium hover:bg-sidebar-accent text-sidebar-foreground/80 hover:text-sidebar-foreground transition-colors"
           >
             <Icon icon={faHouse} className="h-3.5 w-3.5" />
