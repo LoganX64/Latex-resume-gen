@@ -75,10 +75,7 @@ export function FeaturesSectionV2() {
               key={title}
               className="flex h-full flex-col rounded-2xl bg-muted/80 p-2.5 transition-colors duration-300 hover:bg-muted sm:p-3"
             >
-              <div
-                aria-hidden="true"
-                className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-background ring-1 ring-border/50"
-              >
+              <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-background ring-1 ring-border/50">
                 <div className="flex h-full w-full items-center justify-center">
                   <Visual />
                 </div>
