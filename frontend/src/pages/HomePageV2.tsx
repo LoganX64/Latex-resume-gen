@@ -4,7 +4,7 @@ import { EditorShowcaseV2 } from "@/components/v2/home/EditorShowcaseV2";
 import { FeaturesSectionV2 } from "@/components/v2/home/FeaturesSectionV2";
 import { StepsSectionV2 } from "@/components/v2/home/StepsSectionV2";
 import { YourResumesSectionV2 } from "@/components/v2/home/YourResumesSectionV2";
-import { Footer } from "@/components/Footer";
+import { FooterV2 } from "@/components/v2/home/FooterV2";
 
 export default function HomePageV2() {
   return (
@@ -15,7 +15,7 @@ export default function HomePageV2() {
       <FeaturesSectionV2 />
       <StepsSectionV2 />
       <YourResumesSectionV2 />
-      <Footer homePath="/v2" />
+      <FooterV2 />
     </div>
   );
 }
