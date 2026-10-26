@@ -1,53 +1,54 @@
-import type { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { Icon } from "@/components/Icon";
-import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
+import type { ComponentType } from "react";
 import { FadeIn } from "@/components/motion/FadeIn";
-import { HoverCard } from "@/components/motion/HoverCard";
 import {
-  faCode,
-  faFileLines,
-  faFilePdf,
-  faImage,
-  faLock,
-  faTableColumns,
-} from "@/lib/icons";
+  LatexSourceVisual,
+  MultipleTemplatesVisual,
+  PdfExportVisual,
+  PhotoSupportVisual,
+  PrivacyVisual,
+  SinglePageVisual,
+} from "@/components/v2/home/FeatureVisualsV2";
 
-const features: { icon: IconProp; title: string; description: string }[] = [
+const features: {
+  title: string;
+  description: string;
+  visual: ComponentType;
+}[] = [
   {
-    icon: faFileLines,
     title: "Single-Page Design",
     description:
       "Smart compression keeps your resume on one professional page automatically.",
+    visual: SinglePageVisual,
   },
   {
-    icon: faImage,
     title: "Photo Support",
     description:
       "Upload and crop a profile photo. Works with sidebar and engineering templates.",
+    visual: PhotoSupportVisual,
   },
   {
-    icon: faFilePdf,
     title: "Instant PDF Export",
     description:
       "Compile LaTeX via Tectonic for publication-quality PDF output in seconds.",
+    visual: PdfExportVisual,
   },
   {
-    icon: faCode,
     title: "LaTeX Source",
     description:
       "Download the raw .tex file. Edit in any LaTeX editor you prefer.",
+    visual: LatexSourceVisual,
   },
   {
-    icon: faLock,
     title: "Fully Private",
     description:
       "All data stays in your browser. Nothing is sent to any server, ever.",
+    visual: PrivacyVisual,
   },
   {
-    icon: faTableColumns,
     title: "Multiple Templates",
     description:
       "Choose from professional LaTeX templates designed for different industries.",
+    visual: MultipleTemplatesVisual,
   },
 ];
 
@@ -68,30 +69,32 @@ export function FeaturesSectionV2() {
           </p>
         </FadeIn>
 
-        <AnimatedGroup
-          preset="slide"
-          amount={0.1}
-          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {features.map(({ icon, title, description }) => (
-            <HoverCard
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {features.map(({ title, description, visual: Visual }) => (
+            <div
               key={title}
-              lift={3}
-              scale={1.005}
-              className="group relative overflow-hidden rounded-xl border border-dashed border-border/70 bg-card/40 p-5 transition-colors hover:border-primary/30 hover:bg-card/70 sm:p-6"
+              className="flex h-full flex-col rounded-2xl bg-muted/80 p-2.5 transition-colors duration-300 hover:bg-muted sm:p-3"
             >
-              <div className="mb-4 flex size-11 items-center justify-center rounded-lg border border-dashed border-border/70 bg-background/60 text-rose-500 transition-transform duration-300 group-hover:scale-105">
-                <Icon icon={icon} className="h-5 w-5" />
+              <div
+                aria-hidden="true"
+                className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-background ring-1 ring-border/50"
+              >
+                <div className="flex h-full w-full items-center justify-center">
+                  <Visual />
+                </div>
               </div>
-              <h3 className="mb-1.5 text-sm font-semibold text-foreground sm:text-base">
-                {title}
-              </h3>
-              <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                {description}
-              </p>
-            </HoverCard>
+
+              <div className="px-3 pt-5 pb-3">
+                <h3 className="text-base font-semibold tracking-tight text-foreground">
+                  {title}
+                </h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
+                  {description}
+                </p>
+              </div>
+            </div>
           ))}
-        </AnimatedGroup>
+        </div>
       </div>
     </section>
   );
