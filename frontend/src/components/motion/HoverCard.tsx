@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from "react";
+import { useMemo, type ElementType, type ReactNode } from "react";
 import { m } from "framer-motion";
 import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { DURATION, EASE_OUT } from "@/lib/motion";
@@ -19,11 +19,11 @@ export function HoverCard({
   as = "div",
 }: HoverCardProps) {
   const reduce = useIsMotionDisabled();
+  const MotionTag = useMemo(() => m(as), [as]);
   if (reduce) {
     const Plain = as;
     return <Plain className={className}>{children}</Plain>;
   }
-  const MotionTag = m(as);
   return (
     <MotionTag
       className={className}

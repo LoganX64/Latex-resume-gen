@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Card } from "@/components/ui/card";
 import { Icon } from "@/components/Icon";
 import { faChevronLeft, faFloppyDisk, faHouse } from "@/lib/icons";
@@ -5,7 +6,6 @@ import { navSections } from "@/components/v2/editor/NavSectionsV2";
 import { cn } from "@/lib/utils";
 
 const hiddenSections = new Set(["customSections"]);
-const activeSection = "personal";
 const visibleCount = navSections.filter(
   (section) => !hiddenSections.has(section.id)
 ).length;
@@ -14,19 +14,21 @@ function NavItem({
   id,
   label,
   icon,
+  activeSection,
 }: {
   id: string;
   label: string;
   icon: (typeof navSections)[number]["icon"];
+  activeSection: string;
 }) {
   const isActive = activeSection === id;
   const isVisible = !hiddenSections.has(id);
 
   return (
-    <li>
+    <li data-showcase-target={id}>
       <div
         className={cn(
-          "flex h-8 w-full items-center gap-2 overflow-hidden rounded-[calc(var(--radius-sm)+2px)] p-2 text-left text-xs text-sidebar-foreground",
+          "flex h-8 w-full items-center gap-2 overflow-hidden rounded-[calc(var(--radius-sm)+2px)] p-2 text-left text-xs text-sidebar-foreground transition-colors duration-200",
           !isVisible && "opacity-40",
           isActive &&
             "bg-sidebar-primary/10! font-semibold text-sidebar-primary! shadow-[inset_3px_0_0_var(--sidebar-primary)]"
@@ -45,7 +47,11 @@ function NavItem({
   );
 }
 
-export function ShowcaseSidebar() {
+export const ShowcaseSidebar = memo(function ShowcaseSidebar({
+  activeSection,
+}: {
+  activeSection: string;
+}) {
   return (
     <aside className="relative flex w-60 shrink-0 flex-col p-2">
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-lg bg-sidebar shadow-sm ring-1 ring-sidebar-border">
@@ -79,6 +85,7 @@ export function ShowcaseSidebar() {
                 id={section.id}
                 label={section.label}
                 icon={section.icon}
+                activeSection={activeSection}
               />
             ))}
           </ul>
@@ -109,4 +116,4 @@ export function ShowcaseSidebar() {
       </div>
     </aside>
   );
-}
+});

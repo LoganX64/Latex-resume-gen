@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { memo, useEffect, useRef, type ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -98,7 +98,7 @@ function SectionCard({
   children: ReactNode;
 }) {
   return (
-    <Card className="relative gap-0 overflow-hidden border border-border/60 bg-background/60 py-0 shadow-sm backdrop-blur-sm">
+    <Card className="relative gap-0 overflow-hidden border border-border/60 bg-background/80 py-0 shadow-sm">
       <SectionHeader title={title} />
       <CardContent className="px-3 pt-1 pb-3">{children}</CardContent>
     </Card>
@@ -330,11 +330,196 @@ function ExperienceCard() {
   );
 }
 
+function formatMonth(value: string) {
+  const [year, month] = value.split("-");
+  if (!year || !month) return value;
+  return new Date(Number(year), Number(month) - 1, 1).toLocaleDateString(
+    "en-US",
+    { month: "short", year: "numeric" },
+  );
+}
+
+function SkillsCard() {
+  const { skills } = showcaseResume;
+
+  return (
+    <SectionCard title="Technical Skills">
+      <div className="space-y-2">
+        {skills.map((category) => (
+          <Card key={category.id} className="gap-0 overflow-hidden">
+            <div className="p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-rose-500">
+                  <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 text-xs font-medium text-muted-foreground">
+                  {category.name}
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon
+                    icon={faChevronDown}
+                    className="h-3 w-3 text-muted-foreground"
+                  />
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                </span>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="rounded-md border border-border/60 bg-muted/40 px-2 py-1 text-[11px] leading-none text-foreground"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
+function ProjectsCard() {
+  const { projects } = showcaseResume;
+
+  return (
+    <SectionCard title="Projects">
+      <div className="space-y-2">
+        {projects.map((project) => (
+          <Card key={project.id} className="gap-0 overflow-hidden">
+            <div className="p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-rose-500">
+                  <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 truncate text-xs font-medium text-foreground">
+                  {project.name}
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon
+                    icon={faChevronDown}
+                    className="h-3 w-3 text-muted-foreground"
+                  />
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                </span>
+              </div>
+              {project.description && (
+                <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+              )}
+              <div className="mt-2 flex flex-wrap gap-1">
+                {project.technologies.slice(0, 4).map((technology) => (
+                  <span
+                    key={technology}
+                    className="rounded border border-border/60 bg-muted/40 px-1.5 py-0.5 text-[10px] leading-none text-muted-foreground"
+                  >
+                    {technology}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
+function EducationCard() {
+  const { education } = showcaseResume;
+
+  return (
+    <SectionCard title="Education">
+      <div className="space-y-2">
+        {education.map((item) => (
+          <Card key={item.id} className="gap-0 overflow-hidden">
+            <div className="p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-rose-500">
+                  <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 truncate text-xs font-medium text-foreground">
+                  {item.institution}
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon
+                    icon={faChevronDown}
+                    className="h-3 w-3 text-muted-foreground"
+                  />
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                </span>
+              </div>
+              <div className="mt-1 text-[11px] text-muted-foreground">
+                {item.degree}
+                {item.specialization ? ` · ${item.specialization}` : ""}
+              </div>
+              <div className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground/80">
+                <Icon icon={faCalendar} className="size-2.5" />
+                {formatMonth(item.startDate)} – {formatMonth(item.endDate)}
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
+function CertificationsCard() {
+  const { certifications } = showcaseResume;
+
+  return (
+    <SectionCard title="Certifications">
+      <div className="space-y-2">
+        {certifications.map((certification) => (
+          <Card key={certification.id} className="gap-0 overflow-hidden">
+            <div className="p-3">
+              <div className="flex items-center gap-2">
+                <span className="text-rose-500">
+                  <Icon icon={faGripVertical} className="h-3.5 w-3.5" />
+                </span>
+                <span className="flex-1 truncate text-xs font-medium text-foreground">
+                  {certification.name}
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon
+                    icon={faChevronDown}
+                    className="h-3 w-3 text-muted-foreground"
+                  />
+                </span>
+                <span className="inline-flex size-8 items-center justify-center">
+                  <Icon icon={faTrash} className="h-3 w-3 text-rose-500" />
+                </span>
+              </div>
+              <div className="mt-1 flex items-center justify-between gap-2 text-[11px] text-muted-foreground">
+                <span className="truncate">{certification.issuer}</span>
+                <span className="flex shrink-0 items-center gap-1 text-[10px] text-muted-foreground/80">
+                  <Icon icon={faCalendar} className="size-2.5" />
+                  {formatMonth(certification.date)}
+                </span>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </SectionCard>
+  );
+}
+
 function StorageCard() {
   return (
     <Card
       size="sm"
-      className="absolute inset-x-4 bottom-2 z-20 gap-1.5 rounded-xl border border-border/40 bg-background/55 px-3 py-2 ring-0 backdrop-blur-xl backdrop-saturate-150 dark:border-white/10"
+      className="absolute inset-x-4 bottom-2 z-20 gap-1.5 rounded-xl border border-border/40 bg-background/85 px-3 py-2 ring-0 dark:border-white/10"
     >
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-1.5 text-[11px] font-medium text-foreground">
@@ -357,20 +542,66 @@ function StorageCard() {
   );
 }
 
-export function ShowcaseEditorPane() {
+export const ShowcaseEditorPane = memo(function ShowcaseEditorPane({
+  activeSection,
+}: {
+  activeSection: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrolledSectionRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (scrolledSectionRef.current === activeSection) return;
+    scrolledSectionRef.current = activeSection;
+
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const target = container.querySelector<HTMLElement>(
+      `[data-showcase-section="${activeSection}"]`,
+    );
+
+    container.scrollTo({
+      top: target ? target.offsetTop - 8 : 0,
+      behavior: "smooth",
+    });
+  }, [activeSection]);
+
   return (
-    <section className="relative flex h-full min-h-0 min-w-0 flex-col">
+    <section className="relative flex h-full min-h-0 min-w-0 flex-col [contain:layout_paint]">
       <EditorHeader />
       <div className="relative min-h-0 flex-1">
-        <div className="h-full overflow-hidden px-4 pt-1 pb-28">
+        <div
+          ref={scrollRef}
+          data-showcase-scroll
+          className="relative h-full overflow-y-auto px-4 pt-1 pb-28 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
           <div className="space-y-4">
-            <PersonalInfoCard />
-            <SummaryCard />
-            <ExperienceCard />
+            <div data-showcase-section="personal">
+              <PersonalInfoCard />
+            </div>
+            <div data-showcase-section="summary">
+              <SummaryCard />
+            </div>
+            <div data-showcase-section="experience">
+              <ExperienceCard />
+            </div>
+            <div data-showcase-section="skills">
+              <SkillsCard />
+            </div>
+            <div data-showcase-section="projects">
+              <ProjectsCard />
+            </div>
+            <div data-showcase-section="education">
+              <EducationCard />
+            </div>
+            <div data-showcase-section="certifications">
+              <CertificationsCard />
+            </div>
           </div>
         </div>
         <StorageCard />
       </div>
     </section>
   );
-}
+});

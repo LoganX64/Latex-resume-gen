@@ -1,7 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import { Icon } from "@/components/Icon";
 import { buttonVariants } from "@/components/ui/button";
 import {
+  faCheck,
   faChevronDown,
   faDownload,
   faExpand,
@@ -9,8 +11,14 @@ import {
   faMagnifyingGlassMinus,
   faMagnifyingGlassPlus,
 } from "@/lib/icons";
-import { getTemplateConfig, loadTemplate, type Template } from "@/templates";
+import {
+  getAllTemplateConfigs,
+  getTemplateConfig,
+  loadTemplate,
+  type Template,
+} from "@/templates";
 import type { Margins } from "@/types/resume";
+import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import {
   SHOWCASE_HEIGHT,
@@ -44,28 +52,54 @@ const FIT_SCALE = Math.min(
 const controlClass =
   "border border-dashed border-border/70 text-foreground";
 
-export function ShowcasePreview() {
-  const [template, setTemplate] = useState<Template | null>(null);
-  const config = getTemplateConfig("engineering");
-  const margins = useMemo(() => config?.margins ?? DEFAULT_MARGINS, [config]);
+const TEMPLATE_OPTIONS = getAllTemplateConfigs();
+
+type LoadedTemplate = {
+  id: string;
+  template: Template;
+};
+
+export const ShowcasePreview = memo(function ShowcasePreview({
+  templateId,
+  menuOpen,
+  hoveredTemplateId,
+}: {
+  templateId: string;
+  menuOpen: boolean;
+  hoveredTemplateId: string | null;
+}) {
+  const [loaded, setLoaded] = useState<LoadedTemplate | null>(null);
 
   useEffect(() => {
     let cancelled = false;
-    loadTemplate("engineering")
-      .then((loaded) => {
-        if (!cancelled) setTemplate(loaded ?? null);
+
+    loadTemplate(templateId)
+      .then((template) => {
+        if (!cancelled && template) {
+          setLoaded({ id: templateId, template });
+        }
       })
       .catch(() => {
-        if (!cancelled) setTemplate(null);
+        if (!cancelled) setLoaded(null);
       });
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [templateId]);
+
+  const displayedId = loaded?.id ?? templateId;
+  const displayedConfig = getTemplateConfig(displayedId);
+  const margins = useMemo(
+    () => displayedConfig?.margins ?? DEFAULT_MARGINS,
+    [displayedConfig],
+  );
+  const currentName = getTemplateConfig(templateId)?.name ?? templateId;
+  const TemplatePreview = loaded?.template.Preview;
 
   return (
-    <section className="flex h-[calc(100%-8px)] min-h-0 min-w-0 flex-col overflow-hidden rounded-l-xl border-l border-border bg-muted/20">
-      <div className="flex h-14 shrink-0 items-center justify-between px-4 backdrop-blur">
+    <section className="flex h-[calc(100%-8px)] min-h-0 min-w-0 flex-col overflow-hidden rounded-l-xl border-l border-border bg-muted/20 [contain:layout_paint]">
+      <div className="flex h-14 shrink-0 items-center justify-between px-4">
         <div className="flex min-w-0 items-center gap-1.5">
           <span className="shrink-0 text-sm font-semibold whitespace-nowrap text-foreground">
             A4 Page Preview
@@ -73,13 +107,78 @@ export function ShowcasePreview() {
           <span className="shrink-0 text-xs whitespace-nowrap text-muted-foreground italic">
             (approximate)
           </span>
-          <span className="flex h-9 min-w-[120px] cursor-default items-center justify-between gap-1 rounded-md border border-input bg-input/20 px-2 py-1 text-sm">
-            <span className="truncate">Engineering Resume</span>
-            <Icon
-              icon={faChevronDown}
-              className="size-3.5 shrink-0 text-muted-foreground"
-            />
-          </span>
+
+          <div className="relative">
+            <span
+              data-showcase-target="template-select"
+              className={cn(
+                "flex h-9 min-w-[120px] cursor-default items-center justify-between gap-1 rounded-md border bg-input/20 px-2 py-1 text-sm transition-colors",
+                menuOpen
+                  ? "border-ring ring-2 ring-ring/30"
+                  : "border-input",
+              )}
+            >
+              <span className="relative block h-4 min-w-0 flex-1 overflow-hidden text-left">
+                <AnimatePresence initial={false} mode="wait">
+                  <m.span
+                    key={currentName}
+                    className="absolute inset-0 truncate"
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.16, ease: EASE_OUT }}
+                  >
+                    {currentName}
+                  </m.span>
+                </AnimatePresence>
+              </span>
+              <m.span
+                animate={{ rotate: menuOpen ? 180 : 0 }}
+                transition={{ duration: 0.18, ease: EASE_OUT }}
+              >
+                <Icon
+                  icon={faChevronDown}
+                  className="size-3.5 shrink-0 text-muted-foreground"
+                />
+              </m.span>
+            </span>
+
+            <AnimatePresence>
+              {menuOpen && (
+                <m.div
+                  key="showcase-template-menu"
+                  className="absolute top-[calc(100%+4px)] left-0 z-40 w-56 origin-top overflow-hidden rounded-lg bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10"
+                  initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -3, scale: 0.98 }}
+                  transition={{ duration: 0.18, ease: EASE_OUT }}
+                >
+                  {TEMPLATE_OPTIONS.map((option) => (
+                    <div
+                      key={option.id}
+                      data-showcase-option={option.id}
+                      className={cn(
+                        "relative flex min-h-7 items-center rounded-md px-2 py-1 pr-8 text-xs leading-none",
+                        hoveredTemplateId === option.id &&
+                          "bg-accent text-accent-foreground",
+                        option.id === templateId && "font-medium",
+                      )}
+                    >
+                      <span className="truncate">{option.name}</span>
+                      {option.id === templateId && (
+                        <Icon
+                          icon={faCheck}
+                          className="absolute right-2 size-3 shrink-0"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </m.div>
+              )}
+            </AnimatePresence>
+          </div>
+
           <span
             className={cn(
               buttonVariants({ variant: "ghost", size: "icon-xs" }),
@@ -155,7 +254,7 @@ export function ShowcasePreview() {
             }}
           >
             <div
-              className="relative overflow-hidden rounded-3xl bg-white text-black"
+              className="relative overflow-hidden rounded-3xl bg-white text-black [contain:layout_paint]"
               style={{
                 width: A4_WIDTH_PX,
                 height: A4_HEIGHT_PX,
@@ -163,27 +262,33 @@ export function ShowcasePreview() {
                   "0 15px 35px -10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.08)",
               }}
             >
-              <div
-                style={{
-                  position: "absolute",
-                  top: margins.top * MM_TO_PX,
-                  left: margins.left * MM_TO_PX,
-                  right: margins.right * MM_TO_PX,
-                  bottom: margins.bottom * MM_TO_PX,
-                  overflow: "hidden",
-                }}
-              >
-                {template ? (
-                  <template.Preview
-                    resume={showcaseResume}
-                    sections={showcaseSections}
-                  />
-                ) : null}
-              </div>
+              <AnimatePresence initial={false} mode="wait">
+                {loaded && TemplatePreview && (
+                  <m.div
+                    key={displayedId}
+                    className="absolute overflow-hidden"
+                    style={{
+                      top: margins.top * MM_TO_PX,
+                      left: margins.left * MM_TO_PX,
+                      right: margins.right * MM_TO_PX,
+                      bottom: margins.bottom * MM_TO_PX,
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2, ease: EASE_OUT }}
+                  >
+                    <TemplatePreview
+                      resume={showcaseResume}
+                      sections={showcaseSections}
+                    />
+                  </m.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
       </div>
     </section>
   );
-}
+});

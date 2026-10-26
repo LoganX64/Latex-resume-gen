@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from "react";
+import { useMemo, type ElementType, type ReactNode } from "react";
 import { m } from "framer-motion";
 import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import { VIEWPORT, DURATION, EASE_OUT } from "@/lib/motion";
@@ -14,11 +14,11 @@ type FadeInProps = {
 
 export function FadeIn({ children, delay = 0, y = 12, className, as = "div", alwaysAnimate = false }: FadeInProps) {
   const reduce = useIsMotionDisabled();
+  const MotionTag = useMemo(() => m(as), [as]);
   if (reduce) {
     const Plain = as;
     return <Plain className={className}>{children}</Plain>;
   }
-  const MotionTag = m(as);
   if (alwaysAnimate) {
     return (
       <MotionTag
