@@ -1,12 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { AnimatePresence, m, useInView } from "framer-motion";
 import { Icon } from "@/components/Icon";
+import { buttonVariants } from "@/components/ui/button";
 import { useIsMotionDisabled } from "@/hooks/useIsMotionDisabled";
 import {
   faCheck,
+  faChevronDown,
   faDownload,
-  faFilePdf,
-  faTableColumns,
+  faFileLines,
   faUpload,
   faXmark,
 } from "@/lib/icons";
@@ -64,20 +71,6 @@ function BlinkCaret() {
         times: [0, 0.5, 0.5, 1],
         ease: "linear",
       }}
-    />
-  );
-}
-
-function Spinner({ className }: { className?: string }) {
-  return (
-    <m.span
-      aria-hidden="true"
-      className={cn(
-        "block size-2.5 rounded-full border-[1.5px] border-current/25 border-t-current",
-        className,
-      )}
-      animate={{ rotate: 360 }}
-      transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
     />
   );
 }
@@ -382,483 +375,345 @@ function ThumbLine({ className }: { className?: string }) {
   );
 }
 
-function ClassicThumb() {
+function DataSciSection({
+  title,
+  children,
+  className,
+}: {
+  title: string;
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <div className="flex h-full w-full flex-col bg-white px-2 py-2">
-      <div className="mx-auto h-[3px] w-9 rounded-full bg-neutral-700/70" />
-      <div className="mx-auto mt-1 h-[2px] w-5 rounded-full bg-neutral-400/60" />
-      <div className="mx-auto mt-1 flex items-center gap-[2px]">
-        <ThumbLine className="w-3" />
-        <ThumbLine className="w-2" />
-        <ThumbLine className="w-3" />
+    <div className={className}>
+      <div className="text-[3px] leading-[4px] font-bold tracking-[0.08em] text-[#3d5a80] uppercase">
+        {title}
       </div>
-      <div className="mt-1.5 h-px w-full bg-neutral-300" />
-      <div className="mt-1.5 h-[2px] w-7 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
+      <div className="mt-[1px] h-px w-full bg-[#3d5a80]/40" />
+      <div className="mt-[1.5px] space-y-[1.5px]">{children}</div>
+    </div>
+  );
+}
+
+function DataSciRole() {
+  return (
+    <div>
+      <div className="flex items-center justify-between gap-1">
+        <ThumbLine className="w-8 bg-neutral-700/60" />
+        <ThumbLine className="w-4" />
+      </div>
+      <ThumbLine className="mt-[1px] w-6" />
+      <div className="mt-[1.5px] space-y-[1.5px] pl-1">
         <ThumbLine className="w-full" />
-        <ThumbLine className="w-[84%]" />
+        <ThumbLine className="w-[86%]" />
       </div>
-      <div className="mt-1.5 h-[2px] w-6 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
+    </div>
+  );
+}
+
+function DataSciSheet() {
+  return (
+    <div className="flex h-full w-full flex-col bg-white p-2 text-neutral-800">
+      <div className="flex items-start gap-1">
+        <div className="w-[18px] shrink-0 space-y-[2px] pt-[2px]">
+          <ThumbLine className="w-full bg-neutral-500/50" />
+          <ThumbLine className="w-[88%]" />
+          <ThumbLine className="w-full" />
+        </div>
+        <div className="min-w-0 flex-1 text-center">
+          <div className="truncate text-[5.5px] leading-none font-bold tracking-wide text-neutral-900">
+            Jitin K
+          </div>
+          <div className="mt-[1.5px] truncate text-[3px] leading-none text-[#3d5a80]">
+            Backend Engineer
+          </div>
+        </div>
+        <div className="flex w-[20px] shrink-0 flex-col items-end space-y-[2px] pt-[2px]">
+          <ThumbLine className="w-full" />
+          <ThumbLine className="w-[84%]" />
+          <ThumbLine className="w-[92%]" />
+        </div>
+      </div>
+
+      <div className="mt-[3px] h-[2px] w-full bg-[#3d5a80]" />
+
+      <DataSciSection title="Summary" className="mt-[3px]">
         <ThumbLine className="w-full" />
         <ThumbLine className="w-[92%]" />
-        <ThumbLine className="w-[76%]" />
-      </div>
-      <div className="mt-1.5 h-[2px] w-8 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
-        <ThumbLine className="w-full" />
-        <ThumbLine className="w-[88%]" />
+        <ThumbLine className="w-[74%]" />
+      </DataSciSection>
+
+      <DataSciSection title="Technical Experience" className="mt-[4px]">
+        <DataSciRole />
+        <DataSciRole />
+      </DataSciSection>
+
+      <DataSciSection title="Skills" className="mt-[4px]">
+        <div className="flex items-center gap-1">
+          <ThumbLine className="w-5 bg-neutral-700/50" />
+          <ThumbLine className="flex-1" />
+        </div>
+        <div className="flex items-center gap-1">
+          <ThumbLine className="w-4 bg-neutral-700/50" />
+          <ThumbLine className="flex-1" />
+        </div>
+        <div className="flex items-center gap-1">
+          <ThumbLine className="w-6 bg-neutral-700/50" />
+          <ThumbLine className="flex-1" />
+        </div>
+      </DataSciSection>
+
+      <DataSciSection title="Projects" className="mt-[4px]">
+        <DataSciRole />
+      </DataSciSection>
+
+      <DataSciSection title="Education" className="mt-[4px]">
+        <div className="flex items-center justify-between gap-1">
+          <ThumbLine className="w-9 bg-neutral-700/50" />
+          <ThumbLine className="w-4" />
+        </div>
+        <ThumbLine className="w-7" />
+      </DataSciSection>
+
+      <div className="mt-auto flex justify-center pt-[3px]">
+        <ThumbLine className="h-px w-5" />
       </div>
     </div>
   );
 }
 
-function ModernThumb() {
+const TEMPLATE_OPTIONS = [
+  "Classic Professional",
+  "Technical",
+  "Engineering Resume",
+  "Modern Sidebar",
+  "Compact One Page",
+];
+
+const SELECTED_TEMPLATE = "Technical";
+
+type TemplateCursorState = {
+  x: number;
+  y: number;
+  visible: boolean;
+  pressed: boolean;
+  ripple: number;
+};
+
+const HIDDEN_CURSOR: TemplateCursorState = {
+  x: 192,
+  y: 198,
+  visible: false,
+  pressed: false,
+  ripple: 0,
+};
+
+function TemplateCursor({
+  cursor,
+  duration,
+}: {
+  cursor: TemplateCursorState;
+  duration: number;
+}) {
   return (
-    <div className="flex h-full w-full bg-white">
-      <div className="flex w-6 flex-col items-center bg-[#1e3a5f] px-1 py-2">
-        <span className="size-3 rounded-full bg-white/25" />
-        <span className="mt-1.5 h-[2px] w-full rounded-full bg-white/50" />
-        <span className="mt-1 h-[1.5px] w-[80%] rounded-full bg-white/30" />
-        <span className="mt-2 h-[1.5px] w-full rounded-full bg-white/30" />
-        <span className="mt-1 h-[1.5px] w-[70%] rounded-full bg-white/30" />
-        <span className="mt-2 h-[1.5px] w-full rounded-full bg-white/30" />
-        <span className="mt-1 h-[1.5px] w-[85%] rounded-full bg-white/30" />
-      </div>
-      <div className="flex-1 px-1.5 py-2">
-        <div className="h-[2.5px] w-8 rounded-full bg-[#1e3a5f]/70" />
-        <div className="mt-1 h-[1.5px] w-5 rounded-full bg-neutral-400/60" />
-        <div className="mt-2 h-[2px] w-6 rounded-full bg-[#1e3a5f]/50" />
-        <div className="mt-1 space-y-[2px]">
-          <ThumbLine className="w-full" />
-          <ThumbLine className="w-[82%]" />
-        </div>
-        <div className="mt-2 h-[2px] w-7 rounded-full bg-[#1e3a5f]/50" />
-        <div className="mt-1 space-y-[2px]">
-          <ThumbLine className="w-full" />
-          <ThumbLine className="w-[90%]" />
-          <ThumbLine className="w-[68%]" />
-        </div>
-        <div className="mt-2 h-[2px] w-5 rounded-full bg-[#1e3a5f]/50" />
-        <div className="mt-1 space-y-[2px]">
-          <ThumbLine className="w-full" />
-          <ThumbLine className="w-[78%]" />
-        </div>
-      </div>
-    </div>
+    <m.div
+      className="pointer-events-none absolute top-0 left-0 z-40"
+      initial={false}
+      animate={{ x: cursor.x, y: cursor.y, opacity: cursor.visible ? 1 : 0 }}
+      transition={{
+        x: { duration, ease: EASE_OUT },
+        y: { duration, ease: EASE_OUT },
+        opacity: { duration: 0.15, ease: "easeOut" },
+      }}
+    >
+      {cursor.ripple > 0 && (
+        <m.span
+          key={cursor.ripple}
+          className="absolute -top-1 -left-1 size-2.5 rounded-full border border-background/80 bg-background/30"
+          initial={{ scale: 0.2, opacity: 0.55 }}
+          animate={{ scale: 2.2, opacity: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+        />
+      )}
+      <m.div
+        className="origin-top-left"
+        animate={{ scale: cursor.pressed ? 0.86 : 1 }}
+        transition={{ duration: 0.1, ease: EASE_OUT }}
+      >
+        <svg
+          viewBox="0 0 14 20"
+          className="h-[14px] w-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.35)]"
+          aria-hidden="true"
+        >
+          <path
+            d="M.8.8 12 10.6l-4.8.8 2.5 5-2.1 1-2.5-5.1L.8 16.6Z"
+            fill="#fff"
+            stroke="#1f2937"
+            strokeWidth="1.2"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </m.div>
+    </m.div>
   );
 }
 
-function CompactThumb() {
+function TemplateSelect({
+  open,
+  selected,
+  hovered,
+  cursor,
+  cursorMs,
+}: {
+  open: boolean;
+  selected: boolean;
+  hovered: boolean;
+  cursor: TemplateCursorState;
+  cursorMs: number;
+}) {
   return (
-    <div className="flex h-full w-full flex-col bg-white px-1.5 py-2">
-      <div className="h-[2.5px] w-8 rounded-full bg-neutral-700/70" />
-      <div className="mt-1 h-[1.5px] w-4 rounded-full bg-neutral-400/60" />
-      <div className="mt-1.5 h-px w-full bg-neutral-300" />
-      <div className="mt-1.5 grid flex-1 grid-cols-2 gap-1.5">
-        <div>
-          <div className="h-[2px] w-6 rounded-full bg-neutral-600/60" />
-          <div className="mt-1 space-y-[2px]">
-            <ThumbLine className="w-full" />
-            <ThumbLine className="w-[86%]" />
-            <ThumbLine className="w-[92%]" />
-          </div>
-          <div className="mt-1.5 h-[2px] w-5 rounded-full bg-neutral-600/60" />
-          <div className="mt-1 space-y-[2px]">
-            <ThumbLine className="w-full" />
-            <ThumbLine className="w-[78%]" />
-          </div>
-          <div className="mt-1.5 h-[2px] w-7 rounded-full bg-neutral-600/60" />
-          <div className="mt-1 space-y-[2px]">
-            <ThumbLine className="w-full" />
-            <ThumbLine className="w-[88%]" />
-          </div>
-        </div>
-        <div className="border-l border-neutral-200 pl-1.5">
-          <div className="h-[2px] w-4 rounded-full bg-neutral-600/60" />
-          <div className="mt-1 space-y-[2px]">
-            <ThumbLine className="w-full" />
-            <ThumbLine className="w-[72%]" />
-            <ThumbLine className="w-full" />
-          </div>
-          <div className="mt-1.5 h-[2px] w-5 rounded-full bg-neutral-600/60" />
-          <div className="mt-1 space-y-[2px]">
-            <ThumbLine className="w-full" />
-            <ThumbLine className="w-[84%]" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-const TEMPLATES = [
-  { id: "classic", name: "Classic" },
-  { id: "modern", name: "Modern" },
-  { id: "compact", name: "Compact" },
-] as const;
-
-function TemplateThumb({ index }: { index: number }) {
-  if (index === 1) return <ModernThumb />;
-  if (index === 2) return <CompactThumb />;
-  return <ClassicThumb />;
-}
-
-function TemplatePickerPanel({ active }: { active: number }) {
-  const activeTemplate = TEMPLATES[active];
-
-  return (
-    <div className="w-[262px] max-w-full rounded-xl border border-border/60 bg-card p-2.5 shadow-[0_16px_36px_-22px_rgba(0,0,0,0.5)] ring-1 ring-border/30">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Icon
-              icon={faTableColumns}
-              className="size-2.5"
-              aria-hidden="true"
-            />
-          </span>
-          <span className="truncate text-[9px] leading-none font-semibold text-foreground">
-            Choose a template
-          </span>
-        </div>
-        <AnimatePresence mode="wait" initial={false}>
-          <m.span
-            key={activeTemplate.id}
-            className="shrink-0 text-[7px] leading-none font-medium text-muted-foreground"
-            initial={{ opacity: 0, y: 3 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -3 }}
-            transition={{ duration: DURATION.fast, ease: EASE_OUT }}
-          >
-            {activeTemplate.name}
-          </m.span>
-        </AnimatePresence>
-      </div>
-
-      <div className="mt-2.5 grid grid-cols-3 gap-1.5">
-        {TEMPLATES.map((template, index) => {
-          const isActive = active === index;
-
-          return (
-            <m.div
-              key={template.id}
-              className="relative overflow-hidden rounded-md bg-white shadow-[0_8px_18px_-12px_rgba(0,0,0,0.45)] ring-1 ring-black/10"
-              initial={false}
-              animate={{
-                scale: isActive ? 1.04 : 0.97,
-                y: isActive ? -2 : 0,
-                opacity: isActive ? 1 : 0.55,
-              }}
-              transition={{ duration: DURATION.base, ease: EASE_OUT }}
-            >
-              <div className="h-24 w-full">
-                <TemplateThumb index={index} />
-              </div>
-              <m.div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-md border-2 border-primary"
-                initial={false}
-                animate={{ opacity: isActive ? 1 : 0 }}
-                transition={{ duration: DURATION.fast }}
-              />
-              <AnimatePresence>
-                {isActive && (
-                  <m.span
-                    key="template-selected"
-                    className="absolute right-1 bottom-1 z-10 flex size-3.5 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm"
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.5, opacity: 0 }}
-                    transition={{ duration: DURATION.fast, ease: EASE_OUT }}
-                  >
-                    <Icon
-                      icon={faCheck}
-                      className="size-2"
-                      aria-hidden="true"
-                    />
-                  </m.span>
-                )}
-              </AnimatePresence>
-            </m.div>
-          );
-        })}
-      </div>
-
-      <div className="mt-2.5 flex h-6 items-center justify-between rounded-md border border-border/70 bg-muted/30 px-2">
-        <span className="flex items-center gap-1 text-[7px] leading-none font-medium text-muted-foreground">
+    <div className="relative h-[210px] w-[208px]">
+      <div
+        className={cn(
+          "flex h-8 w-full items-center justify-between gap-2 rounded-md border bg-input/20 px-2.5 text-[11px] leading-none transition-colors dark:bg-input/30",
+          open ? "border-ring ring-2 ring-ring/30" : "border-input",
+        )}
+      >
+        <span
+          className={cn(
+            "truncate",
+            selected ? "text-foreground" : "text-muted-foreground",
+          )}
+        >
+          {selected ? SELECTED_TEMPLATE : "Select template"}
+        </span>
+        <m.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: DURATION.fast, ease: EASE_OUT }}
+        >
           <Icon
-            icon={faCheck}
-            className="size-2 shrink-0 text-primary"
+            icon={faChevronDown}
+            className="size-3 shrink-0 text-muted-foreground"
             aria-hidden="true"
           />
-          Selected
-        </span>
-        <span className="rounded bg-primary px-1.5 py-0.5 text-[6.5px] leading-none font-medium text-primary-foreground">
-          Use template
-        </span>
+        </m.span>
       </div>
+
+      <AnimatePresence>
+        {open && (
+          <m.div
+            key="template-menu"
+            className="absolute inset-x-0 top-[38px] z-20 origin-top overflow-hidden rounded-xl bg-popover p-1.5 text-popover-foreground shadow-[0_18px_40px_-20px_rgba(0,0,0,0.35)] ring-1 ring-foreground/10"
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -3, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: EASE_OUT }}
+          >
+            {TEMPLATE_OPTIONS.map((option) => (
+              <div
+                key={option}
+                className={cn(
+                  "relative flex h-8 items-center rounded-lg px-3 pr-8 text-[11px] leading-none",
+                  hovered &&
+                    option === SELECTED_TEMPLATE &&
+                    "bg-accent text-accent-foreground",
+                )}
+              >
+                <span className="truncate">{option}</span>
+                {selected && option === SELECTED_TEMPLATE && (
+                  <Icon
+                    icon={faCheck}
+                    className="absolute right-2.5 size-3 shrink-0"
+                    aria-hidden="true"
+                  />
+                )}
+              </div>
+            ))}
+          </m.div>
+        )}
+      </AnimatePresence>
+
+      <TemplateCursor cursor={cursor} duration={cursorMs} />
     </div>
   );
 }
 
-const TEMPLATE_ROTATE_MS = 2400;
+function TemplatePreview() {
+  return (
+    <div className="h-[200px] w-[140px] overflow-hidden rounded-[3px] bg-white shadow-[0_18px_36px_-20px_rgba(0,0,0,0.5)] ring-1 ring-black/10">
+      <div className="h-[148px] w-[104px] origin-top-left scale-[1.35]">
+        <DataSciSheet />
+      </div>
+    </div>
+  );
+}
 
 export function PickTemplateStepVisual() {
   const reduce = useIsMotionDisabled();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { amount: 0.3 });
-  const [active, setActive] = useState(0);
 
-  useEffect(() => {
-    if (reduce || !isInView) return;
-
-    const interval = window.setInterval(() => {
-      setActive((current) => (current + 1) % TEMPLATES.length);
-    }, TEMPLATE_ROTATE_MS);
-
-    return () => window.clearInterval(interval);
-  }, [isInView, reduce]);
-
-  return (
-    <div
-      ref={containerRef}
-      aria-hidden="true"
-      className="relative flex h-full w-full items-center justify-center overflow-hidden"
-    >
-      <div className="pointer-events-none absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.06] blur-2xl" />
-      <TemplatePickerPanel active={active} />
-    </div>
-  );
-}
-
-type ExportPhase = "idle" | "working" | "done";
-
-function ExportSheet({ phase }: { phase: ExportPhase }) {
-  return (
-    <div className="relative h-[104px] w-[74px] shrink-0 overflow-hidden rounded-[3px] bg-white p-2 text-neutral-800 shadow-[0_10px_20px_-14px_rgba(0,0,0,0.5)] ring-1 ring-black/10">
-      <div className="h-[3px] w-9 rounded-full bg-[#1d76e2]/80" />
-      <div className="mt-1 h-[2px] w-6 rounded-full bg-neutral-400/60" />
-      <div className="mt-1.5 h-px w-full bg-neutral-300" />
-      <div className="mt-1.5 h-[2px] w-7 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
-        <ThumbLine className="w-full" />
-        <ThumbLine className="w-[88%]" />
-        <ThumbLine className="w-[72%]" />
-      </div>
-      <div className="mt-1.5 h-[2px] w-8 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
-        <ThumbLine className="w-full" />
-        <ThumbLine className="w-[82%]" />
-        <ThumbLine className="w-[90%]" />
-        <ThumbLine className="w-[64%]" />
-      </div>
-      <div className="mt-1.5 h-[2px] w-6 rounded-full bg-neutral-600/60" />
-      <div className="mt-1 space-y-[2px]">
-        <ThumbLine className="w-full" />
-        <ThumbLine className="w-[76%]" />
-      </div>
-
-      {phase === "working" && (
-        <m.div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 h-6 bg-gradient-to-b from-transparent via-[#1d76e2]/25 to-transparent"
-          initial={{ y: -26 }}
-          animate={{ y: 106 }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-        />
-      )}
-
-      <AnimatePresence>
-        {phase === "done" && (
-          <m.div
-            key="export-done"
-            className="absolute inset-0 flex items-center justify-center bg-primary/10 backdrop-blur-[1px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: DURATION.fast }}
-          >
-            <m.span
-              className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm shadow-primary/30"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: DURATION.base, ease: EASE_OUT }}
-            >
-              <Icon icon={faCheck} className="size-3" aria-hidden="true" />
-            </m.span>
-          </m.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-const EXPORT_COPY: Record<
-  ExportPhase,
-  { title: string; subtitle: string }
-> = {
-  idle: {
-    title: "Ready to compile",
-    subtitle: "Single-page A4 output",
-  },
-  working: {
-    title: "Compiling LaTeX",
-    subtitle: "Building your PDF",
-  },
-  done: {
-    title: "PDF ready",
-    subtitle: "resume.pdf · 24 KB",
-  },
-};
-
-function ExportPanel({
-  phase,
-  percent,
-  pressed,
-}: {
-  phase: ExportPhase;
-  percent: number;
-  pressed: boolean;
-}) {
-  const copy = EXPORT_COPY[phase];
-
-  return (
-    <div className="w-[262px] max-w-full rounded-xl border border-border/60 bg-card p-2.5 shadow-[0_16px_36px_-22px_rgba(0,0,0,0.5)] ring-1 ring-border/30">
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Icon icon={faFilePdf} className="size-2.5" aria-hidden="true" />
-          </span>
-          <span className="truncate text-[9px] leading-none font-semibold text-foreground">
-            Export to PDF
-          </span>
-        </div>
-        <span className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[6.5px] leading-none font-medium text-muted-foreground">
-          A4
-        </span>
-      </div>
-
-      <div className="mt-2.5 flex gap-2.5">
-        <ExportSheet phase={phase} />
-
-        <div className="flex min-w-0 flex-1 flex-col">
-          <div className="h-[20px]">
-            <AnimatePresence mode="wait" initial={false}>
-              <m.div
-                key={copy.title}
-                className="truncate text-[8px] leading-none font-semibold text-foreground"
-                initial={{ opacity: 0, y: 3 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -3 }}
-                transition={{ duration: DURATION.fast, ease: EASE_OUT }}
-              >
-                {copy.title}
-              </m.div>
-            </AnimatePresence>
-            <AnimatePresence mode="wait" initial={false}>
-              <m.p
-                key={copy.subtitle}
-                className="mt-1 truncate text-[6.5px] leading-none text-muted-foreground"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: DURATION.fast }}
-              >
-                {copy.subtitle}
-              </m.p>
-            </AnimatePresence>
-          </div>
-
-          <div className="mt-1">
-            <div className="flex items-center justify-between text-[6.5px] leading-none">
-              <span className="text-muted-foreground">Progress</span>
-              <span className="font-mono tabular-nums text-primary">
-                {percent}%
-              </span>
-            </div>
-            <div className="mt-1 h-1 overflow-hidden rounded-full bg-muted">
-              <m.div
-                className="h-full origin-left rounded-full bg-primary"
-                initial={false}
-                animate={{ scaleX: percent / 100 }}
-                transition={{ duration: 0.18, ease: EASE_OUT }}
-              />
-            </div>
-          </div>
-
-          <div className="mt-auto space-y-1 pt-2">
-            <div className="flex items-center justify-between text-[6.5px] leading-none">
-              <span className="text-muted-foreground">Engine</span>
-              <span className="font-medium text-foreground">Tectonic</span>
-            </div>
-            <div className="flex items-center justify-between text-[6.5px] leading-none">
-              <span className="text-muted-foreground">Template</span>
-              <span className="font-medium text-foreground">Classic</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <m.span
-        className={cn(
-          "mt-2.5 flex h-6 items-center justify-center gap-1 rounded-md text-[7px] leading-none font-medium transition-colors",
-          phase === "done"
-            ? "bg-primary/10 text-primary ring-1 ring-primary/20"
-            : "bg-primary text-primary-foreground",
-        )}
-        animate={{ scale: pressed ? 0.96 : 1 }}
-        transition={{ duration: 0.1, ease: EASE_OUT }}
-      >
-        {phase === "done" ? (
-          <Icon icon={faCheck} className="size-2.5" aria-hidden="true" />
-        ) : phase === "working" ? (
-          <Spinner className="size-2.5" />
-        ) : (
-          <Icon icon={faDownload} className="size-2.5" aria-hidden="true" />
-        )}
-        {phase === "done"
-          ? "resume.pdf"
-          : phase === "working"
-            ? `Compiling ${percent}%`
-            : "Download PDF"}
-      </m.span>
-    </div>
-  );
-}
-
-export function ExportPdfStepVisual() {
-  const reduce = useIsMotionDisabled();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { amount: 0.3 });
-
-  const [phase, setPhase] = useState<ExportPhase>("idle");
-  const [percent, setPercent] = useState(0);
-  const [pressed, setPressed] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [preview, setPreview] = useState(false);
+  const [cursor, setCursor] = useState<TemplateCursorState>(HIDDEN_CURSOR);
+  const [cursorMs, setCursorMs] = useState(0.5);
 
   useLoopingEffect(isInView, reduce, async ({ wait }) => {
     while (true) {
-      setPhase("idle");
-      setPercent(0);
-      setPressed(false);
+      setOpen(false);
+      setSelected(false);
+      setHovered(false);
+      setPreview(false);
+      setCursor((current) => ({
+        ...current,
+        ...HIDDEN_CURSOR,
+        ripple: current.ripple,
+      }));
+      if (!(await wait(450))) return;
 
-      if (!(await wait(650))) return;
+      setCursor((current) => ({ ...current, visible: true }));
+      if (!(await wait(100))) return;
 
-      setPressed(true);
-      if (!(await wait(150))) return;
-      setPressed(false);
+      setCursorMs(0.5);
+      setCursor((current) => ({ ...current, x: 150, y: 16 }));
+      if (!(await wait(540))) return;
 
-      setPhase("working");
-      for (let value = 10; value <= 100; value += 10) {
-        setPercent(value);
-        if (!(await wait(95))) return;
-      }
+      setCursor((current) => ({
+        ...current,
+        pressed: true,
+        ripple: current.ripple + 1,
+      }));
+      if (!(await wait(130))) return;
+      setCursor((current) => ({ ...current, pressed: false }));
+      setOpen(true);
+      if (!(await wait(450))) return;
 
-      setPercent(100);
-      setPhase("done");
+      setCursorMs(0.45);
+      setCursor((current) => ({ ...current, x: 170, y: 92 }));
+      if (!(await wait(500))) return;
 
-      if (!(await wait(2400))) return;
+      setHovered(true);
+      if (!(await wait(140))) return;
+
+      setCursor((current) => ({
+        ...current,
+        pressed: true,
+        ripple: current.ripple + 1,
+      }));
+      if (!(await wait(130))) return;
+      setCursor((current) => ({ ...current, pressed: false }));
+      setSelected(true);
+      if (!(await wait(320))) return;
+
+      setOpen(false);
+      setHovered(false);
+      setCursor((current) => ({ ...current, visible: false }));
+      if (!(await wait(260))) return;
+
+      setPreview(true);
+      if (!(await wait(3000))) return;
     }
   });
 
@@ -869,7 +724,7 @@ export function ExportPdfStepVisual() {
         aria-hidden="true"
         className="relative flex h-full w-full items-center justify-center overflow-hidden"
       >
-        <ExportPanel phase="done" percent={100} pressed={false} />
+        <TemplatePreview />
       </div>
     );
   }
@@ -880,8 +735,206 @@ export function ExportPdfStepVisual() {
       aria-hidden="true"
       className="relative flex h-full w-full items-center justify-center overflow-hidden"
     >
-      <div className="pointer-events-none absolute top-1/2 left-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/[0.06] blur-2xl" />
-      <ExportPanel phase={phase} percent={percent} pressed={pressed} />
+      <AnimatePresence mode="wait" initial={false}>
+        {preview ? (
+          <m.div
+            key="template-preview"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: DURATION.base, ease: EASE_OUT }}
+          >
+            <TemplatePreview />
+          </m.div>
+        ) : (
+          <m.div
+            key="template-select"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: DURATION.base, ease: EASE_OUT }}
+          >
+            <TemplateSelect
+              open={open}
+              selected={selected}
+              hovered={hovered}
+              cursor={cursor}
+              cursorMs={cursorMs}
+            />
+          </m.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+const EXPORT_TEMPLATE = "Technical";
+
+const EXPORT_CURSOR_START: TemplateCursorState = {
+  x: 0,
+  y: 0,
+  visible: false,
+  pressed: false,
+  ripple: 0,
+};
+
+function ExportToolbar({
+  pressed,
+  downloadRef,
+}: {
+  pressed: boolean;
+  downloadRef: RefObject<HTMLSpanElement | null>;
+}) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="shrink-0 text-[10px] leading-none font-semibold whitespace-nowrap text-foreground">
+        A4 Page Preview
+      </span>
+      <span className="shrink-0 text-[8px] leading-none whitespace-nowrap text-muted-foreground italic">
+        (approximate)
+      </span>
+      <span className="flex h-6 min-w-[70px] shrink-0 items-center justify-between gap-1 rounded-md border border-input bg-input/20 px-2 text-[8px] leading-none text-foreground dark:bg-input/30">
+        <span className="truncate">{EXPORT_TEMPLATE}</span>
+        <Icon
+          icon={faChevronDown}
+          className="size-2 shrink-0 text-muted-foreground"
+          aria-hidden="true"
+        />
+      </span>
+      <span
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon-xs" }),
+          "size-6 shrink-0 rounded-md border border-dashed border-border/70 p-0 text-foreground",
+        )}
+      >
+        <Icon icon={faFileLines} className="size-2.5" aria-hidden="true" />
+      </span>
+      <m.span
+        ref={downloadRef}
+        aria-hidden="true"
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon-xs" }),
+          "size-6 shrink-0 rounded-md border border-dashed border-border/70 p-0 text-foreground",
+        )}
+        animate={{ scale: pressed ? 0.9 : 1 }}
+        transition={{ duration: 0.1, ease: EASE_OUT }}
+      >
+        <Icon icon={faDownload} className="size-2.5" aria-hidden="true" />
+      </m.span>
+    </div>
+  );
+}
+
+export function ExportPdfStepVisual() {
+  const reduce = useIsMotionDisabled();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const downloadRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(containerRef, { amount: 0.3 });
+
+  const [preview, setPreview] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const [cursor, setCursor] =
+    useState<TemplateCursorState>(EXPORT_CURSOR_START);
+  const [cursorMs, setCursorMs] = useState(0.5);
+
+  useLoopingEffect(isInView, reduce, async ({ wait }) => {
+    while (true) {
+      setPreview(false);
+      setPressed(false);
+      setCursor(EXPORT_CURSOR_START);
+      setCursorMs(0);
+      if (!(await wait(700))) return;
+
+      const container = containerRef.current;
+      const button = downloadRef.current;
+      if (!container || !button) {
+        if (!(await wait(400))) return;
+        continue;
+      }
+
+      const containerRect = container.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+      const start = {
+        x: containerRect.width * 0.68,
+        y: containerRect.height * 0.72,
+      };
+      const target = {
+        x: buttonRect.left - containerRect.left + buttonRect.width / 2 - 1,
+        y: buttonRect.top - containerRect.top + buttonRect.height / 2 - 1,
+      };
+
+      setCursor({ ...start, visible: false, pressed: false, ripple: 0 });
+      if (!(await wait(40))) return;
+      setCursor((current) => ({ ...current, visible: true }));
+      if (!(await wait(140))) return;
+
+      setCursorMs(0.52);
+      setCursor((current) => ({ ...current, x: target.x, y: target.y }));
+      if (!(await wait(540))) return;
+      if (!(await wait(90))) return;
+
+      setPressed(true);
+      setCursor((current) => ({
+        ...current,
+        pressed: true,
+        ripple: current.ripple + 1,
+      }));
+      if (!(await wait(120))) return;
+      setPressed(false);
+      setCursor((current) => ({ ...current, pressed: false }));
+      if (!(await wait(100))) return;
+
+      setCursor((current) => ({ ...current, visible: false }));
+      if (!(await wait(140))) return;
+
+      setPreview(true);
+      if (!(await wait(3000))) return;
+    }
+  });
+
+  if (reduce) {
+    return (
+      <div
+        ref={containerRef}
+        aria-hidden="true"
+        className="relative flex h-full w-full items-center justify-center overflow-hidden"
+      >
+        <TemplatePreview />
+      </div>
+    );
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      aria-hidden="true"
+      className="relative flex h-full w-full items-center justify-center overflow-hidden"
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {preview ? (
+          <m.div
+            key="export-preview"
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: DURATION.base, ease: EASE_OUT }}
+          >
+            <TemplatePreview />
+          </m.div>
+        ) : (
+          <m.div
+            key="export-toolbar"
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: DURATION.base, ease: EASE_OUT }}
+          >
+            <ExportToolbar pressed={pressed} downloadRef={downloadRef} />
+          </m.div>
+        )}
+      </AnimatePresence>
+
+      <TemplateCursor cursor={cursor} duration={cursorMs} />
     </div>
   );
 }
