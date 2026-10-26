@@ -1,43 +1,44 @@
+import type { ComponentType } from "react";
 import { Link } from "react-router-dom";
-import fillDetailsSvg from "@/assets/Fill-details.svg";
-import multipleTemplatesSvg from "@/assets/multiple-templates.svg";
-import latexDownloadSvg from "@/assets/latex-download.svg";
 import { Icon } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { AnimatedGroup } from "@/components/motion/AnimatedGroup";
 import { FadeIn } from "@/components/motion/FadeIn";
-import { HoverCard } from "@/components/motion/HoverCard";
+import {
+  ExportPdfStepVisual,
+  FillDetailsStepVisual,
+  PickTemplateStepVisual,
+} from "@/components/v2/home/StepVisualsV2";
 import { faArrowRight } from "@/lib/icons";
 
-const steps = [
+const steps: {
+  title: string;
+  description: string;
+  visual: ComponentType;
+}[] = [
   {
-    n: "1",
-    label: "Fill your details",
+    title: "Fill your details",
     description:
       "Enter experience, education, skills, and projects via the structured editor.",
+    visual: FillDetailsStepVisual,
   },
   {
-    n: "2",
-    label: "Pick a template",
+    title: "Pick a template",
     description:
       "Choose a professionally designed LaTeX template that matches your style.",
+    visual: PickTemplateStepVisual,
   },
   {
-    n: "3",
-    label: "Export to PDF",
+    title: "Export to PDF",
     description:
       "Compile instantly with Tectonic or download the .tex source.",
+    visual: ExportPdfStepVisual,
   },
 ];
 
-const stepGraphics = [fillDetailsSvg, multipleTemplatesSvg, latexDownloadSvg];
-
 export function StepsSectionV2() {
   return (
-    <section
-      aria-labelledby="steps-v2-heading"
-      className="relative"
-    >
+    <section aria-labelledby="steps-v2-heading" className="relative">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <FadeIn y={16} className="mx-auto mb-10 max-w-xl text-center sm:mb-12">
           <h2
@@ -54,32 +55,33 @@ export function StepsSectionV2() {
         <AnimatedGroup
           preset="slide"
           amount={0.15}
-          className="grid gap-4 sm:grid-cols-3 sm:gap-6"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
         >
-          {steps.map(({ n, label, description }, index) => (
-            <HoverCard
-              key={n}
-              lift={3}
-              scale={1.005}
-              className="group relative flex h-full flex-col items-center overflow-hidden rounded-xl border border-dashed border-border/70 bg-card/40 p-5 text-center transition-colors hover:border-primary/30 hover:bg-card/70 sm:p-6"
+          {steps.map(({ title, description, visual: Visual }, index) => (
+            <div
+              key={title}
+              className="flex h-full flex-col rounded-2xl bg-muted/80 p-2.5 transition-colors duration-300 hover:bg-muted sm:p-3"
             >
-              <span className="mb-3 inline-flex items-center rounded-full border border-dashed border-rose-500/20 bg-rose-500/10 px-2.5 py-0.5 text-xs font-bold text-rose-600 dark:text-rose-400">
-                Step 0{n}
-              </span>
-              <div className="mb-4 transition-transform duration-300 group-hover:scale-105">
-                <img
-                  src={stepGraphics[index]}
-                  alt=""
-                  className="h-28 w-28 drop-shadow-md"
-                />
+              <div className="relative flex h-56 items-center justify-center overflow-hidden rounded-xl bg-background ring-1 ring-border/50">
+                <div className="flex h-full w-full items-center justify-center">
+                  <Visual />
+                </div>
               </div>
-              <h3 className="mb-1.5 text-base font-bold text-foreground">
-                {label}
-              </h3>
-              <p className="max-w-55 text-xs leading-relaxed text-muted-foreground sm:text-sm">
-                {description}
-              </p>
-            </HoverCard>
+
+              <div className="px-3 pt-5 pb-3">
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-base font-semibold tracking-tight text-foreground">
+                    {title}
+                  </h3>
+                  <span className="mt-0.5 shrink-0 rounded-full border border-border/60 bg-background/80 px-2 py-0.5 text-[10px] leading-none font-semibold text-muted-foreground">
+                    Step 0{index + 1}
+                  </span>
+                </div>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground sm:text-sm">
+                  {description}
+                </p>
+              </div>
+            </div>
           ))}
         </AnimatedGroup>
 
