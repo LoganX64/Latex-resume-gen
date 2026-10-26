@@ -12,6 +12,9 @@ import { Icon } from '@/components/Icon'
 import { faSpinner, faFileLines, faDownload, faTrash, faTriangleExclamation } from '@/lib/icons'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { ResumeCardPreview } from '@/components/v2/home/resume-preview/ResumeCardPreview'
+import { PreviewBottomBlur } from '@/components/v2/home/resume-preview/PreviewBottomBlur'
+import { cn } from '@/lib/utils'
 import { m } from 'framer-motion'
 import { useIsMotionDisabled } from '@/hooks/useIsMotionDisabled'
 import { DURATION, EASE_OUT } from '@/lib/motion'
@@ -33,9 +36,10 @@ import type { ResumeVersion } from '@/types/resume'
 interface VersionCardProps {
   version: ResumeVersion
   editorPath?: string
+  showPreview?: boolean
 }
 
-export function VersionCard({ version, editorPath = '/editor' }: VersionCardProps) {
+export function VersionCard({ version, editorPath = '/editor', showPreview = false }: VersionCardProps) {
   const navigate = useNavigate()
   const isMobile = useIsMobile()
   const loadFromVersion = useResumeStore((s) => s.loadFromVersion)
@@ -83,7 +87,7 @@ export function VersionCard({ version, editorPath = '/editor' }: VersionCardProp
   }
 
   const reduce = useIsMotionDisabled();
-  const motionProps = reduce
+  const motionProps = reduce || showPreview
     ? {}
     : {
         whileHover: { y: -4, transition: { duration: DURATION.fast, ease: EASE_OUT } },
@@ -95,12 +99,49 @@ export function VersionCard({ version, editorPath = '/editor' }: VersionCardProp
       <m.div {...motionProps} className="h-full">
         <Card
           size="sm"
-          className="group relative overflow-hidden bg-card border border-border/80 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 cursor-pointer py-2 sm:py-3 h-full"
+          className={cn(
+            "group relative h-full cursor-pointer",
+            showPreview
+              ? "gap-0 rounded-2xl bg-muted/80 p-2 ring-0 transition-colors duration-300 hover:bg-muted sm:p-2.5"
+              : "overflow-hidden bg-card border border-border/80 hover:shadow-lg hover:border-rose-400/80 dark:hover:border-rose-500 dark:hover:shadow-rose-950/40 py-2 sm:py-3"
+          )}
           onClick={handleLoad}
         >
-        <CardHeader className="relative pb-0 pt-2 px-3 sm:px-4">
+        {showPreview && (
+          <div className="relative h-48 w-full shrink-0 overflow-hidden rounded-xl bg-background ring-1 ring-border/50">
+            <div
+              aria-hidden="true"
+              inert
+              className="pointer-events-none absolute inset-0 select-none"
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  maskImage:
+                    "linear-gradient(to bottom, black 62%, rgba(0,0,0,0.92) 78%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to bottom, black 62%, rgba(0,0,0,0.92) 78%, transparent 100%)",
+                }}
+              >
+                <ResumeCardPreview version={version} />
+              </div>
+              <PreviewBottomBlur />
+            </div>
+          </div>
+        )}
+        <CardHeader
+          className={cn(
+            "relative",
+            showPreview ? "gap-0 px-3 pt-3 pb-0" : "pb-0 pt-2 px-3 sm:px-4"
+          )}
+        >
           <div className="flex items-center justify-between gap-2">
-            <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+            <CardTitle
+              className={cn(
+                "text-base text-foreground group-hover:text-primary transition-colors",
+                showPreview ? "font-semibold tracking-tight" : "font-bold"
+              )}
+            >
               {version.name}
             </CardTitle>
             {isMobile && (
@@ -117,7 +158,12 @@ export function VersionCard({ version, editorPath = '/editor' }: VersionCardProp
               </m.div>
             )}
           </div>
-          <div className="flex flex-wrap gap-x-2.5 gap-y-0.5 text-xs text-muted-foreground mt-1">
+          <div
+            className={cn(
+              "flex flex-wrap gap-x-2.5 gap-y-0.5 text-muted-foreground",
+              showPreview ? "mt-1 text-xs leading-snug" : "mt-1 text-xs"
+            )}
+          >
             <span className="font-medium text-foreground/90">{templateConfig?.name || version.templateId}</span>
             <span className="text-muted-foreground/60">•</span>
             <span>{activeSections.length} sections</span>
@@ -128,7 +174,12 @@ export function VersionCard({ version, editorPath = '/editor' }: VersionCardProp
             })()}</span>
           </div>
         </CardHeader>
-        <CardContent className="relative pt-3 pb-3 px-3 sm:px-4">
+        <CardContent
+          className={cn(
+            "relative",
+            showPreview ? "mt-auto px-3 pt-2 pb-2.5" : "pt-3 pb-3 px-3 sm:px-4"
+          )}
+        >
           <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
             <Button size="sm" className="h-8 px-3 text-xs shadow-sm hover:shadow" onClick={handleLoad}>
               Load

@@ -63,13 +63,14 @@ export function YourResumesSectionV2() {
           <AnimatedGroup
             preset="slide"
             amount={0.1}
-            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5"
           >
             {versions.map((version) => (
               <VersionCard
                 key={version.id}
                 version={version}
                 editorPath="/editor-v2"
+                showPreview
               />
             ))}
           </AnimatedGroup>
