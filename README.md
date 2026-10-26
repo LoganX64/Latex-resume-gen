@@ -1,36 +1,38 @@
-# LaTeX Resume Generator
+# CVStack - LaTeX Resume Generator
 
-A production-quality, frontend-first resume builder for IT professionals. Create ATS-friendly, single-page A4 resumes with live preview, drag-and-drop section ordering, and LaTeX/PDF export.
+A frontend-first resume builder for ATS-oriented, LaTeX-typeset resumes. Build a resume in the browser, preview it instantly, save encrypted versions locally, and export either the LaTeX source or a compiled PDF.
 
-**[Live Demo](https://latex-resume-gen.vercel.app/)**
+**[Live Demo](https://latex-resume-gen.vercel.app/)** | **[GitHub](https://github.com/LoganX64/Latex-resume-gen)**
 
 ---
 
 ## Features
 
-- **Frontend-First Architecture** -- No authentication, no database, all data stored locally
-- **Live Split-Screen Editor** -- Edit on the left, preview on the right with instant updates
-- **Drag-and-Drop Section Ordering** -- Reorder resume sections and items with @dnd-kit
-- **Show/Hide & Collapse Sections** -- Toggle section visibility and collapse for a cleaner workspace
-- **Profile Image Upload** -- Upload and crop profile photos with react-easy-crop
-- **Categorized Skills** -- Organize skills by category (Languages, Frameworks, Databases, etc.)
-- **Multiple Entries** -- Support multiple experience, education, project, certification, and achievement entries
-- **LaTeX Export** -- Generate clean, editable `.tex` files compatible with Overleaf, TeX Live, MiKTeX
-- **PDF Export** -- Compile LaTeX to PDF via a Go backend using Tectonic
-- **WebSocket Compilation** -- Real-time streaming progress events during LaTeX-to-PDF compilation
-- **9 ATS-Friendly Templates** -- Classic, Minimal, Sidebar, Engineering, Google, Compact, Academic, Elegant, Data Science, Two Column
-- **Live HTML/CSS Preview** -- Real-time preview renders resume content directly in the browser with no backend dependency for preview
-- **Version Management** -- Save, load, and delete resume versions with encrypted localStorage persistence
-- **Encrypted Local Storage** -- AES-GCM 256-bit Web Crypto encryption for resume data and version history at rest
-- **Command Palette** -- Ctrl+K power-user interface for quick actions (export, template switch, theme toggle)
-- **Keyboard Shortcuts** -- Ctrl+P (PDF), Ctrl+L (LaTeX), Ctrl+D (dark mode), Ctrl+S (save), Ctrl+H (home)
-- **Dark/Light Mode** -- Toggle between themes
-- **Auto-Save** -- All changes persist to encrypted localStorage automatically
-- **Responsive UI** -- Modern interface built with shadcn/ui and Tailwind CSS v4
-- **Error Tracking** -- Sentry integration with session replay and performance monitoring
-- **Multi-Page Warning** -- Alerts when resume exceeds single-page limit with download-anyway option
-- **SEO Optimized** -- Open Graph, Twitter Cards, JSON-LD structured data, robots.txt, sitemap.xml
-- **Security Hardened** -- AES-GCM client encryption, constant-time auth checks, HTTP security headers, non-root Docker execution
+- **Frontend-first architecture** - No accounts and no resume database. Resume data and saved versions live in the browser.
+- **Live split-screen editor** - Edit structured content on the left and see the selected template on the right.
+- **Template-aware preview** - HTML/CSS rendering with A4 page simulation, pagination, zoom, pan, and fullscreen mode.
+- **Drag-and-drop ordering** - Reorder sections and entries with `@dnd-kit`.
+- **Show/hide and collapse** - Toggle sections in the editor and collapse them to reduce visual noise.
+- **9 LaTeX templates** - Includes single-column ATS-oriented layouts and visual two-column/sidebar layouts.
+- **Profile photo support** - Upload and crop a photo for the Engineering and Modern Sidebar templates.
+- **Categorized skills** - Organize skills into reorderable categories.
+- **Multiple entries** - Add multiple experience, education, project, certification, achievement, publication, language, and custom-section entries.
+- **LaTeX export** - Generate a standalone `.tex` file locally for Overleaf, TeX Live, or MiKTeX.
+- **PDF export** - Compile through the Go backend with Tectonic over a WebSocket, with live progress.
+- **Multi-page warning** - Warns when a PDF exceeds one page and lets the user download it anyway.
+- **Version history** - Save, load, update, and delete resume versions in encrypted local storage.
+- **Encrypted local storage** - AES-GCM 256-bit encryption with PBKDF2 key derivation for persisted resume data.
+- **Command palette and shortcuts** - `Ctrl/Cmd+K` for actions; shortcuts for PDF, LaTeX, save, theme, and home.
+- **Dark/light mode and auto-save** - Theme and editor state persist automatically.
+- **Responsive/mobile UI** - Dedicated mobile navbar, sidebar, preview sheet, and saved-resume sheet.
+- **Chunk-load recovery** - Retries failed dynamic imports and rate-limits automatic reloads after deploy races.
+- **Error tracking and analytics** - Production-only Sentry with error-only replays, plus Vercel Analytics.
+- **Admin stats dashboard** - `/admin/stats`, protected by `ADMIN_KEY`, shows aggregate visits and downloads.
+- **Observability** - Prometheus metrics, a provisioned Grafana dashboard, and optional pprof.
+- **SEO and prerendering** - Open Graph/Twitter metadata, JSON-LD, robots.txt, sitemap.xml, and prerendered `/` and `/404`.
+- **Security hardening** - Constant-time key checks, CORS/WebSocket origin checks, rate limiting, request-size limits, security headers, `--untrusted` Tectonic compilation, and non-root containers.
+
+> **Privacy note:** Resume data is stored locally and LaTeX export happens in the browser. PDF export sends the generated LaTeX and optional profile image to the compile backend, where temporary files are deleted after compilation. The backend stores only aggregate visit/download counters in SQLite, not resume content.
 
 ---
 
@@ -41,180 +43,158 @@ A production-quality, frontend-first resume builder for IT professionals. Create
 | Technology | Version | Purpose |
 |------------|---------|---------|
 | React | 19 | UI framework |
-| TypeScript | 6.x | Type safety |
-| Vite | 8.x | Build tool & dev server |
-| Tailwind CSS | v4 | Utility-first styling |
-| shadcn/ui | v4 (Base UI) | Component library |
-| Zustand | 5.x | State management |
-| React Hook Form | 7.x | Form handling |
-| Zod | 4.x | Schema validation |
-| @dnd-kit | core 6.x, sortable 10.x | Drag-and-drop |
-| Lucide React | 1.x | Icons |
-| react-easy-crop | 6.x | Image cropping |
-| Sentry React | 10.x | Error tracking & monitoring |
+| TypeScript | 6.0 | Type safety |
+| Vite | 8.3 | Build tool and dev server |
+| Tailwind CSS | 4.3 | Utility-first styling |
+| shadcn/ui | 4.16 (Base UI) | Component library |
+| Zustand | 5 | State management and persistence |
+| React Router | 7 | Client-side routing |
+| Framer Motion | 13 | UI motion and transitions |
+| @dnd-kit | core 6, sortable 10 | Drag-and-drop |
+| Font Awesome | 7 | Icons |
+| react-easy-crop | 6 | Profile-image cropping |
+| Sentry React | 10 | Error tracking and feedback |
+| Vercel Analytics | 2 | Privacy-friendly page analytics |
+| pnpm | 10.33.2 | Package manager |
+| Puppeteer | 24 | Build-time prerendering |
 
 ### Backend
 
 | Technology | Purpose |
 |------------|---------|
-| Go 1.25+ | Runtime |
-| Gin Framework | HTTP router |
+| Go 1.25.1 | Runtime |
+| Gin 1.12 | HTTP router |
 | Gorilla WebSocket | Real-time compilation streaming |
-| modernc.org/sqlite | Pure-Go SQLite driver (stats database) |
-| golang.org/x/time/rate | Per-IP token bucket rate limiting |
-| prometheus/client_golang | Prometheus metrics collection |
+| modernc.org/sqlite | Pure-Go SQLite stats database |
+| golang.org/x/time/rate | Per-IP token-bucket rate limiting |
+| prometheus/client_golang | Prometheus metrics |
 | joho/godotenv | Environment variable loading |
-| Tectonic | LaTeX to PDF compiler (v0.16.9) |
+| Tectonic 0.16.9 | LaTeX-to-PDF compiler |
 | gin-contrib/cors | CORS middleware |
-| savetrees (LaTeX) | Automatic single-page compression |
 
 ### DevOps
 
 | Technology | Purpose |
 |------------|---------|
 | Docker | Containerization |
-| Docker Compose | Multi-service orchestration |
-| Prometheus | Metrics collection & querying |
-| Grafana | Monitoring dashboard & visualization |
-| Sentry | Error tracking & performance monitoring |
-| Render | Cloud deployment (render.yaml blueprint) |
+| Docker Compose | Local/self-hosted multi-service orchestration |
+| Prometheus | Metrics collection |
+| Grafana | Provisioned monitoring dashboard |
+| Sentry | Frontend error tracking and source maps |
+| Vercel | Frontend hosting and API rewrite |
+| Render | Backend Docker deployment (`render.yaml`) |
 
 ---
 
 ## Architecture
 
+```text
+Browser (Vercel or Docker/Nginx)
+  React 19 SPA
+    - encrypted localStorage: current resume + saved versions
+    - template-aware HTML/CSS preview
+    - local LaTeX generation and .tex download
+    - Sentry (production only) + Vercel Analytics
+    |
+    | WebSocket /api/compile/ws (API key in query string)
+    | or HTTP POST /api/compile (X-API-Key)
+    v
+Go/Gin backend (Render or Docker)
+  - API-key middleware + CORS/WebSocket origin allowlist
+  - per-IP rate limiting
+  - Tectonic compilation (120s default timeout, --untrusted)
+  - temporary .tex/profile-image/PDF files, cleaned after compile
+  - SQLite aggregate stats
+  - /metrics with Basic Auth -> Prometheus -> Grafana
+  - optional pprof
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Backend Container                             │
-│                (golang:1.25-alpine)                             │
-│                                                                 │
-│   ┌──────────────────────────────────────────────────────────┐  │
-│   │                  Gin HTTP Server (:8080)                 │  │
-│   │                                                          │  │
-│   │  POST /api/compile  ──►  compiler.Compile()             │  │
-│   │                                                          │  │
-│   │  ┌──────────────────────────────────────────────────┐    │  │
-│   │  │           Tectonic (LaTeX compiler)              │    │  │
-│   │  │                                                  │    │  │
-│   │  │  .tex ──► .pdf  (120s timeout)                   │    │  │
-│   │  └──────────────────────────────────────────────────┘    │  │
-│   │                                                          │  │
-│   │  Response: application/pdf (binary)                      │  │
-│   └──────────────────────────────────────────────────────────┘  │
-│                                                                 │
-└─────────────────────────────────────────────────────────────────┘
-```
 
-**Request flow:**
+### Request flow
 
-1. Client sends `POST /api/compile` with `{ "latex": "..." }`
-2. Go server writes `.tex` to temp directory
-3. Tectonic compiles LaTeX to PDF (max 120s)
-4. Go server returns PDF binary response
+1. The user edits the resume; Zustand persists the current state to encrypted `localStorage`.
+2. LaTeX export generates the `.tex` string in the browser and downloads it directly.
+3. PDF export generates the LaTeX, opens `/api/compile/ws`, and sends `{ latex, profileImage }`.
+4. The backend writes temporary files, runs Tectonic, and streams progress messages.
+5. The backend sends `{ type: "complete", pageCount }` followed by the PDF binary frame.
+6. The frontend downloads the PDF and records an aggregate download event.
+7. If the page count is greater than one, the UI shows the multi-page warning first.
 
-**Key details:**
+### Routes and ports
 
-| Component | Port | Note |
-|-----------|------|------|
-| Backend (Go) | 8080 (host) → 8080 (container) | Gin server + Tectonic compiler |
-| Tectonic | -- | Installed in backend image only |
-| Prometheus | 9090 (host) → 9090 (container) | Metrics collection |
-| Grafana | 3001 (host) → 3000 (container) | Monitoring dashboards |
-| Docker Network | -- | Containers communicate via service names |
+| Route / service | Location |
+|-----------------|----------|
+| `/` | Homepage |
+| `/editor` | Resume editor |
+| `/admin/stats` | Admin stats dashboard (`X-Admin-Key`) |
+| `/v2` | Redirect to `/` |
+| `/editor-v2` | Redirect to `/editor` |
+| `*` | 404 page |
+| Frontend dev server | `http://localhost:5173` |
+| Frontend Docker | `http://localhost:3000` (container port 8080) |
+| Backend | `http://localhost:8080`; Render uses `SERVER_PORT=10000` |
+| Prometheus | `http://localhost:9090` |
+| Grafana | `http://localhost:3001` (container port 3000) |
+| pprof | `http://localhost:6060` when `PPROF_ENABLED=true` |
 
 ---
 
 ## Project Structure
 
-```
+```text
 latex-resume-gen/
 ├── frontend/
 │   ├── src/
-│   │   ├── assets/              # Static assets
 │   │   ├── components/
-│   │   │   ├── editor/          # Resume editor form components
-│   │   │   │   ├── EditorPanel.tsx
-│   │   │   │   ├── Sidebar.tsx
-│   │   │   │   ├── SectionWrapper.tsx
-│   │   │   │   ├── PersonalInfoForm.tsx
-│   │   │   │   ├── ProfileImageUpload.tsx
-│   │   │   │   ├── SummaryForm.tsx
-│   │   │   │   ├── ExperienceForm.tsx
-│   │   │   │   ├── SkillsForm.tsx
-│   │   │   │   ├── ProjectsForm.tsx
-│   │   │   │   ├── EducationForm.tsx
-│   │   │   │   ├── CertificationsForm.tsx
-│   │   │   │   ├── AchievementsForm.tsx
-│   │   │   │   ├── PublicationsForm.tsx
-│   │   │   │   ├── LanguagesForm.tsx
-│   │   │   │   └── CustomSectionsForm.tsx
-│   │   │   ├── preview/         # Live resume preview
-│   │   │   ├── theme-provider.tsx
-│   │   │   └── ui/              # shadcn/ui components
-│   │   ├── hooks/               # Custom React hooks
-│   │   │   ├── useKeyboardShortcuts.ts
-│   │   │   ├── useWebSocketCompile.ts
-│   │   │   ├── use-mobile.ts
-│   │   │   └── useExportActions.ts
-│   │   ├── layouts/
-│   │   │   └── EditorV2Layout.tsx # Responsive editor layout
-│   │   ├── pages/
-│   │   │   ├── HomePageV2.tsx
-│   │   │   └── StatsDashboard.tsx
-│   │   ├── stores/              # Zustand global state
-│   │   │   ├── resume-store.ts
-│   │   │   ├── stats-store.ts
-│   │   │   └── versions-store.ts
-│   │   ├── types/
-│   │   │   └── resume.ts        # TypeScript interfaces
-│   │   ├── utils/               # Download, export, stats helpers
-│   │   │   ├── download.ts
-│   │   │   ├── quick-export.ts
-│   │   │   └── stats.ts
-│   │   ├── templates/           # 9 template directories
-│   │   │   ├── academic/
-│   │   │   ├── classic/
-│   │   │   ├── compact/
-│   │   │   ├── datasci/
-│   │   │   ├── engineering/
-│   │   │   ├── modern/
-│   │   │   ├── professional/
-│   │   │   ├── sidebar/
-│   │   │   ├── twocolumn/
-│   │   │   ├── shared.ts
-│   │   │   ├── icons.tsx
-│   │   │   └── index.ts
-│   │   ├── lib/
-│   │   │   └── utils.ts         # cn(), generateId(), escapeLatex()
-│   │   ├── sentry.ts           # Sentry initialization
+│   │   │   ├── common/          # Shared components
+│   │   │   ├── editor/          # Resume forms and section wrappers
+│   │   │   ├── mobile/          # Mobile navbar, sidebar, preview/saved sheets
+│   │   │   ├── motion/          # Motion helpers and transitions
+│   │   │   ├── preview/         # Shared preview components
+│   │   │   ├── ui/              # shadcn/Base UI primitives
+│   │   │   └── v2/
+│   │   │       ├── editor/      # Editor shell and sidebar
+│   │   │       ├── home/        # Landing page sections and visuals
+│   │   │       ├── preview/     # ResumePreviewV2
+│   │   │       └── shared/      # Shared v2 components
+│   │   ├── hooks/               # Export, WebSocket, shortcuts, mobile, motion
+│   │   ├── layouts/             # EditorV2Layout
+│   │   ├── lib/                 # crypto, icons, motion, preload error handling
+│   │   ├── pages/               # HomePageV2, StatsDashboard, NotFoundPage
+│   │   ├── stores/              # resume-store, versions-store
+│   │   ├── templates/           # 9 template folders + shared LaTeX helpers
+│   │   ├── types/               # Resume, section, template, and version types
+│   │   ├── utils/               # download, quick-export, stats
+│   │   ├── sentry.ts            # Production-only Sentry initialization
 │   │   ├── App.tsx
 │   │   ├── main.tsx
 │   │   └── index.css
-│   ├── public/                  # Static assets (favicon, og-image, robots.txt, sitemap.xml)
+│   ├── public/                  # favicon, logo, og-image, robots.txt, sitemap.xml
+│   ├── scripts/prerender.mjs    # Puppeteer prerender for / and /404
+│   ├── Dockerfile               # Builds with pnpm build:fast
+│   ├── nginx.conf               # SPA fallback, API/WS proxy, security headers
+│   ├── vercel.json              # SPA routes, API rewrite, security headers
+│   ├── vite.config.ts           # React, Tailwind, Sentry, dev proxy
 │   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
+│   └── tsconfig.json
 ├── backend/
-│   ├── cmd/
-│   │   └── server/
-│   │       └── main.go          # Entry point
+│   ├── cmd/server/main.go       # Entry point, routes, config
 │   ├── internal/
-│   │   ├── compiler/            # LaTeX compilation logic
-│   │   ├── handlers/            # HTTP handlers (compile, stats)
+│   │   ├── compiler/            # Tectonic compilation + progress events
+│   │   ├── handlers/            # Compile and stats handlers
 │   │   ├── metrics/             # Prometheus metrics
-│   │   ├── middleware/           # Rate limiting, admin auth
-│   │   ├── stats/               # SQLite database
+│   │   ├── middleware/          # API key, admin key, basic auth, rate limit
+│   │   ├── stats/               # SQLite stats database
 │   │   └── websocket/           # WebSocket compile streaming
 │   ├── Dockerfile
-│   ├── .env
-│   ├── .dockerignore
 │   ├── go.mod
 │   └── go.sum
-├── prometheus/                   # Prometheus config
-├── grafana/                      # Grafana provisioning
-├── render.yaml                   # Render deployment blueprint
+├── prometheus/prometheus.yml
+├── grafana/
+│   ├── dashboards/latex-resume-go.json
+│   └── provisioning/
+├── screenshots/
 ├── docker-compose.yml
-├── .gitignore
+├── render.yaml
 └── README.md
 ```
 
@@ -224,34 +204,50 @@ latex-resume-gen/
 
 ### Prerequisites
 
-- **Docker** (recommended) — tectonic is included in the backend image
-- **Go** 1.25+ (only for local dev without Docker)
-- **Tectonic** (only for local dev without Docker)
+- **Node.js** 20.19+ or 22.12+ (tested with 22.21.1)
+- **pnpm** 10.33.2 (`corepack enable` is enough)
+- **Docker Desktop** for the recommended Compose setup
+- **Go** 1.25.1+ for local backend development
+- **Tectonic** 0.16.9+ only when running the backend without Docker
+- **Chrome/Chromium** for `pnpm build` prerendering; Docker uses `build:fast` and skips it
 
-### Docker Deployment (Recommended)
+### Docker Compose (recommended)
+
+Create a root `.env` for Compose interpolation and a `backend/.env` for the backend. Use the environment-variable reference below; `COMPILE_API_KEY` must match in both files, and `ALLOWED_ORIGINS` must include the frontend origin.
+
+Then run:
 
 ```bash
 docker compose up --build
 ```
 
-- Backend API: `http://localhost:8080`
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:8080`
 - Prometheus: `http://localhost:9090`
-- Grafana: `http://localhost:3001` (admin/admin)
-- PDF download works out of the box (tectonic is included in the backend image)
+- Grafana: `http://localhost:3001` (`admin` / `GRAFANA_ADMIN_PASSWORD`, default `admin`)
+- Tectonic cache and SQLite stats persist in the `tectonic-cache` and `stats-data` volumes.
 
-### Local Development (requires tectonic installed on host)
+The frontend image is built with `pnpm build:fast`; it does not run the Puppeteer prerender step.
+
+### Local development
 
 #### Frontend
 
 ```bash
 cd frontend
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-The dev server runs at `http://localhost:5173` with API proxy to `http://localhost:8080`.
+Create `frontend/.env` from `frontend/.env.example` and fill in the values described in the environment-variable reference below. `VITE_COMPILE_API_KEY` must match the backend key.
+
+The dev server runs at `http://localhost:5173` and proxies `/api` (including WebSocket) to `http://localhost:8080`.
 
 #### Backend
+
+Create `backend/.env` using the environment-variable reference below. `ALLOWED_ORIGINS` must include the browser origin.
+
+Then:
 
 ```bash
 cd backend
@@ -259,62 +255,368 @@ go mod download
 go run ./cmd/server
 ```
 
-The API server runs at `http://localhost:8080`.
-
-> **Note:** PDF export requires [Tectonic](https://tectonic-typesetting.github.io/book/latest/installation.html) installed and available in PATH.
-
-### Profiling (pprof)
-
-pprof is **disabled by default**. Enable it to profile CPU, memory, goroutines, and more.
+PDF export requires Tectonic installed and available in `PATH`:
 
 ```bash
-# Start backend with pprof enabled
-PPROF_ENABLED=true go run ./cmd/server
-
-# Custom port (default: 6060)
-PPROF_ENABLED=true PPROF_PORT=7070 go run ./cmd/server
+tectonic --version
 ```
 
-Once running, open `http://localhost:6060/debug/pprof/` in your browser to see all available profiles.
+> `ALLOWED_ORIGINS` must include the browser origin. The WebSocket upgrade checks the same allowlist, so an empty value blocks local browser compilation.
 
-**CLI usage:**
+### Build and checks
 
 ```bash
-# CPU profile (30 seconds)
-go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+cd frontend
 
-# Heap allocations
-go tool pprof http://localhost:6060/debug/pprof/heap
+# Typecheck + production build + prerender (/ and /404)
+pnpm build
 
-# Goroutine dump
-go tool pprof http://localhost:6060/debug/pprof/goroutine
+# Typecheck + production build only (used by Docker)
+pnpm build:fast
+
+# Typecheck only
+pnpm exec tsc --noEmit
 ```
 
-**Environment variables:**
+There is currently no test or lint script. `pnpm build` requires Chrome/Chromium for prerendering; set `PUPPETEER_SKIP_DOWNLOAD=true` only when you intentionally do not need prerendering.
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `VITE_ENCRYPTION_KEY` | `latex-resume-gen-secure-vault-key-2026` | Key used for Web Crypto AES-GCM localStorage encryption |
-| `PPROF_ENABLED` | `false` | Set to `true` to start pprof server |
-| `PPROF_PORT` | `6060` | Port for pprof HTTP server |
-| `SERVER_PORT` | `8080` | Backend HTTP server port |
-| `ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173,...` | Comma-separated CORS allowed origins |
-| `CORS_MAX_AGE` | `12h` | Max age for CORS preflight cache |
-| `MAX_REQUEST_SIZE_BYTES` | `5242880` | Max request body size in bytes (5 MB) |
-| `RATE_LIMIT_RPS` | `5` | Rate limit: requests per second per IP |
-| `RATE_LIMIT_BURST` | `10` | Rate limit: maximum burst size |
-| `STATS_DB_PATH` | `/data/stats.db` | Path to SQLite stats database |
-| `ADMIN_KEY` | `""` | Required header for `/api/stats/dashboard` endpoint |
-| `COMPILE_TIMEOUT_SECONDS` | `120` | LaTeX compilation timeout in seconds |
+Sentry source-map upload is build-time only. Without `SENTRY_AUTH_TOKEN`, Vite prints a warning and skips release creation/upload; the build still succeeds.
 
 ---
 
-## Security & Hardening
+## Environment Variables
 
-- **Client-Side Storage Encryption**: All resume data and version history stored in `localStorage` are encrypted using AES-GCM (256-bit) with PBKDF2 key derivation (100,000 iterations via Web Crypto API).
-- **Timing Attack Prevention**: Backend authentication middleware (`admin`, `apikey`, `basicauth`) uses Go `crypto/subtle.ConstantTimeCompare` to mitigate timing side-channel vulnerabilities.
-- **HTTP Security Headers**: Configured `CSP`, `HSTS`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` across Nginx (`nginx.conf`) and Vercel (`vercel.json`).
-- **Container Hardening**: Backend and frontend Docker containers run as unprivileged non-root users (`appuser` and `nginx`).
+### Frontend (`frontend/.env`)
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `VITE_GITHUB_URL` | empty; footer falls back to the repo URL | GitHub link in the navbar/footer |
+| `VITE_API_BASE_URL` | `/api` | Base URL for stats requests |
+| `VITE_API_PROXY_TARGET` | `http://localhost:8080` | Vite dev proxy target for `/api` and WebSocket |
+| `VITE_DEV_SERVER_PORT` | `5173` | Vite dev-server port |
+| `VITE_WS_URL` | same-origin | Optional direct WebSocket origin, e.g. `wss://backend.example.com` |
+| `VITE_COMPILE_API_KEY` | empty | Must match backend `COMPILE_API_KEY`; embedded in the client bundle |
+| `VITE_ENCRYPTION_KEY` | public fallback string | Client-side passphrase for localStorage encryption; not a server secret |
+| `VITE_SENTRY_DSN` | empty | Sentry DSN; Sentry only initializes in production |
+| `SENTRY_ORG` | empty | Sentry organization for build-time source-map upload |
+| `SENTRY_PROJECT` | empty | Sentry project for build-time source-map upload |
+| `SENTRY_AUTH_TOKEN` | empty | Build-time upload token for CI/Vercel; never prefix with `VITE_` |
+
+`VITE_*` values are compiled into the frontend bundle and are public. Do not put server secrets in them.
+
+### Backend (`backend/.env`)
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `SERVER_PORT` | `8080` | HTTP server port |
+| `MAX_REQUEST_SIZE_BYTES` | `5242880` | Maximum request body size (5 MB) |
+| `ALLOWED_ORIGINS` | empty | Comma-separated CORS and WebSocket origin allowlist |
+| `CORS_MAX_AGE` | `12h` | CORS preflight cache duration |
+| `RATE_LIMIT_RPS` | `5` | Requests per second per IP |
+| `RATE_LIMIT_BURST` | `10` | Maximum burst size |
+| `RATE_LIMITER_CLEANUP_SECONDS` | `60` | Rate-limiter cleanup interval |
+| `RATE_LIMITER_VISITOR_TTL_SECONDS` | `180` | Idle visitor expiry |
+| `RATE_LIMITER_MSG` | `Rate limit exceeded. Try again later.` | 429 response message |
+| `COMPILE_TIMEOUT_SECONDS` | `120` | Tectonic compilation timeout |
+| `COMPILE_API_KEY` | empty (required) | Key for `/api/compile` and `/api/compile/ws` |
+| `STATS_DB_PATH` | `/data/stats.db` | SQLite stats database path |
+| `ADMIN_KEY` | empty (required for dashboard) | Key for `/api/stats/dashboard` and `/admin/stats` |
+| `METRICS_USER` | empty | Basic-auth username for `/metrics` |
+| `METRICS_PASS` | empty | Basic-auth password for `/metrics` |
+| `PPROF_ENABLED` | `false` | Enables the optional pprof server |
+| `PPROF_PORT` | `6060` | pprof HTTP port |
+
+### Docker Compose (root `.env`)
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `COMPILE_API_KEY` | empty | Passed as `VITE_COMPILE_API_KEY` at frontend build time; must match `backend/.env` |
+| `GRAFANA_ADMIN_PASSWORD` | `admin` | Grafana admin password |
+
+`prometheus/prometheus.yml` currently scrapes `/metrics` with `prom` / `prom`. If you change `METRICS_USER` or `METRICS_PASS`, update that file too.
+
+---
+
+## API
+
+### `POST /api/compile`
+
+Compile LaTeX source to PDF.
+
+**Authentication:** `X-API-Key: <key>` header or `?key=<key>` query parameter.
+
+**Request body:**
+
+```json
+{
+  "latex": "\\documentclass{article}...",
+  "profileImage": "data:image/png;base64,...",
+  "mode": "inline"
+}
+```
+
+`profileImage` and `mode` are optional. `mode` can also be supplied as a query parameter; `inline` returns the PDF for embedding, while the default/`attachment` sets a download filename.
+
+**Response:**
+
+- `200 OK` with `application/pdf`
+  - `X-PDF-Page-Count`: detected page count
+  - `Content-Disposition`: `inline` or `attachment`
+- `401 Unauthorized`: missing/invalid API key
+- `413 Request Entity Too Large`: body exceeds the limit
+- `422 Unprocessable Entity`: Tectonic/LaTeX compilation failed
+- `500 Internal Server Error`: backend/compiler failure
+
+Error shape:
+
+```json
+{
+  "success": false,
+  "message": "LaTeX compilation failed",
+  "errors": ["...compiler output..."]
+}
+```
+
+**Constraints:** max 5 MB request body; 120-second default compile timeout.
+
+### `GET /api/health`
+
+Health check used by Docker/Render.
+
+```json
+{
+  "status": "ok",
+  "tectonic": "available",
+  "database": "connected"
+}
+```
+
+Returns `503 Service Unavailable` with `"status": "degraded"` if Tectonic or the stats database is unavailable.
+
+### `GET /metrics`
+
+Prometheus metrics endpoint, protected by HTTP Basic Auth (`METRICS_USER` / `METRICS_PASS`). Metrics include:
+
+- `latex_compile_requests_total{status}`
+- `latex_compile_duration_seconds{status}`
+- `latex_stats_visits_total`
+- `latex_stats_downloads_total`
+
+### `GET /api/compile/ws`
+
+WebSocket endpoint for PDF compilation. Requires an API key (`?key=...` or `X-API-Key`) and an allowed `Origin`.
+
+**Client -> server:**
+
+```json
+{
+  "latex": "\\documentclass{article}...",
+  "profileImage": "data:image/png;base64,..."
+}
+```
+
+**Server -> client:**
+
+```json
+{ "type": "progress", "step": "validating", "message": "Validating LaTeX..." }
+```
+
+```json
+{ "type": "complete", "pageCount": 1 }
+```
+
+The `complete` JSON message is followed by a binary PDF frame. Compilation failures send:
+
+```json
+{ "type": "error", "message": "..." }
+```
+
+The server sends ping frames every 30 seconds and expects pong responses.
+
+### Stats endpoints
+
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| `POST` | `/api/stats/visit` | none | Record a homepage visit (once per browser session) |
+| `POST` | `/api/stats/download` | none | Record a LaTeX/PDF export |
+| `GET` | `/api/stats` | none | Return aggregate `{ visits, downloads }` |
+| `GET` | `/api/stats/dashboard` | `X-Admin-Key` | Dashboard stats used by `/admin/stats` |
+
+Stats are aggregate counters stored in SQLite. No resume content is stored in the database.
+
+---
+
+## Rate Limiting
+
+`/api/compile` and `/api/compile/ws` are rate-limited per client IP.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `RATE_LIMIT_RPS` | `5` | Requests per second per IP |
+| `RATE_LIMIT_BURST` | `10` | Maximum burst |
+| `RATE_LIMITER_CLEANUP_SECONDS` | `60` | Cleanup interval |
+| `RATE_LIMITER_VISITOR_TTL_SECONDS` | `180` | Idle visitor expiry |
+
+Exceeding the limit returns `429 Too Many Requests` with the configured `RATE_LIMITER_MSG`.
+
+---
+
+## Resume Sections
+
+| Section | Multiple entries | Entry reorder | Show/hide |
+|---------|------------------|---------------|-----------|
+| Personal Information | - | - | Always visible |
+| Professional Summary | - | - | Yes |
+| Work Experience | Yes | Yes | Yes |
+| Technical Skills (categorized) | Yes | Yes (categories) | Yes |
+| Projects | Yes | Yes | Yes |
+| Education | Yes | Yes | Yes |
+| Certifications | Yes | - | Yes |
+| Achievements | Yes | - | Yes |
+| Publications | Yes | - | Yes |
+| Languages | Yes | - | Yes |
+| Custom Sections | Yes | - | Yes |
+
+All non-personal sections can be reordered by dragging the section handle. Entries can be reordered within Experience, Education, Skills categories, and Projects.
+
+---
+
+## Templates
+
+Nine templates are registered through `frontend/src/templates/index.ts` using `import.meta.glob`. Each folder contains a React preview, a LaTeX generator, and a config file.
+
+| ID | Name | Notes |
+|----|------|-------|
+| `professional` | Professional ATS | Single-column ATS-oriented layout, inspired by Jake's Resume; US Letter |
+| `classic` | Classic Professional | Traditional serif single-column layout; A4 |
+| `sidebar` | Modern Sidebar | Two-column layout with colored sidebar; photo support; A4 |
+| `engineering` | Engineering Resume | Technical layout with prominent skills/projects; photo support; A4 |
+| `modern` | Modern Sans-Serif | Source Sans Pro layout inspired by sb2nov/resume; A4 |
+| `compact` | Compact One Page | Dense layout for fitting more content; A4 |
+| `academic` | Academic Technical CV | Research/education-oriented layout; A4 |
+| `datasci` | Technical | Compact header, skills table, structured technical sections; US Letter |
+| `twocolumn` | Modern Two Column | Two-column experience/projects + skills/education layout; US Letter |
+
+The browser preview uses an A4 page model for every template. The Professional ATS, Technical, and Modern Two Column LaTeX output uses US Letter (LaTeX's default paper size), so those PDFs differ from the preview.
+
+Photo-capable templates: `engineering` and `sidebar`. The UI warns before exporting one of those templates without a profile photo and allows the user to continue.
+
+---
+
+## Preview System
+
+The preview is rendered entirely in the browser by `ResumePreviewV2.tsx`; no backend is needed for preview.
+
+- Template-specific React preview components render resume content as HTML/CSS.
+- A4 page simulation with template margins and page shadows.
+- Automatic pagination with section-aware page breaks.
+- Zoom levels: 50%, 75%, 100%, 125%, 150%, and Fit.
+- Drag-to-pan, pinch zoom, fullscreen mode, and a page-count indicator.
+- Overflow detection drives the preview's page-count indicator; the PDF multi-page warning uses the page count reported by the backend.
+- The selected template is loaded lazily and cached by `loadTemplate()`.
+
+---
+
+## Data, Privacy, and Security
+
+- **Local persistence:** The current resume and saved versions are stored in `localStorage` through Zustand's persist middleware and encrypted with AES-GCM 256-bit and PBKDF2-SHA256 (100,000 iterations).
+- **Version snapshots:** Saved versions include resume content, template, section order, and visibility. Profile photos are intentionally excluded from saved version snapshots.
+- **Local-only operations:** Editing, previewing, and LaTeX export happen in the browser.
+- **PDF export boundary:** PDF compilation sends the generated LaTeX and optional profile image to the backend. Temporary files are created per compile and cleaned up afterward; no resume data is persisted server-side.
+- **Aggregate stats:** The SQLite database stores only `visits` and `downloads` counters.
+- **Telemetry:** Vercel Analytics and production-only Sentry may receive page/error telemetry. Sentry replay masks all text and blocks all media.
+- **Client-side values are public:** `VITE_ENCRYPTION_KEY` and `VITE_COMPILE_API_KEY` are embedded in the bundle. The encryption key protects local data at rest but is not a server secret; the compile key is an abuse deterrent, not user authentication.
+- **Key checks:** API key, admin key, and metrics basic-auth checks use `crypto/subtle.ConstantTimeCompare`.
+- **Network protections:** CORS allowlist, WebSocket origin check, per-IP rate limiting, 5 MB request limit, and `tectonic --untrusted`.
+- **Headers:** CSP, HSTS, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy` are configured in `frontend/nginx.conf` and `frontend/vercel.json`.
+- **Containers:** Both frontend and backend images run as non-root users.
+
+Clearing browser storage deletes local resumes and versions permanently. The app shows a storage warning in the saved-resumes section.
+
+---
+
+## Observability
+
+### Sentry
+
+Sentry is initialized only in production and is skipped during prerendering/headless runs. The client is configured for the free-tier-friendly setup:
+
+- 10% performance tracing
+- 0% session replay sampling
+- 100% replay capture on errors
+- Sentry logs disabled
+- Third-party error filtering
+- Replay text masking and media blocking
+- Feedback widget on the homepage and error boundary
+
+Set `VITE_SENTRY_DSN` for runtime error reporting. For release creation and source-map upload, set `SENTRY_ORG`, `SENTRY_PROJECT`, and `SENTRY_AUTH_TOKEN` in CI/Vercel. The token is build-time only and must not use the `VITE_` prefix.
+
+Error-only replays can hit the plan's replay cap; error events continue to be captured. Enable Sentry's Spike Protection and Browser Extensions inbound filter in the project settings to reduce noise.
+
+### Prometheus and Grafana
+
+Docker Compose starts Prometheus and Grafana with provisioned configuration:
+
+- Prometheus scrapes `backend:8080/metrics` using `prom` / `prom`.
+- Grafana is provisioned with the Prometheus datasource and `grafana/dashboards/latex-resume-go.json`.
+- Grafana is available at `http://localhost:3001`; the default password is `admin` unless `GRAFANA_ADMIN_PASSWORD` is set.
+
+### pprof
+
+pprof is disabled by default. Enable it for CPU, heap, or goroutine profiling:
+
+```bash
+PPROF_ENABLED=true go run ./cmd/server
+```
+
+Then open `http://localhost:6060/debug/pprof/`.
+
+```bash
+go tool pprof http://localhost:6060/debug/pprof/profile?seconds=30
+go tool pprof http://localhost:6060/debug/pprof/heap
+go tool pprof http://localhost:6060/debug/pprof/goroutine
+```
+
+### Admin stats dashboard
+
+Open `/admin/stats` and enter the backend `ADMIN_KEY`. The key is kept in `sessionStorage` for the browser session. The dashboard shows total visits and downloads.
+
+---
+
+## Deployment
+
+### Vercel (frontend)
+
+- Project root: `frontend`
+- Build command: `pnpm build`
+- Output directory: `dist`
+- Required build-time env: `VITE_COMPILE_API_KEY`, `VITE_SENTRY_DSN` (if Sentry is enabled), and any optional `VITE_*` values
+- Required build-time env for Sentry source maps: `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_AUTH_TOKEN`
+- `vercel.json` handles SPA routes, security headers, and rewrites `/api/:path*` to `https://latex-resume-backend.onrender.com/api/:path*`. Update that URL if the Render service changes.
+- `robots.txt` disallows `/editor` and `/admin`; only `/` and `/404` are prerendered.
+
+If the frontend host does not proxy WebSockets, set `VITE_WS_URL` to the backend's `wss://` origin.
+
+### Render (backend)
+
+`render.yaml` defines a Docker web service:
+
+- Health check: `/api/health`
+- `SERVER_PORT=10000`
+- `COMPILE_TIMEOUT_SECONDS=120`
+- `STATS_DB_PATH=/data/stats.db`
+- `COMPILE_API_KEY` generated by Render
+- `ADMIN_KEY` and `ALLOWED_ORIGINS` must be configured
+- `METRICS_USER` is set to `admin`; `METRICS_PASS` is generated by Render
+
+Render free services have an ephemeral filesystem. Without a persistent disk, the SQLite stats database can reset on restart/redeploy.
+
+### Docker Compose (self-hosted)
+
+- Frontend Nginx serves the SPA and proxies `/api` and `/api/compile/ws` to the backend.
+- Backend data and Tectonic cache persist in named volumes.
+- Prometheus and Grafana are included for local monitoring.
+- The frontend build uses `pnpm build:fast`, so Docker deployments do not get the Puppeteer prerender output.
 
 ---
 
@@ -340,163 +642,6 @@ go tool pprof http://localhost:6060/debug/pprof/goroutine
 |------------|-------------|
 | ![pprof Web UI](screenshots/pprof-web.png) | Available profiles list |
 | ![pprof Heap](screenshots/pprof-heap.png) | Heap profile analysis in terminal |
-
----
-
-## API
-
-### POST /api/compile
-
-Compile LaTeX source to PDF.
-
-**Query Parameters:**
-
-| Parameter | Values | Default | Description |
-|-----------|--------|---------|-------------|
-| `mode` | `attachment`, `inline` | `attachment` | `inline` returns PDF for iframe rendering; `attachment` triggers download |
-
-**Request:**
-
-```json
-{
-  "latex": "\\documentclass{article}...",
-  "mode": "inline"
-}
-```
-
-**Response:**
-
-- `200 OK` -- `application/pdf` (binary)
-  - `X-PDF-Page-Count` header: number of pages in the compiled PDF
-- `400 Bad Request`:
-
-```json
-{
-  "success": false,
-  "message": "LaTeX compilation failed.",
-  "errors": ["...compiler output..."]
-}
-```
-
-**Constraints:**
-
-- Max request size: 5 MB
-- Timeout: 120 seconds (configurable via `COMPILE_TIMEOUT_SECONDS`)
-
-### GET /api/health
-
-Health check endpoint.
-
-**Response:**
-
-```json
-{
-  "status": "ok",
-  "tectonic": "available",
-  "database": "connected"
-}
-```
-
-Returns `503 Service Unavailable` if tectonic or the stats database is unavailable.
-
-### GET /metrics
-
-Prometheus metrics endpoint. Exposes request counts, duration histograms, and compilation metrics for monitoring.
-
-### GET /api/compile/ws
-
-WebSocket endpoint for real-time LaTeX compilation. Sends compilation progress and PDF binary frames to connected clients.
-
-**Protocol:**
-- Client sends JSON: `{ "latex": "...", "profileImage": "..." }`
-- Server sends JSON progress messages: `{ "step": "compiling", "message": "Compiling with Tectonic..." }`
-- Server sends final PDF as binary WebSocket frame
-- Ping/pong heartbeat every 30 seconds for keepalive
-
-### Stats Endpoints
-
-| Method | Path | Description |
-|--------|------|-------------|
-| `POST` | `/api/stats/visit` | Record a page visit |
-| `POST` | `/api/stats/download` | Record a PDF download |
-| `GET` | `/api/stats` | Retrieve aggregate stats |
-| `GET` | `/api/stats/dashboard` | Dashboard stats (requires `ADMIN_KEY` header) |
-
----
-
-## Rate Limiting
-
-The `/api/compile` and `/api/compile/ws` endpoints are rate-limited per IP address.
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `RATE_LIMIT_RPS` | `5` | Requests per second per IP |
-| `RATE_LIMIT_BURST` | `10` | Maximum burst size |
-
-Exceeding the limit returns `429 Too Many Requests`.
-
----
-
-## Resume Sections
-
-The editor supports these sections (all drag-and-drop reorderable):
-
-| Section | Multiple Entries | DnD Reorder |
-|---------|-----------------|-------------|
-| Personal Information | -- | -- |
-| Professional Summary | -- | -- |
-| Work Experience | Yes | Yes |
-| Technical Skills (Categorized) | Yes | Yes |
-| Projects | Yes | Yes |
-| Education | Yes | Yes |
-| Certifications | Yes | -- |
-| Achievements | Yes | -- |
-| Publications | Yes | -- |
-| Languages | Yes | -- |
-| Custom Sections | Yes | -- |
-
----
-
-## Templates
-
-9 ATS-friendly templates designed for IT professionals:
-
-| # | Template | Description |
-|---|----------|-------------|
-| 1 | Professional ATS | Clean, ATS-optimized layout |
-| 2 | Classic | Traditional clean layout |
-| 3 | Modern Sidebar | Two-column with sidebar |
-| 4 | Engineering Resume | Technical-focused with photo support |
-| 5 | Minimal | Ultra-clean, no section rules |
-| 6 | Compact One Page | Dense, two-column skills grid |
-| 7 | Academic Technical CV | Research-oriented with fancyhdr |
-| 8 | Data Science | Analytics-focused layout |
-| 9 | Two Column | Standard two-column design |
-
-Each template includes a React preview component, LaTeX template, and configuration file. All templates use the `savetrees` package for automatic single-page compression.
-
----
-
-## Preview System
-
-The preview system renders resume content directly in the browser using HTML/CSS, providing instant feedback without requiring backend compilation.
-
-**Flow:**
-1. User edits resume content in the editor
-2. Zustand store updates trigger a re-render of the preview component
-3. Resume sections are rendered as styled HTML inside an A4-sized container
-4. User sees a live representation of their resume with zoom controls
-
-**Benefits:**
-- Instant preview with no compilation delay
-- No backend dependency for preview (backend only needed for PDF export)
-- Collapsible sidebar with icon-only mode and hover tooltips
-
-**Implementation:**
-- `ResumePreview.tsx` renders all resume sections as styled HTML
-- A4 page simulation (210x297mm) with realistic margins and page shadow
-- Zoom controls (50%, 75%, 100%, 125%, 150%, Fit Width)
-- Overflow detection monitors content against soft limits (summary chars, experience entries, project entries)
 
 ---
 
