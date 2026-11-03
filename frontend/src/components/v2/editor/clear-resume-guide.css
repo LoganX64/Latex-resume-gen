@@ -1,0 +1,34 @@
+.clear-resume-guide-target {
+  position: relative;
+}
+
+.clear-resume-guide-target::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: 1;
+  border: 2px solid var(--primary);
+  border-radius: calc(var(--radius-md) + 2px);
+  pointer-events: none;
+  animation: clear-resume-guide-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes clear-resume-guide-pulse {
+  0%,
+  100% {
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--primary) 35%, transparent);
+  }
+
+  50% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 5px color-mix(in oklch, var(--primary) 0%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clear-resume-guide-target::after {
+    animation: none;
+    opacity: 1;
+  }
+}

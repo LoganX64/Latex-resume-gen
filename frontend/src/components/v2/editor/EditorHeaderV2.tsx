@@ -12,6 +12,7 @@ import { MoonIcon } from "@/components/MoonIcon";
 import { KeyboardShortcutsButton } from "@/components/KeyboardShortcutsButton";
 import { useTheme } from "@/components/theme-provider";
 import { toggleThemeFromButton } from "@/lib/theme-transition";
+import { CLEAR_RESUME_BUTTON_ID } from "@/lib/clear-resume-guide";
 import {
   faDownload,
   faFloppyDisk,
@@ -119,6 +120,7 @@ export function EditorHeaderV2({
           <TooltipTrigger
             render={
               <Button
+                id={CLEAR_RESUME_BUTTON_ID}
                 variant="ghost"
                 size="icon-xs"
                 className={buttonClass}

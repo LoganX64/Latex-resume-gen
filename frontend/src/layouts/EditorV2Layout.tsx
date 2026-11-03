@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import { EditorSidebarV2 } from "@/components/v2/editor/EditorSidebarV2";
 import { EditorPaneV2 } from "@/components/v2/editor/EditorPaneV2";
+import { ClearResumeGuide } from "@/components/v2/editor/ClearResumeGuide";
 import { ResumePreviewV2 } from "@/components/v2/preview/ResumePreviewV2";
 import { EditorPanel } from "@/components/editor/EditorPanel";
 import { MobileTopNavbar } from "@/components/mobile/MobileTopNavbar";
@@ -28,6 +29,7 @@ import { CompileProgressDialog } from "@/components/CompileProgressDialog";
 import { CommandPalette } from "@/components/CommandPalette";
 import { useResumeStore } from "@/stores/resume-store";
 import { useExportActions } from "@/hooks/useExportActions";
+import { useClearResumeGuide } from "@/hooks/useClearResumeGuide";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/components/theme-provider";
@@ -88,6 +90,14 @@ export default function EditorV2Layout() {
   const [savedOpen, setSavedOpen] = useState(false);
 
   const {
+    open: clearGuideOpen,
+    close: closeClearGuide,
+    acknowledge: acknowledgeClearGuide,
+  } = useClearResumeGuide({
+    enabled: !isMobile && !fullscreenPreview,
+  });
+
+  const {
     handleExportPdf,
     handleExportVersionPdf,
     handleExportLatex,
@@ -120,10 +130,13 @@ export default function EditorV2Layout() {
 
   const handleClearResume = useCallback(() => {
     clearResume();
+    if (!isMobile) {
+      acknowledgeClearGuide();
+    }
     toast.success("Resume cleared", {
       description: "All fields have been cleared.",
     });
-  }, [clearResume]);
+  }, [clearResume, acknowledgeClearGuide, isMobile]);
 
   const shortcuts = useMemo(
     () => ({
@@ -313,6 +326,11 @@ export default function EditorV2Layout() {
             </section>
           </div>
         </SidebarInset>
+        <ClearResumeGuide
+          open={clearGuideOpen}
+          onClose={closeClearGuide}
+          onAcknowledge={acknowledgeClearGuide}
+        />
       </SidebarProvider>
       )}
 
