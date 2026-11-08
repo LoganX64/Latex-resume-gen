@@ -104,7 +104,12 @@ function generateSection(type: string, resume: ResumeData): string {
         return `\\textbf{${escapeLatex(degree)}}${date(range)}\\\\${escapeLatex(item.institution)}${item.cgpa ? `\\hfill GPA: ${escapeLatex(item.cgpa)}` : ''}${item.description ? `\\\\${escapeLatex(item.description)}` : ''}`
       }).join('\\vspace{2pt}\n'))
     case 'certifications':
-      return section('Certifications', resume.certifications.map((item) => `\\textbf{${escapeLatex(item.name)}}${date(item.date)}${item.issuer ? `\\\\${escapeLatex(item.issuer)}` : ''}${item.url ? ` \\href{${escapeLatex(item.url)}}{\\faExternalLink}` : ''}`).join('\\\\\n'))
+      return section('Certifications', resume.certifications.map((item) => {
+        const issuer = item.issuer ? ` \\textendash{} \\textit{${escapeLatex(item.issuer)}}` : ''
+        const urlIcon = item.url ? ` \\href{${escapeLatex(item.url)}}{\\faExternalLink}` : ''
+        const titleWidth = item.date ? `\\dimexpr\\textwidth-7em\\relax` : `\\textwidth`
+        return `\\noindent\\begin{minipage}[t]{${titleWidth}}\\raggedright\\textbf{${escapeLatex(item.name)}}${issuer}${urlIcon}\\end{minipage}${item.date ? `\\hfill\\begin{minipage}[t]{7em}\\raggedleft \\small\\bfseries ${escapeLatex(item.date)}\\end{minipage}` : ''}\\\\`
+      }).join('\\vspace{2pt}\n'))
     case 'achievements':
       return section('Achievements', resume.achievements.map((item) => `\\textbf{${escapeLatex(item.title)}}${date(item.date || '')}${item.description ? `\\\\${escapeLatex(item.description)}` : ''}`).join('\\vspace{2pt}\n'))
     case 'publications':
