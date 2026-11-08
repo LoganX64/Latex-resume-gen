@@ -14,7 +14,7 @@ export function generateReferenceLatex(resume: ResumeData, sectionOrder: Section
 function buildDocument(resume: ResumeData, body: string): string {
   const info = resume.personalInfo
   const name = escapeLatex((info.fullName || 'Your Name').toLocaleUpperCase())
-  const title = info.professionalTitle ? `\\\\[-1pt]{\\fontsize{14}{16}\\selectfont\\bfseries ${escapeLatex(info.professionalTitle.toLocaleUpperCase())}}` : ''
+  const title = info.professionalTitle ? `\\\\[2pt]{\\fontsize{14}{16}\\selectfont\\bfseries ${escapeLatex(info.professionalTitle.toLocaleUpperCase())}}` : ''
   const contacts = getContactParts({ ...info, location: '' }, false)
   const contactLine = contacts.length ? `\\\\[1pt]{\\fontsize{8}{10}\\selectfont ${contacts.join(' $\\cdot$ ')}}` : ''
   const location = info.location ? `\\\\[-1pt]{\\fontsize{8}{10}\\selectfont ${escapeLatex(info.location)}}` : ''

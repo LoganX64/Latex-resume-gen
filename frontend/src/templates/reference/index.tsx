@@ -118,7 +118,7 @@ function Preview({ resume, sections }: {
           </div>
         )}
         {personalInfo.professionalTitle && (
-          <div style={{ fontSize: '14pt', lineHeight: '11pt', fontWeight: 700, textTransform: 'uppercase' }}>
+          <div style={{ fontSize: '14pt', lineHeight: '11pt', fontWeight: 700, textTransform: 'uppercase', marginTop: '3pt' }}>
             {personalInfo.professionalTitle}
           </div>
         )}
