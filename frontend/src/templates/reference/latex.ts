@@ -36,7 +36,7 @@ function buildDocument(resume: ResumeData, body: string): string {
 \\setlength{\\parskip}{0pt}
 \\linespread{1.0}
 \\titleformat{\\section}{\\fontsize{9}{10}\\selectfont\\bfseries}{}{0em}{}[\\vspace{-1pt}\\titlerule]
-\\titlespacing*{\\section}{0pt}{3pt}{2pt}
+\\titlespacing*{\\section}{0pt}{3pt}{2.5pt}
 \\setlist[itemize]{nosep,leftmargin=1.5em,label=\\textbullet,topsep=1pt,itemsep=0pt,parsep=0pt}
 \\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue!70!black}
 \\urlstyle{same}
@@ -107,9 +107,8 @@ function generateSection(type: string, resume: ResumeData): string {
       return section('Certifications', resume.certifications.map((item) => {
         const issuer = item.issuer ? ` \\textendash{} \\textit{${escapeLatex(item.issuer)}}` : ''
         const urlIcon = item.url ? ` \\href{${escapeLatex(item.url)}}{\\faExternalLink}` : ''
-        const titleWidth = item.date ? `\\dimexpr\\textwidth-7em\\relax` : `\\textwidth`
-        return `\\noindent\\begin{minipage}[t]{${titleWidth}}\\raggedright\\textbf{${escapeLatex(item.name)}}${issuer}${urlIcon}\\end{minipage}${item.date ? `\\hfill\\begin{minipage}[t]{7em}\\raggedleft \\small\\bfseries ${escapeLatex(item.date)}\\end{minipage}` : ''}\\\\`
-      }).join('\\vspace{2pt}\n'))
+        return `\\textbf{${escapeLatex(item.name)}}${issuer}${urlIcon}${date(item.date)}`
+      }).join('\\\\\n'))
     case 'achievements':
       return section('Achievements', resume.achievements.map((item) => `\\textbf{${escapeLatex(item.title)}}${date(item.date || '')}${item.description ? `\\\\${escapeLatex(item.description)}` : ''}`).join('\\vspace{2pt}\n'))
     case 'publications':
