@@ -37,7 +37,7 @@ function buildDocument(resume: ResumeData, body: string): string {
 \\linespread{1.0}
 \\titleformat{\\section}{\\fontsize{9}{10}\\selectfont\\bfseries}{}{0em}{}[\\vspace{-1pt}\\titlerule]
 \\titlespacing*{\\section}{0pt}{3pt}{2.5pt}
-\\setlist[itemize]{nosep,leftmargin=1.5em,label=\\textbullet,topsep=1pt,itemsep=0pt,parsep=0pt}
+\\setlist[itemize]{nosep,leftmargin=1.5em,label=\\textbf{\\textbullet},topsep=1pt,itemsep=0pt,parsep=0pt}
 \\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue!70!black}
 \\urlstyle{same}
 \\begin{document}
