@@ -42,7 +42,8 @@ function Heading({ title, date }: { title: ReactNode; date?: string }) {
 }
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
-  return <section style={{ marginTop: '5px' }} data-section="true"><h2 style={{ fontSize: '11px', fontVariant: 'small-caps', fontWeight: 800, borderBottom: '1px solid #333', paddingBottom: '1px', margin: '0 0 3px' }}>{title}</h2>{children}</section>
+  const chars = Array.from(title)
+  return <section style={{ marginTop: '5px' }} data-section="true"><h2 style={{ fontSize: '11px', fontVariant: 'small-caps', fontWeight: 800, borderBottom: '1px solid #333', paddingBottom: '1px', margin: '0 0 3px' }}><span style={{ fontSize: '11.6px' }}>{chars[0]}</span>{chars.slice(1).join('')}</h2>{children}</section>
 }
 
 function SectionContent({ type, resume }: { type: string; resume: ResumeData }) {

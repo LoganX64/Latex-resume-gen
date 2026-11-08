@@ -50,7 +50,11 @@ ${body}
 }
 
 function section(title: string, content: string): string {
-  return content ? `\\section*{${escapeLatex(title.toLocaleUpperCase())}}\n${content}` : ''
+  if (!content) return ''
+  const chars = Array.from(title.toLocaleUpperCase())
+  const first = escapeLatex(chars[0] ?? '')
+  const rest = escapeLatex(chars.slice(1).join(''))
+  return `\\section*{{\\fontsize{9.5}{10}\\selectfont ${first}}${rest}}\n${content}`
 }
 
 function date(value: string): string {
